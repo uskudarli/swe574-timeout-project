@@ -1,0 +1,36 @@
+header h1{
+	margin: 10px 0;
+	text-align: center;
+}
+
+body {
+	margin: 0;
+	background-color: #ffffff;
+}
+
+section {
+	margin: 10px;
+}
+
+div.login {
+	float: left;
+	width: 400px;
+}
+
+label {
+	display: inline;
+	float: left;
+	width: 100px;
+}
+
+div.signup {
+	float: left;
+	width: 400px;
+}
+
+footer {
+	margin: 50% 0 0 0;
+	padding: 10px 30px;
+	clear: both;
+	width: 100%;
+}
