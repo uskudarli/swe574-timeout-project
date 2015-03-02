@@ -7,7 +7,7 @@
     	<meta name="description" content="Community for CMPE of BOUN">
     	<meta name="author" content="Group Timeout for SWE574 Project">
 
-		<title>CMPE Community</title>
+		<title>CMPE Communication System</title>
 		<!-- Angular JS -->
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
 		<!-- BootStrap Min JS -->
@@ -23,13 +23,30 @@
 
 	<body>
 		<div ng-controller="Hello">
-			<header>
-				<h1>GROUP TIMEOUT SWE574 PROJECT</h1>
-			</header>
+			<nav class="navbar navbar-inverse navbar-fixed-top">
+		      <div class="container">
+		        <div class="navbar-header">
+		          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+		            <span class="sr-only">Toggle navigation</span>
+		            <span class="icon-bar"></span>
+		            <span class="icon-bar"></span>
+		            <span class="icon-bar"></span>
+		          </button>
+		          <a class="navbar-brand" href="#">CMPE Communication System</a>
+		        </div>
+		        <div id="navbar" class="collapse navbar-collapse">
+		          <ul class="nav navbar-nav">
+		            <li class="active"><a href="#">Home</a></li>
+		            <li><a href="#about">About</a></li>
+		            <li><a href="#contact">Contact</a></li>
+		          </ul>
+		        </div><!--/.nav-collapse -->
+		      </div>
+		    </nav>
 
 			<section>
-				<p>The ID is {{greeting.id}}</p>
-				<p>The content is {{greeting.content}}</p>
+				<!--p>The ID is {{greeting.id}}</p>
+				<p>The content is {{greeting.content}}</p-->
 				<div class="login">
 					<fieldset>
 						<legend>User Login</legend>
@@ -53,6 +70,14 @@
 					<fieldset>
 						<legend>Sign Up</legend>
 						<p>
+							<label for="name">Username:</label>
+							<input type="text" name="name" ng-model="data.name"/>
+						</p>
+						<p>
+							<label for="surname">Username:</label>
+							<input type="text" name="surname" ng-model="data.surname"/>
+						</p>
+						<p>
 							<label for="username">Username:</label>
 							<input type="text" name="username" ng-model="data.username"/>
 						</p>
@@ -63,6 +88,9 @@
 						<p>
 							<label for="re-password">Re-password:</label>
 							<input type="password" name="re-password" ng-model="data.re-password"/>
+						</p>
+						<p>
+							<button type="submit">Sign Up</button>
 						</p>
 					</fieldset>
 				</div>

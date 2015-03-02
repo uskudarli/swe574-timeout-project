@@ -12,7 +12,8 @@ section {
 	margin: 10px;
 }
 
-div.login {
+div.login, div.signup {
+	margin-top: 80px;
 	float: left;
 	width: 400px;
 }
@@ -21,11 +22,6 @@ label {
 	display: inline;
 	float: left;
 	width: 100px;
-}
-
-div.signup {
-	float: left;
-	width: 400px;
 }
 
 footer {
