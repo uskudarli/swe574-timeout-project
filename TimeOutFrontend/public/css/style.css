@@ -5,17 +5,88 @@ header h1{
 
 body {
 	margin: 0;
-	background-color: #ffffff;
+	background-color: #eaeae4;
+}
+
+#bounlogo{
+	float:left;
+	margin-left:20px;
 }
 
 section {
-	margin: 10px;
+	float:right;
+	width:100%;
+	height:auto;
 }
 
-div.login, div.signup {
-	margin-top: 80px;
+div.intro{
 	float: left;
-	width: 400px;
+    padding-left: 140px;
+    padding-top: 50px;
+    width: 600px;
+}
+
+#fbconnect{
+	float: left;
+    margin-left: 50px;
+    margin-top: 110px;
+    width: 200px;
+}
+
+div.signup {
+	float: right;
+    margin-right: 10px;
+    margin-top: 50px;
+    width: 400px;
+}
+
+div.signup fieldset legend{
+	width:365px;
+}
+
+div.signup p span{
+	font-size: 11px;
+    padding-right: 40px;
+}
+
+div.login{
+	float:right;
+	margin-left: 140px;
+    margin-top: 25px;
+    width: 435px;
+	height:100px;
+	color:#fff;
+}
+
+#login-button{
+	width:100px !important;
+	padding-top: 17px;
+	}
+
+div.login p{
+	float: left;
+    font-size: 10px;
+    font-weight: normal;
+    width: 140px;
+	margin: 5px;
+}
+
+div.login p input{
+	float: left;
+    margin: 0 5px 6px 0 !important;
+    padding: 0 !important;
+    width: auto;
+}
+
+div.login p label{
+	float: left;
+	font-weight: 100;
+}
+
+div.login p a{
+	color: #fff;
+    float: left;
+    width: 140px;
 }
 
 label {
@@ -24,9 +95,26 @@ label {
 	width: 100px;
 }
 
+.midcontainer{
+	width: 1070px;
+	float:left;
+	background-color:#fff;
+	height:auto;
+	min-height: 550px;
+}
+
 footer {
-	margin: 50% 0 0 0;
-	padding: 10px 30px;
-	clear: both;
-	width: 100%;
+	background-color: #e2e2df;
+    border-bottom: 3px solid #dddddd;
+    border-top: 1px solid #9bb5d1;
+    bottom: 0;
+    clear: both;
+    color: #666;
+    font-size: 11px;
+    font-weight: bold;
+    padding-bottom: 5px;
+    padding-left: 13%;
+    padding-top: 5px;
+    position: absolute;
+    width: 100%;
 }
