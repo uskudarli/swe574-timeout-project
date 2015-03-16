@@ -41,25 +41,27 @@
                                 <li><a href="#contact">Contact</a></li>
                             </ul>
                         </div><!--/.nav-collapse -->
-						<div class="login">
-                            <fieldset>
-                                <form ng-submit="doPost()">
-                                    <p>
-                                        <label for="username">Username:</label>
-                                        <input type="text" name="username" ng-model="data.username"/>
-                                        <input type="checkbox" name="persist_box" value="1"> 
-                                        <label for="persist_box">Keep me logged in</label>
-                                    </p>
-                                    <p>
-                                        <label for="password">Password:</label>
-                                        <input type="password" name="password" ng-model="data.password"/>
-                                        <a href="#">Forgot your password?</a>
-                                    </p>
-                                    <p id="login-button">
-                                        <button class="btn btn-primary" style="padding: 1px 12px;" type="submit">Login</button>
-                                    </p>
-                                </form>
-                            </fieldset>
+						<div class="righttop">
+                            <div class="login">
+                                <fieldset>
+                                    <form ng-submit="doPost()">
+                                        <p>
+                                            <label for="username">Username:</label>
+                                            <input type="text" name="username" ng-model="data.username"/>
+                                            <input type="checkbox" name="persist_box" value="1"> 
+                                            <label for="persist_box">Keep me logged in</label>
+                                        </p>
+                                        <p>
+                                            <label for="password">Password:</label>
+                                            <input type="password" name="password" ng-model="data.password"/>
+                                            <a href="#">Forgot your password?</a>
+                                        </p>
+                                        <p id="login-button">
+                                            <button class="btn btn-primary" style="padding: 1px 12px;" type="submit">Login</button>
+                                        </p>
+                                    </form>
+                                </fieldset>
+                            </div>
                         </div>
                     </div>
                     <div class="midcontainer">
