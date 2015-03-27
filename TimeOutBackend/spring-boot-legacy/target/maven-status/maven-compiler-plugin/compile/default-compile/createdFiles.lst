@@ -1,0 +1,8 @@
+org\springframework\boot\legacy\context\web\MetricFilterAutoConfiguration.class
+org\springframework\boot\legacy\context\web\SpringBootContextLoaderListener.class
+org\springframework\boot\legacy\context\web\MetricFilterAutoConfiguration$MetricsFilter.class
+org\springframework\boot\legacy\context\web\MetricFilterAutoConfiguration$MetricsFilterResponseWrapper.class
+org\springframework\boot\legacy\context\web\AnnotationConfigNonEmbeddedWebApplicationContext.class
+org\springframework\boot\legacy\context\web\MetricFilterAutoConfiguration$1.class
+org\springframework\boot\legacy\context\web\NonEmbeddedWebApplicationContext.class
+org\springframework\boot\legacy\context\web\SpringBootContextLoaderListener$1.class

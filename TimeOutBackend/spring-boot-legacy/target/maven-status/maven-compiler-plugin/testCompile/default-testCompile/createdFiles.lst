@@ -1,0 +1,8 @@
+org\springframework\boot\legacy\context\web\NonEmbeddedWebApplicationContextTests$TestConfiguration.class
+org\springframework\boot\legacy\context\web\AnnotationConfigNonEmbeddedWebApplicationContextTests$TestConfiguration.class
+org\springframework\boot\legacy\context\web\MetricFilterAutoConfigurationTests$TestConfiguration.class
+org\springframework\boot\legacy\context\web\SpringBootContextLoaderListenerTests.class
+org\springframework\boot\legacy\context\web\AnnotationConfigNonEmbeddedWebApplicationContextTests.class
+org\springframework\boot\legacy\context\web\SpringBootContextLoaderListenerTests$TestConfiguration.class
+org\springframework\boot\legacy\context\web\MetricFilterAutoConfigurationTests.class
+org\springframework\boot\legacy\context\web\NonEmbeddedWebApplicationContextTests.class
