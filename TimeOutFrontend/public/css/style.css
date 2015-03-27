@@ -108,6 +108,7 @@ label {
 	height:auto;
 	min-height: 550px;
 	margin-top: 35px;
+
 }
 
 #search-button{
@@ -228,9 +229,10 @@ div.leftcolumn ul li a img{
 
 div.midcolumn{
     float: left;
-    height: 300px;
+    height: 3000px;
     padding: 5px;
     width: 670px;
+
 }
 
 div.rightcolumn{
@@ -297,6 +299,8 @@ p.not-detail{
     width: 125px;
 }
 
+
+
 div.suggested-groups{
 	border-bottom: 1px solid #0fa4dd;
     float: left;
@@ -352,7 +356,7 @@ p.not-detail{
 }
 
 div.news-feed{
-	border-bottom: 1px solid #0fa4dd;
+    border-bottom: 1px solid #0fa4dd;
     float: left;
     margin: 10px 5px;
     padding-bottom: 5px;
@@ -360,32 +364,32 @@ div.news-feed{
 }
 
 div.news-feed img{
-	width: 50px;
-	height: 50px;
-	float:left;
-	border: 1px solid #ededed;
+    width: 50px;
+    height: 50px;
+    float:left;
+    border: 1px solid #ededed;
     border-radius: 3px;
 }
 
 div.news-feed p{
-	float: left;
+    float: left;
     font-size: 10px;
     font-weight: bold;
     text-decoration: underline;
 }
 
 .title{
-	color: #0fa4dd;
+    color: #0fa4dd;
 }
 div.news{
-	border-bottom: 1px solid #ededed;
+    border-bottom: 1px solid #ededed;
     float: left;
     padding: 5px;
     width: 650px;
 }
 
 div.news img{
-	border: 1px solid #ededed;
+    border: 1px solid #ededed;
     border-radius: 3px;
     height: 50px;
     margin-right: 10px;
@@ -393,7 +397,7 @@ div.news img{
 }
 
 p.news-title{
-	font-weight: bold !important;
+    font-weight: bold !important;
     margin: 0 !important;
     padding: 0 5px 0 0 !important;
     text-decoration: none !important;
@@ -401,12 +405,30 @@ p.news-title{
 }
 
 p.news-detail{
-	font-weight: normal !important;
+    font-weight: normal !important;
     margin: 0 !important;
     padding: 0 !important;
     text-decoration: none !important;
     width: auto;
 }
+div.group-creation{
+	border-bottom: 1px solid #0fa4dd;
+    float: left;
+    margin: 10px 5px;
+    padding-bottom: 5px;
+    width: 650px;
+
+}
+
+
+
+div.group-creation p{
+	float: left;
+    font-size: 15px;
+    font-weight: bold;
+    
+}
+
 
 footer {
 	background-color: #e2e2df;
