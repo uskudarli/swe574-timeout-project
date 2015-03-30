@@ -82,6 +82,7 @@ div.login p input{
     margin: 0 5px 6px 0 !important;
     padding: 0 !important;
     width: auto;
+    color:#000;
 }
 
 div.login p label{

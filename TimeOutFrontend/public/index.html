@@ -1,5 +1,5 @@
 <!doctype html>
-<html ng-app>
+<html ng-app="deneme">
 	<head>
 		<meta charset="utf-8">
     	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -23,7 +23,9 @@
 	</head>
 
 	<body>
-		<div ng-controller="Hello">
+        <br />
+        <br />
+		<div ng-controller="IndexController">
 			<nav class="navbar navbar-inverse navbar-fixed-top">
             	<div class="container">
                     <div class="navbar-header">
@@ -44,22 +46,20 @@
 						<div class="righttop">
                             <div class="login">
                                 <fieldset>
-                                    <form ng-submit="doPost()">
-                                        <p>
-                                            <label for="username">Username:</label>
-                                            <input type="text" name="username" ng-model="data.username"/>
-                                            <input type="checkbox" name="persist_box" value="1"> 
-                                            <label for="persist_box">Keep me logged in</label>
-                                        </p>
-                                        <p>
-                                            <label for="password">Password:</label>
-                                            <input type="password" name="password" ng-model="data.password"/>
-                                            <a href="#">Forgot your password?</a>
-                                        </p>
-                                        <p id="login-button">
-                                            <button class="btn btn-primary" style="padding: 1px 12px;" type="submit">Login</button>
-                                        </p>
-                                    </form>
+                                    <p>
+                                        <label for="username">Username:</label>
+                                        <input type="text" name="username" ng-model="username"/>
+                                        <input type="checkbox" name="persist_box" value="1">
+                                        <label for="persist_box">Keep me logged in</label>
+                                    </p>
+                                    <p>
+                                        <label for="password">Password:</label>
+                                        <input type="password" name="password" ng-model="loginPassword"/>
+                                        <a href="#">Forgot your password?</a>
+                                    </p>
+                                    <p id="login-button">
+                                        <button class="btn btn-primary" style="padding: 1px 12px;" type="submit" ng-click="doLogin(username, loginPassword)">Login</button>
+                                    </p>
                                 </fieldset>
                             </div>
                         </div>
@@ -77,37 +77,35 @@
                             <div class="signup">
                                 <fieldset>
                                     <legend>Sign Up</legend>
-                                    <p>
-                                        <label for="name">First Name:</label>
-                                        <input type="text" name="name" ng-model="data.name"/>
-                                    </p>
-                                    <p>
-                                        <label for="surname">Last Name:</label>
-                                        <input type="text" name="lastname" ng-model="data.lastname"/>
-                                    </p>
-                                    <p>
-                                        <label for="username">Email:</label>
-                                        <input type="text" name="email" ng-model="data.email"/>
-                                    </p>
-                                    <p>
-                                        <label for="username">Retype Email:</label>
-                                        <input type="text" name="remail" ng-model="data.remail"/>
-                                    </p>
-                                    <p>
-                                        <label for="password">Password:</label>
-                                        <input type="password" name="password" ng-model="data.password"/>
-                                    </p>
-                                    <p>
-                                        <label for="re-password">Re-password:</label>
-                                        <input type="password" name="re-password" ng-model="data.re-password"/>
-                                    </p>
-                                    <p>
-                                        <span>By clicking Sign Up, you agree to our <a href="#">Terms</a> and that you have read our <a href="#">Data Policy</a>.
-</span>
-                                    </p>
-                                    <p>
-                                        <button type="submit">Sign Up</button>
-                                    </p>
+                                    <form ng-submit="signUp()">
+                                        <p>
+                                            <label for="name">First Name:</label>
+                                            <input type="text" ng-model="name"/>
+                                        </p>
+                                        <p>
+                                            <label for="surname">Last Name:</label>
+                                            <input type="text" ng-model="lastname"/>
+                                        </p>
+                                        <p>
+                                            <label for="username">Email:</label>
+                                            <input type="text" ng-model="email"/>
+                                        </p>
+                                        <p>
+                                            <label for="username">Retype Email:</label>
+                                            <input type="text" ng-model="re-email"/>
+                                        </p>
+                                        <p>
+                                            <label for="password">Password:</label>
+                                            <input type="password" ng-model="sigUpPassword"/>
+                                        </p>
+                                        <p>
+                                            <label for="re-password">Re-password:</label>
+                                            <input type="password" ng-model="re-password"/>
+                                        </p>
+                                        <p>
+                                            <span>By clicking Sign Up, you agree to our <a href="#">Terms</a> and that you have read our <a href="#">Data Policy</a>.</span>
+                                        </p>
+                                    </form>
                                 </fieldset>
                             </div>
                         </section>
