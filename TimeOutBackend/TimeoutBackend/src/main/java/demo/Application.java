@@ -1,27 +1,26 @@
 package demo;
 
-import com.google.appengine.api.utils.SystemProperty;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import common.DBUtility;
 
 @Configuration
 @ComponentScan
@@ -40,19 +39,7 @@ public class Application {
     
     @RequestMapping("/")
     public void home() {
-        Map<String, String> properties = new HashMap();
-        if (SystemProperty.environment.value() ==
-                SystemProperty.Environment.Value.Production) {
-            properties.put("javax.persistence.jdbc.driver",
-                    "com.mysql.jdbc.GoogleDriver");
-            properties.put("javax.persistence.jdbc.url",
-                    "jdbc:google:mysql://vernal-day-88222:instance2/demo?user=root");
-        } else {
-            properties.put("javax.persistence.jdbc.driver",
-                    "com.mysql.jdbc.Driver");
-            properties.put("javax.persistence.jdbc.url",
-                    "jdbc:mysql://localhost:3306/demo?user=root?password=password");
-        }
+        Map<String, String> properties = DBUtility.putProperties();
 
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(
                 "Demo", properties);
@@ -70,20 +57,7 @@ public class Application {
 
     @RequestMapping("/version")
     public String getVersion() {
-        Map<String, String> properties = new HashMap();
-
-        if (SystemProperty.environment.value() ==
-                SystemProperty.Environment.Value.Production) {
-            properties.put("javax.persistence.jdbc.driver",
-                    "com.mysql.jdbc.GoogleDriver");
-            properties.put("javax.persistence.jdbc.url",
-                    "jdbc:google:mysql://vernal-day-88222:instance2/demo?user=root");
-        } else {
-            properties.put("javax.persistence.jdbc.driver",
-                    "com.mysql.jdbc.Driver");
-            properties.put("javax.persistence.jdbc.url",
-                    "jdbc:mysql://localhost:3306/demo?user=root?password=password");
-        }
+        Map<String, String> properties = DBUtility.putProperties();
 
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(
                 "Demo", properties);

@@ -39,8 +39,8 @@ public class User {
   }
 
   @Id
-  @GeneratedValue(generator="increment")
-  @GenericGenerator(name="increment", strategy = "increment")
+  @GeneratedValue(generator="incrementUser")
+  @GenericGenerator(name="incrementUser", strategy = "increment")
   public Long getId() {
     return id;
   }

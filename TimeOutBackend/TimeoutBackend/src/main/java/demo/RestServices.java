@@ -1,15 +1,19 @@
 package demo;
 
-import com.google.appengine.api.utils.SystemProperty;
-import org.springframework.web.bind.annotation.*;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import common.DBUtility;
 
 @RestController
 public class RestServices {
@@ -21,20 +25,7 @@ public class RestServices {
       @ResponseBody
       public boolean registerUser(@RequestParam(value="userName") String userName,
                                   @RequestParam(value="password") String password) {
-        Map<String, String> properties = new HashMap();
-
-        if (SystemProperty.environment.value() ==
-                SystemProperty.Environment.Value.Production) {
-            properties.put("javax.persistence.jdbc.driver",
-                    "com.mysql.jdbc.GoogleDriver");
-            properties.put("javax.persistence.jdbc.url",
-                    "jdbc:google:mysql://vernal-day-88222:instance2/demo?user=root");
-        } else {
-            properties.put("javax.persistence.jdbc.driver",
-                    "com.mysql.jdbc.Driver");
-            properties.put("javax.persistence.jdbc.url",
-                    "jdbc:mysql://localhost:3306/demo?user=root?password=password");
-        }
+        Map<String, String> properties = DBUtility.putProperties();
 
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(
                 "Demo", properties);
@@ -53,20 +44,7 @@ public class RestServices {
     @ResponseBody
     public boolean login(@RequestParam(value="userName") String userName,
                                 @RequestParam(value="password") String password) {
-        Map<String, String> properties = new HashMap();
-
-        if (SystemProperty.environment.value() ==
-                SystemProperty.Environment.Value.Production) {
-            properties.put("javax.persistence.jdbc.driver",
-                    "com.mysql.jdbc.GoogleDriver");
-            properties.put("javax.persistence.jdbc.url",
-                    "jdbc:google:mysql://vernal-day-88222:instance2/demo?user=root");
-        } else {
-            properties.put("javax.persistence.jdbc.driver",
-                    "com.mysql.jdbc.Driver");
-            properties.put("javax.persistence.jdbc.url",
-                    "jdbc:mysql://localhost:3306/demo?user=root?password=password");
-        }
+        Map<String, String> properties = DBUtility.putProperties();
 
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(
                 "Demo", properties);
