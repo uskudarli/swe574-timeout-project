@@ -23,7 +23,7 @@ public class DBUtility {
 		properties.put("javax.persistence.jdbc.driver",
 				"com.mysql.jdbc.Driver");
 		properties.put("javax.persistence.jdbc.url",
-				"jdbc:mysql://localhost:3306/demo?user=root?password=root");
+				"jdbc:mysql://localhost:3306/demo?user=root?password=password");
 
 		return properties;
 	}
