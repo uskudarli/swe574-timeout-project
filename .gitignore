@@ -1,4 +1,5 @@
 *.class
+TimeOutBackend/TimeoutBackend/target/*
 TimeOutBackend/TimeoutBackend/pom_appEngine.xml
 
 TimeOutBackend/TimeoutBackend/pom.xml
