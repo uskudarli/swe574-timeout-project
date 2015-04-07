@@ -5,7 +5,7 @@ angular.module('deneme', [])
 			$scope.name = $scope.username;
 			$scope.lastname = $scope.loginPassword;
 			// Simple GET request example :
-			$http({method: 'GET',  url: 'http://vernal-day-88222.appspot.com/login?userName=' + $scope.username + '&password=' + $scope.loginPassword, 
+			$http({method: 'GET',  url: 'http://localhost:8080/login?userName=' + $scope.username + '&password=' + $scope.loginPassword, 
 				cache: $templateCache}).
 			  success(function(data, status) {
 			    $scope.name = JSON.stringify(data);

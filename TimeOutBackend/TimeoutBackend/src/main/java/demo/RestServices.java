@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import common.DBUtility;
+import common.ResponseHeader;
 
 @RestController
 public class RestServices {
@@ -36,8 +37,7 @@ public class RestServices {
     }
 
     @RequestMapping(value = "/login")
-    @ResponseBody
-    public boolean login(@RequestParam(value="userName") String userName,
+    public @ResponseBody ResponseHeader login(@RequestParam(value="userName") String userName,
                                 @RequestParam(value="password") String password) {
         EntityManager em = DBUtility.startTranscation();
         List<User> result = em
@@ -46,14 +46,14 @@ public class RestServices {
         for (User g : result) {
             if(g.getUserName().equals(userName)){
                 if(g.getPassword().equals(password)){
-                    return true;
+                    return new ResponseHeader();
                 }
             }
         }
 
         DBUtility.commitTransaction(em);
 
-        return false;
+        return new ResponseHeader();
 
     }
 
