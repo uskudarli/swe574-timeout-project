@@ -1,4 +1,5 @@
 demo\RestServices.class
 demo\Application.class
+common\DBUtility.class
 demo\User.class
 demo\Greeting.class

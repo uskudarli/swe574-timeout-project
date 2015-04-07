@@ -22,15 +22,15 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
-		<!--<dependency>-->
-			<!--<groupId>org.springframework.boot</groupId>-->
-			<!--<artifactId>spring-boot-starter-actuator</artifactId>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-			<!--<groupId>org.springframework.boot</groupId>-->
-			<!--<artifactId>spring-boot-starter-tomcat</artifactId>-->
-			<!--<scope>provided</scope>-->
-		<!--</dependency>-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-legacy</artifactId>
@@ -118,7 +118,7 @@
 		<gae.version>1.8.8</gae.version>
 		<gae.home>${settings.localRepository}/com/google/appengine/appengine-java-sdk/${gae.version}/appengine-java-sdk-${gae.version}</gae.home>
 		<gae.application.version>test</gae.application.version>
-		<cloudsql.url>jdbc:google:mysql://vernal-day-88222:instance2/demo?user=root</cloudsql.url>
+		<cloudsql.url>jdbc:google:mysql://timeoutswe5743:timeoutdb3/demo?user=root</cloudsql.url>
 		<cloudsql.url.dev>jdbc:mysql://localhost:3306/demo?user=root?password=password</cloudsql.url.dev>
 	</properties>
 

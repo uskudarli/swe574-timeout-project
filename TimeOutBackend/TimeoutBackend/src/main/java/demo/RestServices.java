@@ -1,5 +1,6 @@
 package demo;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
@@ -25,18 +26,12 @@ public class RestServices {
       @ResponseBody
       public boolean registerUser(@RequestParam(value="userName") String userName,
                                   @RequestParam(value="password") String password) {
-        Map<String, String> properties = DBUtility.putProperties();
-
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory(
-                "Demo", properties);
 
         // Insert a few rows.
-        EntityManager em = emf.createEntityManager();
-        em = emf.createEntityManager();
-        em.getTransaction().begin();
+        EntityManager em = DBUtility.startTranscation();
         em.persist(new User(userName, password));
-        em.getTransaction().commit();
-        em.close();
+        DBUtility.commitTransaction(em);
+
         return true;
     }
 
@@ -44,15 +39,7 @@ public class RestServices {
     @ResponseBody
     public boolean login(@RequestParam(value="userName") String userName,
                                 @RequestParam(value="password") String password) {
-        Map<String, String> properties = DBUtility.putProperties();
-
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory(
-                "Demo", properties);
-
-        // Insert a few rows.
-        EntityManager em = emf.createEntityManager();
-        em = emf.createEntityManager();
-        em.getTransaction().begin();
+        EntityManager em = DBUtility.startTranscation();
         List<User> result = em
                 .createQuery("FROM User")
                 .getResultList();
@@ -64,9 +51,23 @@ public class RestServices {
             }
         }
 
-        em.close();
+        DBUtility.commitTransaction(em);
 
         return false;
 
+    }
+
+    @RequestMapping("/test")
+    public boolean test() {
+        Map<String, String> properties = DBUtility.putProperties();
+
+        EntityManager em = DBUtility.startTranscation();
+
+        em.persist(new Greeting("user", new Date(), "Hello!"));
+        em.persist(new Greeting("user", new Date(), "Hi!"));
+
+        DBUtility.commitTransaction(em);
+
+        return true;
     }
 }
