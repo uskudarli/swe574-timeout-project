@@ -19,7 +19,10 @@ package demo;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "User")
@@ -29,6 +32,9 @@ public class User {
   private String userName;
   private Date date;
   private String password;
+  
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+  private Set<ActionUser> actionUsers = new HashSet<ActionUser>(0);
 
   public User() {
   }
