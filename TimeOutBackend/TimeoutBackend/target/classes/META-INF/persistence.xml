@@ -8,7 +8,12 @@
 
   <persistence-unit name="Demo">
       <class>demo.User</class>
-
+      <class>demo.Greeting</class>
+      <class>demo.Action</class>
+      <class>demo.ActionUser</class>
+      <class>demo.ActionTag</class>
+	  <class>demo.Tag</class>
+	  
     <properties>
       <property name="javax.persistence.jdbc.user" value="root" />
         <property name="javax.persistence.jdbc.password" value="password" />
