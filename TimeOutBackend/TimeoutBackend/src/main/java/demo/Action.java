@@ -19,6 +19,10 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.GenericGenerator;
 
 
+/**
+ * @author mac
+ *
+ */
 @Entity
 @Table(name = "Action")
 public class Action {
@@ -26,7 +30,9 @@ public class Action {
 	@Id
 	@GeneratedValue(generator="incrementAction")
 	@GenericGenerator(name="incrementAction", strategy = "increment")
-	private Long id;
+	private Long actionId;
+
+
 	private String title;
 	private String description;
 	
@@ -36,7 +42,7 @@ public class Action {
 	
 	private String privacy;
 	private String actionType;
-	private Location location;
+	//private Location location;
 	private Date startTime;
 	private Date endTime;
 
@@ -55,7 +61,7 @@ public class Action {
 		this.createTime = new Date();
 		this.privacy = Params.PRIVACY_PUBLIC_TO_ALL;
 		this.actionType = actionType;
-		this.location = null;
+		//this.location = null;
 		this.startTime = new Date();
 		if (actionType == "E"){
 			Calendar cal = Calendar.getInstance();
@@ -70,7 +76,7 @@ public class Action {
 		this.createTime = new Date();
 		this.privacy = Params.PRIVACY_PUBLIC_TO_ALL;
 		this.actionType = actionType;
-		this.location = null;
+		//this.location = null;
 		if (actionType == "E"){
 			this.startTime = startTime;
 			this.endTime = endTime;
@@ -78,13 +84,13 @@ public class Action {
 	}
 	
 
-	public Long getId() {
-		return id;
+	public Long getActionId() {
+		return actionId;
 	}
-	public void setId(Long id) {
-		this.id = id;
+
+	public void setActionId(Long actionId) {
+		this.actionId = actionId;
 	}
-	
 	public String getTitle() {
 		return title;
 	}
@@ -120,12 +126,12 @@ public class Action {
 		this.actionType = actionType;
 	}
 	
-	public Location getLocation() {
-		return location;
-	}
-	public void setLocation(Location location) {
-		this.location = location;
-	}
+//	public Location getLocation() {
+//		return location;
+//	}
+//	public void setLocation(Location location) {
+//		this.location = location;
+//	}
 	public Date getStartTime() {
 		return startTime;
 	}
@@ -139,11 +145,21 @@ public class Action {
 		this.endTime = endTime;
 	}
 
+
 	public Set<ActionUser> getActionUsers() {
 		return actionUsers;
 	}
 
 	public void setActionUsers(Set<ActionUser> actionUsers) {
 		this.actionUsers = actionUsers;
+	}
+
+
+	public Set<ActionTag> getActionTags() {
+		return actionTags;
+	}
+
+	public void setActionTags(Set<ActionTag> actionTags) {
+		this.actionTags = actionTags;
 	}
 }

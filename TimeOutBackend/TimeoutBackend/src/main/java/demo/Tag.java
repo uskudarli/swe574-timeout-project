@@ -3,6 +3,7 @@ package demo;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -18,13 +19,22 @@ public class Tag {
 	@Id
 	@GeneratedValue(generator="incrementTag")
 	@GenericGenerator(name="incrementTag", strategy = "increment")
-	private Long id;
-	
+	private Long tagId;
+
 	private String tagName;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tag")
 	private Set<ActionTag> actionTags = new HashSet<ActionTag>(0);
 
+	public Long getTagId() {
+		return tagId;
+	}
+
+	public void setTagId(Long tagId) {
+		this.tagId = tagId;
+	}
+	
+	
 	public String getTagName() {
 		return tagName;
 	}

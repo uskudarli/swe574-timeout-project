@@ -16,12 +16,26 @@ public class ActionTag {
 	@Id
 	@GeneratedValue(generator="incrementActionTag")
 	@GenericGenerator(name="incrementActionTag", strategy = "increment")
-	private Long id;
+	private Long actionTagId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+  
+
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "actionId")
 	private Action action;
 	
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tagId")
+	private Tag tag;
+	
+	public Long getActionTagId() {
+		return actionTagId;
+	}
+
+	public void setActionTagId(Long actionTagId) {
+		this.actionTagId = actionTagId;
+	}
+
     public Action getAction() {
 		return action;
 	}
@@ -29,10 +43,6 @@ public class ActionTag {
 	public void setAction(Action action) {
 		this.action = action;
 	}
-
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
-	private Tag tag;
 
 	public Tag getTag() {
 		return tag;

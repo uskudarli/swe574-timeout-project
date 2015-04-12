@@ -1,7 +1,5 @@
 package demo;
 
-import java.util.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -19,29 +17,30 @@ public class ActionUser {
 	@Id
 	@GeneratedValue(generator="incrementActionUser")
 	@GenericGenerator(name="incrementActionUser", strategy = "increment")
-	private Long id;
+	private Long actionUserId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+
+
+	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id")
 	private User user;
 	
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "actionId")
 	private Action action;
+    
 	private String actionUserStatus;
 
 	public ActionUser() {
 	}
 
-	public Long getId() {
-		return id;
+	public Long getActionUserId() {
+		return actionUserId;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setActionUserId(Long actionUserId) {
+		this.actionUserId = actionUserId;
 	}
-
-
 	public String getActionUserStatus() {
 		return actionUserStatus;
 	}
@@ -50,6 +49,7 @@ public class ActionUser {
 		this.actionUserStatus = actionUserStatus;
 	}
 
+
 	public User getUser() {
 		return user;
 	}
@@ -57,6 +57,7 @@ public class ActionUser {
 	public void setUser(User user) {
 		this.user = user;
 	}
+
 
 	public Action getAction() {
 		return action;

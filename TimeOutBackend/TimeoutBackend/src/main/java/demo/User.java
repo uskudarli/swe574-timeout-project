@@ -27,6 +27,10 @@ import java.util.Set;
 @Entity
 @Table(name = "User")
 public class User {
+  
+  @Id
+  @GeneratedValue(generator="incrementUser")
+  @GenericGenerator(name="incrementUser", strategy = "increment")
   private Long id;
 
   private String userName;
@@ -44,9 +48,7 @@ public class User {
     this.password = password;
   }
 
-  @Id
-  @GeneratedValue(generator="incrementUser")
-  @GenericGenerator(name="incrementUser", strategy = "increment")
+
   public Long getId() {
     return id;
   }
