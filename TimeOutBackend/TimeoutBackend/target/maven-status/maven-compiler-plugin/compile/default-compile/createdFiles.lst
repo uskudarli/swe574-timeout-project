@@ -1,5 +1,7 @@
 demo\RestServices.class
 demo\Application.class
-common\DBUtility.class
+demo\SimpleCORSFilter.class
 demo\User.class
 demo\Greeting.class
+common\DBUtility.class
+common\ResponseHeader.class

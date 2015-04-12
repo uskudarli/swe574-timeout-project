@@ -53,7 +53,7 @@
         </element>
       </element>
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="C:\timeout3\spring-boot-legacy\TimeoutBackend\target/MANIFEST.MF" />
+        <element id="file-copy" path="C:\git\swe574-timeout-project\TimeOutBackend\TimeoutBackend\target/MANIFEST.MF" />
       </element>
       <element id="javaee-facet-resources" facet="TimeoutBackend/web/Web" />
     </root>
