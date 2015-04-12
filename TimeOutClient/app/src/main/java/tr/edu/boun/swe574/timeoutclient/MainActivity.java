@@ -1,39 +1,50 @@
 package tr.edu.boun.swe574.timeoutclient;
 
-import java.util.Locale;
-
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
+import java.util.Locale;
 
 
 public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
+    final int[] ICONS = new int[] {
+            R.drawable.ic_action_home,
+            R.drawable.ic_action_friends,
+            R.drawable.ic_action_social_group,
+            R.drawable.ic_action_notification,
+            R.drawable.ic_action_profile
+    };
+
+    final int[] TITLES = new int[] {
+            R.string.title_section1,
+            R.string.title_section2,
+            R.string.title_section3,
+            R.string.title_section4,
+            R.string.title_section5
+    };
+
     SectionsPagerAdapter mSectionsPagerAdapter;
 
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
     ViewPager mViewPager;
 
     @Override
@@ -69,10 +80,18 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             // the adapter. Also specify this Activity object, which implements
             // the TabListener interface, as the callback (listener) for when
             // this tab is selected.
-            actionBar.addTab(
-                    actionBar.newTab()
-                            .setText(mSectionsPagerAdapter.getPageTitle(i))
-                            .setTabListener(this));
+
+            ActionBar.Tab tab = actionBar.newTab();
+            tab.setCustomView(R.layout.home_tab_layout);
+
+            ImageView cv = (ImageView)tab.getCustomView().findViewById(R.id.tabImage);
+            cv.setImageResource(ICONS[i]);
+            TextView tv = (TextView)tab.getCustomView().findViewById(R.id.tabText);
+            tv.setText(TITLES[i]);
+
+            tab.setTabListener(this);
+
+            actionBar.addTab(tab);
         }
     }
 
@@ -90,11 +109,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -134,7 +148,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 5;
         }
 
         @Override
@@ -147,6 +161,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                     return getString(R.string.title_section2).toUpperCase(l);
                 case 2:
                     return getString(R.string.title_section3).toUpperCase(l);
+                case 3:
+                    return getString(R.string.title_section4).toUpperCase(l);
+                case 4:
+                    return getString(R.string.title_section5).toUpperCase(l);
             }
             return null;
         }
@@ -181,8 +199,75 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+            int section = getArguments().getInt(ARG_SECTION_NUMBER);
+
+            switch (section) {
+                case 1:
+                    // home
+                    LinearLayout ll = (LinearLayout) rootView.findViewById(R.id.main_layout);
+
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                    RecyclerView recyclerView = new RecyclerView(getActivity());
+                    recyclerView.setLayoutParams(params);
+                    recyclerView.setHasFixedSize(true);
+                    recyclerView.setVerticalScrollBarEnabled(true);
+
+                    LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+                    recyclerView.setLayoutManager(layoutManager);
+                    recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+                    homeAdapter adapter = new homeAdapter();
+                    recyclerView.setAdapter(adapter);
+
+                    ll.addView(recyclerView);
+
+                    break;
+                case 2:
+                    // friends
+                    break;
+            }
             return rootView;
         }
+
+        public class homeAdapter extends RecyclerView.Adapter<homeAdapter.viewHolder> {
+
+            public class viewHolder extends RecyclerView.ViewHolder {
+
+                ImageView img;
+                TextView txt;
+
+                public viewHolder(View itemView) {
+                    super(itemView);
+                    this.img = (ImageView) itemView.findViewById(R.id.home_item_img);
+                    this.txt = (TextView) itemView.findViewById(R.id.home_item_txt);
+                }
+            }
+
+            @Override
+            public viewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+                View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.home_card_layout, viewGroup, false);
+
+                viewHolder myViewHolder = new viewHolder(view);
+
+                return myViewHolder;
+            }
+
+            @Override
+            public void onBindViewHolder(homeAdapter.viewHolder holder, int i) {
+                TextView _txt = holder.txt;
+                ImageView _img = holder.img;
+
+                _txt.setText("deneme");
+                _img.setImageResource(R.mipmap.ic_launcher_timeout);
+            }
+
+            @Override
+            public int getItemCount() {
+                return 10;
+            }
+        }
+
     }
 
 }

@@ -85,6 +85,9 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        //
+        mEmailView.setText("haluks@boun.edu.tr");
     }
 
     private void populateAutoComplete() {
@@ -288,6 +291,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             showProgress(false);
 
             if (success) {
+                Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(i);
 
                 finish();
             } else {

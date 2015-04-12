@@ -2,6 +2,7 @@ package tr.edu.boun.swe574.timeoutclient;
 
 import java.util.Locale;
 
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -19,7 +20,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
-public class MainActivity2 extends ActionBarActivity {
+public class MainActivity2 extends FragmentActivity {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -49,7 +50,7 @@ public class MainActivity2 extends ActionBarActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
+        mViewPager.setOffscreenPageLimit(5);
     }
 
 
@@ -66,11 +67,6 @@ public class MainActivity2 extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -96,7 +92,7 @@ public class MainActivity2 extends ActionBarActivity {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 5;
         }
 
         @Override
@@ -109,6 +105,10 @@ public class MainActivity2 extends ActionBarActivity {
                     return getString(R.string.title_section2).toUpperCase(l);
                 case 2:
                     return getString(R.string.title_section3).toUpperCase(l);
+                case 3:
+                    return getString(R.string.title_section4).toUpperCase(l);
+                case 4:
+                    return getString(R.string.title_section5).toUpperCase(l);
             }
             return null;
         }
@@ -143,6 +143,9 @@ public class MainActivity2 extends ActionBarActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main2, container, false);
+            Bundle args = getArguments();
+            ((TextView) rootView.findViewById(R.id.section_label)).setText(
+                    Integer.toString(args.getInt(ARG_SECTION_NUMBER)));
             return rootView;
         }
     }
