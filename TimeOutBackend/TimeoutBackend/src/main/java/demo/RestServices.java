@@ -47,7 +47,7 @@ public class RestServices {
                                 @RequestParam(value="password") String password) {
         EntityManager em = DBUtility.startTranscation();
         List<User> result = em
-                .createQuery("FROM User")
+                .createQuery("FROM User ")
                 .getResultList();
         for (User g : result) {
             if(g.getUserName().equals(userName)){
@@ -103,11 +103,11 @@ public class RestServices {
     @RequestMapping(value = "/event/create")
     @ResponseBody
     public Action createEvent(@RequestParam(value="eventName") String eventName
-                              ,@RequestParam(value="eventDescription") String eventDescription
-                              ,@RequestParam(value="startTime") Date startTime
-                              ,@RequestParam(value="endTime") Date endTime
-                              ,@RequestParam(value="invitedPeople") List<User> invitedPeople
-                              ,@RequestParam(value="tag") String tagString) {
+                              ,@RequestParam(value="eventDescription", required = false) String eventDescription
+                              ,@RequestParam(value="startTime", required = false) Date startTime
+                              ,@RequestParam(value="endTime", required = false) Date endTime
+                              ,@RequestParam(value="invitedPeople", required = false) List<User> invitedPeople
+                              ,@RequestParam(value="tag", required = false) String tagString) {
     						
       EntityManager em = DBUtility.startTranscation();
       Action action = new Action(eventName,eventDescription,"E",startTime,endTime);
@@ -125,9 +125,9 @@ public class RestServices {
     @RequestMapping(value = "/group/create")
     @ResponseBody
     public Action createGroup(@RequestParam(value="groupName") String groupName
-                              ,@RequestParam(value="groupDescription") String groupDescription
-                              ,@RequestParam(value="invitedPeople") List<User> invitedPeople
-                              ,@RequestParam(value="tag") String tagString) {
+                              ,@RequestParam(value="groupDescription", required = false) String groupDescription
+                              ,@RequestParam(value="invitedPeople", required = false) List<User> invitedPeople
+                              ,@RequestParam(value="tag", required = false) String tagString) {
     						
       EntityManager em = DBUtility.startTranscation();
       
@@ -145,38 +145,44 @@ public class RestServices {
 
 	private void insertTagsOfActions(String tagString, EntityManager em,
 			Action action) {
-		String delims = ";,";
-		  String[] tagArray = tagString.split(delims);
-		  List<String> tagList = Arrays.asList(tagArray);
-		  for (int i=0; i < tagList.size(); i++){
-			  String hql = "SELECT * FROM Tag T WHERE T.tagName = :tagName";
-			  Query query = em.createQuery(hql);
-			  query.setParameter("tagName", tagList.get(i));
-			  List<Tag> results = query.getResultList();
-			  Tag tag;
-			  if (results == null || results.size() < 1){
-				  tag = new Tag();
-		    	  tag.setTagName(tagList.get(i));
-		    	  em.persist(tag);
-			  }else{
-				  tag = results.get(0);
-			  }
-				  
-			  ActionTag actionTag = new ActionTag();
-			  actionTag.setAction(action);
-			  actionTag.setTag(tag);
-			  em.persist(actionTag);
-		  }
+		if (tagString == null || tagString == "")
+			return;
+		String delims = ";|,";
+		String[] tagArray = tagString.split(delims);
+		List<String> tagList = Arrays.asList(tagArray);
+		for (int i=0; i < tagList.size(); i++){
+			String hql = "FROM Tag T WHERE T.tagName = :tagName";
+			Query query = em.createQuery(hql);
+			query.setParameter("tagName", tagList.get(i).trim());
+			List<Tag> results = query.getResultList();
+			Tag tag;
+			if (results == null || results.size() < 1){
+				tag = new Tag();
+				tag.setTagName(tagList.get(i).trim());
+				em.persist(tag);
+			}else{
+				tag = results.get(0);
+			}
+
+			ActionTag actionTag = new ActionTag();
+			actionTag.setAction(action);
+			actionTag.setTag(tag);
+			em.persist(actionTag);
+		}
 	}
 
 	private void insertInvitedPeople(List<User> invitedPeople,
 			EntityManager em, Action action) {
+		if (invitedPeople == null)
+			return;
+		if (invitedPeople.size() < 1)
+			return;
 		for (int i=0; i < invitedPeople.size(); i++){
-			  ActionUser actionUser = new ActionUser();
-			  actionUser.setUser(invitedPeople.get(i));
-			  actionUser.setAction(action);
-			  actionUser.setActionUserStatus("I");
-			  em.persist(actionUser);
-		  }
+			ActionUser actionUser = new ActionUser();
+			actionUser.setUser(invitedPeople.get(i));
+			actionUser.setAction(action);
+			actionUser.setActionUserStatus("I");
+			em.persist(actionUser);
+		}
 	}
 }

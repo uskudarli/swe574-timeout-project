@@ -66,8 +66,4 @@ public class ActionUser {
 	public void setAction(Action action) {
 		this.action = action;
 	}
-
-	
-
-
 }
