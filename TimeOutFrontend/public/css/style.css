@@ -1,3 +1,14 @@
+
+.logo1{
+    width: 490px;
+    height: 90px;
+}
+
+.logo1 img{
+    width:90px;
+    height: 90px;
+}
+
 header h1{
 	margin: 10px 0;
 	text-align: center;
@@ -82,7 +93,6 @@ div.login p input{
     margin: 0 5px 6px 0 !important;
     padding: 0 !important;
     width: auto;
-    color:#000;
 }
 
 div.login p label{
@@ -109,7 +119,6 @@ label {
 	height:auto;
 	min-height: 550px;
 	margin-top: 35px;
-
 }
 
 #search-button{
@@ -150,6 +159,195 @@ div.menu ul li.active{
 div.menu ul li a{
 	text-decoration: none;
 	font-size: 14px;
+}
+
+div.groupMenu{
+    float: left;
+    height: 70px;
+    margin-top: 15px;
+    width: 670px;
+}
+
+div.groupMenu ul{
+    float: left;
+    margin:0;
+    padding: 0;
+}
+
+div.groupMenu ul li{
+    border: 2px solid #12295d;
+    border-radius: 10px;
+    float: left;
+    list-style: outside none none;
+    margin-left: 10px;
+    padding: 10px;
+    text-align: center;
+    width: 153px;
+}
+
+div.groupMenu ul li a{
+    color:#12295d;
+}
+div.groupMenu ul li.active{
+    border: 2px solid #0FA4DD !important;
+}
+
+div.groupMenu ul li a{
+    text-decoration: none;
+    font-size: 14px;
+}
+
+div.eventMenu{
+    float: left;
+    height: 70px;
+    margin-top: 15px;
+    width: 670px;
+}
+
+div.eventMenu ul{
+    float: left;
+    margin:0;
+    padding: 0;
+}
+
+div.eventMenu ul li{
+    border: 2px solid #12295d;
+    border-radius: 10px;
+    float: left;
+    list-style: outside none none;
+    margin-left: 10px;
+    padding: 10px;
+    text-align: center;
+    width: 206px;
+}
+
+div.eventMenu ul li a{
+    color:#12295d;
+}
+div.eventMenu ul li.active{
+    border: 2px solid #0FA4DD !important;
+}
+
+div.eventMenu ul li a{
+    text-decoration: none;
+    font-size: 14px;
+}
+
+div.myGroupList{
+    border-bottom: 1px solid #ededed;
+    float: left;
+    margin: 5px;
+    width: 650px;
+}
+
+div.groupIcon{
+    float: left;
+    height: 30px;
+    margin: 0 2px;
+    width: 30px;
+}
+
+div.groupIcon img{
+    height: 20px;
+    width:20px;
+}
+
+div.groupName{
+    float: left;
+    font: 15px arial;
+    margin: 0 5px 0 0;
+    width: auto;
+}
+
+div.groupNumber{
+    border: 1px solid #ededed;
+    border-radius: 5px;
+    float: left;
+    font-size: 11px;
+    margin: 0 5px;
+    padding: 3px 7px;
+}
+
+div.myEventList{
+    float: left;
+    width: 100%;
+    border-bottom: 1px solid #ededed;
+    margin:5px 0;
+    padding: 5px 0;
+
+}
+
+div.eventOwner{
+    float: left;
+    height: 50px;
+    margin: 0 10px;
+    width: 50px;
+}
+
+div.eventOwner img{
+    height: 50px;
+    width:50px;
+    border-radius: 5px;
+}
+
+div.eventName{
+    float: left;
+    font: 15px arial;
+    margin: 0 5px 0 0;
+    width: auto;
+    font-weight: bold;
+}
+
+div.eventOwnerName{
+    float: left;
+    font: 15px arial;
+    margin: 0 5px 0 0;
+    width: auto;
+    font-weight: bold;
+}
+
+div.eventNumber{
+    border: 1px solid #ededed;
+    border-radius: 5px;
+    float: left;
+    font-size: 11px;
+    margin: 0 5px;
+    padding: 3px 7px;
+}
+
+div.nextLine{
+    margin-right: 300px !important;
+}
+
+div.eventDate{
+    float: left;
+    font: 15px arial;
+    margin: 0 5px 0 0;
+    width: auto;
+    font-weight: bold;
+}
+
+div.eventTime{
+    float: left;
+    font: 15px arial;
+    margin: 0 5px 0 0;
+    width: auto;
+    font-weight: bold;
+}
+
+div.eventPlace{
+    float: left;
+    font: 15px arial;
+    margin: 0 5px 0 0;
+    width: auto;
+    font-weight: bold;
+}
+
+div.eventLink{
+    float: left;
+    font: 15px arial;
+    margin: 0 5px 0 0;
+    width: auto;
 }
 
 div.leftcolumn{
@@ -230,10 +428,9 @@ div.leftcolumn ul li a img{
 
 div.midcolumn{
     float: left;
-    height: 3000px;
+    height: 300px;
     padding: 5px;
     width: 670px;
-
 }
 
 div.rightcolumn{
@@ -300,8 +497,6 @@ p.not-detail{
     width: 125px;
 }
 
-
-
 div.suggested-groups{
 	border-bottom: 1px solid #0fa4dd;
     float: left;
@@ -357,7 +552,7 @@ p.not-detail{
 }
 
 div.news-feed{
-    border-bottom: 1px solid #0fa4dd;
+	border-bottom: 1px solid #0fa4dd;
     float: left;
     margin: 10px 5px;
     padding-bottom: 5px;
@@ -365,32 +560,32 @@ div.news-feed{
 }
 
 div.news-feed img{
-    width: 50px;
-    height: 50px;
-    float:left;
-    border: 1px solid #ededed;
+	width: 50px;
+	height: 50px;
+	float:left;
+	border: 1px solid #ededed;
     border-radius: 3px;
 }
 
 div.news-feed p{
-    float: left;
+	float: left;
     font-size: 10px;
     font-weight: bold;
     text-decoration: underline;
 }
 
 .title{
-    color: #0fa4dd;
+	color: #0fa4dd;
 }
 div.news{
-    border-bottom: 1px solid #ededed;
+	border-bottom: 1px solid #ededed;
     float: left;
     padding: 5px;
     width: 650px;
 }
 
 div.news img{
-    border: 1px solid #ededed;
+	border: 1px solid #ededed;
     border-radius: 3px;
     height: 50px;
     margin-right: 10px;
@@ -398,7 +593,7 @@ div.news img{
 }
 
 p.news-title{
-    font-weight: bold !important;
+	font-weight: bold !important;
     margin: 0 !important;
     padding: 0 5px 0 0 !important;
     text-decoration: none !important;
@@ -406,30 +601,12 @@ p.news-title{
 }
 
 p.news-detail{
-    font-weight: normal !important;
+	font-weight: normal !important;
     margin: 0 !important;
     padding: 0 !important;
     text-decoration: none !important;
     width: auto;
 }
-div.group-creation{
-	border-bottom: 1px solid #0fa4dd;
-    float: left;
-    margin: 10px 5px;
-    padding-bottom: 5px;
-    width: 650px;
-
-}
-
-
-
-div.group-creation p{
-	float: left;
-    font-size: 15px;
-    font-weight: bold;
-    
-}
-
 
 footer {
 	background-color: #e2e2df;
