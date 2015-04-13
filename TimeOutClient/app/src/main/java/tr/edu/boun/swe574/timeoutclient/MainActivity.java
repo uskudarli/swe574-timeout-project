@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,6 +23,8 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -217,7 +220,17 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                     recyclerView.setLayoutManager(layoutManager);
                     recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-                    homeAdapter adapter = new homeAdapter();
+                    List<basicItem> basicItems = new ArrayList<>();
+
+                    basicItems.add(new basicItem(R.drawable.aa, "<b>Hasan</b> joined the group 'Math funs'"));
+                    basicItems.add(new basicItem(R.drawable.ad, "<b>Sara</b> subscribe the group 'Sematic Searching'"));
+                    basicItems.add(new basicItem(R.drawable.ac, "<b>Sara</b> has become friend with 'Robert'"));
+
+                    basicItems.add(new basicItem(R.drawable.aa, "<b>Ali</b> joined the group 'Star Wars'"));
+                    basicItems.add(new basicItem(R.drawable.ad, "<b>Suzan</b> subscribe the group 'Dungeon & Dragons'"));
+                    basicItems.add(new basicItem(R.drawable.ac, "<b>John</b> joined the group 'Math funs'"));
+
+                    homeAdapter adapter = new homeAdapter(basicItems);
                     recyclerView.setAdapter(adapter);
 
                     ll.addView(recyclerView);
@@ -230,7 +243,23 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             return rootView;
         }
 
+        public class basicItem {
+            int drawable;
+            String text;
+
+            public basicItem(int img, String txt) {
+                drawable = img;
+                text = txt;
+            }
+        }
+
         public class homeAdapter extends RecyclerView.Adapter<homeAdapter.viewHolder> {
+
+            List<basicItem> values;
+
+            public homeAdapter(List<basicItem> items) {
+                values = items;
+            }
 
             public class viewHolder extends RecyclerView.ViewHolder {
 
@@ -258,13 +287,13 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                 TextView _txt = holder.txt;
                 ImageView _img = holder.img;
 
-                _txt.setText("deneme");
-                _img.setImageResource(R.mipmap.ic_launcher_timeout);
+                _txt.setText(Html.fromHtml(values.get(i).text));
+                _img.setImageResource(values.get(i).drawable);
             }
 
             @Override
             public int getItemCount() {
-                return 10;
+                return values.size();
             }
         }
 
