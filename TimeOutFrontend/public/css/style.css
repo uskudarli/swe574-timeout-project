@@ -197,6 +197,29 @@ div.groupMenu ul li a{
     font-size: 14px;
 }
 
+.groupFriends{
+    float: right;
+}
+
+.otherFriends:hover .others{
+    display: block;
+}
+
+.others{
+    background-color: #12295d;
+    border-radius: 5px;
+    color: #fff;
+    display: none;
+    float: right;
+    font-size: 11px;
+    height: auto;
+    margin-right: 101px;
+    padding: 7px;
+    position: absolute;
+    width: 100px;
+    z-index: 99999;   
+}
+
 div.eventMenu{
     float: left;
     height: 70px;
