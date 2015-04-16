@@ -7,3 +7,4 @@ TimeOutBackend/TimeoutBackend/pom.xml
 TimeOutBackend/TimeoutBackend/src/main/java/common/DBUtility.java
 
 TimeOutBackend/TimeoutBackend/pom_local.xml
+TimeOutFrontend/public/*_old.html

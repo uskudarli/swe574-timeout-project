@@ -30,22 +30,21 @@ public class RestServices {
     private final AtomicLong counter = new AtomicLong();
 
     @RequestMapping(value = "/register")
-      @ResponseBody
-      public boolean registerUser(@RequestParam(value="userName") String userName,
+    public @ResponseBody ResponseHeader registerUser(@RequestParam(value="userName") String userName,
                                   @RequestParam(value="password") String password) {
 
         // Insert a few rows.
-        EntityManager em = DBUtility.startTranscation();
+        EntityManager em = DBUtility.startTransaction();
         em.persist(new User(userName, password));
         DBUtility.commitTransaction(em);
 
-        return true;
+        return new ResponseHeader();
     }
 
     @RequestMapping(value = "/login")
     public @ResponseBody ResponseHeader login(@RequestParam(value="userName") String userName,
                                 @RequestParam(value="password") String password) {
-        EntityManager em = DBUtility.startTranscation();
+        EntityManager em = DBUtility.startTransaction();
         List<User> result = em
                 .createQuery("FROM User ")
                 .getResultList();
@@ -58,8 +57,10 @@ public class RestServices {
         }
 
         DBUtility.commitTransaction(em);
-
-        return new ResponseHeader();
+        ResponseHeader wrongResponse = new ResponseHeader();
+        wrongResponse.setType("Fail");
+        wrongResponse.setMessage("Specified information is wrong!");
+        return wrongResponse;
 
     }
 
@@ -67,7 +68,7 @@ public class RestServices {
     public boolean test() {
         Map<String, String> properties = DBUtility.putProperties();
 
-        EntityManager em = DBUtility.startTranscation();
+        EntityManager em = DBUtility.startTransaction();
 
         em.persist(new Greeting("user", new Date(), "Hello!"));
         em.persist(new Greeting("user", new Date(), "Hi!"));
@@ -109,7 +110,7 @@ public class RestServices {
                               ,@RequestParam(value="invitedPeople", required = false) List<User> invitedPeople
                               ,@RequestParam(value="tag", required = false) String tagString) {
     						
-      EntityManager em = DBUtility.startTranscation();
+      EntityManager em = DBUtility.startTransaction();
       Action action = new Action(eventName,eventDescription,"E",startTime,endTime);
       em.persist(action);
       
@@ -129,7 +130,7 @@ public class RestServices {
                               ,@RequestParam(value="invitedPeople", required = false) List<User> invitedPeople
                               ,@RequestParam(value="tag", required = false) String tagString) {
     						
-      EntityManager em = DBUtility.startTranscation();
+      EntityManager em = DBUtility.startTransaction();
       
       Action action = new Action(groupName,groupDescription,"G");
       em.persist(action);

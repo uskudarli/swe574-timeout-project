@@ -32,13 +32,14 @@ public class DBUtility {
 
 	public static EntityManager createEntityManager(){
 		if(properties.isEmpty()) {
-			Map<String, String> properties = DBUtility.putProperties();
+			Map<String, String> properties = new HashMap<>();
+			properties = DBUtility.putProperties();
 		}
 		return Persistence.createEntityManagerFactory(
 				"Demo", properties).createEntityManager();
 	}
 
-	public static EntityManager startTranscation(){
+	public static EntityManager startTransaction(){
 		EntityManager em = createEntityManager();
 		em.getTransaction().begin();
 		return em;

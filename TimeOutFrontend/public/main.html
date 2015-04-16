@@ -1,0 +1,47 @@
+<section>
+<!--p>The ID is {{greeting.id}}</p>
+<p>The content is {{greeting.content}}</p-->
+    <div class="intro">
+        <img src="images/cmpelogo.png" />
+        <a href="#">
+            <img id="fbconnect" alt="Connect Facebook" title="Connect Facebook" src="images/facebook-connect-button.png">
+        </a>
+    </div>
+    <div class="signup">
+        <fieldset>
+            <legend>Sign Up</legend>
+            <form ng-submit="signUp()">
+                <p>
+                    <label for="name">First Name:</label>
+                    <input type="text" ng-model="name"/>
+                </p>
+                <p>
+                    <label for="surname">Last Name:</label>
+                    <input type="text" ng-model="lastname"/>
+                </p>
+                <p>
+                    <label for="username">Email:</label>
+                    <input type="text" ng-model="email"/>
+                </p>
+                <p>
+                    <label for="username">Retype Email:</label>
+                    <input type="text" ng-model="reEmail"/>
+                </p>
+                <p>
+                    <label for="password">Password:</label>
+                    <input type="password" ng-model="sigUpPassword"/>
+                </p>
+                <p>
+                    <label for="re-password">Re-password:</label>
+                    <input type="password" ng-model="rePassword"/>
+                </p>
+                <p>
+                    <span>By clicking Sign Up, you agree to our <a href="#">Terms</a> and that you have read our <a href="#">Data Policy</a>.</span>
+                </p>
+                <p>
+                    <button class="btn btn-primary" style="padding: 1px 12px;" type="submit">Sign Up</button>
+                </p>
+            </form>
+        </fieldset>
+    </div>
+</section>

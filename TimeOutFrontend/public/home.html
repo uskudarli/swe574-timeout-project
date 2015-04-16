@@ -1,153 +1,105 @@
-<!doctype html>
-<html ng-app>
-	<head>
-		<meta charset="utf-8">
-    	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-    	<meta name="viewport" content="width=device-width, initial-scale=1">
-    	<meta name="description" content="Community for CMPE of BOUN">
-    	<meta name="author" content="Group Timeout for SWE574 Project">
-
-		<title>CMPE Timeout Platform</title>
-        <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-		<!-- Angular JS -->
-		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
-		<!-- BootStrap Min JS -->
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-		<!-- My JS -->
-    	<script type="text/javascript" src="js/spa.js"></script>
-    	<!-- BootStrap Min CSS -->
-		<link rel="stylesheet" href="css/bootstrap.min.css">
-    	<!-- My Css -->
-    	<link rel="stylesheet" type="text/css" href="css/style.css" />
-
-	</head>
-
-	<body>
-		<div ng-controller="Hello">
-			<nav class="navbar navbar-inverse navbar-fixed-top">
-            	<div class="container">
-                    <div class="navbar-header">
-                        <a id="bounlogo" class="navbar-brand" href="#"><img alt="Home" title="Home" src="images/logo.fw.png"></a>
-                     	<div class="righttop">
-							<p id="search-button">
-                                <input type="text" name="search"  ng-model="data.search"/>
-                                <button class="btn btn-primary" style="padding: 1px 12px;" type="submit">Search</button>
-                            </p>
-                     	</div>
-                    </div>
-                    <div class="midcontainer">
-                        <section>
-                        	<div class="leftcolumn">
-                        		<div class="profile">
-                        			<img ALT="Münevver Calayır" title="Münevver Calayır" src="images/profile.JPG" />
-                        			<p>Münevver Calayır</p>
-                        			<a href="#">Edit Profile</a>
-                        		</div>
-                        		<ul>
-                        			<li>
-                        				<a href="#">
-                        					<img src="images/profile.png" />
-                        					<p>My Profile</p>
-                        				</a>
-                        			</li>
-                        			<li>
-                        				<a href="#">
-                        					<img src="images/event.png" />
-                        					<p>Events</p>
-                        				</a>
-                        			</li>
-                                    <li>
-                                        <a href="#">
-                                            <img src="images/group.png" />
-                                            <p>Groups</p>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <img src="images/group.png" />
-                                            <p>Friends</p>
-                                        </a>
-                                    </li>
-                        		</ul>
-                        	</div>
-                        	<div class="menu">
-                        		<ul>
-                        			<li class="active">
-                        				<a href="#">Home</a>
-                        			</li>
-                        			<li>
-                        				<a href="#">Create Event</a>
-                        			</li>
-                        			<li>
-                        				<a href="#">Create Group</a>
-                        			</li>
-                        		</ul>
-                			</div>
-                        	<div class="midcolumn">
-								<div class="news-feed">
-                        			<div class="news">
-                        				<img src="images/suzan.jpg" />
-                        				<p class="news-title">Suzan Üsküdarlı</p>
-                        				<p class="news-detail"> joined the group "Math funs".</p>
-                        			</div>
-                        			<div class="news">
-                        				<img src="images/suzan.jpg" />
-                        				<p class="news-title">Suzan Üsküdarlı</p>
-                        				<p class="news-detail"> joined the group "Math funs".</p>
-                        			</div>
-                        			<div class="news">
-                        				<img src="images/suzan.jpg" />
-                        				<p class="news-title">Suzan Üsküdarlı</p>
-                        				<p class="news-detail"> joined the group "Math funs".</p>
-                        			</div>
-                        			<div class="news">
-                        				<img src="images/suzan.jpg" />
-                        				<p class="news-title">Suzan Üsküdarlı</p>
-                        				<p class="news-detail"> joined the group "Math funs".</p>
-                        			</div>
-                        		</div>
-                        	</div>
-                        	<div class="rightcolumn">
-                        		<div class="notification">
-                        			<p class="title">NOTIFICATIONS</p>
-                        			<div class="notice">
-                        				<img src="images/suzan.jpg" />
-                        				<p class="not-title">Suzan Üsküdarlı</p>
-                        				<p class="not-detail"> joined the group "Math funs".</p>
-                        			</div>
-                        			<div class="notice">
-                        				<img src="images/suzan.jpg" />
-                        				<p class="not-title">Suzan Üsküdarlı</p>
-                        				<p class="not-detail"> joined the group "Math funs".</p>
-                        			</div>
-                        			<div class="notice">
-                        				<img src="images/suzan.jpg" />
-                        				<p class="not-title">Suzan Üsküdarlı</p>
-                        				<p class="not-detail"> joined the group "Math funs".</p>
-                        			</div>
-                        		</div>
-                        		<div class="suggested-groups">
-                        			<p class="title">SUGGESTED GROUPS</p>
-                        			<div class="notice">
-                        				<img src="images/suzan.jpg" />
-                        				<p class="not-title">Suzan Üsküdarlı</p>
-                        				<p class="not-detail"> joined the group "Math funs".</p>
-                        			</div>
-                        			<div class="notice">
-                        				<img src="images/suzan.jpg" />
-                        				<p class="not-title">Suzan Üsküdarlı</p>
-                        				<p class="not-detail"> joined the group "Math funs".</p>
-                        			</div>
-                        		</div>
-
-                        	</div>
-                        </section>
-                    </div>
-            	</div>
-		    </nav>
-            <footer>
-                Copyright 2015 Team Timeout For SWE574 Course, Bogazici University, Software Engineering. All Rights Reserved.
-            </footer>
-		</div>
-	</body>
-</html>
+<section>
+      <div class="leftcolumn">
+      	<div class="profile">
+      		<img ALT="Münevver Calayır" title="Münevver Calayır" src="images/profile.JPG" />
+      		<p>Münevver Calayır</p>
+      		<a href="profileEdit.html">Edit Profile</a>
+      	</div>
+      	<ul>
+      		<li>
+      			<a href="#">
+      				<img src="images/profile.png" />
+      				<p>My Profile</p>
+      			</a>
+      		</li>
+      		<li>
+      			<a href="#">
+      				<img src="images/event.png" />
+      				<p>Events</p>
+      			</a>
+      		</li>
+            <li>
+                <a href="#">
+                    <img src="images/group.png" />
+                    <p>Groups</p>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="images/group.png" />
+                    <p>Friends</p>
+                </a>
+            </li>
+      	</ul>
+      </div>
+      <div class="menu">
+      	<ul>
+      		<li class="active">
+      			<a href="home.html">Home</a>
+      		</li>
+      		<li>
+      			<a href="createEvent.html">Create Event</a>
+      		</li>
+      		<li>
+      			<a href="CreateGroup.html">Create Group</a>
+      		</li>
+      	</ul>
+      	</div>
+      <div class="midcolumn">
+      			<div class="news-feed">
+      		<div class="news">
+      			<img src="images/1.jpg" />
+      			<p class="news-title">Hasan</p>
+      			<p class="news-detail"> joined the group "Math funs".</p>
+      		</div>
+      		<div class="news">
+      			<img src="images/suzan.jpg" />
+      			<p class="news-title">Suzan Üsküdarlı</p>
+      			<p class="news-detail"> joined the group "Math funs".</p>
+      		</div>
+      		<div class="news">
+      			<img src="images/2.jpg" />
+      			<p class="news-title">Sara</p>
+      			<p class="news-detail"> joined the group "Math funs".</p>
+      		</div>
+      		<div class="news">
+      			<img src="images/3.jpg" />
+      			<p class="news-title">Robert</p>
+      			<p class="news-detail"> joined the group "Math funs".</p>
+      		</div>
+      	</div>
+      </div>
+      <div class="rightcolumn">
+      	<div class="notification">
+      		<p class="title">NOTIFICATIONS</p>
+      		<div class="notice">
+      			<img src="images/2.jpg" />
+      			<p class="not-title">Sara</p>
+      			<p class="not-detail"> joined the group "Math funs".</p>
+      		</div>
+      		<div class="notice">
+      			<img src="images/3.jpg" />
+      			<p class="not-title">Ali</p>
+      			<p class="not-detail"> joined the group "Math funs".</p>
+      		</div>
+      		<div class="notice">
+      			<img src="images/suzan.jpg" />
+      			<p class="not-title">Suzan </p>
+      			<p class="not-detail"> joined the group "Math funs".</p>
+      		</div>
+      	</div>
+      	<div class="suggested-groups">
+      		<p class="title">SUGGESTED GROUPS</p>
+      		<div class="notice">
+      			<img src="images/1.jpg" />
+      			<p class="not-title">Ali</p>
+      			<p class="not-detail"> joined the group "Math funs".</p>
+      		</div>
+      		<div class="notice">
+      			<img src="images/suzan.jpg" />
+      			<p class="not-title">Suzan Üsküdarlı</p>
+      			<p class="not-detail"> joined the group "Math funs".</p>
+      		</div>
+      	</div>
+      </div>
+</section>

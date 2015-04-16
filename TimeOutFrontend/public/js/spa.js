@@ -1,24 +1,62 @@
-angular.module('deneme', [])
+angular.module("timeout", ["ngRoute"])
+	.config(function($routeProvider) {
+	  $routeProvider
+	   .when("/", {
+	    templateUrl: "main.html"
+	  })
+	  .when("/home", {
+	    templateUrl: "home.html"
+	  })
+	})
 
-	.controller('IndexController', function($scope, $window, $http, $templateCache) {
-		$scope.doLogin = function(username, loginPassword){
-			$scope.name = $scope.username;
-			$scope.lastname = $scope.loginPassword;
+	.controller("IndexController", function($scope, $http, $location, $window) {
+		console.log("IndexController works");
+		$scope.doLogin = function(username, loginPassword) {
 			// Simple GET request example :
-			$http({method: 'GET',  url: 'http://localhost:8080/login?userName=' + $scope.username + '&password=' + $scope.loginPassword, 
-				cache: $templateCache}).
-			  success(function(data, status) {
-			    $scope.name = JSON.stringify(data);
-			    $scope.lastname = status;
-			    $scope.email = 'Success';
-			  }).
-			  error(function(data, status) {
-			    $scope.name = JSON.stringify(data);
-			    $scope.lastname = status;
-			    $scope.email = 'Error';
+			$http({method: "GET",  url: "http://localhost:8080/login?userName=" + $scope.username + "&password=" + $scope.loginPassword})
+			  .success(function(data, status) {
+			    if(data.type == "Success") {
+			    	$location.path("/home");
+			    	//setUser();
+			    }
+			  })
+			  .error(function(data, status) {
+			 	console.log("Specified username or password do not match with the records!!!");
 			  });
-					}
+		}
+		$scope.signUp = function() {
+			// Simple GET request example :
+			$http({method: "GET",  url: "http://localhost:8080/register?userName=" + $scope.email + "&password=" + $scope.sigUpPassword})
+			  .success(function(data, status) {
+			    if(data.type == "Success") {
+			    	$window.alert(data.message);
+			    	//setUser();
+			    }
+			  })
+			  .error(function(data, status) {
+			 	console.log("Specified username or password do not match with the records!!!");
+			  });
+		}
 	});
+
+	// .controller("HomeController", function($scope, $http) {
+	// 	$scope.doLogin = function(username, loginPassword){
+	// 		$scope.name = $scope.username;
+	// 		$scope.lastname = $scope.loginPassword;
+	// 		$scope.name = "Method is running";
+	// 		// Simple GET request example :
+	// 		$http({method: "GET",  url: "http://localhost:8080/login?userName=" + $scope.username + "&password=" + $scope.loginPassword})
+	// 		.success(function(data, status) {
+	// 		  if(data.type == "Success") {
+	// 			$scope.name = "Success is taken" + data.type;
+	// 				$location.path("/home");
+	// 			}
+	// 		})
+	// 		.error(function(data, status) {
+	// 			console.log("Specified username or password do not match with the records!!!");
+	// 		});
+	// 	}
+	// });
 
 /*$http.post('/someUrl', {msg:'hello word!'}).
   success(function(data, status, headers, config) {
