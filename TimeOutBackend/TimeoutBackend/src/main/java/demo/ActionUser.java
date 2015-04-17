@@ -22,7 +22,7 @@ public class ActionUser {
 
 
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "userId")
 	private User user;
 	
     @ManyToOne(fetch = FetchType.LAZY)

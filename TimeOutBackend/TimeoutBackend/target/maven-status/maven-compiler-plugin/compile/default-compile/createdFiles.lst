@@ -1,7 +1,16 @@
-demo\RestServices.class
 demo\Application.class
+demo\ActionTag.class
 demo\SimpleCORSFilter.class
 demo\User.class
+demo\Action.class
+demo\Location.class
+demo\UserExtraInfo.class
+demo\RestServices.class
+demo\UserCommInfo.class
+demo\Params.class
 demo\Greeting.class
+demo\ActionUser.class
 common\DBUtility.class
+demo\Tag.class
+demo\Role.class
 common\ResponseHeader.class

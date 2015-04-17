@@ -31,7 +31,7 @@ public class User {
   @Id
   @GeneratedValue(generator="incrementUser")
   @GenericGenerator(name="incrementUser", strategy = "increment")
-  private Long id;
+  private Long userId;
 
   private String userName;
   private Date date;
@@ -49,12 +49,12 @@ public class User {
   }
 
 
-  public Long getId() {
-    return id;
+  public Long getUserId() {
+    return userId;
   }
 
-  private void setId(Long id) {
-    this.id = id;
+  private void setUserId(Long id) {
+    this.userId = id;
   }
 
 

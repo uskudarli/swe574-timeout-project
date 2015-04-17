@@ -144,6 +144,30 @@ public class RestServices {
       return action;
   }
 
+    @RequestMapping(value = "/event/getCreated")
+    @ResponseBody
+    public List<Action> getCreatedEvents(@RequestParam(value="userId") String userId) {
+
+        EntityManager em = DBUtility.startTransaction();
+
+        Query query = em
+                .createQuery("FROM ActionUser A WHERE A.actionUserStatus = :actionUserStatus AND A.userId = :userId")
+                .setParameter("actionUserStatus", "C")
+                .setParameter("userId", userId);
+
+        List<ActionUser> results = query.getResultList();
+        List<Action> actionList = new ArrayList<>();
+
+        for (ActionUser actionUser : results){
+            Action action = actionUser.getAction();
+            if(action.getActionType().equals("E")) {
+                actionList.add(actionUser.getAction());
+            }
+        }
+
+        return actionList;
+    }
+
 	private void insertTagsOfActions(String tagString, EntityManager em,
 			Action action) {
 		if (tagString == null || tagString == "")
