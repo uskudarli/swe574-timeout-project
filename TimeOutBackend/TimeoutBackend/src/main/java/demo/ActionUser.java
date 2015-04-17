@@ -29,7 +29,7 @@ public class ActionUser {
     @JoinColumn(name = "actionId")
 	private Action action;
     
-	private String actionUserStatus;
+	private ActionUserStatus actionUserStatus;
 
 	public ActionUser() {
 	}
@@ -41,11 +41,11 @@ public class ActionUser {
 	public void setActionUserId(Long actionUserId) {
 		this.actionUserId = actionUserId;
 	}
-	public String getActionUserStatus() {
+	public ActionUserStatus getActionUserStatus() {
 		return actionUserStatus;
 	}
 
-	public void setActionUserStatus(String actionUserStatus) {
+	public void setActionUserStatus(ActionUserStatus actionUserStatus) {
 		this.actionUserStatus = actionUserStatus;
 	}
 
