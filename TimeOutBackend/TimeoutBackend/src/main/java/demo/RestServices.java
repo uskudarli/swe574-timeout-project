@@ -53,6 +53,9 @@ public class RestServices {
 				if (g.getPassword().equals(password)) {
 					return new ResponseHeader();
 				}
+				else{
+					return new ResponseHeader ();
+				}
 			}
 		}
 
@@ -229,8 +232,11 @@ public class RestServices {
 			ActionUser actionUser = new ActionUser();
 			actionUser.setUser(invitedPeople.get(i));
 			actionUser.setAction(action);
-			actionUser.setActionUserStatus(ActionUserStatus.INVITED.toString());
+			//actionUser.setActionUserStatus(ActionUserStatus.INVITED.toString());
 			em.persist(actionUser);
+			
+		
+			
 		}
 	}
 }
