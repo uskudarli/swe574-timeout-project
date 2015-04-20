@@ -232,7 +232,7 @@ public class RestServices {
 			ActionUser actionUser = new ActionUser();
 			actionUser.setUser(invitedPeople.get(i));
 			actionUser.setAction(action);
-			//actionUser.setActionUserStatus(ActionUserStatus.INVITED.toString());
+			actionUser.setActionUserStatus(ActionUserStatus.INVITED);
 			em.persist(actionUser);
 			
 		
