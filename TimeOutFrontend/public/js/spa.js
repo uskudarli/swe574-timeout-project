@@ -1,17 +1,21 @@
 angular.module("timeout", ["ngRoute"])
 	.config(function($routeProvider) {
 	  $routeProvider
-	   .when("/", {
-	    templateUrl: "main.html"
-	  })
-	  .when("/home", {
-	    templateUrl: "home.html",
-	    controller: "HomeController"
-	  })
-	  .when("/createEvent", {
-	  	templateUrl: "createEvent.html",
-	  	controller: "createEvent"
-	  })
+	   	 .when("/", {
+		    templateUrl: "main.html"
+		  })
+		  .when("/home", {
+		    templateUrl: "home.html",
+		    controller: "HomeController"
+		  })
+		  .when("/createEvent", {
+		  	templateUrl: "createEvent.html",
+		  	controller: "createEvent"
+		  })
+		  .when("/createGroup", {
+		  	templateUrl: "CreateGroup.html",
+		  	controller: "createGroup"
+		  });
 	})
 
 	.controller("IndexController", function($scope, $http, $location, $window) {
@@ -42,24 +46,36 @@ angular.module("timeout", ["ngRoute"])
 			 	console.log("Specified username or password do not match with the records!!!");
 			  });
 		}
-	});
+	})
+	
+	.controller("HomeController", function($scope, $http, $window, $location) {
+		$scope.goCreateGroup = function() {
+			console.log("goCreateGroup");
+			$location.path("/createGroup");
+		}
+	})
 
 	.controller("createEvent", function($scope, $http, $window) {
-		$scope.eventName;
-		$scope.eventDesc;
-		$scope.startTime;
-		$scope.endTime;
-		$scope.invited;
-		$scope.tag;
-
-		$http.post("http://localhost:8080/event/create?eventName=" + $scope.eventName + "&eventDescription=" + )
+		$http.post("http://localhost:8080/event/create?eventName=" + $scope.eventName + "&eventDescription=" + $scope.eventDesc)
 		 .success(function(data, status) {
 			$window.alert("Success " + data.actionId);
 		  })
 		  .error(function(data, status) {
 		 	console.log("Error");
-		 		 });
+		  });
 
+	})
+
+	.controller("createGroup", function($scope, $http, $window) {
+		$scope.createGroup = function() {
+			$http.post("http://localhost:8080/group/create?groupName=" + $scope.groupName + "&eventDescription=" + $scope.invitedPeople + "&tag=" + $scope.tag)
+			 .success(function(data, status) {
+				$window.alert("Success " + data.actionId);
+			  })
+			  .error(function(data, status) {
+			 	console.log("Error");
+			  });
+		}
 	});
 
 	// .controller("HomeController", function($scope, $http) {
