@@ -5,7 +5,12 @@ angular.module("timeout", ["ngRoute"])
 	    templateUrl: "main.html"
 	  })
 	  .when("/home", {
-	    templateUrl: "home.html"
+	    templateUrl: "home.html",
+	    controller: "HomeController"
+	  })
+	  .when("/createEvent", {
+	  	templateUrl: "createEvent.html",
+	  	controller: "createEvent"
 	  })
 	})
 
@@ -14,7 +19,7 @@ angular.module("timeout", ["ngRoute"])
 		$scope.doLogin = function(username, loginPassword) {
 			// Simple GET request example :
 			$http({method: "GET",  url: "http://localhost:8080/login?userName=" + $scope.username + "&password=" + $scope.loginPassword})
-			  .success(function(data, status) {
+			  .success(function(data, status) {	
 			    if(data.type == "Success") {
 			    	$location.path("/home");
 			    	//setUser();
@@ -37,6 +42,24 @@ angular.module("timeout", ["ngRoute"])
 			 	console.log("Specified username or password do not match with the records!!!");
 			  });
 		}
+	});
+
+	.controller("createEvent", function($scope, $http, $window) {
+		$scope.eventName;
+		$scope.eventDesc;
+		$scope.startTime;
+		$scope.endTime;
+		$scope.invited;
+		$scope.tag;
+
+		$http.post("http://localhost:8080/event/create?eventName=" + $scope.eventName + "&eventDescription=" + )
+		 .success(function(data, status) {
+			$window.alert("Success " + data.actionId);
+		  })
+		  .error(function(data, status) {
+		 	console.log("Error");
+		 		 });
+
 	});
 
 	// .controller("HomeController", function($scope, $http) {
