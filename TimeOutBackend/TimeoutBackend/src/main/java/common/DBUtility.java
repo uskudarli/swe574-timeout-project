@@ -10,7 +10,7 @@ public class DBUtility {
 
 	public static Map<String, String> putProperties() {
 
-//		// For Cloud Usage
+		// For Cloud Usage
 //		if (SystemProperty.environment.value() ==
 //				SystemProperty.Environment.Value.Production) {
 //			properties.put("javax.persistence.jdbc.driver",
