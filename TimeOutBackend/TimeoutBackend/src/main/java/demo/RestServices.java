@@ -47,24 +47,20 @@ public class RestServices {
 			@RequestParam(value = "userName") String userName,
 			@RequestParam(value = "password") String password) {
 		EntityManager em = DBUtility.startTransaction();
-		List<User> result = em.createQuery("FROM User ").getResultList();
-		for (User g : result) {
-			if (g.getUserName().equals(userName)) {
-				if (g.getPassword().equals(password)) {
-					return new ResponseHeader();
-				}
-				else{
-					return new ResponseHeader ();
-				}
-			}
-		}
-
+		List<User> result = 
+				em.createQuery("FROM User U WHERE U.userName = :userName AND U.password = :password")
+				.setParameter("userName", userName)
+				.setParameter("password", password)
+				.getResultList();
 		DBUtility.commitTransaction(em);
-		ResponseHeader wrongResponse = new ResponseHeader();
-		wrongResponse.setType("Fail");
-		wrongResponse.setMessage("Specified information is wrong!");
-		return wrongResponse;
-
+		if (result != null && result.size() == 1)
+			return new ResponseHeader();
+		else{
+			ResponseHeader wrongResponse = new ResponseHeader();
+			wrongResponse.setType("Fail");
+			wrongResponse.setMessage("Specified information is wrong!");
+			return wrongResponse;
+		}
 	}
 
 	@RequestMapping("/test")
@@ -232,7 +228,7 @@ public class RestServices {
 			ActionUser actionUser = new ActionUser();
 			actionUser.setUser(invitedPeople.get(i));
 			actionUser.setAction(action);
-			//actionUser.setActionUserStatus(ActionUserStatus.INVITED.toString());
+			actionUser.setActionUserStatus(ActionUserStatus.INVITED);
 			em.persist(actionUser);
 			
 		
