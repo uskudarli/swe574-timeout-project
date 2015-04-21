@@ -85,36 +85,38 @@
                 			</div>
 
                         	<div class="midcolumn">
-								<div class="group-creation">
+								<div class="group-creation" ng-controller="createEvent">
 
                         			 
 
                                     <fieldset>
                                         <legend>Create Event </legend>
+                                        <form>
                                         <label style="width: 150px">Event name: </label>
-                                        <input type="text" name="eventName" size="30" > </input><br><br>
+                                        <input type="text" name="eventName" size="30" ng-model="eventName" > </input><br><br>
 
                                         <label style="width: 150px">Event description: </label>
-                                        <input type="text" name="eventDescription" size="50"> </input><br><br>
+                                        <input type="text" name="eventDescription" ng-model="eventDesc" size="50"> </input><br><br>
 
                                         <label style="width: 150px">Start time/Date </label>
-                                        <input type="datetime-local" name="startTime"  > </input><br><br>
+                                        <input type="datetime-local" name="startTime" ng-model="startTime" > </input><br><br>
 
                                          <label style="width: 150px">End time/Date </label>
-                                        <input type="datetime-local" name="endTime"  > </input><br><br>
+                                        <input type="datetime-local" name="endTime" ng-model="endTime" > </input><br><br>
 
                                         <label style="width: 150px">Invite people/groups:  </label>
-                                        <input type="text" name="invitedPeople" size="50" > </input><br><br>
+                                        <input type="text" name="invitedPeople" size="50" ng-model="invited" > </input><br><br>
 
                                         <label style="width: 150px">tag:  </label>
-                                        <input type="text" name="tag" size="50" > </input><br><br>
+                                        <input type="text" name="tag" size="50" ng-model="tag"> </input><br><br>
 
-                                        <input type="checkbox" name="isPublic" ></input>
+                                        <input type="checkbox" name="isPublic" ng-model="checkboxModel"
+                                         ng-true-value="'true'" ng-false-value="'false'" ></input>
                                         <label>Public to all  </label> <br>
 
                                         <button type="submit">Create</button>
                                         <button type="reset">Reset</button><br><br>
-
+                                        </form>
 
                                     </fieldset>
 
