@@ -2,17 +2,7 @@ package demo;
 
 import common.DBUtility;
 import common.ResponseHeader;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
-
+import org.hibernate.Criteria;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,14 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import java.security.acl.Owner;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
 public class RestServices {
-
-	private static final String template = "Hello, %s!";
-	private final AtomicLong counter = new AtomicLong();
 
 	@RequestMapping(value = "/register")
 	public @ResponseBody ResponseHeader registerUser(
@@ -74,7 +62,6 @@ public class RestServices {
 		EntityManager em = DBUtility.startTransaction();
 
 		em.persist(new Greeting("user", new Date(), "Hello!"));
-		em.persist(new Greeting("user", new Date(), "Hi!"));
 
 		DBUtility.commitTransaction(em);
 
@@ -83,42 +70,30 @@ public class RestServices {
 
 	@RequestMapping("/searchTag")
 	public ArrayList<String> searchTag(@RequestParam(value = "tag") String tag) {
-		RestTemplate restTemplate = new RestTemplate();
+		return findRelatedTags(tag);
+	}
 
-		String getItemIdUrl = "https://www.wikidata.org/w/api.php?action=wbgetentities&sites=enwiki&titles="
-				+ tag + "&normalize=&format=json";
-		Object getItemIdResponse = restTemplate.getForObject(getItemIdUrl,
-				Object.class);
-		String itemId = ((HashMap) Arrays
-				.asList(((HashMap) ((HashMap) getItemIdResponse)
-						.get("entities")).values()).get(0).iterator().next())
-				.get("id").toString();
+	@RequestMapping("/findRelatedGroupsforTag")
+	public List<Action> findRelatedGroupsforTag(@RequestParam(value = "tag") String tag) {
 
-		String searchTagQueryUrl = "https://wdq.wmflabs.org/api?q=tree["
-				+ itemId.substring(1) + "][31] OR tree[" + itemId.substring(1)
-				+ "][279]";
-		Object searchTagQueryResponse = restTemplate.getForObject(
-				searchTagQueryUrl, Object.class);
-		ArrayList<Integer> searchTagResultList = (ArrayList<Integer>) ((HashMap) searchTagQueryResponse)
-				.get("items");
+		EntityManager em = DBUtility.startTransaction();
 
-		ArrayList<String> searchTagResults = new ArrayList<>();
+		ArrayList<String> relatedTags = findRelatedTags(tag);
 
-		for (Integer searchTagResult : searchTagResultList) {
-			String getItemNameUrl = "https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q"
-					+ searchTagResult
-					+ "&props=labels&languages=en&format=json";
-			Object getItemNameResponse = restTemplate.getForObject(
-					getItemNameUrl, Object.class);
-			String item = ((HashMap) (Arrays
-					.asList(((HashMap) ((HashMap) Arrays
-							.asList(((HashMap) ((HashMap) getItemNameResponse)
-									.get("entities")).values()).get(0)
-							.iterator().next()).get("labels")).values()).get(0)
-					.iterator().next())).get("value").toString();
-			searchTagResults.add(item);
+		ArrayList<Action> relatedGroups = new ArrayList<>();
+
+		Query query = em
+				.createQuery(
+						"FROM Action A INNER JOIN A.actionTags tags WHERE tags.tag.tagName IN (:relatedTags) AND A.actionType = :actionType")
+				.setParameter("actionType",
+						ActionType.GROUP.toString())
+				.setParameter("relatedTags", relatedTags);
+
+		List<Object[]> queryResult = query.getResultList();
+		for(Object[] o : queryResult){
+			relatedGroups.add((Action)o[0]);
 		}
-		return searchTagResults;
+		return relatedGroups;
 	}
 
 	@RequestMapping(value = "/event/create")
@@ -132,7 +107,7 @@ public class RestServices {
 			@RequestParam(value = "tag", required = false) String tagString) {
 
 		EntityManager em = DBUtility.startTransaction();
-		Action action = new Action(eventName, eventDescription, "E", startTime,
+		Action action = new Action(eventName, eventDescription, ActionType.EVENT.toString(), startTime,
 				endTime);
 		em.persist(action);
 
@@ -155,7 +130,7 @@ public class RestServices {
 
 		EntityManager em = DBUtility.startTransaction();
 
-		Action action = new Action(groupName, groupDescription, "G");
+		Action action = new Action(groupName, groupDescription, ActionType.GROUP.toString());
 		em.persist(action);
 
 		insertInvitedPeople(invitedPeople, em, action);
@@ -238,5 +213,46 @@ public class RestServices {
 		
 			
 		}
+	}
+
+
+
+	private ArrayList<String> findRelatedTags(String tag){
+		RestTemplate restTemplate = new RestTemplate();
+
+		String getItemIdUrl = "https://www.wikidata.org/w/api.php?action=wbgetentities&sites=enwiki&titles="
+				+ tag + "&normalize=&format=json";
+		Object getItemIdResponse = restTemplate.getForObject(getItemIdUrl,
+				Object.class);
+		String itemId = ((HashMap) Arrays
+				.asList(((HashMap) ((HashMap) getItemIdResponse)
+						.get("entities")).values()).get(0).iterator().next())
+				.get("id").toString();
+
+		String searchTagQueryUrl = "https://wdq.wmflabs.org/api?q=tree["
+				+ itemId.substring(1) + "][31] OR tree[" + itemId.substring(1)
+				+ "][279]";
+		Object searchTagQueryResponse = restTemplate.getForObject(
+				searchTagQueryUrl, Object.class);
+		ArrayList<Integer> searchTagResultList = (ArrayList<Integer>) ((HashMap) searchTagQueryResponse)
+				.get("items");
+
+		ArrayList<String> searchTagResults = new ArrayList<>();
+
+		for (Integer searchTagResult : searchTagResultList) {
+			String getItemNameUrl = "https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q"
+					+ searchTagResult
+					+ "&props=labels&languages=en&format=json";
+			Object getItemNameResponse = restTemplate.getForObject(
+					getItemNameUrl, Object.class);
+			String item = ((HashMap) (Arrays
+					.asList(((HashMap) ((HashMap) Arrays
+							.asList(((HashMap) ((HashMap) getItemNameResponse)
+									.get("entities")).values()).get(0)
+							.iterator().next()).get("labels")).values()).get(0)
+					.iterator().next())).get("value").toString();
+			searchTagResults.add(item);
+		}
+		return searchTagResults;
 	}
 }

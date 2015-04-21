@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 
@@ -46,9 +47,11 @@ public class Action {
 	private Date startTime;
 	private Date endTime;
 
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "action")
 	private Set<ActionUser> actionUsers = new HashSet<ActionUser>(0);
-	
+
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "action")
 	private Set<ActionTag> actionTags = new HashSet<ActionTag>(0);
 	
