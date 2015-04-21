@@ -13,7 +13,7 @@ angular.module("timeout", ["ngRoute"])
 		  	controller: "createEvent"
 		  })
 		  .when("/createGroup", {
-		  	templateUrl: "CreateGroup.html",
+		  	templateUrl: "createGroup.html",
 		  	controller: "createGroup"
 		  });
 	})
@@ -56,18 +56,24 @@ angular.module("timeout", ["ngRoute"])
 	})
 
 	.controller("createEvent", function($scope, $http, $window) {
-		$http.post("http://localhost:8080/event/create?eventName=" + $scope.eventName + "&eventDescription=" + $scope.eventDesc)
+
+		$scope.createEvent = function(){}
+		$http.post("http://localhost:8080/event/create?eventName=" + $scope.eventName + "&eventDescription=" + $scope.eventDesc + "&startTime" + 
+			$scope.startTime + "&endTime" + $scope.endTime + "&invitedPeople" + $scope.invitedPeople + "&tag" + $scope.tag + "&public" +
+			 $scope.checkboxModel)
 		 .success(function(data, status) {
 			$window.alert("Success " + data.actionId);
 		  })
 		  .error(function(data, status) {
 		 	console.log("Error");
 		  });
+		 }
 
-	})
+	});
 
 	.controller("createGroup", function($scope, $http, $window) {
 		$scope.createGroup = function() {
+
 			$http.post("http://localhost:8080/group/create?groupName=" + $scope.groupName + "&eventDescription=" + $scope.invitedPeople + "&tag=" + $scope.tag)
 			 .success(function(data, status) {
 				$window.alert("Success " + data.actionId);
