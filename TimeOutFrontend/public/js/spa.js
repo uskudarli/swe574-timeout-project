@@ -53,11 +53,17 @@ angular.module("timeout", ["ngRoute"])
 			console.log("goCreateGroup");
 			$location.path("/createGroup");
 		}
+
+		$scope.goCreateEvent = function(){
+			console.log("goCreateEvent");
+			$locale.path("/createEvent");
+		}
 	})
 
 	.controller("createEvent", function($scope, $http, $window) {
 
-		$scope.createEvent = function(){}
+		$scope.createEvent = function(){
+
 		$http.post("http://localhost:8080/event/create?eventName=" + $scope.eventName + "&eventDescription=" + $scope.eventDesc + "&startTime" + 
 			$scope.startTime + "&endTime" + $scope.endTime + "&invitedPeople" + $scope.invitedPeople + "&tag" + $scope.tag + "&public" +
 			 $scope.checkboxModel)
