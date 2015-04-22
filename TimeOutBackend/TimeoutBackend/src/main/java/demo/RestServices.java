@@ -2,6 +2,7 @@ package demo;
 
 import common.DBUtility;
 import common.ResponseHeader;
+
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -18,8 +19,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.persistence.EntityManager;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -45,7 +53,9 @@ public class RestServices {
 	@RequestMapping(value = "/login")
 	public @ResponseBody ResponseHeader login(
 			@RequestParam(value = "userName") String userName,
-			@RequestParam(value = "password") String password) {
+			@RequestParam(value = "password") String password,
+			HttpServletRequest request, HttpServletResponse response ) {
+		
 		EntityManager em = DBUtility.startTransaction();
 		List<User> result = 
 				em.createQuery("FROM User U WHERE U.userName = :userName AND U.password = :password")
@@ -53,8 +63,17 @@ public class RestServices {
 				.setParameter("password", password)
 				.getResultList();
 		DBUtility.commitTransaction(em);
-		if (result != null && result.size() == 1)
+		if (result != null && result.size() == 1){	
+			HttpSession session = request.getSession();
+	    	session.setAttribute("userName", userName);
+	    	session.setMaxInactiveInterval(15*60);
+	    	Cookie userCookie = new Cookie("sessionId", session.getId());
+	    	userCookie.setMaxAge(15*60);
+
+            response.addCookie(userCookie);
+	    	
 			return new ResponseHeader();
+		}
 		else{
 			ResponseHeader wrongResponse = new ResponseHeader();
 			wrongResponse.setType("Fail");
@@ -125,11 +144,13 @@ public class RestServices {
 			@RequestParam(value = "startTime", required = false) Date startTime,
 			@RequestParam(value = "endTime", required = false) Date endTime,
 			@RequestParam(value = "invitedPeople", required = false) List<User> invitedPeople,
-			@RequestParam(value = "tag", required = false) String tagString) {
+			@RequestParam(value = "tag", required = false) String tagString,
+			@RequestParam(value = "privacy", required = false) String privacy) {
 
 		EntityManager em = DBUtility.startTransaction();
 		Action action = new Action(eventName, eventDescription, "E", startTime,
 				endTime);
+		action.setPrivacy(privacy);
 		em.persist(action);
 
 		insertInvitedPeople(invitedPeople, em, action);
@@ -147,11 +168,13 @@ public class RestServices {
 			@RequestParam(value = "groupName") String groupName,
 			@RequestParam(value = "groupDescription", required = false) String groupDescription,
 			@RequestParam(value = "invitedPeople", required = false) List<User> invitedPeople,
-			@RequestParam(value = "tag", required = false) String tagString) {
+			@RequestParam(value = "tag", required = false) String tagString,
+			@RequestParam(value = "privacy", required = false) String privacy) {
 
 		EntityManager em = DBUtility.startTransaction();
 
 		Action action = new Action(groupName, groupDescription, "G");
+		action.setPrivacy(privacy);
 		em.persist(action);
 
 		insertInvitedPeople(invitedPeople, em, action);
