@@ -1,11 +1,9 @@
 package demo;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import common.DBUtility;
+import common.ResponseHeader;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -13,15 +11,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
-
-import common.DBUtility;
-import common.ResponseHeader;
+import java.util.*;
 
 @RestController
 public class RestServices {
@@ -39,6 +29,15 @@ public class RestServices {
 		return new ResponseHeader();
 	}
 
+	public User getSessionUser(String cookie){
+		EntityManager em = DBUtility.startTransaction();
+		Session result =
+				(Session)em.createQuery("FROM Session S WHERE S.cookie = :cookie")
+						.setParameter("cookie", cookie.substring(10))
+						.getSingleResult();
+		return result.getUser();
+	}
+
 	@RequestMapping(value = "/login")
 	public @ResponseBody ResponseHeader login(
 			@RequestParam(value = "userName") String userName,
@@ -51,8 +50,7 @@ public class RestServices {
 				.setParameter("userName", userName)
 				.setParameter("password", password)
 				.getResultList();
-		DBUtility.commitTransaction(em);
-		if (result != null && result.size() == 1){	
+		if (result != null && result.size() == 1){
 			HttpSession session = request.getSession();
 	    	session.setAttribute("userName", userName);
 	    	session.setMaxInactiveInterval(15*60);
@@ -60,7 +58,10 @@ public class RestServices {
 	    	userCookie.setMaxAge(15*60);
 
             response.addCookie(userCookie);
-	    	
+
+			em.persist(new Session(result.get(0), userCookie.getValue()));
+			DBUtility.commitTransaction(em);
+
 			return new ResponseHeader();
 		}
 		else{
@@ -115,6 +116,7 @@ public class RestServices {
 	@RequestMapping(value = "/event/create")
 	@ResponseBody
 	public Action createEvent(
+			@RequestHeader("Set-Cookie") String cookie,
 			@RequestParam(value = "eventName") String eventName,
 			@RequestParam(value = "eventDescription", required = false) String eventDescription,
 			@RequestParam(value = "startTime", required = false) Date startTime,
@@ -124,10 +126,13 @@ public class RestServices {
 			@RequestParam(value = "privacy", required = false) String privacy) {
 
 		EntityManager em = DBUtility.startTransaction();
+
 		Action action = new Action(eventName, eventDescription, ActionType.EVENT.toString(), startTime,
 				endTime);
 		action.setPrivacy(privacy);
 		em.persist(action);
+
+		insertCreator(getSessionUser(cookie), em, action);
 
 		insertInvitedPeople(invitedPeople, em, action);
 
@@ -141,6 +146,7 @@ public class RestServices {
 	@RequestMapping(value = "/group/create")
 	@ResponseBody
 	public Action createGroup(
+			@RequestHeader("Set-Cookie") String cookie,
 			@RequestParam(value = "groupName") String groupName,
 			@RequestParam(value = "groupDescription", required = false) String groupDescription,
 			@RequestParam(value = "invitedPeople", required = false) List<User> invitedPeople,
@@ -154,6 +160,8 @@ public class RestServices {
 
 		em.persist(action);
 
+		insertCreator(getSessionUser(cookie), em, action);
+
 		insertInvitedPeople(invitedPeople, em, action);
 
 		insertTagsOfActions(tagString, em, action);
@@ -166,16 +174,18 @@ public class RestServices {
 	@RequestMapping(value = "/event/getCreated")
 	@ResponseBody
 	public List<Action> getCreatedEvents(
-			@RequestParam(value = "userId") String userId) {
+			@RequestHeader("Set-Cookie") String cookie) {
 
 		EntityManager em = DBUtility.startTransaction();
 
+		User user = getSessionUser(cookie);
+
 		Query query = em
 				.createQuery(
-						"FROM ActionUser A WHERE A.actionUserStatus = :actionUserStatus AND A.userId = :userId")
+						"FROM ActionUser A WHERE A.actionUserStatus = :actionUserStatus AND A.user = :user")
 				.setParameter("actionUserStatus",
-						ActionUserStatus.CREATED.toString())
-				.setParameter("userId", userId);
+						ActionUserStatus.CREATED)
+				.setParameter("user", user);
 
 		List<ActionUser> results = query.getResultList();
 		List<Action> actionList = new ArrayList<>();
@@ -219,7 +229,7 @@ public class RestServices {
 	}
 
 	private void insertInvitedPeople(List<User> invitedPeople,
-			EntityManager em, Action action) {
+										  EntityManager em, Action action) {
 		if (invitedPeople == null)
 			return;
 		if (invitedPeople.size() < 1)
@@ -230,10 +240,19 @@ public class RestServices {
 			actionUser.setAction(action);
 			actionUser.setActionUserStatus(ActionUserStatus.INVITED);
 			em.persist(actionUser);
-			
-		
-			
+
 		}
+	}
+
+	private void insertCreator(User creatorUser,
+									 EntityManager em, Action action) {
+
+			ActionUser actionUser = new ActionUser();
+			actionUser.setUser(creatorUser);
+			actionUser.setAction(action);
+			actionUser.setActionUserStatus(ActionUserStatus.CREATED);
+			em.persist(actionUser);
+
 	}
 
 
