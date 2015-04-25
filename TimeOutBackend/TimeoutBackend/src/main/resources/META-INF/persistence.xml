@@ -16,6 +16,10 @@
       <class>demo.ActionUser</class>
       <class>demo.ActionTag</class>
 	  <class>demo.Tag</class>
+	  <class>demo.CustomType</class>
+	  <class>demo.Attribute</class>
+	  <class>demo.Comment</class>
+	  <class>demo.Post</class>
 	  
     <properties>
       <property name="javax.persistence.jdbc.user" value="root" />

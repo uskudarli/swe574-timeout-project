@@ -38,6 +38,15 @@ public class User {
 	)
 	private Set<User> friendShip2 = new HashSet<User>(0);
 	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+	private Set<CustomType> customTypes = new HashSet<CustomType>(0);
+	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+	private Set<Post> posts = new HashSet<Post>(0);
+	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+	private Set<Comment> comments = new HashSet<Comment>(0);
+	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "roleId")
 	private Role role;
