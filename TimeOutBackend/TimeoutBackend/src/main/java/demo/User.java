@@ -23,6 +23,18 @@ public class User {
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
 	private Set<ActionUser> actionUsers = new HashSet<ActionUser>(0);
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "roleId")
+	private Role role;
+	
+	@OneToOne
+    @PrimaryKeyJoinColumn
+	private UserCommInfo userCommInfo;
+	
+	@OneToOne
+    @PrimaryKeyJoinColumn
+	private UserExtraInfo userExtraInfo;
 
 	public User() {
 	}

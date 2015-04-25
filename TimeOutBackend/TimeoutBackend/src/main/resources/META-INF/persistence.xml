@@ -8,6 +8,9 @@
 
   <persistence-unit name="Demo">
       <class>demo.User</class>
+      <class>demo.UserCommInfo</class>
+      <class>demo.UserExtraInfo</class>
+      <class>demo.Role</class>
       <class>demo.Greeting</class>
       <class>demo.Action</class>
       <class>demo.ActionUser</class>

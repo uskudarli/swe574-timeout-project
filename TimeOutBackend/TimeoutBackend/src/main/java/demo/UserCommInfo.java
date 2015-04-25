@@ -5,10 +5,28 @@
  */
 package demo;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
+
+@Entity
+@Table(name = "UserCommInfo")
 public class UserCommInfo {
 
+	@Id
+	@GeneratedValue(generator = "incrementUser")
+	@GenericGenerator(name = "incrementUser", strategy = "increment")
+	private Long userId;
+	
 	private long mobilePhone;
 	private String address;
+	
+	@OneToOne(mappedBy = "userCommInfo")
+	private User user;
 
 	public long getMobilePhone() {
 		return mobilePhone;
