@@ -24,6 +24,20 @@ public class User {
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
 	private Set<ActionUser> actionUsers = new HashSet<ActionUser>(0);
 	
+	@ManyToMany
+	@JoinTable(name="FriendShip",
+	 joinColumns=@JoinColumn(name="personId"),
+	 inverseJoinColumns=@JoinColumn(name="friendId")
+	)
+	private Set<User> friendShip1 = new HashSet<User>(0);
+	
+	@ManyToMany
+	@JoinTable(name="FriendShip",
+	 joinColumns=@JoinColumn(name="friendId"),
+	 inverseJoinColumns=@JoinColumn(name="personId")
+	)
+	private Set<User> friendShip2 = new HashSet<User>(0);
+	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "roleId")
 	private Role role;
