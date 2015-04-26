@@ -9,8 +9,8 @@ import javax.persistence.*;
 public class Session {
 
 	@Id
-	@GeneratedValue(generator="incrementActionUser")
-	@GenericGenerator(name="incrementActionUser", strategy = "increment")
+	@GeneratedValue(generator="incrementSession")
+	@GenericGenerator(name="incrementSession", strategy = "increment")
 	private Long sesssionId;
 
 	@ManyToOne(fetch = FetchType.LAZY)

@@ -17,7 +17,7 @@ public class User {
 	@GenericGenerator(name = "incrementUser", strategy = "increment")
 	private Long userId;
 
-	private String userName;
+	private String userEmail;
 	private Date date;
 	private String password;
 
@@ -51,19 +51,103 @@ public class User {
     @JoinColumn(name = "roleId")
 	private Role role;
 	
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
+    @PrimaryKeyJoinColumn
+	private UserBasicInfo userBasicInfo;
+	
+	@OneToOne(fetch = FetchType.LAZY)
     @PrimaryKeyJoinColumn
 	private UserCommInfo userCommInfo;
 	
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
     @PrimaryKeyJoinColumn
 	private UserExtraInfo userExtraInfo;
+
+	public Set<ActionUser> getActionUsers() {
+		return actionUsers;
+	}
+
+	public void setActionUsers(Set<ActionUser> actionUsers) {
+		this.actionUsers = actionUsers;
+	}
+
+	public Set<User> getFriendShip1() {
+		return friendShip1;
+	}
+
+	public void setFriendShip1(Set<User> friendShip1) {
+		this.friendShip1 = friendShip1;
+	}
+
+	public Set<User> getFriendShip2() {
+		return friendShip2;
+	}
+
+	public void setFriendShip2(Set<User> friendShip2) {
+		this.friendShip2 = friendShip2;
+	}
+
+	public Set<CustomType> getCustomTypes() {
+		return customTypes;
+	}
+
+	public void setCustomTypes(Set<CustomType> customTypes) {
+		this.customTypes = customTypes;
+	}
+
+	public Set<Post> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(Set<Post> posts) {
+		this.posts = posts;
+	}
+
+	public Set<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(Set<Comment> comments) {
+		this.comments = comments;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
+	public UserBasicInfo getUserBasicInfo() {
+		return userBasicInfo;
+	}
+
+	public void setUserBasicInfo(UserBasicInfo userBasicInfo) {
+		this.userBasicInfo = userBasicInfo;
+	}
+
+	public UserCommInfo getUserCommInfo() {
+		return userCommInfo;
+	}
+
+	public void setUserCommInfo(UserCommInfo userCommInfo) {
+		this.userCommInfo = userCommInfo;
+	}
+
+	public UserExtraInfo getUserExtraInfo() {
+		return userExtraInfo;
+	}
+
+	public void setUserExtraInfo(UserExtraInfo userExtraInfo) {
+		this.userExtraInfo = userExtraInfo;
+	}
 
 	public User() {
 	}
 
-	public User(String userName, String password) {
-		this.userName = userName;
+	public User(String userEmail, String password) {
+		this.userEmail = userEmail;
 		this.password = password;
 	}
 
@@ -85,12 +169,12 @@ public class User {
 		this.date = date;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getUserEmail() {
+		return userEmail;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
 	}
 
 	public String getPassword() {

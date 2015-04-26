@@ -18,12 +18,71 @@ public class RestServices {
 
 	@RequestMapping(value = "/register")
 	public @ResponseBody ResponseHeader registerUser(
-			@RequestParam(value = "userName") String userName,
+			@RequestParam(value = "userEmail") String userEmail,
 			@RequestParam(value = "password") String password) {
 
-		// Insert a few rows.
+		if (!isValidEmailAddress(userEmail))
+			return new ResponseHeader(false);
+		
 		EntityManager em = DBUtility.startTransaction();
-		em.persist(new User(userName, password));
+		em.persist(new User(userEmail, password));
+		DBUtility.commitTransaction(em);
+
+		return new ResponseHeader();
+	}
+	
+	public boolean isValidEmailAddress(String email) {
+        String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+        java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+        java.util.regex.Matcher m = p.matcher(email);
+        return m.matches();
+	}
+	
+	@RequestMapping(value = "/profile/edit")
+	public @ResponseBody ResponseHeader editProfile(
+			@RequestHeader("Set-Cookie") String cookie,
+			@RequestParam(value = "firstName", required = false) String firstName,
+			@RequestParam(value = "lastName", required = false) String lastName,
+			@RequestParam(value = "Gsm", required = false) Long Gsm,
+			@RequestParam(value = "address", required = false) String address,
+			@RequestParam(value = "birthdate", required = false) Date birthdate,
+			@RequestParam(value = "about", required = false) String about,
+			@RequestParam(value = "interests", required = false) String interests,
+			@RequestParam(value = "gender", required = false) String gender,
+			@RequestParam(value = "languages", required = false) String languages) {
+
+		User user = getSessionUser(cookie);
+		if (user == null){
+			ResponseHeader wrongResponse = new ResponseHeader();
+			wrongResponse.setType("Fail");
+			wrongResponse.setMessage("Specified information is wrong!");
+			return wrongResponse;
+		}
+		user.setUserBasicInfo(new UserBasicInfo());
+		user.setUserCommInfo(new UserCommInfo());
+		user.setUserExtraInfo(new UserExtraInfo());
+		
+		if (firstName != "" && firstName != null)
+			user.getUserBasicInfo().setFirstName(firstName);
+		if (lastName != "" && lastName != null)
+			user.getUserBasicInfo().setLastName(lastName);
+		if (Gsm > 0)
+			user.getUserCommInfo().setMobilePhone(Gsm);
+		if (address != "" && address != null)
+			user.getUserCommInfo().setAddress(address);
+		if (birthdate != null)
+			user.getUserExtraInfo().setBirthDate(birthdate);
+		if (about != "" && about != null)
+			user.getUserExtraInfo().setAbout(about);
+		if (interests != "" && interests != null)
+			user.getUserExtraInfo().setInterests(interests);
+		if (gender != "" && gender != null)
+			user.getUserBasicInfo().setGender(gender);
+		if (languages != "" && languages != null)
+			user.getUserExtraInfo().setLanguages(languages);
+		
+		EntityManager em = DBUtility.startTransaction();
+		em.persist(user);
 		DBUtility.commitTransaction(em);
 
 		return new ResponseHeader();
@@ -40,19 +99,19 @@ public class RestServices {
 
 	@RequestMapping(value = "/login")
 	public @ResponseBody ResponseHeader login(
-			@RequestParam(value = "userName") String userName,
+			@RequestParam(value = "userEmail") String userEmail,
 			@RequestParam(value = "password") String password,
 			HttpServletRequest request, HttpServletResponse response ) {
 		
 		EntityManager em = DBUtility.startTransaction();
 		List<User> result = 
-				em.createQuery("FROM User U WHERE U.userName = :userName AND U.password = :password")
-				.setParameter("userName", userName)
+				em.createQuery("FROM User U WHERE U.userEmail = :userEmail AND U.password = :password")
+				.setParameter("userEmail", userEmail)
 				.setParameter("password", password)
 				.getResultList();
 		if (result != null && result.size() == 1){
 			HttpSession session = request.getSession();
-	    	session.setAttribute("userName", userName);
+	    	session.setAttribute("userEmail", userEmail);
 	    	session.setMaxInactiveInterval(15*60);
 	    	Cookie userCookie = new Cookie("sessionId", session.getId());
 	    	userCookie.setMaxAge(15*60);
@@ -65,10 +124,7 @@ public class RestServices {
 			return new ResponseHeader();
 		}
 		else{
-			ResponseHeader wrongResponse = new ResponseHeader();
-			wrongResponse.setType("Fail");
-			wrongResponse.setMessage("Specified information is wrong!");
-			return wrongResponse;
+			return new ResponseHeader(false);
 		}
 	}
 
@@ -254,8 +310,6 @@ public class RestServices {
 			em.persist(actionUser);
 
 	}
-
-
 
 	private ArrayList<String> findRelatedTags(String tag){
 		RestTemplate restTemplate = new RestTemplate();

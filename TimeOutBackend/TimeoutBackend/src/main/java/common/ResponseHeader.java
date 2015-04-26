@@ -9,6 +9,16 @@ public class ResponseHeader {
 		message = "It is successfully done.";
 	}
 	
+	public ResponseHeader(boolean howToReturn) {
+		if (!howToReturn){
+			type = "Fail";
+			message = "Specified information is wrong!";
+		}else{
+			type = "Success";
+			message = "It is successfully done.";
+		}
+	}
+	
 	public String getType() {
 		return type;
 	}

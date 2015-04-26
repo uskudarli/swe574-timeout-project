@@ -27,6 +27,8 @@ public class UserExtraInfo {
 	private char gender;
 	private Date birthDate;
 	private String about;
+	private String interests;
+	private String languages;
 	
 	@OneToOne(mappedBy = "userExtraInfo")
 	private User user;
@@ -67,6 +69,22 @@ public class UserExtraInfo {
 		this.gender = gender;
 		this.birthDate = birthDate;
 		this.about = about;
+	}
+
+	public String getInterests() {
+		return interests;
+	}
+
+	public void setInterests(String interests) {
+		this.interests = interests;
+	}
+
+	public String getLanguages() {
+		return languages;
+	}
+
+	public void setLanguages(String languages) {
+		this.languages = languages;
 	}
 
 }
