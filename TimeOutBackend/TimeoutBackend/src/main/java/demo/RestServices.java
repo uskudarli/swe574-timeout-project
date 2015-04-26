@@ -7,10 +7,8 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.*;
 
 @RestController
@@ -100,31 +98,28 @@ public class RestServices {
 	@RequestMapping(value = "/login")
 	public @ResponseBody ResponseHeader login(
 			@RequestParam(value = "userEmail") String userEmail,
-			@RequestParam(value = "password") String password,
-			HttpServletRequest request, HttpServletResponse response ) {
-		
+			@RequestParam(value = "password") String password) {
+
 		EntityManager em = DBUtility.startTransaction();
 		List<User> result = 
 				em.createQuery("FROM User U WHERE U.userEmail = :userEmail AND U.password = :password")
 				.setParameter("userEmail", userEmail)
 				.setParameter("password", password)
 				.getResultList();
-		if (result != null && result.size() == 1){
-			HttpSession session = request.getSession();
-	    	session.setAttribute("userEmail", userEmail);
-	    	session.setMaxInactiveInterval(15*60);
-	    	Cookie userCookie = new Cookie("sessionId", session.getId());
-	    	userCookie.setMaxAge(15*60);
+		if (result != null && result.size() > 0){
 
-            response.addCookie(userCookie);
+			String userCookie = new BigInteger(130, new Random()).toString(32).toUpperCase();
 
-			em.persist(new Session(result.get(0), userCookie.getValue()));
+			em.persist(new Session(result.get(0), userCookie));
 			DBUtility.commitTransaction(em);
 
-			return new ResponseHeader();
+			return new ResponseHeader("sessionId=" + userCookie);
 		}
 		else{
-			return new ResponseHeader(false);
+			ResponseHeader wrongResponse = new ResponseHeader();
+			wrongResponse.setType("Fail");
+			wrongResponse.setMessage("Specified information is wrong!");
+			return wrongResponse;
 		}
 	}
 
@@ -181,7 +176,6 @@ public class RestServices {
 			@RequestParam(value = "tag", required = false) String tagString,
 			@RequestParam(value = "privacy", required = false) String privacy) {
 
-		
 		EntityManager em = DBUtility.startTransaction();
 
 		Action action = new Action(eventName, eventDescription, ActionType.EVENT.toString(), startTime,
@@ -311,6 +305,8 @@ public class RestServices {
 			em.persist(actionUser);
 
 	}
+
+
 
 	private ArrayList<String> findRelatedTags(String tag){
 		RestTemplate restTemplate = new RestTemplate();

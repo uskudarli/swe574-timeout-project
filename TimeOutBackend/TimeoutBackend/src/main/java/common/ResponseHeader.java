@@ -3,7 +3,14 @@ package common;
 public class ResponseHeader {
 	private String type;
 	private String message;
+	private String cookie;
 	
+	public ResponseHeader(String cookie) {
+		type = "Success";
+		message = "It is successfully done.";
+		this.cookie = cookie;
+	}
+
 	public ResponseHeader() {
 		type = "Success";
 		message = "It is successfully done.";
@@ -40,6 +47,11 @@ public class ResponseHeader {
 		this.message = message;
 	}
 
-	
-	
+	public String getCookie() {
+		return cookie;
+	}
+
+	public void setCookie(String cookie) {
+		this.cookie = cookie;
+	}
 }

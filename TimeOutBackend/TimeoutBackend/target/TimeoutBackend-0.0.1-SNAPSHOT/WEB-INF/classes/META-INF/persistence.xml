@@ -11,16 +11,19 @@
       <class>demo.UserCommInfo</class>
       <class>demo.UserExtraInfo</class>
       <class>demo.Role</class>
-      <class>demo.FriendShip</class>
       <class>demo.Greeting</class>
       <class>demo.Action</class>
       <class>demo.ActionUser</class>
       <class>demo.ActionTag</class>
 	  <class>demo.Tag</class>
+	  <class>demo.CustomType</class>
+	  <class>demo.Attribute</class>
+	  <class>demo.Comment</class>
+	  <class>demo.Post</class>
 	  
     <properties>
       <property name="javax.persistence.jdbc.user" value="root" />
-        <property name="javax.persistence.jdbc.password" value="password" />
+        <!--<property name="javax.persistence.jdbc.password" value="password" />-->
         <property name="hibernate.show_sql" value="true" />
       <property name="hibernate.hbm2ddl.auto" value="update" />
       <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect"/>
