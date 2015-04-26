@@ -1,55 +1,53 @@
 <section>
-	<div class="leftcolumn">
-		<div class="profile">
-			<img ALT="Münevver Calayır" title="Münevver Calayır" src="images/profile.JPG" />
-			<p>Münevver Calayır</p>
-			<a href="profileEdit.html">Edit Profile</a>
-		</div>
-		<ul>
-			<li>
-				<a href="#">
-					<img src="images/profile.png" />
-					<p>My Profile</p>
-				</a>
-			</li>
-			<li>
-				<a href="#">
-					<img src="images/event.png" />
-					<p>Events</p>
-				</a>
-			</li>
+      <div class="leftcolumn">
+        <div class="profile">
+            <img ALT="Münevver Calayır" title="Münevver Calayır" src="images/profile.JPG" />
+            <p>Münevver Calayır</p>
+            <a href="" ng-click="goEditProfile()">Edit Profile</a>
+        </div>
+        <ul>
             <li>
-                <a href="#">
-                    <img src="images/group.png" />
-                    <p>Groups</p>
+                <a href="" ng-click="goMyProfile()">
+                    <img src="images/profile.png" />
+                    <p>My Profile</p>
                 </a>
             </li>
             <li>
-                <a href="#">
-                    <img src="images/group.png" />
-                    <p>Friends</p>
+                <a href="" ng-click="goMyEvents()">
+                    <img src="images/event.png" />
+                    <p>Events</p>
                 </a>
             </li>
-		</ul>
+                  <li>
+                      <a href="" ng-click="goMyGroups()">
+                          <img src="images/group.png" />
+                          <p>Groups</p>
+                      </a>
+                  </li>
+                  <li>
+                      <a href="" ng-click="goMyFriends()">
+                          <img src="images/group.png" />
+                          <p>Friends</p>
+                      </a>
+                  </li>
+        </ul>
 	</div>
 	<div class="menu">
 		<ul>
-			<li>
-				<a href="home.html">Home</a>
-			</li>
-			<li>
-				<a href="createEvent.html">Create Event</a>
-			</li>
-			<li class="active">
-				<a href="createGroup.html">Create Group</a>
-			</li>
+             <li>
+                <a href="" ng-click="goHome()">Home</a>
+            </li>
+            <li>
+                <a href="" ng-click="goCreateEvent()">Create Event</a>
+            </li>
+            <li class="active">
+                <a href="" ng-click="goCreateGroup()">Create Group</a>
+            </li>
 		</ul>
 	</div>
 
 	<div class="midcolumn">
-		<div class="group-creation">
-
-			 
+		<div class="group-creation">	 
 
             <fieldset>
             <legend>Create Group</legend>
@@ -70,10 +68,6 @@
                     <button type="reset">Reset</button>
                 </form>
             </fieldset>
-		
-
-       
-           
       
         </div>
 	

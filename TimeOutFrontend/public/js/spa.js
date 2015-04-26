@@ -9,12 +9,56 @@ angular.module("timeout", ["ngRoute"])
 		    controller: "HomeController"
 		  })
 		  .when("/createEvent", {
-		  	templateUrl: "createEvent.html",
+		  	templateUrl: "CreateEvent.html",
 		  	controller: "createEvent"
 		  })
 		  .when("/createGroup", {
-		  	templateUrl: "createGroup.html",
+		  	templateUrl: "CreateGroup.html",
 		  	controller: "createGroup"
+		  })
+		  .when("/profileEdit", {
+		  	templateUrl: "profileEdit.html",
+		  	controller: "profileEdit"
+		  })
+		  .when("/eventsInvited", {
+		  	templateUrl: "eventsInvited.html",
+		  	controller: "eventsInvited"
+		  })
+		  .when("/eventsCreated", {
+		  	templateUrl: "eventsCreated.html",
+		  	controller: "eventsCreated"
+		  })
+		  .when("/friendsGroups", {
+		  	templateUrl: "friendsGroups.html",
+		  	controller: "friendsGroups"
+		  })
+		  .when("/myEvents", {
+		  	templateUrl: "myEvents.html",
+		  	controller: "myEvents"
+		  })
+		  .when("/myGroups", {
+		  	templateUrl: "myGroups.html",
+		  	controller: "myGroups"
+		  })
+		  .when("/newGroups", {
+		  	templateUrl: "newGroups.html",
+		  	controller: "newGroups"
+		  })
+		  .when("/Search", {
+		  	templateUrl: "Search.html",
+		  	controller: "Search"
+		  })
+		  .when("/suggestedGroups", {
+		  	templateUrl: "suggestedGroups.html",
+		  	controller: "suggestedGroups"
+		  })
+		  .when("/myFriends", {
+		  	templateUrl: "myFriends.html",
+		  	controller: "myFriends"
+		  })
+		  .when("/myProfile", {
+		  	templateUrl: "myProfile.html",
+		  	controller: "myProfile"
 		  });
 	})
 
@@ -50,23 +94,235 @@ angular.module("timeout", ["ngRoute"])
 	
 	.controller("HomeController", function($scope, $http, $window, $location) {
 		$scope.goCreateGroup = function() {
-			console.log("goCreateGroup");
+			console.log("createGroup");
 			$location.path("/createGroup");
 		}
 
-		$scope.goCreateEvent = function(){
-			console.log("goCreateEvent");
-			$locale.path("/createEvent");
+		$scope.goCreateEvent = function() {
+			console.log("createEvent");
+			$location.path("/createEvent");
+		}
+
+		$scope.goHome = function() {
+			console.log("home");
+			$location.path("/home");
+		}
+
+		$scope.goMyFriends = function() {
+			console.log("myFriends");
+			$location.path("/myFriends");
+		}
+
+		$scope.goMyGroups = function() {
+			console.log("myGroups");
+			$location.path("/myGroups");
+		}
+
+		$scope.goMyEvents = function() {
+			console.log("myEvents");
+			$location.path("/myEvents");
+		}
+
+		$scope.goMyProfile = function() {
+			console.log("myProfile");
+			$location.path("/myProfile");
+		}
+
+		$scope.goEditProfile = function() {
+			console.log("profileEdit");
+			$location.path("/profileEdit");
+		}
+
+		$scope.goSearch = function() {
+			console.log("search");
+			$location.path("/search");
+		}
+
+		$scope.goEventsCreated = function() {
+			console.log("eventsCreated");
+			$location.path("/eventsCreated");
+		}
+
+		$scope.goSuggestedGroups = function() {
+			console.log("suggestedGroups");
+			$location.path("/suggestedGroups");
+		}
+
+		$scope.goNewGroups = function() {
+			console.log("newGroups");
+			$location.path("/newGroups");
+		}
+
+		$scope.goFriendsGroups = function() {
+			console.log("friendsGroups");
+			$location.path("/friendsGroups");
+		}
+
+		$scope.goEventsInvited = function() {
+			console.log("eventsInvited");
+			$location.path("/eventsInvited");
+		}
+
+	})
+	
+	.controller("eventsCreated", function($scope, $http, $window, $location) {
+
+		$scope.goCreateGroup = function() {
+			console.log("createGroup");
+			$location.path("/createGroup");
+		}
+
+		$scope.goCreateEvent = function() {
+			console.log("createEvent");
+			$location.path("/createEvent");
+		}
+
+		$scope.goHome = function() {
+			console.log("home");
+			$location.path("/home");
+		}
+
+		$scope.goMyFriends = function() {
+			console.log("myFriends");
+			$location.path("/myFriends");
+		}
+
+		$scope.goMyGroups = function() {
+			console.log("myGroups");
+			$location.path("/myGroups");
+		}
+
+		$scope.goMyEvents = function() {
+			console.log("myEvents");
+			$location.path("/myEvents");
+		}
+
+		$scope.myProfile = function() {
+			console.log("myProfile");
+			$location.path("/myProfile");
+		}
+
+		$scope.goEditProfile = function() {
+			console.log("profileEdit");
+			$location.path("/profileEdit");
+		}
+
+		$scope.goSearch = function() {
+			console.log("search");
+			$location.path("/search");
 		}
 	})
+	
+	.controller("profileEdit", function($scope, $http, $window, $location) {
 
-	.controller("createEvent", function($scope, $http, $window) {
+		$scope.goCreateGroup = function() {
+			console.log("createGroup");
+			$location.path("/createGroup");
+		}
+
+		$scope.goCreateEvent = function() {
+			console.log("createEvent");
+			$location.path("/createEvent");
+		}
+
+		$scope.goHome = function() {
+			console.log("home");
+			$location.path("/home");
+		}
+
+		$scope.goMyFriends = function() {
+			console.log("myFriends");
+			$location.path("/myFriends");
+		}
+
+		$scope.goMyGroups = function() {
+			console.log("myGroups");
+			$location.path("/myGroups");
+		}
+
+		$scope.goMyEvents = function() {
+			console.log("myEvents");
+			$location.path("/myEvents");
+		}
+
+		$scope.myProfile = function() {
+			console.log("myProfile");
+			$location.path("/myProfile");
+		}
+
+		$scope.goEditProfile = function() {
+			console.log("profileEdit");
+			$location.path("/profileEdit");
+		}
+
+		$scope.goSearch = function() {
+			console.log("search");
+			$location.path("/search");
+		}
+
+		$scope.profileEdit = function(){
+
+		$http.post("http://localhost:8080/profile/edit?userName=" + $scope.userName )
+		 .success(function(data, status) {
+			$window.alert("Success " + data.actionId);
+		  })
+		  .error(function(data, status) {
+		 	console.log("Error");
+		  });
+		 }
+	})
+
+
+	.controller("createEvent", function($scope, $http, $window, $location) {
+
+		$scope.goCreateGroup = function() {
+			console.log("createGroup");
+			$location.path("/createGroup");
+		}
+
+		$scope.goCreateEvent = function() {
+			console.log("createEvent");
+			$location.path("/createEvent");
+		}
+
+		$scope.goHome = function() {
+			console.log("home");
+			$location.path("/home");
+		}
+
+		$scope.goMyFriends = function() {
+			console.log("myFriends");
+			$location.path("/myFriends");
+		}
+
+		$scope.goMyGroups = function() {
+			console.log("myGroups");
+			$location.path("/myGroups");
+		}
+
+		$scope.goMyEvents = function() {
+			console.log("myEvents");
+			$location.path("/myEvents");
+		}
+
+		$scope.myProfile = function() {
+			console.log("myProfile");
+			$location.path("/myProfile");
+		}
+
+		$scope.goEditProfile = function() {
+			console.log("profileEdit");
+			$location.path("/profileEdit");
+		}
+
+		$scope.goSearch = function() {
+			console.log("search");
+			$location.path("/search");
+		}
 
 		$scope.createEvent = function(){
 
-		$http.post("http://localhost:8080/event/create?eventName=" + $scope.eventName + "&eventDescription=" + $scope.eventDesc + "&startTime" + 
-			$scope.startTime + "&endTime" + $scope.endTime + "&invitedPeople" + $scope.invitedPeople + "&tag" + $scope.tag + "&public" +
-			 $scope.checkboxModel)
+		$http.post("http://localhost:8080/event/create?eventName=" + $scope.eventName + "&eventDescription=" + $scope.eventDescription)
 		 .success(function(data, status) {
 			$window.alert("Success " + data.actionId);
 		  })
@@ -75,18 +331,112 @@ angular.module("timeout", ["ngRoute"])
 		  });
 		 }
 
-	});
+	})
 
-	.controller("createGroup", function($scope, $http, $window) {
+
+	.controller("createGroup", function($scope, $http, $window, $location) {
+
+		$scope.goCreateGroup = function() {
+			console.log("createGroup");
+			$location.path("/createGroup");
+		}
+
+		$scope.goCreateEvent = function() {
+			console.log("createEvent");
+			$location.path("/createEvent");
+		}
+
+		$scope.goHome = function() {
+			console.log("home");
+			$location.path("/home");
+		}
+
+		$scope.goMyFriends = function() {
+			console.log("myFriends");
+			$location.path("/myFriends");
+		}
+
+		$scope.goMyGroups = function() {
+			console.log("myGroups");
+			$location.path("/myGroups");
+		}
+
+		$scope.goMyEvents = function() {
+			console.log("myEvents");
+			$location.path("/myEvents");
+		}
+
+		$scope.myProfile = function() {
+			console.log("myProfile");
+			$location.path("/myProfile");
+		}
+
+		$scope.goEditProfile = function() {
+			console.log("profileEdit");
+			$location.path("/profileEdit");
+		}
+
+		$scope.goSearch = function() {
+			console.log("search");
+			$location.path("/search");
+		}
+
 		$scope.createGroup = function() {
-
-			$http.post("http://localhost:8080/group/create?groupName=" + $scope.groupName + "&eventDescription=" + $scope.invitedPeople + "&tag=" + $scope.tag)
+			$http.post("http://localhost:8080/group/create?groupName=" + $scope.groupName + "&groupDescription=" + $scope.groupDescription + "&tag=" + $scope.tag)
 			 .success(function(data, status) {
 				$window.alert("Success " + data.actionId);
 			  })
 			  .error(function(data, status) {
 			 	console.log("Error");
 			  });
+		}
+	})
+
+	.controller("myFriends", function($scope, $http, $window, $location) {
+
+		$scope.goCreateGroup = function() {
+			console.log("createGroup");
+			$location.path("/createGroup");
+		}
+
+		$scope.goCreateEvent = function() {
+			console.log("createEvent");
+			$location.path("/createEvent");
+		}
+
+		$scope.goHome = function() {
+			console.log("home");
+			$location.path("/home");
+		}
+
+		$scope.goMyFriends = function() {
+			console.log("myFriends");
+			$location.path("/myFriends");
+		}
+
+		$scope.goMyGroups = function() {
+			console.log("myGroups");
+			$location.path("/myGroups");
+		}
+
+		$scope.goMyEvents = function() {
+			console.log("myEvents");
+			$location.path("/myEvents");
+		}
+
+		$scope.myProfile = function() {
+			console.log("myProfile");
+			$location.path("/myProfile");
+		}
+
+		$scope.goEditProfile = function() {
+			console.log("profileEdit");
+			$location.path("/profileEdit");
+		}
+
+		$scope.goSearch = function() {
+			console.log("search");
+			$location.path("/search");
 		}
 	});
 
