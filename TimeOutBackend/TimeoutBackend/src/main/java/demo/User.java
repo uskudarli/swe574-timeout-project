@@ -17,6 +17,7 @@ public class User {
 	@GenericGenerator(name = "incrementUser", strategy = "increment")
 	private Long userId;
 
+	@Column(name = "userName")
 	private String userEmail;
 	private Date date;
 	private String password;
