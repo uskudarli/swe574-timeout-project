@@ -19,6 +19,14 @@ public class ResponseHeader {
 		}
 	}
 	
+	public ResponseHeader(boolean howToReturn, String message) {
+		if (howToReturn)
+			type = "Success";
+		else
+			type = "Fail";
+		this.message = message;
+	}
+	
 	public String getType() {
 		return type;
 	}

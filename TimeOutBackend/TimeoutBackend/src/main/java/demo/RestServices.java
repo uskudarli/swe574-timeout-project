@@ -22,7 +22,7 @@ public class RestServices {
 			@RequestParam(value = "password") String password) {
 
 		if (!isValidEmailAddress(userEmail))
-			return new ResponseHeader(false);
+			return new ResponseHeader(false, "Not a valid e-mail address!");
 		
 		EntityManager em = DBUtility.startTransaction();
 		em.persist(new User(userEmail, password));
@@ -181,6 +181,7 @@ public class RestServices {
 			@RequestParam(value = "tag", required = false) String tagString,
 			@RequestParam(value = "privacy", required = false) String privacy) {
 
+		
 		EntityManager em = DBUtility.startTransaction();
 
 		Action action = new Action(eventName, eventDescription, ActionType.EVENT.toString(), startTime,

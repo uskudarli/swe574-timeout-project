@@ -1,5 +1,6 @@
 package demo;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -19,9 +20,8 @@ public class Attribute {
 	@GenericGenerator(name="incrementAttribute", strategy = "increment")
 	private Long attributeId;
 	
-	private String key;
-	
-	private String value;
+	private String attributeKey;
+	private String attributeValue;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customTypeId")
@@ -36,28 +36,28 @@ public class Attribute {
 		this.attributeId = attributeId;
 	}
 
-	public String getKey() {
-		return key;
-	}
-
-	public void setKey(String key) {
-		this.key = key;
-	}
-
-	public String getValue() {
-		return value;
-	}
-
-	public void setValue(String value) {
-		this.value = value;
-	}
-
 	public CustomType getCustomType() {
 		return customType;
 	}
 
 	public void setCustomType(CustomType customType) {
 		this.customType = customType;
+	}
+
+	public String getAttributeKey() {
+		return attributeKey;
+	}
+
+	public void setAttributeKey(String attributeKey) {
+		this.attributeKey = attributeKey;
+	}
+
+	public String getAttributeValue() {
+		return attributeValue;
+	}
+
+	public void setAttributeValue(String attributeValue) {
+		this.attributeValue = attributeValue;
 	}
 
 
