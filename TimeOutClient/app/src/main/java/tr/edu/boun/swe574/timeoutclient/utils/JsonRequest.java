@@ -96,7 +96,7 @@ public class JsonRequest {
      */
     public boolean sendRequestLogin(String username, String password) {
         try {
-            String loginUri = ipadServiceUri + "login?userName=" + username
+            String loginUri = ipadServiceUri + "login?userEmail=" + username
                     + "&password=" + password;
 
             String loginJson = sendRequest(loginUri);
@@ -122,7 +122,7 @@ public class JsonRequest {
      */
     public boolean sendRequestRegister(String username, String password) {
         try {
-            String loginUri = ipadServiceUri + "register?userName=" + username
+            String loginUri = ipadServiceUri + "register?userEmail=" + username
                     + "&password=" + password;
 
             String loginJson = sendRequest(loginUri);

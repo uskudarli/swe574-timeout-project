@@ -9,6 +9,7 @@ public class CommonReturnObject {
 
     String type;
     String message;
+    String cookie;
 
     public String getType() {
         return type;
@@ -24,5 +25,13 @@ public class CommonReturnObject {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getCookie() {
+        return cookie;
+    }
+
+    public void setCookie(String cookie) {
+        this.cookie = cookie;
     }
 }

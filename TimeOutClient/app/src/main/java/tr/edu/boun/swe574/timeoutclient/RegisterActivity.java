@@ -3,6 +3,7 @@ package tr.edu.boun.swe574.timeoutclient;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -90,23 +91,54 @@ public class RegisterActivity extends ActionBarActivity {
                         return;
                     }
 
-                    JsonRequest jr = new JsonRequest(mContext);
-                    if (jr.sendRequestRegister(email, pass)) {
-                        Toast.makeText(mContext, "Başarıyla kayıt yaptınız.", Toast.LENGTH_SHORT).show();
+                    UserRegisterTask urt = new UserRegisterTask();
+                    urt.execute(email, pass);
 
-                        // intent to main
-                        Intent i = new Intent(mContext, MainActivity.class);
-                        startActivity(i);
-
-                        getActivity().finish();
-                    } else {
-                        Toast.makeText(mContext, "Kayıt başarısız.", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
                 }
             });
 
             return rootView;
+        }
+
+        public class UserRegisterTask extends AsyncTask<String, Void, Boolean> {
+
+            @Override
+            protected Boolean doInBackground(String... params) {
+
+                String email = params[0];
+                String pass = params[1];
+
+                JsonRequest jr = new JsonRequest(mContext);
+                if (jr.sendRequestRegister(email, pass)) {
+
+                    return true;
+                } else {
+                    return false;
+                }
+
+            }
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+            }
+
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
+                super.onPostExecute(aBoolean);
+
+                if (aBoolean) {
+                    Toast.makeText(mContext, "Başarıyla kayıt yaptınız.", Toast.LENGTH_SHORT).show();
+
+                    // intent to main
+                    Intent i = new Intent(mContext, MainActivity.class);
+                    startActivity(i);
+
+                    getActivity().finish();
+                } else {
+                    Toast.makeText(mContext, "Kayıt başarısız.", Toast.LENGTH_SHORT).show();
+                }
+            }
         }
     }
 }
