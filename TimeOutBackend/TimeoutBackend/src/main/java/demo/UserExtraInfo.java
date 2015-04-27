@@ -7,11 +7,31 @@ package demo;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
+
+@Entity
+@Table(name = "UserExtraInfo")
 public class UserExtraInfo {
 
+	@Id
+	@GeneratedValue(generator = "incrementUser")
+	@GenericGenerator(name = "incrementUser", strategy = "increment")
+	private Long userId;
+	
 	private char gender;
 	private Date birthDate;
 	private String about;
+	private String interests;
+	private String languages;
+	
+	@OneToOne(mappedBy = "userExtraInfo")
+	private User user;
 
 	public char getGender() {
 		return gender;
@@ -49,6 +69,22 @@ public class UserExtraInfo {
 		this.gender = gender;
 		this.birthDate = birthDate;
 		this.about = about;
+	}
+
+	public String getInterests() {
+		return interests;
+	}
+
+	public void setInterests(String interests) {
+		this.interests = interests;
+	}
+
+	public String getLanguages() {
+		return languages;
+	}
+
+	public void setLanguages(String languages) {
+		this.languages = languages;
 	}
 
 }
