@@ -86,6 +86,11 @@ angular.module("timeout", ["ngRoute"])
 		$scope.isCookieSet = function() {
 			return timeOutFactory.isUserLoggedIn();
 		};
+
+		$scope.goHomePage = function() {
+			console.log("home");
+			$location.path("/home");
+		};
 	})
 
 	.controller("MainController", function($scope, $http, $location, $window, timeOutFactory) {
