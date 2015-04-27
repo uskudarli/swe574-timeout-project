@@ -33,26 +33,31 @@
                     <div class="navbar-header">
                         <a id="bounlogo" class="navbar-brand" href="#"><img alt="Home" title="Home" src="images/logo.fw.png"></a>
 						<div class="righttop">
-                            <div class="login">
-                                <fieldset>
-                                    <form ng-submit="doLogin()">
+                            <div class="login" ng-show="!isCookieSet()">
+                                <form ng-submit="doLogin()">
+                                    <fieldset>
                                         <p>
                                             <label for="username">Username:</label>
-                                            <input type="text" name="username" ng-model="username" style:"color:#000 !important;"/>
+                                            <input type="text" name="username" ng-model="userEmail"/>
                                             <input type="checkbox" name="persist_box" value="1">
                                             <label for="persist_box">Keep me logged in</label>
                                         </p>
                                         <p>
                                             <label for="password">Password:</label>
-                                            <input type="text" name="password" ng-model="loginPassword" style:"color:#000 !important;"/>
+                                            <input type="text" name="password" ng-model="loginPassword"/>
                                             <a href="#">Forgot your password?</a>
                                         </p>
                                         <p id="login-button">
                                             <button class="btn btn-primary" style="padding: 1px 12px;" type="submit">Login</button>
                                         </p>
-                                    </form>
-                                </fieldset>
+                                    </fieldset>
+                                </form>
                             </div>
+
+                            <p id="search-button" ng-show="isCookieSet()">
+                                <input type="text" name="search"  ng-model="search"/>
+                                <button class="btn btn-primary" style="padding: 1px 12px;" type="submit" onclick="parent.location='search.html'">Search</button>
+                            </p>
                         </div>
                     </div>
 

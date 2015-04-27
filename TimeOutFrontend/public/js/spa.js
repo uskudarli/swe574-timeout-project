@@ -2,7 +2,8 @@ angular.module("timeout", ["ngRoute"])
 	.config(function($routeProvider) {
 	  $routeProvider
 	   	 .when("/", {
-		    templateUrl: "main.html"
+		    templateUrl: "main.html",
+		    controller: "MainController"
 		  })
 		  .when("/home", {
 		    templateUrl: "home.html",
@@ -62,36 +63,52 @@ angular.module("timeout", ["ngRoute"])
 		  });
 	})
 
-	.controller("IndexController", function($scope, $http, $location, $window) {
+	.controller("IndexController", function($scope, $http, $location, $window, timeOutFactory) {
 		console.log("IndexController works");
-		$scope.doLogin = function(username, loginPassword) {
+		$scope.doLogin = function() {
 			// Simple GET request example :
-			$http({method: "GET",  url: "http://localhost:8080/login?userName=" + $scope.username + "&password=" + $scope.loginPassword})
-			  .success(function(data, status) {	
+			var loginUrl = timeOutFactory.getBackendUrl() + "/login?userEmail=" + $scope.userEmail + "&password=" + $scope.loginPassword;
+			console.log(loginUrl);
+			$http({method: "GET",  url: loginUrl})
+			  .success(function(data, status) {
 			    if(data.type == "Success") {
 			    	$location.path("/home");
-			    	//setUser();
+			    	timeOutFactory.setUserLoggedIn(true);
+			    	timeOutFactory.setSessionId(data.cookie);
+			    } else {
+			    	$window.alert(data.type + ": " + data.message);
 			    }
 			  })
 			  .error(function(data, status) {
-			 	console.log("Specified username or password do not match with the records!!!");
+			 	$window.alert("Specified username or password do not match with the records!!!");
 			  });
-		}
+		};
+		$scope.isCookieSet = function() {
+			return timeOutFactory.isUserLoggedIn();
+		};
+	})
+
+	.controller("MainController", function($scope, $http, $location, $window, timeOutFactory) {
 		$scope.signUp = function() {
 			// Simple GET request example :
-			$http({method: "GET",  url: "http://localhost:8080/register?userName=" + $scope.email + "&password=" + $scope.sigUpPassword})
+			$http({method: "GET",  url: timeOutFactory.getBackendUrl() + "/register?userEmail=" + $scope.email + "&password=" + $scope.sigUpPassword})
 			  .success(function(data, status) {
 			    if(data.type == "Success") {
 			    	$window.alert(data.message);
-			    	//setUser();
+			    	$scope.name = "";
+			    	$scope.lastName = "";
+			    	$scope.email = "";
+			    	$scope.reEmail = "";
+			    	$scope.sigUpPassword = "";
+			    	$scope.rePassword = "";
 			    }
 			  })
 			  .error(function(data, status) {
-			 	console.log("Specified username or password do not match with the records!!!");
+			 	$window.alert("Specified username or password do not match with the records!!!");
 			  });
-		}
+		};
 	})
-	
+
 	.controller("HomeController", function($scope, $http, $window, $location) {
 		$scope.goCreateGroup = function() {
 			console.log("createGroup");
@@ -164,7 +181,7 @@ angular.module("timeout", ["ngRoute"])
 		}
 
 	})
-	
+
 	.controller("eventsCreated", function($scope, $http, $window, $location) {
 
 		$scope.goCreateGroup = function() {
@@ -212,7 +229,7 @@ angular.module("timeout", ["ngRoute"])
 			$location.path("/search");
 		}
 	})
-	
+
 	.controller("profileEdit", function($scope, $http, $window, $location) {
 
 		$scope.goCreateGroup = function() {
@@ -333,7 +350,6 @@ angular.module("timeout", ["ngRoute"])
 
 	})
 
-
 	.controller("createGroup", function($scope, $http, $window, $location) {
 
 		$scope.goCreateGroup = function() {
@@ -438,55 +454,54 @@ angular.module("timeout", ["ngRoute"])
 			console.log("search");
 			$location.path("/search");
 		}
+	})
+
+	.factory("timeOutFactory", function(){
+		var timeOutFactory = {};
+		var lists = [];
+		var userLoggedIn = false;
+		var backendUrl = "http://localhost:8080";
+		var sessionId = "";
+
+		timeOutFactory.getLists = function(){
+			return lists;
+		};
+
+		timeOutFactory.getList = function(listId){
+			return lists[listId];
+		};
+
+		timeOutFactory.addList = function(newList){
+			lists.push({
+				id:lists.length,
+				name:newList,
+				items:[]
+			});
+		};
+
+		timeOutFactory.addItem = function(listId, newItem){
+			lists[listId].items.push(newItem);
+		};
+
+		timeOutFactory.isUserLoggedIn = function(){
+			return userLoggedIn;
+		};
+
+		timeOutFactory.setUserLoggedIn = function(value){
+			userLoggedIn = value;
+		};
+
+		timeOutFactory.getBackendUrl = function(){
+			return backendUrl;
+		};
+
+		timeOutFactory.getSessionId = function(){
+			return sessionId;
+		};
+
+		timeOutFactory.setSessionId = function(cookie){
+			sessionId = cookie;
+		};
+
+		return timeOutFactory;
 	});
-
-	// .controller("HomeController", function($scope, $http) {
-	// 	$scope.doLogin = function(username, loginPassword){
-	// 		$scope.name = $scope.username;
-	// 		$scope.lastname = $scope.loginPassword;
-	// 		$scope.name = "Method is running";
-	// 		// Simple GET request example :
-	// 		$http({method: "GET",  url: "http://localhost:8080/login?userName=" + $scope.username + "&password=" + $scope.loginPassword})
-	// 		.success(function(data, status) {
-	// 		  if(data.type == "Success") {
-	// 			$scope.name = "Success is taken" + data.type;
-	// 				$location.path("/home");
-	// 			}
-	// 		})
-	// 		.error(function(data, status) {
-	// 			console.log("Specified username or password do not match with the records!!!");
-	// 		});
-	// 	}
-	// });
-
-/*$http.post('/someUrl', {msg:'hello word!'}).
-  success(function(data, status, headers, config) {
-
-    // this callback will be called asynchronously
-    // when the response is available
-  }).
-  error(function(data, status, headers, config) {
-    // called asynchronously if an error occurs
-    // or server returns response with an error status.
-  });
-*/
-/*function Hello($scope, $http) {
-	$http.get('http://rest-service.guides.spring.io/greeting').success(function(data, status, headers, config) {
-		$scope.greeting = data;
-	}).
-  error(function(data, status, headers, config) {
-    // called asynchronously if an error occurs
-    // or server returns response with an error status.
-  });
-
-  	// Simple POST request example (passing data) :
-	$http.post('http://localhost:8080/', {msg:'hello word!'}).
-	  success(function(data, status, headers, config) {
-	    // this callback will be called asynchronously
-	    // when the response is available
-	  }).
-	  error(function(data, status, headers, config) {
-	    // called asynchronously if an error occurs
-	    // or server returns response with an error status.
-	  });
-}*/
