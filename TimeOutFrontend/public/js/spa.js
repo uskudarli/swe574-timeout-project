@@ -10,11 +10,11 @@ angular.module("timeout", ["ngRoute"])
 		    controller: "HomeController"
 		  })
 		  .when("/createEvent", {
-		  	templateUrl: "CreateEvent.html",
+		  	templateUrl: "createEvent.html",
 		  	controller: "createEvent"
 		  })
 		  .when("/createGroup", {
-		  	templateUrl: "CreateGroup.html",
+		  	templateUrl: "createGroup.html",
 		  	controller: "createGroup"
 		  })
 		  .when("/profileEdit", {
@@ -45,8 +45,8 @@ angular.module("timeout", ["ngRoute"])
 		  	templateUrl: "newGroups.html",
 		  	controller: "newGroups"
 		  })
-		  .when("/Search", {
-		  	templateUrl: "Search.html",
+		  .when("/search", {
+		  	templateUrl: "search.html",
 		  	controller: "searchController"
 		  })
 		  .when("/suggestedGroups", {
@@ -88,12 +88,14 @@ angular.module("timeout", ["ngRoute"])
 			return timeOutFactory.isUserLoggedIn();
 		};
 
-		$scope.goHomePage = function() {
-			console.log("home");
-			$location.path("/home");
+		$scope.goToPage = function(url) {
+			console.log("GoToPage:" + url);
+			$location.path(url);
 		};
 
+		$scope.search = function(url){
 			timeOutFactory.setSearchText($scope.searchText);
+			$scope.goToPage(url);
 		};
 	})
 
@@ -113,184 +115,55 @@ angular.module("timeout", ["ngRoute"])
 			    }
 			  })
 			  .error(function(data, status) {
+			 	$window.alert(stringfy(data));
 			  });
 		};
 	})
 
+	.controller("searchController", function($scope, $http, $location, $window, timeOutFactory) {
+		// Simple GET request example :
+		$http({method: "GET",  url: timeOutFactory.getBackendUrl() + "/searchTag?tag=" + timeOutFactory.getSearchText()})
+		  .success(function(data, status) {
+		    console.log(data);
+		  })
+		  .error(function(data, status) {
+		 	$window.alert("Specified username or password do not match with the records!!!");
+		  });
+	})
+
 	.controller("HomeController", function($scope, $http, $window, $location) {
-		$scope.goCreateGroup = function() {
-			console.log("createGroup");
-			$location.path("/createGroup");
-		}
-
-		$scope.goCreateEvent = function() {
-			console.log("createEvent");
-			$location.path("/createEvent");
-		}
-
-		$scope.goHome = function() {
-			console.log("home");
-			$location.path("/home");
-		}
-
-		$scope.goMyFriends = function() {
-			console.log("myFriends");
-			$location.path("/myFriends");
-		}
-
-		$scope.goMyGroups = function() {
-			console.log("myGroups");
-			$location.path("/myGroups");
-		}
-
-		$scope.goMyEvents = function() {
-			console.log("myEvents");
-			$location.path("/myEvents");
-		}
-
-		$scope.goMyProfile = function() {
-			console.log("myProfile");
-			$location.path("/myProfile");
-		}
-
-		$scope.goEditProfile = function() {
-			console.log("profileEdit");
-			$location.path("/profileEdit");
-		}
-
-		$scope.goSearch = function() {
-			console.log("search");
-			$location.path("/search");
-		}
-
-		$scope.goEventsCreated = function() {
-			console.log("eventsCreated");
-			$location.path("/eventsCreated");
-		}
-
-		$scope.goSuggestedGroups = function() {
-			console.log("suggestedGroups");
-			$location.path("/suggestedGroups");
-		}
-
-		$scope.goNewGroups = function() {
-			console.log("newGroups");
-			$location.path("/newGroups");
-		}
-
-		$scope.goFriendsGroups = function() {
-			console.log("friendsGroups");
-			$location.path("/friendsGroups");
-		}
-
-		$scope.goEventsInvited = function() {
-			console.log("eventsInvited");
-			$location.path("/eventsInvited");
-		}
-
+		$scope.goToPage = function(url) {
+			console.log("GoToPage:" + url);
+			$location.path(url);
+			//$location.path("/eventsCreated");
+			//$location.path("/suggestedGroups");
+			//$location.path("/newGroups");
+			//$location.path("/friendsGroups");
+			//$location.path("/eventsInvited");
+		};
 	})
 
 	.controller("eventsCreated", function($scope, $http, $window, $location) {
 
-		$scope.goCreateGroup = function() {
-			console.log("createGroup");
-			$location.path("/createGroup");
-		}
-
-		$scope.goCreateEvent = function() {
-			console.log("createEvent");
-			$location.path("/createEvent");
-		}
-
-		$scope.goHome = function() {
-			console.log("home");
-			$location.path("/home");
-		}
-
-		$scope.goMyFriends = function() {
-			console.log("myFriends");
-			$location.path("/myFriends");
-		}
-
-		$scope.goMyGroups = function() {
-			console.log("myGroups");
-			$location.path("/myGroups");
-		}
-
-		$scope.goMyEvents = function() {
-			console.log("myEvents");
-			$location.path("/myEvents");
-		}
-
-		$scope.myProfile = function() {
-			console.log("myProfile");
-			$location.path("/myProfile");
-		}
-
-		$scope.goEditProfile = function() {
-			console.log("profileEdit");
-			$location.path("/profileEdit");
-		}
-
-		$scope.goSearch = function() {
-			console.log("search");
-			$location.path("/search");
-		}
+		$scope.goToPage = function(url) {
+			console.log("GoToPage:" + url);
+			$location.path(url);
+		};
 	})
 
-	.controller("profileEdit", function($scope, $http, $window, $location) {
+	.controller("profileEdit", function($scope, $http, $window, $location, timeOutFactory) {
 
-		$scope.goCreateGroup = function() {
-			console.log("createGroup");
-			$location.path("/createGroup");
-		}
-
-		$scope.goCreateEvent = function() {
-			console.log("createEvent");
-			$location.path("/createEvent");
-		}
-
-		$scope.goHome = function() {
-			console.log("home");
-			$location.path("/home");
-		}
-
-		$scope.goMyFriends = function() {
-			console.log("myFriends");
-			$location.path("/myFriends");
-		}
-
-		$scope.goMyGroups = function() {
-			console.log("myGroups");
-			$location.path("/myGroups");
-		}
-
-		$scope.goMyEvents = function() {
-			console.log("myEvents");
-			$location.path("/myEvents");
-		}
-
-		$scope.myProfile = function() {
-			console.log("myProfile");
-			$location.path("/myProfile");
-		}
-
-		$scope.goEditProfile = function() {
-			console.log("profileEdit");
-			$location.path("/profileEdit");
-		}
-
-		$scope.goSearch = function() {
-			console.log("search");
-			$location.path("/search");
-		}
+		$scope.goToPage = function(url) {
+			console.log("GoToPage:" + url);
+			$location.path(url);
+		};
 
 		$scope.genderOption = ['male', 'female', 'other'];
 		$scope.selectedLanguage = ['Turkish','English', 'French', 'German', 'Italian', 'Spanish'];
 
 		$scope.profileEdit = function(){
 
-		$http.post("http://localhost:8080/profile/edit?userEmail=" + $scope.userName )
+		$http.post(timeOutFactory.getBackendUrl() + '/profile/edit?userEmail=' + $scope.userName )
 		 .success(function(data, status) {
 			$window.alert("Success " + data.actionId);
 		  })
@@ -300,107 +173,36 @@ angular.module("timeout", ["ngRoute"])
 		 }
 	})
 
+	.controller("createEvent", function($scope, $http, $window, $location, timeOutFactory) {
 
-
-		$scope.goCreateGroup = function() {
-			console.log("createGroup");
-			$location.path("/createGroup");
-		}
-
-		$scope.goCreateEvent = function() {
-			console.log("createEvent");
-			$location.path("/createEvent");
-		}
-
-		$scope.goHome = function() {
-			console.log("home");
-			$location.path("/home");
-		}
-
-		$scope.goMyFriends = function() {
-			console.log("myFriends");
-			$location.path("/myFriends");
-		}
-
-		$scope.goMyGroups = function() {
-			console.log("myGroups");
-			$location.path("/myGroups");
-		}
-
-		$scope.goMyEvents = function() {
-			console.log("myEvents");
-			$location.path("/myEvents");
-		}
-
-		$scope.myProfile = function() {
-			console.log("myProfile");
-			$location.path("/myProfile");
-		}
-
-		$scope.goEditProfile = function() {
-			console.log("profileEdit");
-			$location.path("/profileEdit");
-		}
-
-		$scope.goSearch = function() {
-			console.log("search");
-			$location.path("/search");
-		}
+		$scope.goToPage = function(url) {
+			console.log("GoToPage:" + url);
+			$location.path(url);
+		};
 
 		$scope.createEvent = function(){
+			var sessionId = timeOutFactory.getSessionId();
+			var config = {headers: {'Set-Cookie': String(sessionId)};
 
-
+			$http.get(timeOutFactory.getBackendUrl() + '/event/create' + '?eventName=' + $scope.eventName + '&eventDescription=' + $scope.eventDescription, config})
+			 .success(function(data, status) {
+				$window.alert("Success " + data.actionId);
+			  })
+			  .error(function(data, status) {
+			 	console.log("Error " + data);
+			  });
+		}
 	})
 
-	.controller("createGroup", function($scope, $http, $window, $location) {
+	.controller("createGroup", function($scope, $http, $window, $location, timeOutFactory) {
 
-		$scope.goCreateGroup = function() {
-			console.log("createGroup");
-			$location.path("/createGroup");
-		}
-
-		$scope.goCreateEvent = function() {
-			console.log("createEvent");
-			$location.path("/createEvent");
-		}
-
-		$scope.goHome = function() {
-			console.log("home");
-			$location.path("/home");
-		}
-
-		$scope.goMyFriends = function() {
-			console.log("myFriends");
-			$location.path("/myFriends");
-		}
-
-		$scope.goMyGroups = function() {
-			console.log("myGroups");
-			$location.path("/myGroups");
-		}
-
-		$scope.goMyEvents = function() {
-			console.log("myEvents");
-			$location.path("/myEvents");
-		}
-
-		$scope.myProfile = function() {
-			console.log("myProfile");
-			$location.path("/myProfile");
-		}
-
-		$scope.goEditProfile = function() {
-			console.log("profileEdit");
-			$location.path("/profileEdit");
-		}
-
-		$scope.goSearch = function() {
-			console.log("search");
-			$location.path("/search");
-		}
+		$scope.goToPage = function(url) {
+			console.log("GoToPage:" + url);
+			$location.path(url);
+		};
 
 		$scope.createGroup = function() {
-			$http.post("http://localhost:8080/group/create?groupName=" + $scope.groupName + "&groupDescription=" + $scope.groupDescription + "&tag=" + $scope.tag)
+			$http.post('/group/create?groupName=' + $scope.groupName + '&groupDescription=' + $scope.groupDescription + '&tag=' + $scope.tag)
 			 .success(function(data, status) {
 				$window.alert("Success " + data.actionId);
 			  })
@@ -412,50 +214,10 @@ angular.module("timeout", ["ngRoute"])
 
 	.controller("myFriends", function($scope, $http, $window, $location) {
 
-		$scope.goCreateGroup = function() {
-			console.log("createGroup");
-			$location.path("/createGroup");
-		}
-
-		$scope.goCreateEvent = function() {
-			console.log("createEvent");
-			$location.path("/createEvent");
-		}
-
-		$scope.goHome = function() {
-			console.log("home");
-			$location.path("/home");
-		}
-
-		$scope.goMyFriends = function() {
-			console.log("myFriends");
-			$location.path("/myFriends");
-		}
-
-		$scope.goMyGroups = function() {
-			console.log("myGroups");
-			$location.path("/myGroups");
-		}
-
-		$scope.goMyEvents = function() {
-			console.log("myEvents");
-			$location.path("/myEvents");
-		}
-
-		$scope.myProfile = function() {
-			console.log("myProfile");
-			$location.path("/myProfile");
-		}
-
-		$scope.goEditProfile = function() {
-			console.log("profileEdit");
-			$location.path("/profileEdit");
-		}
-
-		$scope.goSearch = function() {
-			console.log("search");
-			$location.path("/search");
-		}
+		$scope.goToPage = function(url) {
+			console.log("GoToPage:" + url);
+			$location.path(url);
+		};
 	})
 
 	.factory("timeOutFactory", function(){
@@ -463,7 +225,9 @@ angular.module("timeout", ["ngRoute"])
 		var lists = [];
 		var userLoggedIn = false;
 		var backendUrl = "http://localhost:8080";
+		//var backendUrl = "http://timeoutswe5743.appspot.com";
 		var sessionId = "";
+		var searchText = "";
 
 		timeOutFactory.getLists = function(){
 			return lists;
@@ -503,6 +267,14 @@ angular.module("timeout", ["ngRoute"])
 
 		timeOutFactory.setSessionId = function(cookie){
 			sessionId = cookie;
+		};
+
+		timeOutFactory.getSearchText = function(){
+			return searchText;
+		};
+
+		timeOutFactory.setSearchText = function(text){
+			searchText = text;
 		};
 
 		return timeOutFactory;
