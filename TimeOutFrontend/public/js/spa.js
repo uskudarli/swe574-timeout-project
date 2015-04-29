@@ -60,7 +60,8 @@ angular.module("timeout", ["ngRoute"])
 		  .when("/myProfile", {
 		  	templateUrl: "myProfile.html",
 		  	controller: "myProfile"
-		  });
+		  })
+		  .otherwise({redirectTo: '/'});
 	})
 
 	.controller("indexController", function($scope, $http, $location, $window, timeOutFactory) {
