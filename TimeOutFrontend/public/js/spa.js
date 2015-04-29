@@ -91,6 +91,11 @@ angular.module("timeout", ["ngRoute"])
 			console.log("home");
 			$location.path("/home");
 		};
+
+		$scope.goHomePage = function() {
+			console.log("home");
+			$location.path("/home");
+		}
 	})
 
 	.controller("MainController", function($scope, $http, $location, $window, timeOutFactory) {
@@ -282,9 +287,12 @@ angular.module("timeout", ["ngRoute"])
 			$location.path("/search");
 		}
 
+		$scope.genderOption = ['male', 'female', 'other'];
+		$scope.selectedLanguage = ['Turkish','English', 'French', 'German', 'Italian', 'Spanish'];
+
 		$scope.profileEdit = function(){
 
-		$http.post("http://localhost:8080/profile/edit?userName=" + $scope.userName )
+		$http.post("http://localhost:8080/profile/edit?userEmail=" + $scope.userName )
 		 .success(function(data, status) {
 			$window.alert("Success " + data.actionId);
 		  })
