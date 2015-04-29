@@ -3,11 +3,11 @@ angular.module("timeout", ["ngRoute"])
 	  $routeProvider
 	   	 .when("/", {
 		    templateUrl: "main.html",
-		    controller: "MainController"
+		    controller: "mainController"
 		  })
 		  .when("/home", {
 		    templateUrl: "home.html",
-		    controller: "HomeController"
+		    controller: "homeController"
 		  })
 		  .when("/createEvent", {
 		  	templateUrl: "createEvent.html",
@@ -63,8 +63,8 @@ angular.module("timeout", ["ngRoute"])
 		  });
 	})
 
-	.controller("IndexController", function($scope, $http, $location, $window, timeOutFactory) {
-		console.log("IndexController works");
+	.controller("indexController", function($scope, $http, $location, $window, timeOutFactory) {
+		console.log("indexController works");
 		$scope.doLogin = function() {
 			// Simple GET request example :
 			var loginUrl = timeOutFactory.getBackendUrl() + "/login?userEmail=" + $scope.userEmail + "&password=" + $scope.loginPassword;
@@ -99,7 +99,7 @@ angular.module("timeout", ["ngRoute"])
 		};
 	})
 
-	.controller("MainController", function($scope, $http, $location, $window, timeOutFactory) {
+	.controller("mainController", function($scope, $http, $location, $window, timeOutFactory) {
 		$scope.signUp = function() {
 			// Simple GET request example :
 			$http({method: "GET",  url: timeOutFactory.getBackendUrl() + "/register?userEmail=" + $scope.email + "&password=" + $scope.sigUpPassword})
@@ -120,6 +120,19 @@ angular.module("timeout", ["ngRoute"])
 		};
 	})
 
+	.controller("homeController", function($scope, $http, $window, $location) {
+		console.log("homeController works");
+		$scope.goToPage = function(url) {
+			console.log("GoToPage: " + url);
+			$location.path(url);
+			//$location.path("/eventsCreated");
+			//$location.path("/suggestedGroups");
+			//$location.path("/newGroups");
+			//$location.path("/friendsGroups");
+			//$location.path("/eventsInvited");
+		};
+	})
+
 	.controller("searchController", function($scope, $http, $location, $window, timeOutFactory) {
 		// Simple GET request example :
 		$http({method: "GET",  url: timeOutFactory.getBackendUrl() + "/searchTag?tag=" + timeOutFactory.getSearchText()})
@@ -131,22 +144,10 @@ angular.module("timeout", ["ngRoute"])
 		  });
 	})
 
-	.controller("HomeController", function($scope, $http, $window, $location) {
-		$scope.goToPage = function(url) {
-			console.log("GoToPage:" + url);
-			$location.path(url);
-			//$location.path("/eventsCreated");
-			//$location.path("/suggestedGroups");
-			//$location.path("/newGroups");
-			//$location.path("/friendsGroups");
-			//$location.path("/eventsInvited");
-		};
-	})
-
 	.controller("eventsCreated", function($scope, $http, $window, $location) {
 
 		$scope.goToPage = function(url) {
-			console.log("GoToPage:" + url);
+			console.log("GoToPage: " + url);
 			$location.path(url);
 		};
 	})
@@ -154,7 +155,7 @@ angular.module("timeout", ["ngRoute"])
 	.controller("profileEdit", function($scope, $http, $window, $location, timeOutFactory) {
 
 		$scope.goToPage = function(url) {
-			console.log("GoToPage:" + url);
+			console.log("GoToPage: " + url);
 			$location.path(url);
 		};
 
@@ -176,15 +177,15 @@ angular.module("timeout", ["ngRoute"])
 	.controller("createEvent", function($scope, $http, $window, $location, timeOutFactory) {
 
 		$scope.goToPage = function(url) {
-			console.log("GoToPage:" + url);
+			console.log("GoToPage: " + url);
 			$location.path(url);
 		};
 
 		$scope.createEvent = function(){
 			var sessionId = timeOutFactory.getSessionId();
-			var config = {headers: {'Set-Cookie': String(sessionId)};
+			var config = {headers: {'Set-Cookie': String(sessionId)} };
 
-			$http.get(timeOutFactory.getBackendUrl() + '/event/create' + '?eventName=' + $scope.eventName + '&eventDescription=' + $scope.eventDescription, config})
+			$http.get(timeOutFactory.getBackendUrl() + '/event/create' + '?eventName=' + $scope.eventName + '&eventDescription=' + $scope.eventDescription, config)
 			 .success(function(data, status) {
 				$window.alert("Success " + data.actionId);
 			  })
@@ -197,7 +198,7 @@ angular.module("timeout", ["ngRoute"])
 	.controller("createGroup", function($scope, $http, $window, $location, timeOutFactory) {
 
 		$scope.goToPage = function(url) {
-			console.log("GoToPage:" + url);
+			console.log("GoToPage: " + url);
 			$location.path(url);
 		};
 
@@ -215,7 +216,7 @@ angular.module("timeout", ["ngRoute"])
 	.controller("myFriends", function($scope, $http, $window, $location) {
 
 		$scope.goToPage = function(url) {
-			console.log("GoToPage:" + url);
+			console.log("GoToPage: " + url);
 			$location.path(url);
 		};
 	})
