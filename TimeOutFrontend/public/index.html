@@ -31,7 +31,7 @@
 			<nav class="navbar navbar-inverse navbar-fixed-top">
             	<div class="container">
                     <div class="navbar-header">
-                        <a id="bounlogo" class="navbar-brand"  href="" ng-click="goHomePage()"><img alt="Home" title="Home" src="images/logo.fw.png"></a>
+                        <a id="bounlogo" class="navbar-brand"  href="" ng-click="goToPage('/home')"><img alt="Home" title="Home" src="images/logo.fw.png"></a>
 						<div class="righttop">
                             <div class="login" ng-show="!isCookieSet()">
                                 <form ng-submit="doLogin()">
@@ -55,8 +55,9 @@
                             </div>
 
                             <p id="search-button" ng-show="isCookieSet()">
-                                <input type="text" name="search"  ng-model="search"/>
-                                <button class="btn btn-primary" style="padding: 1px 12px;" type="submit" onclick="parent.location='search.html'">Search</button>
+                                <input type="text" name="search"  ng-model="searchText"/>
+                                <button class="btn btn-primary" style="padding: 1px 12px;" type="submit" 
+                                ng-click="search('/search')">Search</button>
                             </p>
                         </div>
                     </div>

@@ -3,45 +3,45 @@
         <div class="profile">
             <img ALT="Münevver Calayır" title="Münevver Calayır" src="images/profile.JPG" />
             <p>Münevver Calayır</p>
-            <a href="" ng-click="goEditProfile()">Edit Profile</a>
+            <a href="" ng-click="goToPage('/profileEdit')">Edit Profile</a>
         </div>
         <ul>
             <li>
-                <a href="" ng-click="goMyProfile()">
+                <a href="" ng-click="goToPage('/myProfile')">
                     <img src="images/profile.png" />
                     <p>My Profile</p>
                 </a>
             </li>
             <li>
-                <a href="" ng-click="goMyEvents()">
+                <a href="" ng-click="goToPage('/myEvents')">
                     <img src="images/event.png" />
                     <p>Events</p>
                 </a>
             </li>
-                  <li>
-                      <a href="" ng-click="goMyGroups()">
-                          <img src="images/group.png" />
-                          <p>Groups</p>
-                      </a>
-                  </li>
-                  <li>
-                      <a href="" ng-click="goMyFriends()">
-                          <img src="images/group.png" />
-                          <p>Friends</p>
-                      </a>
-                  </li>
+            <li>
+                <a href="" ng-click="goToPage('/myGroups')">
+                    <img src="images/group.png" />
+                    <p>Groups</p>
+                </a>
+            </li>
+            <li>
+                <a href="" ng-click="goToPage('/myFriends')">
+                    <img src="images/group.png" />
+                    <p>Friends</p>
+                </a>
+            </li>
         </ul>
                 </div>
                 <div class="menu">
                   <ul>
-                     <li>
-                        <a href="" ng-click="goHome()">Home</a>
+                    <li>
+                        <a href="" ng-click="goToPage('/home')">Home</a>
                     </li>
                     <li class="active">
-                        <a href="" ng-click="goCreateEvent()">Create Event</a>
+                        <a href="" ng-click="goToPage('/createEvent')">Create Event</a>
                     </li>
                     <li >
-                        <a href="" ng-click="goCreateGroup()">Create Group</a>
+                        <a href="" ng-click="goToPage('/createGroup')">Create Group</a>
                     </li>
                 </ul>
             </div>

@@ -47,7 +47,7 @@ angular.module("timeout", ["ngRoute"])
 		  })
 		  .when("/Search", {
 		  	templateUrl: "Search.html",
-		  	controller: "Search"
+		  	controller: "searchController"
 		  })
 		  .when("/suggestedGroups", {
 		  	templateUrl: "suggestedGroups.html",
@@ -83,6 +83,7 @@ angular.module("timeout", ["ngRoute"])
 			 	$window.alert("Specified username or password do not match with the records!!!");
 			  });
 		};
+
 		$scope.isCookieSet = function() {
 			return timeOutFactory.isUserLoggedIn();
 		};
@@ -92,10 +93,8 @@ angular.module("timeout", ["ngRoute"])
 			$location.path("/home");
 		};
 
-		$scope.goHomePage = function() {
-			console.log("home");
-			$location.path("/home");
-		}
+			timeOutFactory.setSearchText($scope.searchText);
+		};
 	})
 
 	.controller("MainController", function($scope, $http, $location, $window, timeOutFactory) {
@@ -114,7 +113,6 @@ angular.module("timeout", ["ngRoute"])
 			    }
 			  })
 			  .error(function(data, status) {
-			 	$window.alert("Specified username or password do not match with the records!!!");
 			  });
 		};
 	})
@@ -303,7 +301,6 @@ angular.module("timeout", ["ngRoute"])
 	})
 
 
-	.controller("createEvent", function($scope, $http, $window, $location) {
 
 		$scope.goCreateGroup = function() {
 			console.log("createGroup");
@@ -352,14 +349,6 @@ angular.module("timeout", ["ngRoute"])
 
 		$scope.createEvent = function(){
 
-		$http.post("http://localhost:8080/event/create?eventName=" + $scope.eventName + "&eventDescription=" + $scope.eventDescription)
-		 .success(function(data, status) {
-			$window.alert("Success " + data.actionId);
-		  })
-		  .error(function(data, status) {
-		 	console.log("Error");
-		  });
-		 }
 
 	})
 
