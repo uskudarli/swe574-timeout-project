@@ -87,6 +87,10 @@ angular.module("timeout", ["ngRoute"])
 		  	templateUrl: "suggestedGroups.html",
 		  	controller: "suggestedGroups"
 		  })
+		    .when("/eventsInvited", {
+		  	templateUrl: "eventsInvited.html",
+		  	controller: "eventsInvited"
+		  })
 		  .otherwise({redirectTo: '/'});
 	})
 
@@ -304,6 +308,12 @@ angular.module("timeout", ["ngRoute"])
 	})
 	
 	.controller('suggestedGroups', function($scope, $http, $window, $location){
+		$scope.goToPage = function(url) {
+			console.log("GoToPage: " + url);
+			$location.path(url);
+		};
+	})
+	.controller('eventsInvited', function($scope, $http, $window, $location){
 		$scope.goToPage = function(url) {
 			console.log("GoToPage: " + url);
 			$location.path(url);
