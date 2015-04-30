@@ -61,6 +61,32 @@ angular.module("timeout", ["ngRoute"])
 		  	templateUrl: "myProfile.html",
 		  	controller: "myProfile"
 		  })
+		   .when("/eventsInvited", {
+		  	templateUrl: "eventsInvited.html",
+		  	controller: "eventsInvited"
+		  })
+		    .when("/eventsCreated", {
+		  	templateUrl: "eventsCreated.html",
+		  	controller: "eventsCreated"
+		  })
+		    .when("/myGroups", {
+		  	templateUrl: "myGroups.html",
+		  	controller: "myGroups"
+		  })
+		    .when("/newGroups", {
+		  	templateUrl: "newGroups.html",
+		  	controller: "newGroups"
+		  })
+
+		    .when("/friendsGroups", {
+		  	templateUrl: "friendsGroups.html",
+		  	controller: "friendsGroups"
+		  })
+
+		    .when("/suggestedGroups", {
+		  	templateUrl: "suggestedGroups.html",
+		  	controller: "suggestedGroups"
+		  })
 		  .otherwise({redirectTo: '/'});
 	})
 
@@ -222,6 +248,67 @@ angular.module("timeout", ["ngRoute"])
 		};
 	})
 
+	.controller('myProfile', function($scope, $http, $window, $location){
+		$scope.goToPage = function(url) {
+			console.log("GoToPage: " + url);
+			$location.path(url);
+		};
+
+	})
+
+	.controller('myEvents', function($scope, $http, $window, $location){
+		$scope.goToPage = function(url) {
+			console.log("GoToPage: " + url);
+			$location.path(url);
+		};
+
+	})
+
+	.controller('eventsInvited', function($scope, $http, $window, $location){
+		$scope.goToPage = function(url) {
+			console.log("GoToPage: " + url);
+			$location.path(url);
+		};
+
+	})
+
+	.controller('eventsCreated', function($scope, $http, $window, $location){
+		$scope.goToPage = function(url) {
+			console.log("GoToPage: " + url);
+			$location.path(url);
+		};
+
+	})
+
+	.controller('myGroups', function($scope, $http, $window, $location){
+		$scope.goToPage = function(url) {
+			console.log("GoToPage: " + url);
+			$location.path(url);
+		};
+
+	})
+
+	.controller('newGroups', function($scope, $http, $window, $location){
+		$scope.goToPage = function(url) {
+			console.log("GoToPage: " + url);
+			$location.path(url);
+		};
+
+	})
+
+	.controller('friendsGroups', function($scope, $http, $window, $location){
+		$scope.goToPage = function(url) {
+			console.log("GoToPage: " + url);
+			$location.path(url);
+		};
+	})
+	
+	.controller('suggestedGroups', function($scope, $http, $window, $location){
+		$scope.goToPage = function(url) {
+			console.log("GoToPage: " + url);
+			$location.path(url);
+		};
+	})
 	.factory("timeOutFactory", function(){
 		var timeOutFactory = {};
 		var lists = [];
