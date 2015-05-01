@@ -48,7 +48,14 @@
 	</div>
 	<div class="midcolumn">
 		<div class="group-creation">
-			<p>Search Results</p><hr><br>
+			<p>Search Results</p>
+			<hr /><br />
+			<ul>
+				<li ng-repeat="result in resultSet">
+					{{result}}
+				</li>
+			</ul>
+			<br />
             <p>as many as result queries from databse, dynamically all of them will be shown here through JS</p>
 		</div>
 	</div>
