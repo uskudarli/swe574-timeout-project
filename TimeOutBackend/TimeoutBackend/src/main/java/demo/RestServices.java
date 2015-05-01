@@ -310,32 +310,70 @@ public class RestServices {
         return prepareInvitedActionForUser(cookie, "G");
     }
 
-    private List<ActionDTO> prepareInvitedActionForUser(String cookie,
-                                                        String actionType) {
+    @RequestMapping(value = "/event/my")
+	@ResponseBody
+	public List<ActionDTO> getMyEvents(
+			@RequestHeader("Set-Cookie") String cookie, HttpServletResponse resp) {
+    	setResponseHeaders(resp);
+		return prepareActionForUser(cookie, "E");
+	}
+	
+	@RequestMapping(value = "/group/my")
+	@ResponseBody
+	public List<ActionDTO> getMyGroups(
+			@RequestHeader("Set-Cookie") String cookie, HttpServletResponse resp) {
+		setResponseHeaders(resp);
+		return prepareActionForUser(cookie, "G");
+	}
 
-        EntityManager em = DBUtility.startTransaction();
+	private List<ActionDTO> prepareActionForUser(String cookie, String actionType) {
+		EntityManager em = DBUtility.startTransaction();
 
-        User user = getSessionUser(cookie);
+		User user = getSessionUser(cookie);
 
-        Query query = em
-                .createQuery(
-                        "FROM ActionUser A WHERE A.actionUserStatus = :actionUserStatus AND A.user = :user")
-                .setParameter("actionUserStatus",
-                        ActionUserStatus.INVITED)
-                .setParameter("user", user);
+		Query query = em
+				.createQuery(
+						"FROM ActionUser A WHERE A.user = :user")
+				.setParameter("user", user);
 
-        List<ActionUser> results = query.getResultList();
-        List<ActionDTO> actionList = new ArrayList<>();
+		List<ActionUser> results = query.getResultList();
+		List<ActionDTO> actionList = new ArrayList<>();
 
-        for (ActionUser actionUser : results) {
-            ActionDTO actionDTO = actionUser.getAction().getActionDTO();
-            if (actionUser.getAction().getActionType().equals(actionType)) {
-                actionList.add(actionDTO);
-            }
-        }
+		for (ActionUser actionUser : results) {
+			ActionDTO actionDTO = actionUser.getAction().getActionDTO();
+			if (actionUser.getAction().getActionType().equals(actionType)) {
+				actionList.add(actionDTO);
+			}
+		}
 
-        return actionList;
-    }
+		return actionList;
+	}
+
+	private List<ActionDTO> prepareInvitedActionForUser(String cookie,
+			String actionType) {
+		EntityManager em = DBUtility.startTransaction();
+
+		User user = getSessionUser(cookie);
+
+		Query query = em
+				.createQuery(
+						"FROM ActionUser A WHERE A.actionUserStatus = :actionUserStatus AND A.user = :user")
+				.setParameter("actionUserStatus",
+						ActionUserStatus.INVITED)
+				.setParameter("user", user);
+
+		List<ActionUser> results = query.getResultList();
+		List<ActionDTO> actionList = new ArrayList<>();
+
+		for (ActionUser actionUser : results) {
+			ActionDTO actionDTO = actionUser.getAction().getActionDTO();
+			if (actionUser.getAction().getActionType().equals(actionType)) {
+				actionList.add(actionDTO);
+			}
+		}
+
+		return actionList;
+	}
 
     private List<ActionDTO> prepareCreatedActionForUser(String cookie, String actionType) {
         EntityManager em = DBUtility.startTransaction();
