@@ -144,8 +144,30 @@ angular.module("timeout", ["ngRoute"])
 		};
 	})
 
-	.controller("homeController", function($scope, $http, $window, $location) {
-		console.log("homeController works");
+	.controller("homeController", function($scope, $http, $window, $location, timeOutFactory) {
+		var sessionId = timeOutFactory.getSessionId();
+		var config = {headers: {'Set-Cookie': String(sessionId)} };
+
+		$http.get(timeOutFactory.getBackendUrl() + '/', config)
+		 .success(function(data, status) {
+			$window.alert("Success " + data.actionId);
+			$scope.eventsInvited = data;
+		  })
+		  .error(function(data, status) {
+		 	console.log("Error " + data);
+		  });
+
+
+		var suggestedGroups = [{name:'' ,detail:'"Math "'}];
+		console.log("homeController works properly");
+		$scope.notificationList2 = [{name:'sara', detail:'"Math fans"'}];
+
+		timeOutFactory.addList("notificationList", $scope.notificationList2);
+
+		$scope.notificationList = timeOutFactory.getList("notificationList");
+
+
+
 		$scope.goToPage = function(url) {
 			console.log("GoToPage: " + url);
 			$location.path(url);
@@ -153,8 +175,13 @@ angular.module("timeout", ["ngRoute"])
 			//$location.path("/suggestedGroups");
 			//$location.path("/newGroups");
 			//$location.path("/friendsGroups");
-			//$location.path("/eventsInvited");
+			//$location.path("/eventsInvited
+
 		};
+		$scope.newsFeed = [
+		{name:'ali',detail:'math'},
+		{name:'ali', detail:'physics'}
+		];
 	})
 
 	.controller("searchController", function($scope, $http, $location, $window, timeOutFactory) {
@@ -385,9 +412,10 @@ angular.module("timeout", ["ngRoute"])
 			$location.path(url);
 		};
 	})
+
 	.factory("timeOutFactory", function(){
 		var timeOutFactory = {};
-		var lists = [];
+		var lists = {};
 		var userLoggedIn = false;
 		//var backendUrl = "http://localhost:8080";
 		var backendUrl = "http://timeoutswe5743.appspot.com";
@@ -398,20 +426,12 @@ angular.module("timeout", ["ngRoute"])
 			return lists;
 		};
 
-		timeOutFactory.getList = function(listId){
-			return lists[listId];
+		timeOutFactory.getList = function(listName){
+			return lists[listName];
 		};
 
-		timeOutFactory.addList = function(newList){
-			lists.push({
-				id:lists.length,
-				name:newList,
-				items:[]
-			});
-		};
-
-		timeOutFactory.addItem = function(listId, newItem){
-			lists[listId].items.push(newItem);
+		timeOutFactory.addList = function(name, list){
+			lists[name] = list;
 		};
 
 		timeOutFactory.isUserLoggedIn = function(){

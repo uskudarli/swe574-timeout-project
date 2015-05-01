@@ -57,21 +57,12 @@
       <div class="rightcolumn">
       	<div class="notification">
       		<p class="title">NOTIFICATIONS</p>
-      		<div class="notice">
-      			<img src="images/2.jpg" />
-      			<p class="not-title">Sara</p>
-      			<p class="not-detail"> joined the group "Math funs".</p>
+      		<div class="notice" ng-repeat="notification in notificationList ">
+      			
+      			<p class="not-title">{{notification.name}}</p>
+      			<p class="not-detail"> joined the group {{notification.detail}}</p>
       		</div>
-      		<div class="notice">
-      			<img src="images/3.jpg" />
-      			<p class="not-title">Ali</p>
-      			<p class="not-detail"> joined the group "Math funs".</p>
-      		</div>
-      		<div class="notice">
-      			<img src="images/suzan.jpg" />
-      			<p class="not-title">Suzan </p>
-      			<p class="not-detail"> joined the group "Math funs".</p>
-      		</div>
+      		
       	</div>
       	<div class="suggested-groups">
       		<p class="title">SUGGESTED GROUPS</p>
