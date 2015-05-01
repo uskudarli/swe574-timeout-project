@@ -146,7 +146,7 @@ angular.module("timeout", ["ngRoute"])
 			    }
 			  })
 			  .error(function(data, status) {
-			 	$window.alert(stringfy(data));
+			 	$window.alert(JSON.stringify(data));
 			  });
 		};
 	})
@@ -306,7 +306,7 @@ angular.module("timeout", ["ngRoute"])
 			$location.path(url);
 		};
 	})
-	
+
 	.controller('suggestedGroups', function($scope, $http, $window, $location){
 		$scope.goToPage = function(url) {
 			console.log("GoToPage: " + url);
