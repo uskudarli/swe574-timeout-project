@@ -327,6 +327,30 @@ public class RestServices {
 		setResponseHeaders(resp);
 		return prepareActionForUser(cookie, "G");
 	}
+	
+	@RequestMapping(value = "/friends/my")
+	@ResponseBody
+	public List<User> getMyFriends(
+			@RequestHeader("Set-Cookie") String cookie, HttpServletResponse resp) {
+		setResponseHeaders(resp);
+		return prepareFriendsForUser(cookie);
+	}
+	
+//	@RequestMapping(value = "/friends/invite")
+//	@ResponseBody
+//	public List<User> inviteFriends(
+//			@RequestHeader("Set-Cookie") String cookie, HttpServletResponse resp) {
+//		setResponseHeaders(resp);
+//		return inviteFriendsForUser(cookie);
+//	}
+
+	private List<User> prepareFriendsForUser(String cookie) {
+		EntityManager em = DBUtility.startTransaction();
+		User user = getSessionUser(cookie);
+		
+		List<User> list = new ArrayList<User>(user.getFriendShip1());
+		return list;
+	}
 
 	private List<ActionDTO> prepareActionForUser(String cookie, String actionType) {
 		EntityManager em = DBUtility.startTransaction();
