@@ -63,12 +63,9 @@
                     </ul>
                 </div>
                 <legend>Your Events</legend>
-                <div class="myEventList">
-                    <div class="eventOwner">
-                        <img src="images/suzan.jpg" />
-                    </div>
-                    <div class="eventOwnerName">Suzan Üsküdarlı</div>
-                    <div class="eventLink nextLine">has created an event:</div>
+                <div class="myEventList" ng-repeat="event in myEvents">
+                    <div class="eventOwnerName">{{event.owner}}</div>
+                    <!-- <div class="eventLink nextLine">has created an event:</div>
                     <div class="eventName">Breakfast</div>
                     <div class="eventLink">on</div>
                     <div class="eventDate">April 29th</div>
@@ -76,7 +73,7 @@
                     <div class="eventTime">9.00 - 11.00 </div>
                     <div class="eventLink">at</div>
                     <div class="eventPlace">Etiler Mado</div>
-                    <div class="eventNumber">3</div>
+                    <div class="eventNumber">3</div> -->
                 </div>
             </fieldset>
         </div>

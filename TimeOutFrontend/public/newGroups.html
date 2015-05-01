@@ -66,33 +66,9 @@
                     </ul>
                 </div>
                 <legend>Groups You're In</legend>
-                <div class="myGroupList">
-                    <div class="groupIcon">
-                        <img src="images/group2.png" />
-                    </div>
-                    <div class="groupName">Botanic</div>
-                    <div class="groupNumber">11</div>
-                </div>
-                <div class="myGroupList">
-                    <div class="groupIcon">
-                        <img src="images/group3.png" />
-                    </div>
-                    <div class="groupName">Boun Gurme</div>
-                    <div class="groupNumber">17</div>
-                </div>
-                <div class="myGroupList">
-                    <div class="groupIcon">
-                        <img src="images/group5.png" />
-                    </div>
-                    <div class="groupName">Trippers</div>
-                    <div class="groupNumber">20+</div>
-                </div>
-                <div class="myGroupList">
-                    <div class="groupIcon">
-                        <img src="images/group1.png" />
-                    </div>
-                    <div class="groupName">C++</div>
-                    <div class="groupNumber">4</div>
+                <div class="myGroupList"  ng-repeat="group in newGroups">
+                    <div class="groupName">{{group.name}}</div>
+                    <div class="groupNumber">{{group.count}}</div>
                 </div>
             </div>
         </fieldset>

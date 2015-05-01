@@ -113,12 +113,13 @@ label {
 }
 
 .midcontainer{
-	width: 1070px;
-	float:left;
-	background-color:#fff;
-	height:auto;
-	min-height: 550px;
-	margin-top: 35px;
+    background-color: #fff;
+    float: left;
+    height: auto;
+    margin-left: 278px;
+    margin-top: 125px;
+    min-height: 550px;
+    width: 1070px;
 }
 
 #search-button{
@@ -198,17 +199,25 @@ div.groupMenu ul li a{
 }
 
 .groupFriends{
-    float: right;
+    float: left;
+    width: auto;
 }
 
-.otherFriends:hover .others{
-    display: block;
+.groupFriends a{
+    float: left;
+    color:#0fa4dd;
+}
+
+.groupFriends span{
+    float: left;
+    margin: 0 5px 0 5px;
 }
 
 .others{
     background-color: #12295d;
     border-radius: 5px;
-    color: #fff;
+    color: #fff !important;
+    text-decoration: none !important;
     display: none;
     float: right;
     font-size: 11px;
@@ -218,6 +227,21 @@ div.groupMenu ul li a{
     position: absolute;
     width: 100px;
     z-index: 99999;   
+}
+.otherFriends{
+    float: left;
+    width: auto;
+    color: #0fa4dd;
+    text-decoration: underline;
+    margin: 0 5px 0 5px;
+}
+.otherFriends:hover .others{
+    display: block;
+}
+
+.friendsInfo{
+    float: right;
+    width: auto;
 }
 
 div.eventMenu{
@@ -635,7 +659,7 @@ footer {
 	background-color: #e2e2df;
     border-bottom: 3px solid #dddddd;
     border-top: 1px solid #9bb5d1;
-    bottom: 0;
+    bottom: 0 !important;
     clear: both;
     color: #666;
     font-size: 11px;
@@ -643,6 +667,6 @@ footer {
     padding-bottom: 5px;
     padding-left: 13%;
     padding-top: 5px;
-    position: absolute;
+    position: fixed;
     width: 100%;
 }

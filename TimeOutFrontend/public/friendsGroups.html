@@ -67,58 +67,25 @@
                 </div>
                 <legend>Groups You're In</legend>
                 <div class="myGroupList">
-                    <div class="groupIcon">
-                        <img src="images/group3.png" />
-                    </div>
-                    <div class="groupName">Boun Gurme</div>
-                    <div class="groupNumber">20+</div>
-                    <div class="groupFriends"><a href="#">Ahmet Tandır</a>, <a href="#">Mehmet Pilav</a>, <a href="#">Tansu Fasulye</a> and <a class="otherFriends" href="#">41 others</a> in this group.</div>
+                    <div class="groupName"></div>
+                    <div class="groupFriends"><a href="#"></a>,</div> 
+                    <div class="groupFriends">and <a class="otherFriends" href="#">{{group.friendList.count-3}} others</a> in this group.</div>
                     <div class="others"> Ali Köftehor<br />Veli Patlıcan<br />Ayşe Kızartma<br />Fatma Mercimek<br />Murat Şehriye</div>
                 </div>
-                <div class="myGroupList">
-                    <div class="groupIcon">
-                        <img src="images/pi-icon.png" />
+                <div class="myGroupList" ng-repeat="group in friendsGroups">
+                    <div class="groupName">{{group.name}}</div>
+                    <div class="friendsInfo">
+                        <div class="groupFriends" ng-repeat="friend in group.friendList | limitTo: 3">
+                            <a href="#">{{friend.name}}</a>
+                            <span>,</span> 
+                        </div>
+                        <span> and </span>
+                        <div class="otherFriends">
+                                {{group.friendList.count-3}} others
+                                <div class="others" ng-repeat="friend in group.friendList">{{friend.name}} <br /></div>
+                        </div> 
+                        <span>in this group.</span>
                     </div>
-                    <div class="groupName">Math</div>
-                    <div class="groupNumber">20+</div>
-                    <div class="groupFriends"><a href="#">Ahmet Tandır</a>, <a href="#">Mehmet Pilav</a>, <a href="#">Tansu Fasulye</a> and <a class="otherFriends" href="#">41 others</a> in this group.</div>
-                    <div class="others"> Ali Köftehor<br />Veli Patlıcan<br />Ayşe Kızartma<br />Fatma Mercimek<br />Murat Şehriye</div>
-                </div>
-                <div class="myGroupList">
-                    <div class="groupIcon">
-                        <img src="images/group2.png" />
-                    </div>
-                    <div class="groupName">Botanic</div>
-                    <div class="groupNumber">11</div>
-                    <div class="groupFriends"><a href="#">Ahmet Tandır</a>, <a href="#">Mehmet Pilav</a>, <a href="#">Tansu Fasulye</a> and <a class="otherFriends" href="#">41 others</a> in this group.</div>
-                    <div class="others"> Ali Köftehor<br />Veli Patlıcan<br />Ayşe Kızartma<br />Fatma Mercimek<br />Murat Şehriye</div>
-                </div>
-                <div class="myGroupList">
-                    <div class="groupIcon">
-                        <img src="images/group3.png" />
-                    </div>
-                    <div class="groupName">Boun Gurme</div>
-                    <div class="groupNumber">17</div>
-                    <div class="groupFriends"><a href="#">Ahmet Tandır</a>, <a href="#">Mehmet Pilav</a>, <a href="#">Tansu Fasulye</a> and <a class="otherFriends" href="#">98 others</a> in this group.</div>
-                    <div class="others"> Ali Köftehor<br />Veli Patlıcan<br />Ayşe Kızartma<br />Fatma Mercimek<br />Murat Şehriye</div>
-                </div>
-                <div class="myGroupList">
-                    <div class="groupIcon">
-                        <img src="images/group5.png" />
-                    </div>
-                    <div class="groupName">Trippers</div>
-                    <div class="groupNumber">20+</div>
-                    <div class="groupFriends"><a href="#">Ahmet Tandır</a>, <a href="#">Mehmet Pilav</a>, <a href="#">Tansu Fasulye</a> and <a class="otherFriends" href="#">14 others</a> in this group.</div>
-                    <div class="others"> Ali Köftehor<br />Veli Patlıcan<br />Ayşe Kızartma<br />Fatma Mercimek<br />Murat Şehriye</div>
-                </div>
-                <div class="myGroupList">
-                    <div class="groupIcon">
-                        <img src="images/group1.png" />
-                    </div>
-                    <div class="groupName">C++</div>
-                    <div class="groupNumber">4</div>
-                    <div class="groupFriends"><a href="#">Ahmet Tandır</a>, <a href="#">Mehmet Pilav</a>, <a href="#">Tansu Fasulye</a> and <a class="otherFriends" href="#">11 others</a> in this group.</div>
-                    <div class="others"> Ali Köftehor<br />Veli Patlıcan<br />Ayşe Kızartma<br />Fatma Mercimek<br />Murat Şehriye</div>
                 </div>
             </div>
         </fieldset>

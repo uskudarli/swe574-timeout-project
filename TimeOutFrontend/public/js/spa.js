@@ -61,10 +61,6 @@ angular.module("timeout", ["ngRoute"])
 		  	templateUrl: "myProfile.html",
 		  	controller: "myProfile"
 		  })
-		   .when("/eventsInvited", {
-		  	templateUrl: "eventsInvited.html",
-		  	controller: "eventsInvited"
-		  })
 		    .when("/eventsCreated", {
 		  	templateUrl: "eventsCreated.html",
 		  	controller: "eventsCreated"
@@ -87,10 +83,7 @@ angular.module("timeout", ["ngRoute"])
 		  	templateUrl: "suggestedGroups.html",
 		  	controller: "suggestedGroups"
 		  })
-		    .when("/eventsInvited", {
-		  	templateUrl: "eventsInvited.html",
-		  	controller: "eventsInvited"
-		  })
+
 		  .otherwise({redirectTo: '/'});
 	})
 
@@ -114,13 +107,16 @@ angular.module("timeout", ["ngRoute"])
 			 	$window.alert("Specified username or password do not match with the records!!!");
 			  });
 		};
+
 		$scope.isCookieSet = function() {
 			return timeOutFactory.isUserLoggedIn();
 		};
+
 		$scope.goToPage = function(url) {
 			console.log("GoToPage:" + url);
 			$location.path(url);
 		};
+
 		$scope.search = function(url){
 			timeOutFactory.setSearchText($scope.searchText);
 			$scope.goToPage(url);
@@ -183,13 +179,17 @@ angular.module("timeout", ["ngRoute"])
 	})
 
 	.controller("profileEdit", function($scope, $http, $window, $location, timeOutFactory) {
+
 		$scope.goToPage = function(url) {
 			console.log("GoToPage: " + url);
 			$location.path(url);
 		};
+
 		$scope.genderOption = ['male', 'female', 'other'];
 		$scope.selectedLanguage = ['Turkish','English', 'French', 'German', 'Italian', 'Spanish'];
+
 		$scope.profileEdit = function(){
+
 		$http.post(timeOutFactory.getBackendUrl() + '/profile/edit?userEmail=' + $scope.userName )
 		 .success(function(data, status) {
 			$window.alert("Success " + data.actionId);
@@ -201,6 +201,7 @@ angular.module("timeout", ["ngRoute"])
 	})
 
 	.controller("createEvent", function($scope, $http, $window, $location, timeOutFactory) {
+
 		$scope.goToPage = function(url) {
 			console.log("GoToPage: " + url);
 			$location.path(url);
@@ -209,6 +210,7 @@ angular.module("timeout", ["ngRoute"])
 		$scope.createEvent = function(){
 			var sessionId = timeOutFactory.getSessionId();
 			var config = {headers: {'Set-Cookie': String(sessionId)} };
+
 			$http.get(timeOutFactory.getBackendUrl() + '/event/create' + '?eventName=' + $scope.eventName + '&eventDescription=' + $scope.eventDescription, config)
 			 .success(function(data, status) {
 				$window.alert("Success " + data.actionId);
@@ -220,6 +222,7 @@ angular.module("timeout", ["ngRoute"])
 	})
 
 	.controller("createGroup", function($scope, $http, $window, $location, timeOutFactory) {
+
 		$scope.goToPage = function(url) {
 			console.log("GoToPage: " + url);
 			$location.path(url);
@@ -233,10 +236,11 @@ angular.module("timeout", ["ngRoute"])
 			  .error(function(data, status) {
 			 	console.log("Error");
 			  });
-		};
+		}
 	})
 
 	.controller("myFriends", function($scope, $http, $window, $location) {
+
 		$scope.goToPage = function(url) {
 			console.log("GoToPage: " + url);
 			$location.path(url);
@@ -251,33 +255,89 @@ angular.module("timeout", ["ngRoute"])
 
 	})
 
-	.controller('myEvents', function($scope, $http, $window, $location){
+	.controller('myEvents', function($scope, $http, $window, $location, timeOutFactory){
 
+		var sessionId = timeOutFactory.getSessionId();
+		var config = {headers: {'Set-Cookie': String(sessionId)} };
 
+		$http.get(timeOutFactory.getBackendUrl() + '/event/degisecekkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk', config)
+		 .success(function(data, status) {
+			$window.alert("Success " + data.actionId);
+			$scope.myEvents = data;
+		  })
+		  .error(function(data, status) {
+		 	console.log("Error " + data);
+		  });
 
 		$scope.goToPage = function(url) {
 			console.log("GoToPage: " + url);
 			$location.path(url);
 		};
+
 	})
 
-	.controller('eventsInvited', function($scope, $http, $window, $location){
-		$scope.goToPage = function(url) {
-			console.log("GoToPage: " + url);
-			$location.path(url);
-		};
-	})
 
 	.controller('eventsCreated', function($scope, $http, $window, $location){
 		$scope.goToPage = function(url) {
 			console.log("GoToPage: " + url);
 			$location.path(url);
 		};
+
 	})
 
-	.controller('myGroups', function($scope, $http, $window, $location){
-		$scope.myGroups = [{name:"KediSevenler", count:"5"}, {name:"FareSevenler", count:"10"}, {name:"KopekSevenler", count:"15"}];
+	.controller('myGroups', function($scope, $http, $window, $location, timeOutFactory){
+		var sessionId = timeOutFactory.getSessionId();
+		var config = {headers: {'Set-Cookie': String(sessionId)} };
 
+		$http.get(timeOutFactory.getBackendUrl() + '/group/degisecekkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk', config)
+		 .success(function(data, status) {
+			$window.alert("Success " + data.actionId);
+			$scope.myGroups = data;
+		  })
+		  .error(function(data, status) {
+		 	console.log("Error " + data);
+		  });
+
+		$scope.goToPage = function(url) {
+			console.log("GoToPage: " + url);
+			$location.path(url);
+		};
+
+
+	})
+
+	.controller('newGroups', function($scope, $http, $window, $location, timeOutFactory){
+		var sessionId = timeOutFactory.getSessionId();
+		var config = {headers: {'Set-Cookie': String(sessionId)} };
+
+		$http.get(timeOutFactory.getBackendUrl() + '/group/degisecekkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk', config)
+		 .success(function(data, status) {
+			$window.alert("Success " + data.actionId);
+			$scope.newGroups = data;
+		  })
+		  .error(function(data, status) {
+		 	console.log("Error " + data);
+		  });
+
+		$scope.goToPage = function(url) {
+			console.log("GoToPage: " + url);
+			$location.path(url);
+		};
+
+	})
+
+	.controller('friendsGroups', function($scope, $http, $window, $location, timeOutFactory){
+		var sessionId = timeOutFactory.getSessionId();
+		var config = {headers: {'Set-Cookie': String(sessionId)} };
+
+		$http.get(timeOutFactory.getBackendUrl() + '/group/degisecekkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk', config)
+		 .success(function(data, status) {
+			$window.alert("Success " + data.actionId);
+			$scope.friendsGroups = data;
+		  })
+		  .error(function(data, status) {
+		 	console.log("Error " + data);
+		  });
 
 
 		$scope.goToPage = function(url) {
@@ -286,26 +346,25 @@ angular.module("timeout", ["ngRoute"])
 		};
 	})
 
-	.controller('newGroups', function($scope, $http, $window, $location){
+	.controller('suggestedGroups', function($scope, $http, $window, $location, timeOutFactory){
+		var sessionId = timeOutFactory.getSessionId();
+		var config = {headers: {'Set-Cookie': String(sessionId)} };
+
+		$http.get(timeOutFactory.getBackendUrl() + '/group/degisecekkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk', config)
+		 .success(function(data, status) {
+			$window.alert("Success " + data.actionId);
+			$scope.suggestedGroups = data;
+		  })
+		  .error(function(data, status) {
+		 	console.log("Error " + data);
+		  });
+
 		$scope.goToPage = function(url) {
 			console.log("GoToPage: " + url);
 			$location.path(url);
 		};
 	})
 
-	.controller('friendsGroups', function($scope, $http, $window, $location){
-		$scope.goToPage = function(url) {
-			console.log("GoToPage: " + url);
-			$location.path(url);
-		};
-	})
-
-	.controller('suggestedGroups', function($scope, $http, $window, $location){
-		$scope.goToPage = function(url) {
-			console.log("GoToPage: " + url);
-			$location.path(url);
-		};
-	})
 
 	.controller('eventsInvited', function($scope, $http, $window, $location, timeOutFactory){
 		var sessionId = timeOutFactory.getSessionId();
@@ -320,12 +379,12 @@ angular.module("timeout", ["ngRoute"])
 		 	console.log("Error " + data);
 		  });
 
+
 		$scope.goToPage = function(url) {
 			console.log("GoToPage: " + url);
 			$location.path(url);
 		};
 	})
-
 	.factory("timeOutFactory", function(){
 		var timeOutFactory = {};
 		var lists = [];
