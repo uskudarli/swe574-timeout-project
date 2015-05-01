@@ -47,25 +47,10 @@
       	</div>
       <div class="midcolumn">
       			<div class="news-feed">
-      		<div class="news">
-      			<img src="images/1.jpg" />
-      			<p class="news-title">Hasan</p>
-      			<p class="news-detail"> joined the group "Math funs".</p>
-      		</div>
-      		<div class="news">
-      			<img src="images/suzan.jpg" />
-      			<p class="news-title">Suzan Üsküdarlı</p>
-      			<p class="news-detail"> joined the group "Math funs".</p>
-      		</div>
-      		<div class="news">
-      			<img src="images/2.jpg" />
-      			<p class="news-title">Sara</p>
-      			<p class="news-detail"> joined the group "Math funs".</p>
-      		</div>
-      		<div class="news">
-      			<img src="images/3.jpg" />
-      			<p class="news-title">Robert</p>
-      			<p class="news-detail"> joined the group "Math funs".</p>
+      		<div class="news" ng-repeat="newFeed in newsFeed">
+      			
+      			<p class="news-title">{{newFeed.name}}</p>
+      			<p class="news-detail"> joined the group {{newFeed.detail}}</p>
       		</div>
       	</div>
       </div>
