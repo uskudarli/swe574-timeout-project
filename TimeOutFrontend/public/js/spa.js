@@ -162,13 +162,6 @@ angular.module("timeout", ["ngRoute"])
 			//$location.path("/friendsGroups");
 			//$location.path("/eventsInvited");
 		};
-
-		$scope.newsFeed = [
-		{name:'hasan', detail:'"Math fans"'},
-		{name:'Suzan uskudarli', detail:'"Math fans"'},
-		{name:'can', detail:'"Python"'},
-		{name:'sara', detail:'"Physics fan"'}
-		];
 	})
 
 	.controller("searchController", function($scope, $http, $location, $window, timeOutFactory) {
@@ -268,6 +261,9 @@ angular.module("timeout", ["ngRoute"])
 	})
 
 	.controller('myEvents', function($scope, $http, $window, $location){
+
+
+
 		$scope.goToPage = function(url) {
 			console.log("GoToPage: " + url);
 			$location.path(url);
@@ -325,7 +321,20 @@ angular.module("timeout", ["ngRoute"])
 			$location.path(url);
 		};
 	})
-	.controller('eventsInvited', function($scope, $http, $window, $location){
+	.controller('eventsInvited', function($scope, $http, $window, $location, timeOutFactory){
+		var sessionId = timeOutFactory.getSessionId();
+		var config = {headers: {'Set-Cookie': String(sessionId)} };
+
+		$http.get(timeOutFactory.getBackendUrl() + '/event/invited', config)
+		 .success(function(data, status) {
+			$window.alert("Success " + data.actionId);
+			$scope.eventsInvited = data;
+		  })
+		  .error(function(data, status) {
+		 	console.log("Error " + data);
+		  });
+
+
 		$scope.goToPage = function(url) {
 			console.log("GoToPage: " + url);
 			$location.path(url);
@@ -335,8 +344,8 @@ angular.module("timeout", ["ngRoute"])
 		var timeOutFactory = {};
 		var lists = [];
 		var userLoggedIn = false;
-		var backendUrl = "http://localhost:8080";
-		//var backendUrl = "http://timeoutswe5743.appspot.com";
+		//var backendUrl = "http://localhost:8080";
+		var backendUrl = "http://timeoutswe5743.appspot.com";
 		var sessionId = "";
 		var searchText = "";
 
