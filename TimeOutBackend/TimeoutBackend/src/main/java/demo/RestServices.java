@@ -3,12 +3,14 @@ package demo;
 import common.DBUtility;
 import common.ResponseHeader;
 import dto.ActionDTO;
+
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.servlet.http.HttpServletResponse;
+
 import java.math.BigInteger;
 import java.util.*;
 
@@ -336,17 +338,7 @@ public class RestServices {
 						"FROM ActionUser A WHERE A.user = :user")
 				.setParameter("user", user);
 
-		List<ActionUser> results = query.getResultList();
-		List<ActionDTO> actionList = new ArrayList<>();
-
-		for (ActionUser actionUser : results) {
-			ActionDTO actionDTO = actionUser.getAction().getActionDTO();
-			if (actionUser.getAction().getActionType().equals(actionType)) {
-				actionList.add(actionDTO);
-			}
-		}
-
-		return actionList;
+		return prepareActionDTOList(actionType, query);
 	}
 
 	private List<ActionDTO> prepareInvitedActionForUser(String cookie,
@@ -362,17 +354,7 @@ public class RestServices {
 						ActionUserStatus.INVITED)
 				.setParameter("user", user);
 
-		List<ActionUser> results = query.getResultList();
-		List<ActionDTO> actionList = new ArrayList<>();
-
-		for (ActionUser actionUser : results) {
-			ActionDTO actionDTO = actionUser.getAction().getActionDTO();
-			if (actionUser.getAction().getActionType().equals(actionType)) {
-				actionList.add(actionDTO);
-			}
-		}
-
-		return actionList;
+		return prepareActionDTOList(actionType, query);
 	}
 
     private List<ActionDTO> prepareCreatedActionForUser(String cookie, String actionType) {
@@ -387,18 +369,25 @@ public class RestServices {
                         ActionUserStatus.CREATED)
                 .setParameter("user", user);
 
-        List<ActionUser> results = query.getResultList();
-        List<ActionDTO> actionList = new ArrayList<>();
+        return prepareActionDTOList(actionType, query);
+    }
 
-        for (ActionUser actionUser : results) {
-            ActionDTO actionDTO = actionUser.getAction().getActionDTO();
-            if (actionUser.getAction().getActionType().equals(actionType)) {
-                actionList.add(actionDTO);
-            }
-        }
+	private List<ActionDTO> prepareActionDTOList(String actionType, Query query) {
+		List<ActionUser> results = query.getResultList();
+        List<ActionDTO> actionList = new ArrayList<>();
+		Set<Long> actionIds = new HashSet<Long>();
+
+		for (ActionUser actionUser : results) {
+			ActionDTO actionDTO = actionUser.getAction().getActionDTO();
+			if (actionUser.getAction().getActionType().equals(actionType)
+					&& !actionIds.contains(actionDTO.getActionId())) {
+				actionList.add(actionDTO);
+				actionIds.add(actionDTO.getActionId());
+			}
+		}
 
         return actionList;
-    }
+	}
 
     private void insertTagsOfActions(String tagString, EntityManager em,
                                      Action action) {
