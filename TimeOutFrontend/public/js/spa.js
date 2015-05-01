@@ -162,6 +162,13 @@ angular.module("timeout", ["ngRoute"])
 			//$location.path("/friendsGroups");
 			//$location.path("/eventsInvited");
 		};
+
+		$scope.newsFeed = [
+		{name:'hasan', detail:'"Math fans"'},
+		{name:'Suzan uskudarli', detail:'"Math fans"'},
+		{name:'can', detail:'"Python"'},
+		{name:'sara', detail:'"Physics fan"'}
+		];
 	})
 
 	.controller("searchController", function($scope, $http, $location, $window, timeOutFactory) {
