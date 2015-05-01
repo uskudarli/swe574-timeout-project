@@ -1,36 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<persistence
-    xmlns="http://java.sun.com/xml/ns/persistence"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
-    version="2.0">
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+	version="2.0">
 
-  <persistence-unit name="Demo">
-      <class>demo.User</class>
-      <class>demo.UserBasicInfo</class>
-      <class>demo.UserCommInfo</class>
-      <class>demo.UserExtraInfo</class>
-      <class>demo.Role</class>
-      <class>demo.Greeting</class>
-      <class>demo.Action</class>
-      <class>demo.ActionUser</class>
-      <class>demo.ActionTag</class>
-	  <class>demo.Tag</class>
-	  <class>demo.CustomType</class>
-	  <class>demo.Attribute</class>
-	  <class>demo.Comment</class>
-	  <class>demo.Post</class>
-	  <class>demo.Session</class>
-	  
-    <properties>
-      <property name="javax.persistence.jdbc.user" value="root" />
-        <property name="javax.persistence.jdbc.password" value="password" />
-        <property name="hibernate.show_sql" value="true" />
-      <property name="hibernate.hbm2ddl.auto" value="update" />
-      <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect"/>
-    </properties>
+	<persistence-unit name="Demo">
+		<class>demo.User</class>
+		<class>demo.UserBasicInfo</class>
+		<class>demo.UserCommInfo</class>
+		<class>demo.UserExtraInfo</class>
+		<class>demo.Role</class>
+		<class>demo.Greeting</class>
+		<class>demo.Action</class>
+		<class>demo.ActionUser</class>
+		<class>demo.ActionTag</class>
+		<class>demo.Tag</class>
+		<class>demo.CustomType</class>
+		<class>demo.Attribute</class>
+		<class>demo.Comment</class>
+		<class>demo.Post</class>
+		<class>demo.Session</class>
+		<class>demo.UserRecommendation</class>
+		<class>demo.ActionRecommendation</class>
+		<class>demo.FriendshipInvitation</class>
+		<class>demo.ActionInvitation</class>
+		<properties>
+			<property name="javax.persistence.jdbc.user" value="root" />
+			<property name="javax.persistence.jdbc.password" value="password" />
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
+		</properties>
 
-  </persistence-unit>
+	</persistence-unit>
 
 </persistence>

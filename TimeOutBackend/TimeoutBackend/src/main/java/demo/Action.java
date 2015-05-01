@@ -58,6 +58,9 @@ public class Action {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "action")
 	private Set<ActionTag> actionTags = new HashSet<ActionTag>(0);
 	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "action")
+	private Set<ActionRecommendation> actionRecommendations = new HashSet<ActionRecommendation>(0);
+	
 	public Action(){
 	}
 	

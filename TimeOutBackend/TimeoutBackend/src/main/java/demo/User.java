@@ -24,44 +24,47 @@ public class User {
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
 	private Set<ActionUser> actionUsers = new HashSet<ActionUser>(0);
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userRecommended1")
+	private Set<UserRecommendation> userRecommendations1 = new HashSet<UserRecommendation>(0);
 	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userRecommended2")
+	private Set<UserRecommendation> userRecommendations2 = new HashSet<UserRecommendation>(0);
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "action")
+	private Set<ActionRecommendation> actionRecommendations = new HashSet<ActionRecommendation>(0);
+
 	@ManyToMany
-	@JoinTable(name="FriendShip",
-	 joinColumns=@JoinColumn(name="personId"),
-	 inverseJoinColumns=@JoinColumn(name="friendId")
-	)
+	@JoinTable(name = "FriendShip", joinColumns = @JoinColumn(name = "personId"), inverseJoinColumns = @JoinColumn(name = "friendId"))
 	private Set<User> friendShip1 = new HashSet<User>(0);
-	
+
 	@ManyToMany
-	@JoinTable(name="FriendShip",
-	 joinColumns=@JoinColumn(name="friendId"),
-	 inverseJoinColumns=@JoinColumn(name="personId")
-	)
+	@JoinTable(name = "FriendShip", joinColumns = @JoinColumn(name = "friendId"), inverseJoinColumns = @JoinColumn(name = "personId"))
 	private Set<User> friendShip2 = new HashSet<User>(0);
-	
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private Set<CustomType> customTypes = new HashSet<CustomType>(0);
-	
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private Set<Post> posts = new HashSet<Post>(0);
-	
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private Set<Comment> comments = new HashSet<Comment>(0);
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "roleId")
+	@JoinColumn(name = "roleId")
 	private Role role;
-	
-	@OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-    @PrimaryKeyJoinColumn
+
+	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@PrimaryKeyJoinColumn
 	private UserBasicInfo userBasicInfo;
-	
-	@OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-    @PrimaryKeyJoinColumn
+
+	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@PrimaryKeyJoinColumn
 	private UserCommInfo userCommInfo;
-	
-	@OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-    @PrimaryKeyJoinColumn
+
+	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@PrimaryKeyJoinColumn
 	private UserExtraInfo userExtraInfo;
 
 	public Set<ActionUser> getActionUsers() {
