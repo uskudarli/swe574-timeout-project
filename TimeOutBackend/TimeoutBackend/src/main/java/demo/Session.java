@@ -13,7 +13,7 @@ public class Session {
 	@GenericGenerator(name="incrementSession", strategy = "increment")
 	private Long sesssionId;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userId")
 	private User user;
 

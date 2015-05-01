@@ -17,6 +17,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import dto.ActionDTO;
+
 import org.hibernate.annotations.GenericGenerator;
 
 
@@ -179,5 +182,13 @@ public class Action {
 
 	public void setActionTags(Set<ActionTag> actionTags) {
 		this.actionTags = actionTags;
+	}
+	
+	public ActionDTO getActionDTO() {
+		ActionDTO actionDTO = new ActionDTO();
+		actionDTO.setActionId(actionId);
+		actionDTO.setName(title);
+		actionDTO.setCount(actionUsers.size());
+		return actionDTO;
 	}
 }

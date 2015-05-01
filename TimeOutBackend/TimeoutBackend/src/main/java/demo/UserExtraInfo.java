@@ -24,7 +24,6 @@ public class UserExtraInfo {
 	@GenericGenerator(name = "incrementUser", strategy = "increment")
 	private Long userId;
 	
-	private char gender;
 	private Date birthDate;
 	private String about;
 	private String interests;
@@ -32,14 +31,6 @@ public class UserExtraInfo {
 	
 	@OneToOne(mappedBy = "userExtraInfo")
 	private User user;
-
-	public char getGender() {
-		return gender;
-	}
-
-	public void setGender(char gender) {
-		this.gender = gender;
-	}
 
 	public Date getBirthDate() {
 		return birthDate;
@@ -65,8 +56,7 @@ public class UserExtraInfo {
 	 * @param birthDate
 	 * @param about
 	 */
-	public UserExtraInfo(char gender, Date birthDate, String about) {
-		this.gender = gender;
+	public UserExtraInfo(Date birthDate, String about) {
 		this.birthDate = birthDate;
 		this.about = about;
 	}
@@ -85,6 +75,22 @@ public class UserExtraInfo {
 
 	public void setLanguages(String languages) {
 		this.languages = languages;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 }

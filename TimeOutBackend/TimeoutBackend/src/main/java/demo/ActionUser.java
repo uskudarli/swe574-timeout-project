@@ -4,6 +4,8 @@ import javax.persistence.*;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import dto.ActionDTO;
+
 @Entity
 @Table(name = "ActionUser")
 public class ActionUser {
@@ -41,7 +43,6 @@ public class ActionUser {
 		this.actionUserStatus = actionUserStatus;
 	}
 
-
 	public User getUser() {
 		return user;
 	}
@@ -50,7 +51,6 @@ public class ActionUser {
 		this.user = user;
 	}
 
-
 	public Action getAction() {
 		return action;
 	}
@@ -58,4 +58,5 @@ public class ActionUser {
 	public void setAction(Action action) {
 		this.action = action;
 	}
+
 }

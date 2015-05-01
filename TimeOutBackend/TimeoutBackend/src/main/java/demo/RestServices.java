@@ -2,11 +2,15 @@ package demo;
 
 import common.DBUtility;
 import common.ResponseHeader;
+
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import dto.ActionDTO;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.*;
@@ -56,15 +60,31 @@ public class RestServices {
 			wrongResponse.setMessage("Specified information is wrong!");
 			return wrongResponse;
 		}
-		user.setUserBasicInfo(new UserBasicInfo());
-		user.setUserCommInfo(new UserCommInfo());
-		user.setUserExtraInfo(new UserExtraInfo());
+		if (user.getUserBasicInfo() == null){
+			user.setUserBasicInfo(new UserBasicInfo());
+			user.getUserBasicInfo().setUser(user);
+		}
+		//user.getUserBasicInfo().setUserId(user.getUserId());
+		if (user.getUserCommInfo() == null){
+			user.setUserCommInfo(new UserCommInfo());
+			user.getUserCommInfo().setUser(user);
+		}
+		//user.getUserCommInfo().setUserId(user.getUserId());
+		if (user.getUserExtraInfo() == null)	{
+			user.setUserExtraInfo(new UserExtraInfo());
+			user.getUserExtraInfo().setUser(user);
+		}
+		//user.getUserExtraInfo().setUserId(user.getUserId());
+//		if (user.getRole() == null){
+//			user.setRole(new Role());
+//			user.getRole().getUsers().add(user);
+//		}
 		
 		if (firstName != "" && firstName != null)
 			user.getUserBasicInfo().setFirstName(firstName);
 		if (lastName != "" && lastName != null)
 			user.getUserBasicInfo().setLastName(lastName);
-		if (Gsm > 0)
+		if (Gsm!=null && Gsm > 0)
 			user.getUserCommInfo().setMobilePhone(Gsm);
 		if (address != "" && address != null)
 			user.getUserCommInfo().setAddress(address);
@@ -80,10 +100,28 @@ public class RestServices {
 			user.getUserExtraInfo().setLanguages(languages);
 		
 		EntityManager em = DBUtility.startTransaction();
-		em.persist(user);
+		User user1 = em.merge(user);
+		em.merge(user1.getUserBasicInfo());
+		em.merge(user1.getUserCommInfo());
+		em.merge(user1.getUserExtraInfo());
 		DBUtility.commitTransaction(em);
 
 		return new ResponseHeader();
+	}
+	
+	@RequestMapping(value = "/profile/get")
+	public @ResponseBody User getProfile(
+			@RequestHeader("Set-Cookie") String cookie)
+			{
+
+		User user = getSessionUser(cookie);
+/*		if (user == null){
+			ResponseHeader wrongResponse = new ResponseHeader();
+			wrongResponse.setType("Fail");
+			wrongResponse.setMessage("Specified information is wrong!");
+			return wrongResponse;
+		}*/
+		return user;
 	}
 
 	public User getSessionUser(String cookie){
@@ -222,11 +260,65 @@ public class RestServices {
 		return action;
 	}
 
-	@RequestMapping(value = "/event/getCreated")
+	@RequestMapping(value = "/event/created")
 	@ResponseBody
-	public List<Action> getCreatedEvents(
+	public List<ActionDTO> getCreatedEvents(
 			@RequestHeader("Set-Cookie") String cookie) {
 
+		return prepareCreatedActionForUser(cookie, "E");
+	}
+	
+	@RequestMapping(value = "/group/created")
+	@ResponseBody
+	public List<ActionDTO> getCreatedGroups(
+			@RequestHeader("Set-Cookie") String cookie) {
+
+		return prepareCreatedActionForUser(cookie, "G");
+	}
+	
+	@RequestMapping(value = "/event/invited")
+	@ResponseBody
+	public List<ActionDTO> getInvitedEvents(
+			@RequestHeader("Set-Cookie") String cookie) {
+
+		return prepareInvitedActionForUser(cookie, "E");
+	}
+	
+	@RequestMapping(value = "/group/invited")
+	@ResponseBody
+	public List<ActionDTO> getInvitedGroups(
+			@RequestHeader("Set-Cookie") String cookie) {
+
+		return prepareInvitedActionForUser(cookie, "G");
+	}
+
+	private List<ActionDTO> prepareInvitedActionForUser(String cookie,
+			String actionType) {
+		EntityManager em = DBUtility.startTransaction();
+
+		User user = getSessionUser(cookie);
+
+		Query query = em
+				.createQuery(
+						"FROM ActionUser A WHERE A.actionUserStatus = :actionUserStatus AND A.user = :user")
+				.setParameter("actionUserStatus",
+						ActionUserStatus.INVITED)
+				.setParameter("user", user);
+
+		List<ActionUser> results = query.getResultList();
+		List<ActionDTO> actionList = new ArrayList<>();
+
+		for (ActionUser actionUser : results) {
+			ActionDTO actionDTO = actionUser.getAction().getActionDTO();
+			if (actionUser.getAction().getActionType().equals(actionType)) {
+				actionList.add(actionDTO);
+			}
+		}
+
+		return actionList;
+	}
+
+	private List<ActionDTO> prepareCreatedActionForUser(String cookie, String actionType ) {
 		EntityManager em = DBUtility.startTransaction();
 
 		User user = getSessionUser(cookie);
@@ -239,17 +331,19 @@ public class RestServices {
 				.setParameter("user", user);
 
 		List<ActionUser> results = query.getResultList();
-		List<Action> actionList = new ArrayList<>();
+		List<ActionDTO> actionList = new ArrayList<>();
 
 		for (ActionUser actionUser : results) {
-			Action action = actionUser.getAction();
-			if (action.getActionType().equals("E")) {
-				actionList.add(actionUser.getAction());
+			ActionDTO actionDTO = actionUser.getAction().getActionDTO();
+			if (actionUser.getAction().getActionType().equals(actionType)) {
+				actionList.add(actionDTO);
 			}
 		}
 
 		return actionList;
 	}
+	
+	
 
 	private void insertTagsOfActions(String tagString, EntityManager em,
 			Action action) {
