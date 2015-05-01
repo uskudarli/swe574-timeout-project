@@ -285,10 +285,15 @@ angular.module("timeout", ["ngRoute"])
 	})
 
 	.controller('myGroups', function($scope, $http, $window, $location){
+		$scope.myGroups = [{name:"KediSevenler", count:"5"}, {name:"FareSevenler", count:"10"}, {name:"KopekSevenler", count:"15"}];
+
+
+
 		$scope.goToPage = function(url) {
 			console.log("GoToPage: " + url);
 			$location.path(url);
 		};
+
 
 	})
 
