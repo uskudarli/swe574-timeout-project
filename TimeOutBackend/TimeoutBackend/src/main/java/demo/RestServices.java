@@ -47,7 +47,7 @@ public class RestServices {
     public
     @ResponseBody
     ResponseHeader editProfile(
-            @RequestHeader("Set-Cookie") String cookie,
+            @RequestHeader("set-cookie") String cookie,
             @RequestParam(value = "firstName", required = false) String firstName,
             @RequestParam(value = "lastName", required = false) String lastName,
             @RequestParam(value = "Gsm", required = false) Long Gsm,
@@ -120,7 +120,7 @@ public class RestServices {
     public
     @ResponseBody
     User getProfile(
-            @RequestHeader("Set-Cookie") String cookie, HttpServletResponse resp) {
+            @RequestHeader("set-cookie") String cookie, HttpServletResponse resp) {
 
         setResponseHeaders(resp);
 
@@ -221,7 +221,7 @@ public class RestServices {
     @RequestMapping(value = "/event/create")
     @ResponseBody
     public Action createEvent(
-            @RequestHeader("Set-Cookie") String cookie,
+            @RequestHeader("set-cookie") String cookie,
             @RequestParam(value = "eventName") String eventName,
             @RequestParam(value = "eventDescription", required = false) String eventDescription,
             @RequestParam(value = "startTime", required = false) Date startTime,
@@ -253,7 +253,7 @@ public class RestServices {
     @RequestMapping(value = "/group/create")
     @ResponseBody
     public Action createGroup(
-            @RequestHeader("Set-Cookie") String cookie,
+            @RequestHeader("set-cookie") String cookie,
             @RequestParam(value = "groupName") String groupName,
             @RequestParam(value = "groupDescription", required = false) String groupDescription,
             @RequestParam(value = "invitedPeople", required = false) List<User> invitedPeople,
@@ -283,7 +283,7 @@ public class RestServices {
     @RequestMapping(value = "/event/created")
     @ResponseBody
     public List<ActionDTO> getCreatedEvents(
-            @RequestHeader("Set-Cookie") String cookie, HttpServletResponse resp) {
+            @RequestHeader("set-cookie") String cookie, HttpServletResponse resp) {
         setResponseHeaders(resp);
         return prepareCreatedActionForUser(cookie, "E");
     }
@@ -291,7 +291,7 @@ public class RestServices {
     @RequestMapping(value = "/group/created")
     @ResponseBody
     public List<ActionDTO> getCreatedGroups(
-            @RequestHeader("Set-Cookie") String cookie, HttpServletResponse resp) {
+            @RequestHeader("set-cookie") String cookie, HttpServletResponse resp) {
         setResponseHeaders(resp);
         return prepareCreatedActionForUser(cookie, "G");
     }
@@ -299,7 +299,7 @@ public class RestServices {
     @RequestMapping(value = "/event/invited")
     @ResponseBody
     public List<ActionDTO> getInvitedEvents(
-            @RequestHeader("Set-Cookie") String cookie, HttpServletResponse resp) {
+            @RequestHeader("set-cookie") String cookie, HttpServletResponse resp) {
         setResponseHeaders(resp);
         return prepareInvitedActionForUser(cookie, "E");
     }
@@ -307,7 +307,7 @@ public class RestServices {
     @RequestMapping(value = "/group/invited")
     @ResponseBody
     public List<ActionDTO> getInvitedGroups(
-            @RequestHeader("Set-Cookie") String cookie, HttpServletResponse resp) {
+            @RequestHeader("set-cookie") String cookie, HttpServletResponse resp) {
         setResponseHeaders(resp);
         return prepareInvitedActionForUser(cookie, "G");
     }
@@ -315,7 +315,7 @@ public class RestServices {
     @RequestMapping(value = "/event/my")
 	@ResponseBody
 	public List<ActionDTO> getMyEvents(
-			@RequestHeader("Set-Cookie") String cookie, HttpServletResponse resp) {
+			@RequestHeader("set-cookie") String cookie, HttpServletResponse resp) {
     	setResponseHeaders(resp);
 		return prepareActionForUser(cookie, "E");
 	}
@@ -323,7 +323,7 @@ public class RestServices {
 	@RequestMapping(value = "/group/my")
 	@ResponseBody
 	public List<ActionDTO> getMyGroups(
-			@RequestHeader("Set-Cookie") String cookie, HttpServletResponse resp) {
+			@RequestHeader("set-cookie") String cookie, HttpServletResponse resp) {
 		setResponseHeaders(resp);
 		return prepareActionForUser(cookie, "G");
 	}
@@ -331,7 +331,7 @@ public class RestServices {
 	@RequestMapping(value = "/friends/my")
 	@ResponseBody
 	public List<User> getMyFriends(
-			@RequestHeader("Set-Cookie") String cookie, HttpServletResponse resp) {
+			@RequestHeader("set-cookie") String cookie, HttpServletResponse resp) {
 		setResponseHeaders(resp);
 		return prepareFriendsForUser(cookie);
 	}
@@ -339,7 +339,7 @@ public class RestServices {
 //	@RequestMapping(value = "/friends/invite")
 //	@ResponseBody
 //	public List<User> inviteFriends(
-//			@RequestHeader("Set-Cookie") String cookie, HttpServletResponse resp) {
+//			@RequestHeader("set-cookie") String cookie, HttpServletResponse resp) {
 //		setResponseHeaders(resp);
 //		return inviteFriendsForUser(cookie);
 //	}
@@ -512,6 +512,6 @@ public class RestServices {
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
         response.setHeader("Access-Control-Max-Age", "3600");
-        response.setHeader("Access-Control-Allow-Headers", "x-requested-with, Set-Cookie");
+        response.setHeader("Access-Control-Allow-Headers", "x-requested-with, accept, set-cookie");
     }
 }
