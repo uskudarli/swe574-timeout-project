@@ -1,4 +1,4 @@
-angular.module("timeout", ["ngRoute"])
+angular.module('timeout', ['ngRoute', 'ngResource'])
 	.config(function($routeProvider) {
 	  $routeProvider
 	   	 .when("/", {
@@ -226,9 +226,12 @@ angular.module("timeout", ["ngRoute"])
 		};
 
 		$scope.createGroup = function() {
-			$http.post('/group/create?groupName=' + $scope.groupName + '&groupDescription=' + $scope.groupDescription + '&tag=' + $scope.tag)
+			var sessionId = timeOutFactory.getSessionId();
+			var config = {headers: {'set-cookie': String(sessionId)} };
+
+			$http.get(timeOutFactory.getBackendUrl() + '/group/create?groupName=' + $scope.groupName + '&groupDescription=' + $scope.groupDescription + '&tag=' + $scope.tag, config)
 			 .success(function(data, status) {
-				$window.alert("Success " + data.actionId);
+				$window.alert("Success ");
 			  })
 			  .error(function(data, status) {
 			 	console.log("Error");
@@ -272,18 +275,19 @@ angular.module("timeout", ["ngRoute"])
 		};
 	})
 
-	.controller('eventsCreated', function($scope, $http, $window, $location, timeOutFactory){
+	.controller('eventsCreated', function($scope, $http, $location, timeOutFactory, EventsService){
 		var sessionId = timeOutFactory.getSessionId();
 		var config = {headers: {'Set-Cookie': String(sessionId)} };
 
-		$http.get(timeOutFactory.getBackendUrl() + '/event/created', config)
-		 .success(function(data, status) {
-			$window.alert("Success " + data.actionId);
-			$scope.eventsCreated = data;
-		  })
-		  .error(function(data, status) {
-		 	console.log("Error " + data);
-		  });
+		$scope.eventsCreated = EventsService.query();
+
+		// $http.get(timeOutFactory.getBackendUrl() + '/event/created', config)
+		//  .success(function(data, status) {
+		// 	$scope.eventsCreated = data;
+		//   })
+		//   .error(function(data, status) {
+		//  	console.log("Error " + data);
+		//   });
 
 		$scope.goToPage = function(url) {
 			console.log("GoToPage: " + url);
@@ -440,4 +444,16 @@ angular.module("timeout", ["ngRoute"])
 		};
 
 		return timeOutFactory;
+	})
+
+	.factory('EventsService', function($resource, timeOutFactory){
+	    return $resource(timeOutFactory.getBackendUrl() + '/event/created', {}, {
+	    	get: {
+				method: 'GET',
+				headers: { 'set-cookie': timeOutFactory.getSessionId() }
+	    	}
+		})
 	});
+
+
+
