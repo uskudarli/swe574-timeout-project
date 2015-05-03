@@ -61,29 +61,6 @@ angular.module("timeout", ["ngRoute"])
 		  	templateUrl: "myProfile.html",
 		  	controller: "myProfile"
 		  })
-		    .when("/eventsCreated", {
-		  	templateUrl: "eventsCreated.html",
-		  	controller: "eventsCreated"
-		  })
-		    .when("/myGroups", {
-		  	templateUrl: "myGroups.html",
-		  	controller: "myGroups"
-		  })
-		    .when("/newGroups", {
-		  	templateUrl: "newGroups.html",
-		  	controller: "newGroups"
-		  })
-
-		    .when("/friendsGroups", {
-		  	templateUrl: "friendsGroups.html",
-		  	controller: "friendsGroups"
-		  })
-
-		    .when("/suggestedGroups", {
-		  	templateUrl: "suggestedGroups.html",
-		  	controller: "suggestedGroups"
-		  })
-
 		  .otherwise({redirectTo: '/'});
 	})
 
@@ -198,13 +175,6 @@ angular.module("timeout", ["ngRoute"])
 		//   });
 	})
 
-	.controller("eventsCreated", function($scope, $http, $window, $location) {
-		$scope.goToPage = function(url) {
-			console.log("GoToPage: " + url);
-			$location.path(url);
-		};
-	})
-
 	.controller("profileEdit", function($scope, $http, $window, $location, timeOutFactory) {
 
 		$scope.goToPage = function(url) {
@@ -300,16 +270,25 @@ angular.module("timeout", ["ngRoute"])
 			console.log("GoToPage: " + url);
 			$location.path(url);
 		};
-
 	})
 
+	.controller('eventsCreated', function($scope, $http, $window, $location, timeOutFactory){
+		var sessionId = timeOutFactory.getSessionId();
+		var config = {headers: {'Set-Cookie': String(sessionId)} };
 
-	.controller('eventsCreated', function($scope, $http, $window, $location){
+		$http.get(timeOutFactory.getBackendUrl() + '/event/created', config)
+		 .success(function(data, status) {
+			$window.alert("Success " + data.actionId);
+			$scope.eventsCreated = data;
+		  })
+		  .error(function(data, status) {
+		 	console.log("Error " + data);
+		  });
+
 		$scope.goToPage = function(url) {
 			console.log("GoToPage: " + url);
 			$location.path(url);
 		};
-
 	})
 
 	.controller('myGroups', function($scope, $http, $window, $location, timeOutFactory){
@@ -329,8 +308,6 @@ angular.module("timeout", ["ngRoute"])
 			console.log("GoToPage: " + url);
 			$location.path(url);
 		};
-
-
 	})
 
 	.controller('newGroups', function($scope, $http, $window, $location, timeOutFactory){
@@ -417,7 +394,7 @@ angular.module("timeout", ["ngRoute"])
 		var timeOutFactory = {};
 		var lists = {};
 		var userLoggedIn = false;
-		//var backendUrl = "http://localhost:8080";
+		// var backendUrl = "http://localhost:8080";
 		var backendUrl = "http://timeoutswe5743.appspot.com";
 		var sessionId = "";
 		var searchText = "";
