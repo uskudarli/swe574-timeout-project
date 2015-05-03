@@ -4,8 +4,6 @@ import javax.persistence.*;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import dto.ActionDTO;
-
 @Entity
 @Table(name = "ActionUser")
 public class ActionUser {

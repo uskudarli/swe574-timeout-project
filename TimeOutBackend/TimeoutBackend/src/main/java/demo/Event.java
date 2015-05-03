@@ -1,7 +1,6 @@
 package demo;
 
 import java.util.Date;
-import java.util.List;
 
 public class Event extends Action{
 
