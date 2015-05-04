@@ -1,16 +1,21 @@
 package demo;
 
-import common.DBUtility;
-import common.ResponseHeader;
 import dto.ActionDTO;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import common.DBUtility;
+import common.ResponseHeader;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.servlet.http.HttpServletResponse;
 
+import java.lang.reflect.Type;
 import java.math.BigInteger;
 import java.util.*;
 
@@ -226,7 +231,7 @@ public class RestServices {
             @RequestParam(value = "eventDescription", required = false) String eventDescription,
             @RequestParam(value = "startTime", required = false) Date startTime,
             @RequestParam(value = "endTime", required = false) Date endTime,
-            @RequestParam(value = "invitedPeople", required = false) List<Integer> invitedPeople,
+            @RequestParam(value = "invitedPeople", required = false) String invitedPeople,
             @RequestParam(value = "tag", required = false) String tagString,
             @RequestParam(value = "privacy", required = false) String privacy, HttpServletResponse resp) {
 
@@ -256,7 +261,7 @@ public class RestServices {
             @RequestParam(value = "sessionId") String sessionId,
             @RequestParam(value = "groupName") String groupName,
             @RequestParam(value = "groupDescription", required = false) String groupDescription,
-            @RequestParam(value = "invitedPeople", required = false) List<Integer> invitedPeople,
+            @RequestParam(value = "invitedPeople", required = false) String invitedPeople,
             @RequestParam(value = "tag", required = false) String tagString,
             @RequestParam(value = "privacy", required = false) String privacy, HttpServletResponse resp) {
 
@@ -452,16 +457,26 @@ public class RestServices {
         }
     }
 
-    private void insertInvitedPeople(List<Integer> invitedPeople,
+    private void insertInvitedPeople(String invitedPeopleString,
                                      EntityManager em, Action action) {
-        if (invitedPeople == null)
+        if (invitedPeopleString == null || invitedPeopleString == "")
             return;
-        if (invitedPeople.size() < 1)
-            return;
+//        if (invitedPeople.size() < 1)
+//            return;
+        
+        List<Integer> invitedPeople = null;
+        Gson gson = new Gson();
+        
+        
+        Type listType = new TypeToken<ArrayList<Integer>>() {}.getType();
+
+        invitedPeople = gson.fromJson(invitedPeopleString, listType);
+        
         for (int i = 0; i < invitedPeople.size(); i++) {
+        	
             ActionUser actionUser = new ActionUser();
             Query query = em.createQuery("FROM User U WHERE U.userId = :userId");
-            query.setParameter("userId", invitedPeople.get(i));
+            query.setParameter("userId", invitedPeople.get(i).longValue());
             actionUser.setUser((User) query.getSingleResult());
             
             actionUser.setAction(action);
