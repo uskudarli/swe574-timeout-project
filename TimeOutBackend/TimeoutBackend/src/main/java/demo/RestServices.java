@@ -163,6 +163,7 @@ public class RestServices {
             String userCookie = new BigInteger(130, new Random()).toString(32).toUpperCase();
 
             em.persist(new Session(result.get(0), userCookie));
+            
             DBUtility.commitTransaction(em);
 
             return new ResponseHeader("sessionId=" + userCookie);
@@ -348,8 +349,19 @@ public class RestServices {
 		EntityManager em = DBUtility.startTransaction();
 		User user = getSessionUser(cookie);
 		
-		List<User> list = new ArrayList<User>(user.getFriendShip1());
-		return list;
+		Query query = em
+				.createQuery(
+						"FROM Friendship F WHERE F.person = :person")
+				.setParameter("person", user);
+		
+		List<Friendship> list = query.getResultList();
+		List<User> returnList = new ArrayList<User>();
+		
+		for (Friendship friendship : list) {
+			returnList.add(friendship.getFriend());
+		}
+	
+		return returnList;
 	}
 
 	private List<ActionDTO> prepareActionForUser(String cookie, String actionType) {

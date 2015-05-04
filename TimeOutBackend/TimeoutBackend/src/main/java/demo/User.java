@@ -34,13 +34,19 @@ public class User {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "action")
 	private Set<ActionRecommendation> actionRecommendations = new HashSet<ActionRecommendation>(0);
 
-	@ManyToMany
-	@JoinTable(name = "FriendShip", joinColumns = @JoinColumn(name = "personId"), inverseJoinColumns = @JoinColumn(name = "friendId"))
-	private Set<User> friendShip1 = new HashSet<User>(0);
-
-	@ManyToMany
-	@JoinTable(name = "FriendShip", joinColumns = @JoinColumn(name = "friendId"), inverseJoinColumns = @JoinColumn(name = "personId"))
-	private Set<User> friendShip2 = new HashSet<User>(0);
+//	@ManyToMany
+//	@JoinTable(name = "FriendShip", joinColumns = @JoinColumn(name = "personId"), inverseJoinColumns = @JoinColumn(name = "friendId"))
+//	private Set<User> friendShip1 = new HashSet<User>(0);
+//
+//	@ManyToMany
+//	@JoinTable(name = "FriendShip", joinColumns = @JoinColumn(name = "friendId"), inverseJoinColumns = @JoinColumn(name = "personId"))
+//	private Set<User> friendShip2 = new HashSet<User>(0);
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "person")
+	private Set<Friendship> friendShip1 = new HashSet<Friendship>(0);
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "friend")
+	private Set<Friendship> friendShip2 = new HashSet<Friendship>(0);
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private Set<CustomType> customTypes = new HashSet<CustomType>(0);
@@ -73,22 +79,6 @@ public class User {
 
 	public void setActionUsers(Set<ActionUser> actionUsers) {
 		this.actionUsers = actionUsers;
-	}
-
-	public Set<User> getFriendShip1() {
-		return friendShip1;
-	}
-
-	public void setFriendShip1(Set<User> friendShip1) {
-		this.friendShip1 = friendShip1;
-	}
-
-	public Set<User> getFriendShip2() {
-		return friendShip2;
-	}
-
-	public void setFriendShip2(Set<User> friendShip2) {
-		this.friendShip2 = friendShip2;
 	}
 
 	public Set<CustomType> getCustomTypes() {
@@ -187,6 +177,47 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public Set<UserRecommendation> getUserRecommendations1() {
+		return userRecommendations1;
+	}
+
+	public void setUserRecommendations1(Set<UserRecommendation> userRecommendations1) {
+		this.userRecommendations1 = userRecommendations1;
+	}
+
+	public Set<UserRecommendation> getUserRecommendations2() {
+		return userRecommendations2;
+	}
+
+	public void setUserRecommendations2(Set<UserRecommendation> userRecommendations2) {
+		this.userRecommendations2 = userRecommendations2;
+	}
+
+	public Set<ActionRecommendation> getActionRecommendations() {
+		return actionRecommendations;
+	}
+
+	public void setActionRecommendations(
+			Set<ActionRecommendation> actionRecommendations) {
+		this.actionRecommendations = actionRecommendations;
+	}
+
+	public Set<Friendship> getFriendShip1() {
+		return friendShip1;
+	}
+
+	public void setFriendShip1(Set<Friendship> friendShip1) {
+		this.friendShip1 = friendShip1;
+	}
+
+	public Set<Friendship> getFriendShip2() {
+		return friendShip2;
+	}
+
+	public void setFriendShip2(Set<Friendship> friendShip2) {
+		this.friendShip2 = friendShip2;
 	}
 
 }
