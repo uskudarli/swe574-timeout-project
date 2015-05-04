@@ -19,8 +19,8 @@ public class Friendship {
 	@GenericGenerator(name = "incrementFriendship", strategy = "increment")
 	private int friendshipId;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "userId")
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "userId", insertable = false, updatable = false )
 	private User person;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

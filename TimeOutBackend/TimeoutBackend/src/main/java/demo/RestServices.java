@@ -226,7 +226,7 @@ public class RestServices {
             @RequestParam(value = "eventDescription", required = false) String eventDescription,
             @RequestParam(value = "startTime", required = false) Date startTime,
             @RequestParam(value = "endTime", required = false) Date endTime,
-            @RequestParam(value = "invitedPeople", required = false) List<User> invitedPeople,
+            @RequestParam(value = "invitedPeople", required = false) List<Integer> invitedPeople,
             @RequestParam(value = "tag", required = false) String tagString,
             @RequestParam(value = "privacy", required = false) String privacy, HttpServletResponse resp) {
 
@@ -256,7 +256,7 @@ public class RestServices {
             @RequestParam(value = "sessionId") String sessionId,
             @RequestParam(value = "groupName") String groupName,
             @RequestParam(value = "groupDescription", required = false) String groupDescription,
-            @RequestParam(value = "invitedPeople", required = false) List<User> invitedPeople,
+            @RequestParam(value = "invitedPeople", required = false) List<Integer> invitedPeople,
             @RequestParam(value = "tag", required = false) String tagString,
             @RequestParam(value = "privacy", required = false) String privacy, HttpServletResponse resp) {
 
@@ -452,7 +452,7 @@ public class RestServices {
         }
     }
 
-    private void insertInvitedPeople(List<User> invitedPeople,
+    private void insertInvitedPeople(List<Integer> invitedPeople,
                                      EntityManager em, Action action) {
         if (invitedPeople == null)
             return;
@@ -460,11 +460,13 @@ public class RestServices {
             return;
         for (int i = 0; i < invitedPeople.size(); i++) {
             ActionUser actionUser = new ActionUser();
-            actionUser.setUser(invitedPeople.get(i));
+            Query query = em.createQuery("FROM User U WHERE U.userId = :userId");
+            query.setParameter("userId", invitedPeople.get(i));
+            actionUser.setUser((User) query.getSingleResult());
+            
             actionUser.setAction(action);
             actionUser.setActionUserStatus(ActionUserStatus.INVITED);
             em.persist(actionUser);
-
         }
     }
 
