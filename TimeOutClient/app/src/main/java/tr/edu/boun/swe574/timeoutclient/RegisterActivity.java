@@ -130,10 +130,12 @@ public class RegisterActivity extends ActionBarActivity {
                 if (aBoolean) {
                     Toast.makeText(mContext, "Başarıyla kayıt yaptınız.", Toast.LENGTH_SHORT).show();
 
-                    // intent to main
-                    Intent i = new Intent(mContext, MainActivity.class);
-                    startActivity(i);
+//                    // intent to main
+//                    Intent i = new Intent(mContext, MainActivity.class);
+//                    startActivity(i);
 
+                    Intent returnIntent = new Intent();
+                    getActivity().setResult(RESULT_OK, returnIntent);
                     getActivity().finish();
                 } else {
                     Toast.makeText(mContext, "Kayıt başarısız.", Toast.LENGTH_SHORT).show();

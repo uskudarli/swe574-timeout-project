@@ -304,7 +304,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 finish();
             } else {
                 Intent i = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(i);
+                startActivityForResult(i, 101);
 //                mPasswordView.setError(getString(R.string.error_incorrect_password));
 //                mPasswordView.requestFocus();
             }
@@ -314,6 +314,20 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         protected void onCancelled() {
             mAuthTask = null;
             showProgress(false);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 101) {
+            if (resultCode == RESULT_OK) {
+
+                Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(i);
+
+                finish();
+            }
         }
     }
 }
