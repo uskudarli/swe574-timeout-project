@@ -47,7 +47,7 @@ public class RestServices {
     public
     @ResponseBody
     ResponseHeader editProfile(
-            @RequestHeader("Set-Cookie") String cookie,
+            @RequestParam(value = "sessionId") String sessionId,
             @RequestParam(value = "firstName", required = false) String firstName,
             @RequestParam(value = "lastName", required = false) String lastName,
             @RequestParam(value = "Gsm", required = false) Long Gsm,
@@ -60,7 +60,7 @@ public class RestServices {
 
         setResponseHeaders(resp);
 
-        User user = getSessionUser(cookie);
+        User user = getSessionUser(sessionId);
         if (user == null) {
             ResponseHeader wrongResponse = new ResponseHeader();
             wrongResponse.setType("Fail");
@@ -120,11 +120,11 @@ public class RestServices {
     public
     @ResponseBody
     User getProfile(
-            @RequestHeader("Set-Cookie") String cookie, HttpServletResponse resp) {
+            @RequestParam(value = "sessionId") String sessionId, HttpServletResponse resp) {
 
         setResponseHeaders(resp);
 
-        User user = getSessionUser(cookie);
+        User user = getSessionUser(sessionId);
 /*		if (user == null){
             ResponseHeader wrongResponse = new ResponseHeader();
 			wrongResponse.setType("Fail");
@@ -138,7 +138,7 @@ public class RestServices {
         EntityManager em = DBUtility.startTransaction();
         Session result =
                 (Session) em.createQuery("FROM Session S WHERE S.cookie = :cookie")
-                        .setParameter("cookie", cookie.substring(10))
+                        .setParameter("cookie", cookie)
                         .getSingleResult();
         return result.getUser();
     }
@@ -160,13 +160,12 @@ public class RestServices {
                         .getResultList();
         if (result != null && result.size() > 0) {
 
-            String userCookie = new BigInteger(130, new Random()).toString(32).toUpperCase();
+            String sessionId = new BigInteger(130, new Random()).toString(32).toUpperCase();
 
-            em.persist(new Session(result.get(0), userCookie));
-            
+            em.persist(new Session(result.get(0), sessionId));
             DBUtility.commitTransaction(em);
 
-            return new ResponseHeader("sessionId=" + userCookie);
+            return new ResponseHeader(sessionId);
         } else {
             ResponseHeader wrongResponse = new ResponseHeader();
             wrongResponse.setType("Fail");
@@ -189,13 +188,13 @@ public class RestServices {
     }
 
     @RequestMapping("/searchTag")
-    public ArrayList<String> searchTag(@RequestParam(value = "tag") String tag, HttpServletResponse resp) {
+    public ArrayList<String> searchTag(@RequestParam(value = "sessionId") String sessionId, @RequestParam(value = "tag") String tag, HttpServletResponse resp) {
         setResponseHeaders(resp);
         return findRelatedTags(tag);
     }
 
     @RequestMapping("/findRelatedGroupsforTag")
-    public List<Action> findRelatedGroupsforTag(@RequestParam(value = "tag") String tag, HttpServletResponse resp) {
+    public List<Action> findRelatedGroupsforTag(@RequestParam(value = "sessionId") String sessionId, @RequestParam(value = "tag") String tag, HttpServletResponse resp) {
 
         setResponseHeaders(resp);
 
@@ -222,7 +221,7 @@ public class RestServices {
     @RequestMapping(value = "/event/create")
     @ResponseBody
     public Action createEvent(
-            @RequestHeader("Set-Cookie") String cookie,
+            @RequestParam(value = "sessionId") String sessionId,
             @RequestParam(value = "eventName") String eventName,
             @RequestParam(value = "eventDescription", required = false) String eventDescription,
             @RequestParam(value = "startTime", required = false) Date startTime,
@@ -240,7 +239,7 @@ public class RestServices {
         action.setPrivacy(privacy);
         em.persist(action);
 
-        insertCreator(getSessionUser(cookie), em, action);
+        insertCreator(getSessionUser(sessionId), em, action);
 
         insertInvitedPeople(invitedPeople, em, action);
 
@@ -254,7 +253,7 @@ public class RestServices {
     @RequestMapping(value = "/group/create")
     @ResponseBody
     public Action createGroup(
-            @RequestHeader("Set-Cookie") String cookie,
+            @RequestParam(value = "sessionId") String sessionId,
             @RequestParam(value = "groupName") String groupName,
             @RequestParam(value = "groupDescription", required = false) String groupDescription,
             @RequestParam(value = "invitedPeople", required = false) List<User> invitedPeople,
@@ -270,7 +269,7 @@ public class RestServices {
 
         em.persist(action);
 
-        insertCreator(getSessionUser(cookie), em, action);
+        insertCreator(getSessionUser(sessionId), em, action);
 
         insertInvitedPeople(invitedPeople, em, action);
 
@@ -284,57 +283,57 @@ public class RestServices {
     @RequestMapping(value = "/event/created")
     @ResponseBody
     public List<ActionDTO> getCreatedEvents(
-            @RequestHeader("Set-Cookie") String cookie, HttpServletResponse resp) {
+            @RequestParam(value = "sessionId") String sessionId, HttpServletResponse resp) {
         setResponseHeaders(resp);
-        return prepareCreatedActionForUser(cookie, "E");
+        return prepareCreatedActionForUser(sessionId, "E");
     }
 
     @RequestMapping(value = "/group/created")
     @ResponseBody
     public List<ActionDTO> getCreatedGroups(
-            @RequestHeader("Set-Cookie") String cookie, HttpServletResponse resp) {
+            @RequestParam(value = "sessionId") String sessionId, HttpServletResponse resp) {
         setResponseHeaders(resp);
-        return prepareCreatedActionForUser(cookie, "G");
+        return prepareCreatedActionForUser(sessionId, "G");
     }
 
     @RequestMapping(value = "/event/invited")
     @ResponseBody
     public List<ActionDTO> getInvitedEvents(
-            @RequestHeader("Set-Cookie") String cookie, HttpServletResponse resp) {
+            @RequestParam(value = "sessionId") String sessionId, HttpServletResponse resp) {
         setResponseHeaders(resp);
-        return prepareInvitedActionForUser(cookie, "E");
+        return prepareInvitedActionForUser(sessionId, "E");
     }
 
     @RequestMapping(value = "/group/invited")
     @ResponseBody
     public List<ActionDTO> getInvitedGroups(
-            @RequestHeader("Set-Cookie") String cookie, HttpServletResponse resp) {
+            @RequestParam(value = "sessionId") String sessionId, HttpServletResponse resp) {
         setResponseHeaders(resp);
-        return prepareInvitedActionForUser(cookie, "G");
+        return prepareInvitedActionForUser(sessionId, "G");
     }
 
     @RequestMapping(value = "/event/my")
 	@ResponseBody
 	public List<ActionDTO> getMyEvents(
-			@RequestHeader("Set-Cookie") String cookie, HttpServletResponse resp) {
+            @RequestParam(value = "sessionId") String sessionId, HttpServletResponse resp) {
     	setResponseHeaders(resp);
-		return prepareActionForUser(cookie, "E");
+		return prepareActionForUser(sessionId, "E");
 	}
 	
 	@RequestMapping(value = "/group/my")
 	@ResponseBody
 	public List<ActionDTO> getMyGroups(
-			@RequestHeader("Set-Cookie") String cookie, HttpServletResponse resp) {
+            @RequestParam(value = "sessionId") String sessionId, HttpServletResponse resp) {
 		setResponseHeaders(resp);
-		return prepareActionForUser(cookie, "G");
+		return prepareActionForUser(sessionId, "G");
 	}
 	
 	@RequestMapping(value = "/friends/my")
 	@ResponseBody
 	public List<User> getMyFriends(
-			@RequestHeader("Set-Cookie") String cookie, HttpServletResponse resp) {
+            @RequestParam(value = "sessionId") String sessionId, HttpServletResponse resp) {
 		setResponseHeaders(resp);
-		return prepareFriendsForUser(cookie);
+		return prepareFriendsForUser(sessionId);
 	}
 	
 //	@RequestMapping(value = "/friends/invite")
