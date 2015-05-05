@@ -186,8 +186,7 @@ angular.module('timeout', ['ngRoute', 'ngResource', 'ngCookies'])
 			$location.path(url);
 		};
 
-		
-    
+
     $("#imgInp").change(function(){
         readURL(this);
     });
@@ -226,7 +225,7 @@ angular.module('timeout', ['ngRoute', 'ngResource', 'ngCookies'])
 
 		$scope.createEvent = function(){
 			var params = '?sessionId=' + timeOutFactory.getSessionId();
-			params += 'eventName=' + $scope.eventName + '&eventDescription=' + $scope.eventDescription;
+			params += '&eventName=' + $scope.eventName + '&eventDescription=' + $scope.eventDescription;
 
 			$http.get(timeOutFactory.getBackendUrl() + '/event/create' + params)
 			 .success(function(data, status) {
@@ -247,7 +246,7 @@ angular.module('timeout', ['ngRoute', 'ngResource', 'ngCookies'])
 
 		$scope.createGroup = function() {
 			var params = '?sessionId=' + timeOutFactory.getSessionId();
-			params += 'groupName=' + $scope.groupName + '&groupDescription=' + $scope.groupDescription + '&tag=' + $scope.tag;
+			params += '&groupName=' + $scope.groupName + '&groupDescription=' + $scope.groupDescription + '&tag=' + $scope.tag;
 
 			$http.get(timeOutFactory.getBackendUrl() + '/group/create' + params)
 			 .success(function(data, status) {
@@ -278,10 +277,9 @@ angular.module('timeout', ['ngRoute', 'ngResource', 'ngCookies'])
 	.controller('myEvents', function($scope, $http, $window, $location, timeOutFactory){
 		var params = '?sessionId=' + timeOutFactory.getSessionId();
 
-		$http.get(timeOutFactory.getBackendUrl() + '/event/degisecekkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk', config)
+		$http.get(timeOutFactory.getBackendUrl() + '/event/created/' + params)
 		 .success(function(data, status) {
-			$window.alert("Success " + data.actionId);
-			$scope.myEvents = data;
+			$scope.eventsCreated = data;
 		  })
 		  .error(function(data, status) {
 		 	console.log("Error " + data);
@@ -450,16 +448,7 @@ angular.module('timeout', ['ngRoute', 'ngResource', 'ngCookies'])
 		};
 
 		return timeOutFactory;
-	})
-
-	// .factory('EventsService', function($resource, timeOutFactory){
-	//     return $resource(timeOutFactory.getBackendUrl() + '/event/created', {}, {
-	//     	get: {
-	// 			method: 'GET',
-	// 			headers: { 'set-cookie': timeOutFactory.getSessionId() }
-	//     	}
-	// 	})
-	// });
+	});
 
 
 
