@@ -1,4 +1,4 @@
-angular.module('timeout', ['ngRoute', 'ngResource'])
+angular.module('timeout', ['ngRoute', 'ngResource', 'ngCookies'])
 	.config(function($routeProvider) {
 	  $routeProvider
 	   	 .when("/", {
@@ -78,8 +78,8 @@ angular.module('timeout', ['ngRoute', 'ngResource'])
 			  .success(function(data, status) {
 			    if(data.type == "Success") {
 			    	$location.path("/home");
-			    	timeOutFactory.setUserLoggedIn(true);
-			    	timeOutFactory.setSessionId(data.cookie);
+			    	timeOutFactory.setSessionId(data.sessionId);
+			    	//$cookies.put('sessionId', data.sessionId);
 			    } else {
 			    	$window.alert(data.type + ": " + data.message);
 			    }
@@ -90,7 +90,7 @@ angular.module('timeout', ['ngRoute', 'ngResource'])
 		};
 
 		$scope.isCookieSet = function() {
-			return timeOutFactory.isUserLoggedIn();
+			return timeOutFactory.getSessionId() != "";
 		};
 
 		$scope.goToPage = function(url) {
@@ -225,10 +225,10 @@ angular.module('timeout', ['ngRoute', 'ngResource'])
 		};
 
 		$scope.createEvent = function(){
-			var sessionId = timeOutFactory.getSessionId();
-			var config = {headers: {'Set-Cookie': String(sessionId)} };
+			var params = '?sessionId=' + timeOutFactory.getSessionId();
+			params += 'eventName=' + $scope.eventName + '&eventDescription=' + $scope.eventDescription;
 
-			$http.get(timeOutFactory.getBackendUrl() + '/event/create' + '?eventName=' + $scope.eventName + '&eventDescription=' + $scope.eventDescription, config)
+			$http.get(timeOutFactory.getBackendUrl() + '/event/create' + params)
 			 .success(function(data, status) {
 				$window.alert("Success " + data.actionId);
 			  })
@@ -246,10 +246,10 @@ angular.module('timeout', ['ngRoute', 'ngResource'])
 		};
 
 		$scope.createGroup = function() {
-			var sessionId = timeOutFactory.getSessionId();
-			var config = {headers: {'set-cookie': String(sessionId)} };
+			var params = '?sessionId=' + timeOutFactory.getSessionId();
+			params += 'groupName=' + $scope.groupName + '&groupDescription=' + $scope.groupDescription + '&tag=' + $scope.tag;
 
-			$http.get(timeOutFactory.getBackendUrl() + '/group/create?groupName=' + $scope.groupName + '&groupDescription=' + $scope.groupDescription + '&tag=' + $scope.tag, config)
+			$http.get(timeOutFactory.getBackendUrl() + '/group/create' + params)
 			 .success(function(data, status) {
 				$window.alert("Success ");
 			  })
@@ -276,9 +276,7 @@ angular.module('timeout', ['ngRoute', 'ngResource'])
 	})
 
 	.controller('myEvents', function($scope, $http, $window, $location, timeOutFactory){
-
-		var sessionId = timeOutFactory.getSessionId();
-		var config = {headers: {'Set-Cookie': String(sessionId)} };
+		var params = '?sessionId=' + timeOutFactory.getSessionId();
 
 		$http.get(timeOutFactory.getBackendUrl() + '/event/degisecekkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk', config)
 		 .success(function(data, status) {
@@ -296,18 +294,15 @@ angular.module('timeout', ['ngRoute', 'ngResource'])
 	})
 
 	.controller('eventsCreated', function($scope, $http, $location, timeOutFactory, EventsService){
-		var sessionId = timeOutFactory.getSessionId();
-		var config = {headers: {'Set-Cookie': String(sessionId)} };
+		var params = '?sessionId=' + timeOutFactory.getSessionId();
 
-		$scope.eventsCreated = EventsService.query();
-
-		// $http.get(timeOutFactory.getBackendUrl() + '/event/created', config)
-		//  .success(function(data, status) {
-		// 	$scope.eventsCreated = data;
-		//   })
-		//   .error(function(data, status) {
-		//  	console.log("Error " + data);
-		//   });
+		$http.get(timeOutFactory.getBackendUrl() + '/event/created' + params)
+		 .success(function(data, status) {
+			$scope.eventsCreated = data;
+		  })
+		  .error(function(data, status) {
+		 	console.log("Error " + data);
+		  });
 
 		$scope.goToPage = function(url) {
 			console.log("GoToPage: " + url);
@@ -315,14 +310,13 @@ angular.module('timeout', ['ngRoute', 'ngResource'])
 		};
 	})
 
-	.controller('myGroups', function($scope, $http, $window, $location, timeOutFactory){
-		var sessionId = timeOutFactory.getSessionId();
-		var config = {headers: {'Set-Cookie': String(sessionId)} };
+	.controller('eventsInvited', function($scope, $http, $window, $location, timeOutFactory){
+		var params = '?sessionId=' + timeOutFactory.getSessionId();
 
-		$http.get(timeOutFactory.getBackendUrl() + '/group/degisecekkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk', config)
+		$http.get(timeOutFactory.getBackendUrl() + '/event/invited' + params)
 		 .success(function(data, status) {
 			$window.alert("Success " + data.actionId);
-			$scope.myGroups = data;
+			$scope.eventsInvited = data;
 		  })
 		  .error(function(data, status) {
 		 	console.log("Error " + data);
@@ -435,24 +429,8 @@ angular.module('timeout', ['ngRoute', 'ngResource'])
 			lists[name] = list;
 		};
 
-		timeOutFactory.isUserLoggedIn = function(){
-			return userLoggedIn;
-		};
-
-		timeOutFactory.setUserLoggedIn = function(value){
-			userLoggedIn = value;
-		};
-
 		timeOutFactory.getBackendUrl = function(){
 			return backendUrl;
-		};
-
-		timeOutFactory.getSessionId = function(){
-			return sessionId;
-		};
-
-		timeOutFactory.setSessionId = function(cookie){
-			sessionId = cookie;
 		};
 
 		timeOutFactory.getSearchText = function(){
@@ -463,17 +441,25 @@ angular.module('timeout', ['ngRoute', 'ngResource'])
 			searchText = text;
 		};
 
+		timeOutFactory.getSessionId = function(){
+			return sessionId;
+		}
+
+		timeOutFactory.setSessionId = function(value){
+			sessionId = value;
+		};
+
 		return timeOutFactory;
 	})
 
-	.factory('EventsService', function($resource, timeOutFactory){
-	    return $resource(timeOutFactory.getBackendUrl() + '/event/created', {}, {
-	    	get: {
-				method: 'GET',
-				headers: { 'set-cookie': timeOutFactory.getSessionId() }
-	    	}
-		})
-	});
+	// .factory('EventsService', function($resource, timeOutFactory){
+	//     return $resource(timeOutFactory.getBackendUrl() + '/event/created', {}, {
+	//     	get: {
+	// 			method: 'GET',
+	// 			headers: { 'set-cookie': timeOutFactory.getSessionId() }
+	//     	}
+	// 	})
+	// });
 
 
 
