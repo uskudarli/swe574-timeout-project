@@ -61,6 +61,10 @@ angular.module('timeout', ['ngRoute', 'ngResource'])
 		  	templateUrl: "myProfile.html",
 		  	controller: "myProfile"
 		  })
+		  .when("/uploadPhoto", {
+		  	templateUrl: "uploadPhoto.html",
+		  	controller: "profileEdit"
+		  })
 		  .otherwise({redirectTo: '/'});
 	})
 
@@ -180,6 +184,22 @@ angular.module('timeout', ['ngRoute', 'ngResource'])
 		$scope.goToPage = function(url) {
 			console.log("GoToPage: " + url);
 			$location.path(url);
+		};
+
+		
+    
+    $("#imgInp").change(function(){
+        readURL(this);
+    });
+
+		$scope.data = 'none';
+		$scope.add = function(){
+			var f = document.getElementById('photo').files[0];
+			r = new FileReader();
+			r.onloadend = function(e){
+				$scope.data = e.target.result;
+			}
+			r.readAsBinaryString(f);
 		};
 
 		$scope.genderOption = ['male', 'female', 'other'];
