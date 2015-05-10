@@ -64,16 +64,9 @@
                 </div>
                 <legend>Your Events</legend>
                 <div class="myEventList" ng-repeat="event in myEvents">
-                    <div class="eventOwnerName">{{event.owner}}</div>
-                    <!-- <div class="eventLink nextLine">has created an event:</div>
-                    <div class="eventName">Breakfast</div>
-                    <div class="eventLink">on</div>
-                    <div class="eventDate">April 29th</div>
-                    <div class="eventLink">at</div>
-                    <div class="eventTime">9.00 - 11.00 </div>
-                    <div class="eventLink">at</div>
-                    <div class="eventPlace">Etiler Mado</div>
-                    <div class="eventNumber">3</div> -->
+                    <div class="eventActionId">{{event.actionId}}</div>
+                    <div class="eventName">{{event.name}}</div>
+                    <div class="eventNumber">{{event.count}}</div>
                 </div>
             </fieldset>
         </div>

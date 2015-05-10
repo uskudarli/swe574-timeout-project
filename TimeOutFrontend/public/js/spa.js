@@ -69,6 +69,7 @@ app.config(function($routeProvider) {
 	  .otherwise({redirectTo: '/'});
 });
 
+// Tested by ogzcm
 app.controller("indexController", function($scope, $http, $location, $window, timeOutFactory) {
 	console.log("indexController works");
 
@@ -96,7 +97,7 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 	};
 
 	$scope.goToPage = function(url) {
-		console.log("GoToPage:" + url);
+		console.log("GoToPage: " + url);
 		$location.path(url);
 	};
 
@@ -106,8 +107,10 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 	};
 });
 
+// Tested by ogzcm
 app.controller("mainController", function($scope, $http, $location, $window, timeOutFactory) {
 	if(getCookie("sessionId") != undefined && getCookie("sessionId") != "") {
+		console.log("GoToPage: /home");
 		$location.path("/home");
 	}
 
@@ -273,12 +276,15 @@ app.controller("myProfile", function($scope, $http, $window, $location){
 	};
 });
 
+// Tested by ogzcm
 app.controller("myEvents", function($scope, $http, $window, $location, timeOutFactory){
 	var params = "?sessionId=" + getCookie("sessionId");
 
+	console.log("myEvents");
+
 	$http.get(timeOutFactory.getBackendUrl() + "/event/created/" + params)
 	 .success(function(data, status) {
-		$scope.eventsCreated = data;
+		$scope.myEvents = data;
 	  })
 	  .error(function(data, status) {
 	 	console.log("Error " + data);
