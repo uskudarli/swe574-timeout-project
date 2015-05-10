@@ -1,4 +1,4 @@
-app = angular.module('timeout', ['ngRoute', 'ngResource', 'ngCookies']);
+app = angular.module('timeout', ['ngRoute']);
 
 app.config(function($routeProvider) {
   $routeProvider
@@ -265,7 +265,7 @@ app.controller('myProfile', function($scope, $http, $window, $location){
 	};
 });
 
-.controller('myEvents', function($scope, $http, $window, $location, timeOutFactory){
+app.controller('myEvents', function($scope, $http, $window, $location, timeOutFactory){
 	var params = '?sessionId=' + timeOutFactory.getSessionId();
 
 	$http.get(timeOutFactory.getBackendUrl() + '/event/created/' + params)
