@@ -341,6 +341,26 @@ public class RestServices {
 		return prepareFriendsForUser(sessionId);
 	}
 	
+	@RequestMapping(value = "/event/getById")
+	@ResponseBody
+	public Action getEventById(
+            @RequestParam(value = "sessionId") String sessionId, 
+            @RequestParam(value = "id") Long actionId,
+            HttpServletResponse resp) {
+		setResponseHeaders(resp);
+		return getActionById(sessionId, actionId, "E");
+	}
+	
+	@RequestMapping(value = "/group/getById")
+	@ResponseBody
+	public Action getGroupById(
+            @RequestParam(value = "sessionId") String sessionId, 
+            @RequestParam(value = "id") Long actionId,
+            HttpServletResponse resp) {
+		setResponseHeaders(resp);
+		return getActionById(sessionId, actionId, "G");
+	}
+	
 //	@RequestMapping(value = "/friends/invite")
 //	@ResponseBody
 //	public List<User> inviteFriends(
@@ -348,6 +368,24 @@ public class RestServices {
 //		setResponseHeaders(resp);
 //		return inviteFriendsForUser(cookie);
 //	}
+
+	private Action getActionById(String sessionId, Long actionId, String actionType) {
+		EntityManager em = DBUtility.startTransaction();
+		User user = getSessionUser(sessionId);
+		Action returnVal = null;
+		if (user != null && actionId > 0){
+			Query query = em
+					.createQuery(
+							"FROM Action A WHERE A.actionId = :actionId AND "
+							+ "A.actionType = :actionType")
+					.setParameter("actionId", actionId)
+					.setParameter("actionType", actionType);
+			
+			returnVal = (Action) query.getSingleResult();
+		}
+		
+		return returnVal;
+	}
 
 	private List<User> prepareFriendsForUser(String cookie) {
 		EntityManager em = DBUtility.startTransaction();
