@@ -73,7 +73,10 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 	console.log("indexController works");
 
 	$scope.doLogin = function() {
-		var loginUrl = timeOutFactory.getBackendUrl() + "/login?userEmail=" + $scope.userEmail + "&password=" + $scope.loginPassword;
+		console.log("DoLogin works");
+		var params = "?userEmail=" + $scope.userEmail + "&password=" + $scope.loginPassword;
+
+		var loginUrl = timeOutFactory.getBackendUrl() + "/login" + params;
 		$http({method: "GET",  url: loginUrl})
 		  .success(function(data, status) {
 		    if(data.type == "Success") {
@@ -104,9 +107,15 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 });
 
 app.controller("mainController", function($scope, $http, $location, $window, timeOutFactory) {
+	if(getCookie("sessionId") != undefined && getCookie("sessionId") != "") {
+		$location.path("/home");
+	}
+
 	$scope.signUp = function() {
 		// Simple GET request example :
-		$http({method: "GET",  url: timeOutFactory.getBackendUrl() + "/register?userEmail=" + $scope.email + "&password=" + $scope.sigUpPassword})
+		var params = "?userEmail=" + $scope.email + "&password=" + $scope.sigUpPassword;
+
+		$http({method: "GET",  url: timeOutFactory.getBackendUrl() + "/register" + params})
 		  .success(function(data, status) {
 		    if(data.type == "Success") {
 		    	$window.alert(data.message);
@@ -125,10 +134,9 @@ app.controller("mainController", function($scope, $http, $location, $window, tim
 });
 
 app.controller("homeController", function($scope, $http, $window, $location, timeOutFactory) {
-	var sessionId = timeOutFactory.getSessionId();
-	var config = {headers: {'Set-Cookie': String(sessionId)} };
+	var params = "?sessionId=" + getCookie("sessionId");
 
-	$http.get(timeOutFactory.getBackendUrl() + '/', config)
+	$http.get(timeOutFactory.getBackendUrl() + '/' + params)
 	 .success(function(data, status) {
 		$window.alert("Success " + data.actionId);
 		$scope.eventsInvited = data;
@@ -215,10 +223,10 @@ app.controller("createEvent", function($scope, $http, $window, $location, timeOu
 	};
 
 	$scope.createEvent = function(){
-		var params = '?sessionId=' + timeOutFactory.getSessionId();
-		params += '&eventName=' + $scope.eventName + '&eventDescription=' + $scope.eventDescription;
+		var params = "?sessionId=" + getCookie("sessionId");
+		params += "&eventName=" + $scope.eventName + "&eventDescription=" + $scope.eventDescription;
 
-		$http.get(timeOutFactory.getBackendUrl() + '/event/create' + params)
+		$http.get(timeOutFactory.getBackendUrl() + "/event/create" + params)
 		 .success(function(data, status) {
 			$window.alert("Success " + data.actionId);
 		  })
@@ -236,10 +244,10 @@ app.controller("createGroup", function($scope, $http, $window, $location, timeOu
 	};
 
 	$scope.createGroup = function() {
-		var params = '?sessionId=' + timeOutFactory.getSessionId();
-		params += '&groupName=' + $scope.groupName + '&groupDescription=' + $scope.groupDescription + '&tag=' + $scope.tag;
+		var params = "?sessionId=" + getCookie("sessionId");
+		params += "&groupName=" + $scope.groupName + "&groupDescription=" + $scope.groupDescription + "&tag=" + $scope.tag;
 
-		$http.get(timeOutFactory.getBackendUrl() + '/group/create' + params)
+		$http.get(timeOutFactory.getBackendUrl() + "/group/create" + params)
 		 .success(function(data, status) {
 			$window.alert("Success ");
 		  })
@@ -257,7 +265,7 @@ app.controller("myFriends", function($scope, $http, $window, $location) {
 	};
 });
 
-app.controller('myProfile', function($scope, $http, $window, $location){
+app.controller("myProfile", function($scope, $http, $window, $location){
 
 	$scope.goToPage = function(url) {
 		console.log("GoToPage: " + url);
@@ -265,10 +273,10 @@ app.controller('myProfile', function($scope, $http, $window, $location){
 	};
 });
 
-app.controller('myEvents', function($scope, $http, $window, $location, timeOutFactory){
-	var params = '?sessionId=' + timeOutFactory.getSessionId();
+app.controller("myEvents", function($scope, $http, $window, $location, timeOutFactory){
+	var params = "?sessionId=" + getCookie("sessionId");
 
-	$http.get(timeOutFactory.getBackendUrl() + '/event/created/' + params)
+	$http.get(timeOutFactory.getBackendUrl() + "/event/created/" + params)
 	 .success(function(data, status) {
 		$scope.eventsCreated = data;
 	  })
@@ -283,9 +291,9 @@ app.controller('myEvents', function($scope, $http, $window, $location, timeOutFa
 });
 
 app.controller('eventsCreated', function($scope, $http, $location, timeOutFactory, EventsService){
-	var params = '?sessionId=' + timeOutFactory.getSessionId();
+	var params = "?sessionId=" + getCookie("sessionId");
 
-	$http.get(timeOutFactory.getBackendUrl() + '/event/created' + params)
+	$http.get(timeOutFactory.getBackendUrl() + "/event/created" + params)
 	 .success(function(data, status) {
 		$scope.eventsCreated = data;
 	  })
@@ -299,10 +307,10 @@ app.controller('eventsCreated', function($scope, $http, $location, timeOutFactor
 	};
 });
 
-app.controller('eventsInvited', function($scope, $http, $window, $location, timeOutFactory){
-	var params = '?sessionId=' + timeOutFactory.getSessionId();
+app.controller("eventsInvited", function($scope, $http, $window, $location, timeOutFactory){
+	var params = "?sessionId=" + getCookie("sessionId");
 
-	$http.get(timeOutFactory.getBackendUrl() + '/event/invited' + params)
+	$http.get(timeOutFactory.getBackendUrl() + "/event/invited" + params)
 	 .success(function(data, status) {
 		$window.alert("Success " + data.actionId);
 		$scope.eventsInvited = data;
@@ -317,11 +325,10 @@ app.controller('eventsInvited', function($scope, $http, $window, $location, time
 	};
 });
 
-app.controller('newGroups', function($scope, $http, $window, $location, timeOutFactory){
-	var sessionId = timeOutFactory.getSessionId();
-	var config = {headers: {'Set-Cookie': String(sessionId)} };
+app.controller("newGroups", function($scope, $http, $window, $location, timeOutFactory){
+	var params = "?sessionId=" + getCookie("sessionId");
 
-	$http.get(timeOutFactory.getBackendUrl() + '/group/degisecekkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk', config)
+	$http.get(timeOutFactory.getBackendUrl() + "/group/degisecekkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk/" + params)
 	 .success(function(data, status) {
 		$window.alert("Success " + data.actionId);
 		$scope.newGroups = data;
@@ -336,11 +343,10 @@ app.controller('newGroups', function($scope, $http, $window, $location, timeOutF
 	};
 });
 
-app.controller('friendsGroups', function($scope, $http, $window, $location, timeOutFactory){
-	var sessionId = timeOutFactory.getSessionId();
-	var config = {headers: {'Set-Cookie': String(sessionId)} };
+app.controller("friendsGroups", function($scope, $http, $window, $location, timeOutFactory){
+	var params = "?sessionId=" + getCookie("sessionId");
 
-	$http.get(timeOutFactory.getBackendUrl() + '/group/degisecekkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk', config)
+	$http.get(timeOutFactory.getBackendUrl() + "/group/degisecekkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk/" + params)
 	 .success(function(data, status) {
 		$window.alert("Success " + data.actionId);
 		$scope.friendsGroups = data;
@@ -356,11 +362,10 @@ app.controller('friendsGroups', function($scope, $http, $window, $location, time
 	};
 });
 
-app.controller('suggestedGroups', function($scope, $http, $window, $location, timeOutFactory){
-	var sessionId = timeOutFactory.getSessionId();
-	var config = {headers: {'Set-Cookie': String(sessionId)} };
+app.controller("suggestedGroups", function($scope, $http, $window, $location, timeOutFactory){
+	var params = "?sessionId=" + getCookie("sessionId");
 
-	$http.get(timeOutFactory.getBackendUrl() + '/group/degisecekkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk', config)
+	$http.get(timeOutFactory.getBackendUrl() + "/group/degisecekkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk/" + params)
 	 .success(function(data, status) {
 		$window.alert("Success " + data.actionId);
 		$scope.suggestedGroups = data;
@@ -375,11 +380,10 @@ app.controller('suggestedGroups', function($scope, $http, $window, $location, ti
 	};
 });
 
-app.controller('eventsInvited', function($scope, $http, $window, $location, timeOutFactory){
-	var sessionId = timeOutFactory.getSessionId();
-	var config = {headers: {'Set-Cookie': String(sessionId)} };
+app.controller("eventsInvited", function($scope, $http, $window, $location, timeOutFactory){
+	var params = "?sessionId=" + getCookie("sessionId");
 
-	$http.get(timeOutFactory.getBackendUrl() + '/event/invited', config)
+	$http.get(timeOutFactory.getBackendUrl() + "/event/invited" + params)
 	 .success(function(data, status) {
 		$window.alert("Success " + data.actionId);
 		$scope.eventsInvited = data;
