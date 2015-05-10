@@ -57,8 +57,13 @@ public class Action {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "action")
 	private Set<ActionTag> actionTags = new HashSet<ActionTag>(0);
 	
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "action")
 	private Set<ActionRecommendation> actionRecommendations = new HashSet<ActionRecommendation>(0);
+	
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+	private Set<CustomType> customTypes = new HashSet<CustomType>(0);
 	
 	public Action(){
 	}
@@ -67,7 +72,7 @@ public class Action {
 		this.title = title;
 		this.description = description;
 		this.createTime = new Date();
-		this.privacy = Params.PRIVACY_PUBLIC_TO_ALL;
+		this.privacy = PrivacyType.PUBLIC.toString();
 		this.actionType = actionType;
 		//this.location = null;
 		this.startTime = new Date();
@@ -82,7 +87,7 @@ public class Action {
 		this.title = title;
 		this.description = description;
 		this.createTime = new Date();
-		this.privacy = Params.PRIVACY_PUBLIC_TO_ALL;
+		this.privacy = PrivacyType.PUBLIC.toString();
 		this.actionType = actionType;
 		//this.location = null;
 		if (actionType == "E"){
@@ -97,7 +102,7 @@ public class Action {
 		this.title = title;
 		this.description = description;
 		this.createTime = new Date();
-		this.privacy = Params.PRIVACY_PUBLIC_TO_ALL;
+		this.privacy = PrivacyType.PUBLIC.toString();
 		this.actionType = actionType;
 		//this.location = null;
 		if (actionType == "E"){
@@ -192,5 +197,22 @@ public class Action {
 		actionDTO.setName(title);
 		actionDTO.setCount(actionUsers.size());
 		return actionDTO;
+	}
+
+	public Set<ActionRecommendation> getActionRecommendations() {
+		return actionRecommendations;
+	}
+
+	public void setActionRecommendations(
+			Set<ActionRecommendation> actionRecommendations) {
+		this.actionRecommendations = actionRecommendations;
+	}
+
+	public Set<CustomType> getCustomTypes() {
+		return customTypes;
+	}
+
+	public void setCustomTypes(Set<CustomType> customTypes) {
+		this.customTypes = customTypes;
 	}
 }

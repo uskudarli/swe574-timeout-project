@@ -2,6 +2,8 @@ package demo;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 import java.util.Date;
@@ -22,15 +24,19 @@ public class User {
 	private Date date;
 	private String password;
 
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
 	private Set<ActionUser> actionUsers = new HashSet<ActionUser>(0);
 
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userRecommended1")
 	private Set<UserRecommendation> userRecommendations1 = new HashSet<UserRecommendation>(0);
 	
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userRecommended2")
 	private Set<UserRecommendation> userRecommendations2 = new HashSet<UserRecommendation>(0);
 	
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "action")
 	private Set<ActionRecommendation> actionRecommendations = new HashSet<ActionRecommendation>(0);
 
@@ -42,18 +48,23 @@ public class User {
 //	@JoinTable(name = "FriendShip", joinColumns = @JoinColumn(name = "friendId"), inverseJoinColumns = @JoinColumn(name = "personId"))
 //	private Set<User> friendShip2 = new HashSet<User>(0);
 	
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "person")
 	private Set<Friendship> friendShip1 = new HashSet<Friendship>(0);
 	
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "friend")
 	private Set<Friendship> friendShip2 = new HashSet<Friendship>(0);
 
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private Set<CustomType> customTypes = new HashSet<CustomType>(0);
 
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private Set<Post> posts = new HashSet<Post>(0);
 
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private Set<Comment> comments = new HashSet<Comment>(0);
 
@@ -61,14 +72,17 @@ public class User {
 	@JoinColumn(name = "roleId")
 	private Role role;
 
+	@JsonIgnore
 	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	@PrimaryKeyJoinColumn
 	private UserBasicInfo userBasicInfo;
 
+	@JsonIgnore
 	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	@PrimaryKeyJoinColumn
 	private UserCommInfo userCommInfo;
 
+	@JsonIgnore
 	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	@PrimaryKeyJoinColumn
 	private UserExtraInfo userExtraInfo;

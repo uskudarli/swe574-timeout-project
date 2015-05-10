@@ -361,6 +361,18 @@ public class RestServices {
 		return getActionById(sessionId, actionId, "G");
 	}
 	
+	@RequestMapping(value = "/customType/create")
+	@ResponseBody
+	public CustomType createCustomType(
+            @RequestParam(value = "sessionId") String sessionId, 
+            @RequestParam(value = "actionId") Long actionId,
+            @RequestParam(value = "name") String name,
+            @RequestParam(value = "attributes", required = false) String attributesJsonListString,
+            HttpServletResponse resp) {
+		setResponseHeaders(resp);
+		return createCustomType(sessionId, actionId, name, attributesJsonListString);
+	}
+	
 //	@RequestMapping(value = "/friends/invite")
 //	@ResponseBody
 //	public List<User> inviteFriends(
@@ -369,17 +381,66 @@ public class RestServices {
 //		return inviteFriendsForUser(cookie);
 //	}
 
+	private CustomType createCustomType(String sessionId, Long actionId,
+			String name, String attributesString) {
+		EntityManager em = DBUtility.startTransaction();
+		User user = getSessionUser(sessionId);
+		
+		CustomType cusType = new CustomType();
+		cusType.setName(name);
+		cusType.setUser(user);
+        
+		Action action = getActionById(sessionId, actionId, "");
+		cusType.setAction(action);
+		
+		insertAttributes(attributesString, cusType, em);
+		
+        em.persist(cusType); 
+
+        DBUtility.commitTransaction(em);
+
+        return cusType;
+	}
+
+	private void insertAttributes(String attributesString, CustomType cusType, EntityManager em) {
+		if (attributesString == null || attributesString == "")
+            return;
+        
+        List<Attribute> attributes = null;
+        Gson gson = new Gson();
+        
+        Type listType = new TypeToken<ArrayList<Attribute>>() {}.getType();
+
+        attributes = gson.fromJson(attributesString, listType);
+        
+        for (int i = 0; i < attributes.size(); i++) {
+        	Attribute attribute = new Attribute();
+        	attribute.setAttributeKey(attributes.get(i).getAttributeKey());
+        	attribute.setAttributeValue(attributes.get(i).getAttributeValue());
+        	attribute.setCustomType(cusType);
+            em.persist(attribute);
+        }
+	}
+
 	private Action getActionById(String sessionId, Long actionId, String actionType) {
 		EntityManager em = DBUtility.startTransaction();
 		User user = getSessionUser(sessionId);
 		Action returnVal = null;
 		if (user != null && actionId > 0){
-			Query query = em
-					.createQuery(
-							"FROM Action A WHERE A.actionId = :actionId AND "
-							+ "A.actionType = :actionType")
-					.setParameter("actionId", actionId)
-					.setParameter("actionType", actionType);
+			Query query = null;
+			if (actionType == "E" || actionType == "G") {
+				query = em
+						.createQuery(
+								"FROM Action A WHERE A.actionId = :actionId AND "
+										+ "A.actionType = :actionType")
+						.setParameter("actionId", actionId)
+						.setParameter("actionType", actionType);
+			} else {
+				query = em
+						.createQuery(
+								"FROM Action A WHERE A.actionId = :actionId")
+						.setParameter("actionId", actionId);
+			}
 			
 			returnVal = (Action) query.getSingleResult();
 		}
