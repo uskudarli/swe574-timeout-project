@@ -7,44 +7,46 @@
 			<a href="profileEdit.html">Edit Profile</a>
 		</div>
 		<ul>
-			<li>
-				<a href="#">
-					<img src="images/profile.png" />
-					<p>My Profile</p>
-				</a>
-			</li>
-			<li>
-				<a href="#">
-					<img src="images/event.png" />
-					<p>Events</p>
-				</a>
-			</li>
-            <li>
-                <a href="#">
-                    <img src="images/group.png" />
-                    <p>Groups</p>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <img src="images/group.png" />
-                    <p>Friends</p>
-                </a>
-            </li>
+			 <ul>
+          <li>
+            <a href="" ng-click="goToPage('/myProfile')">
+              <img src="images/profile.png" />
+              <p>My Profile</p>
+            </a>
+          </li>
+          <li>
+            <a href="" ng-click="goToPage('/myEvents')">
+              <img src="images/event.png" />
+              <p>Events</p>
+            </a>
+          </li>
+                  <li>
+                      <a href="" ng-click="goToPage('/myGroups')">
+                          <img src="images/group.png" />
+                          <p>Groups</p>
+                      </a>
+                  </li>
+                  <li>
+                      <a href="" ng-click="goToPage('/myFriends')">
+                          <img src="images/group.png" />
+                          <p>Friends</p>
+                      </a>
+                  </li>
+        </ul>
 		</ul>
 	</div>
 	<div class="menu">
 		<ul>
-			<li>
-				<a href="home.html">Home</a>
-			</li>
-			<li>
-				<a href="createEvent.html">Create Event</a>
-			</li>
-			<li>
-				<a href="CreateGroup.html">Create Group</a>
-			</li>
-		</ul>
+  <li>
+    <a href="" ng-click="goToPage('/home')">Home</a>
+  </li>
+  <li>
+    <a href="" ng-click="goToPage('/createEvent')">Create Event</a>
+  </li>
+  <li>
+    <a href="" ng-click="goToPage('/createGroup')">Create Group</a>
+  </li>
+</ul>
 	</div>
 	<div class="midcolumn">
 		<div class="group-creation">
