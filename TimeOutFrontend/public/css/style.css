@@ -98,10 +98,11 @@ div.login{
 
 #loginForm tr td input{
 	float: left;
+    font-size: 11px;
+    height: 16px;
     margin: 0 5px 6px 0 !important;
     padding: 0 !important;
     width: 125px;
-    height: 16px;
 }
 
 #loginForm tr td label{
