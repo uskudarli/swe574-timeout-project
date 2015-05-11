@@ -35,7 +35,29 @@
 						<div class="righttop">
                             <div class="login" ng-show="!isCookieSet()">
                                 <form ng-submit="doLogin()">
-                                    <fieldset>
+                                    <table id="loginForm">
+                                        <tr>
+                                            <td><label for="username">Username:</label></td>
+                                            <td><label for="password">Password:</label></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="text" name="username" ng-model="userEmail"/></td>
+                                            <td><input type="text" name="password" ng-model="loginPassword"/></td>
+                                            <td><button class="btn btn-primary" style="padding: 1px 12px;" type="submit">Login</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input style="width:auto !important" type="checkbox" name="persist_box" value="1">
+                                                <label for="persist_box">Keep me logged in</label>
+                                            </td>
+                                            <td>
+                                                <a href="#">Forgot your password?</a>
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                    </table>
+                                    <!-- <fieldset>
                                         <p>
                                             <label for="username">Username:</label>
                                             <input type="text" name="username" ng-model="userEmail"/>
@@ -50,7 +72,7 @@
                                         <p id="login-button">
                                             <button class="btn btn-primary" style="padding: 1px 12px;" type="submit">Login</button>
                                         </p>
-                                    </fieldset>
+                                    </fieldset> -->
                                 </form>
                             </div>
 
