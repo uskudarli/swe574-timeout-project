@@ -34,16 +34,104 @@
       </div>
       <div class="groupTitle">
           <span>GROUP GOURMET</span>
-          <div class="customType">Create Custom Type</div>
+          
+          <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='block';document.getElementById('fade').style.display='block'"><div class="customType">Create Custom Type</div></a>
+          <div id="light" class="white_content">
+            <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'">
+              <div class="closeLightbox">X</div>
+            </a>
+            <div class="addCustomType">
+                <table>
+                  <tr>
+                    <td>Type Name: </td>
+                    <td><input type="text" name="customType" ng-model="customType"/></td>
+                  </tr>
+                  <tr>
+                    <td>Attribute Type:</td>
+                    <td><input type="text" name="attributeType" ng-model="attributeType"/></td>
+                  </tr>
+                  <tr>
+                    <td>Attribute Description:</td>
+                    <td><input type="text" name="attributeDescription" ng-model="attributeDescription"/></td>
+                  </tr>
+                  <tr>
+                    <td colspan="2"><button class="btn btn-primary" style="padding: 1px 12px;" type="submit">Add</button></td>
+                  </tr>
+                </table>
+              </div>
+          </div>
+          <div id="fade" class="black_overlay"></div>
       </div>     	
       <div class="midcolumn">
       	<div class="groupTab">
             <ul>
               <li>Default</li>
+              <li>Restaurant</li>
               <li>+</li>
             </ul>
         </div>
-        <div class="addPost">Add Post</div>
+        <div class="clearBoth"></div>
+        <div class="groupDetay">
+          <img src="images/groupGourmet.jpg" />
+          <span>This group is created for sharing info, experiences, receipt, advices, etc. for Gourmets.This group is created for sharing info, experiences, receipt, advices, etc. for Gourmets.This group is created for sharing info, experiences, receipt, advices, etc. for Gourmets.This group is created for sharing info, experiences, receipt, advices, etc. for Gourmets.This group is created for sharing info, experiences, receipt, advices, etc. for Gourmets.This group is created for sharing info, experiences, receipt, advices, etc. for Gourmets. </span>
+        </div>
+        <div class="groupMember">
+          <span>Group Members</span>
+          <table>
+            <tr>
+              <td><img src="images/suzan.jpg" /></td>
+              <td><img src="images/1.jpg" /></td>
+              <td><img src="images/2.jpg" /></td>
+            </tr>
+            <tr>
+              <td><img src="images/3.jpg" /></td>
+              <td><img src="images/profile.JPG" /></td>
+              <td><img src="images/suzan.jpg" /></td>
+            </tr>
+            <tr>
+              <td><img src="images/1.jpg" /></td>
+              <td><img src="images/2.jpg" /></td>
+              <td><img src="images/3.jpg" /></td>
+            </tr>
+            <tr>
+              <td colspan="3"><a href="">More</a></td>
+            </tr>
+          </table>
+        </div>
+        <div class="commentPosted">
+          <span>Comments</span>
+          <table>
+            <tr>
+              <td><img src="images/1.jpg" /></td></td>
+              <td><span>Ali Dostoglu</span></td></td>
+            </tr>
+            <tr>
+              <td colspan="2"><p>Bir restoran var nispetiye caddesi no:3 kaşıkkapı isminde orada künefe bir harika dostlar! Gidin yiyin derim!</p></td>
+            </tr>
+          </table>
+        </div>
+        <!-- Lightbox Start -->
+        <a href = "javascript:void(0)" onclick = "document.getElementById('lightPost').style.display='block';document.getElementById('fade').style.display='block'"><div class="addPost">Add Post</div></a>
+          <div id="lightPost" class="white_content">
+            <a href = "javascript:void(0)" onclick = "document.getElementById('lightPost').style.display='none';document.getElementById('fade').style.display='none'">
+              <div class="closeLightbox">X</div>
+            </a>
+            <div class="addCustomType">
+                <table>
+                  <tr>
+                    <td>Comment: </td>
+                  </tr>
+                  <tr>
+                    <td><textarea name="comment" ng-model="comment"></textarea>
+                  </tr>
+                  <tr>
+                    <td><button class="btn btn-primary" style="padding: 1px 12px;" type="submit">Post</button></td>
+                  </tr>
+                </table>
+            </div>
+          </div>
+          <div id="fade" class="black_overlay"></div>
+          <!-- Lightbox End -->
       </div>
       <div class="rightcolumn">
       	<div class="notification">
