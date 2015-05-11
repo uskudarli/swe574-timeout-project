@@ -25,9 +25,10 @@ body {
 }
 
 section {
-	float:right;
-	width:100%;
-	height:auto;
+	float: right;
+    min-height: 650px;
+    padding-bottom: 10px;
+    width: 100%;
 }
 
 div.intro{
@@ -130,6 +131,65 @@ label {
     margin-top: 125px;
     min-height: 550px;
     width: 1070px;
+}
+
+.groupTitle{
+    border-bottom: 3px solid #0fa4dd !important;
+    float: left;
+    list-style: outside none none;
+    margin-left: 20px;
+    padding: 10px;
+    text-align: center;
+    width: 625px;
+}
+
+.groupTitle span{
+    font-size: 20px;
+    font-weight: bold;    
+}
+
+.customType{
+    background: none repeat scroll 0 0 #12295d;
+    border-radius: 10px;
+    color: #fff;
+    float: right;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 10px;
+}
+
+.addPost{
+    background: none repeat scroll 0 0 #12295d;
+    border-radius: 10px;
+    color: #fff;
+    float: left;
+    font-size: 12px;
+    font-weight: bold;
+    margin: 5px 15px;
+    padding: 10px;
+}
+
+.groupTab{
+    border-bottom: 2px solid #12295d;
+    float: left;
+    margin: 0 15px;
+    width: 625px;
+}
+
+.groupTab ul{
+    float: left;
+    margin: 0 !important;
+    padding: 0;
+}
+
+.groupTab ul li{
+    border: 2px solid #12295d;
+    border-radius: 4px;
+    float: left;
+    list-style: outside none none;
+    margin: 0 -1px -2px 0;
+    padding: 5px 10px;
+    width: auto;
 }
 
 #search-button{
@@ -410,11 +470,10 @@ div.eventLink{
 div.leftcolumn{
     border-right: 1px solid #999;
     float: left;
-    height: 100%;
-    min-height: 550px;
+    margin-top: 15px;
+    min-height: 600px;
     padding: 15px;
     width: 200px;
-    margin-top: 15px;
 }
 
 div.profile{
@@ -493,11 +552,10 @@ div.midcolumn{
 div.rightcolumn{
     border-left: 1px solid #999;
     float: left;
-    height: 100%;
-    min-height: 550px;
+    margin-top: -70px;
+    min-height: 600px;
     padding: 5px;
     width: 200px;
-    margin-top: -70px;
 }
 
 div.notification{

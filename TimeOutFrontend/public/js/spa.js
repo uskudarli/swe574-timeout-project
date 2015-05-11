@@ -66,6 +66,10 @@ app.config(function($routeProvider) {
 	  	templateUrl: "uploadPhoto.html",
 	  	controller: "profileEdit"
 	  })
+	  .when("/theGroup", {
+	  	templateUrl: "theGroup.html",
+	  	controller: "theGroup"
+	  })
 	  .otherwise({redirectTo: '/'});
 });
 
@@ -404,6 +408,15 @@ app.controller("newGroups", function($scope, $http, $window, $location, timeOutF
 	  .error(function(data, status) {
 	 	$window.alert("Error " + data);
 	  });
+
+	$scope.goToPage = function(url) {
+		console.log("GoToPage: " + url);
+		$location.path(url);
+	};
+});
+
+app.controller("theGroup", function($scope, $http, $window, $location, timeOutFactory){
+	var params = "?sessionId=" + getCookie("sessionId");
 
 	$scope.goToPage = function(url) {
 		console.log("GoToPage: " + url);

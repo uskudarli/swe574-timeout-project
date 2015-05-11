@@ -32,30 +32,18 @@
                   </li>
       	</ul>
       </div>
-      <div class="menu">
-      	<ul>
-      		<li class="active">
-      			<a href="" ng-click="goToPage('/home')">Home</a>
-      		</li>
-      		<li>
-      			<a href="" ng-click="goToPage('/createEvent')">Create Event</a>
-      		</li>
-          <li>
-            <a href="" ng-click="goToPage('/createGroup')">Create Group</a>
-          </li>
-          <li>
-            <a href="" ng-click="goToPage('/theGroup')">The Group</a>
-          </li>
-      	</ul>
-      	</div>
+      <div class="groupTitle">
+          <span>GROUP GOURMET</span>
+          <div class="customType">Create Custom Type</div>
+      </div>     	
       <div class="midcolumn">
-      			<div class="news-feed">
-      		<div class="news" ng-repeat="newFeed in newsFeed">
-      			
-      			<p class="news-title">{{newFeed.name}}</p>
-      			<p class="news-detail"> joined the group {{newFeed.detail}}</p>
-      		</div>
-      	</div>
+      	<div class="groupTab">
+            <ul>
+              <li>Default</li>
+              <li>+</li>
+            </ul>
+        </div>
+        <div class="addPost">Add Post</div>
       </div>
       <div class="rightcolumn">
       	<div class="notification">
