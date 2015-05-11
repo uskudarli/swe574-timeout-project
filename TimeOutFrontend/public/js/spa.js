@@ -191,10 +191,19 @@ app.controller("searchController", function($scope, $http, $location, $window, t
 
 app.controller("profileEdit", function($scope, $http, $window, $location, timeOutFactory) {
 
-	$scope.goToPage = function(url) {
-		console.log("GoToPage: " + url);
-		$location.path(url);
-	};
+	var params = "?sessionId=" + getCookie("sessionId");
+
+	$http({method: "GET",  url: timeOutFactory.getBackendUrl() + "/profile/get" + params})
+	  .success(function(data, status) {
+	    $scope.email = data.userName;
+	    $scope.password = data.password;
+	    console.log(JSON.stringify(data));
+	  })
+	  .error(function(data, status) {
+	 	$window.alert("No records have been found!!!");
+	  });
+
+
 
 	$("#imgInp").change(function(){
 		readURL(this);
@@ -214,15 +223,31 @@ app.controller("profileEdit", function($scope, $http, $window, $location, timeOu
 	$scope.selectedLanguage = ['Turkish','English', 'French', 'German', 'Italian', 'Spanish'];
 
 	$scope.profileEdit = function(){
+		var paramsEdit = "?sessionId=" + getCookie("sessionId");
+		paramsEdit += "&firstName=" + $scope.firstName +
+					  "&lastName=" + $scope.lastName +
+					  "&Gsm=" + $scope.Gsm +
+					  "&address=" + $scope.address +
+					  "&birthdate=" + $scope.birthdate +
+					  "&about=" + $scope.about +
+					  "&interests=" + $scope.interests +
+					  "&gender=" + $scope.gender +
+					  "&languages=" + $scope.languages;
 
-		$http.post(timeOutFactory.getBackendUrl() + '/profile/edit?userEmail=' + $scope.userName )
+
+		$http.post(timeOutFactory.getBackendUrl() + "/profile/edit" + paramsEdit)
 			.success(function(data, status) {
 				$window.alert("Success " + data.actionId);
 			})
 			.error(function(data, status) {
 				$window.alert("Error " + data);
 			});
-	}
+	};
+
+	$scope.goToPage = function(url) {
+		console.log("GoToPage: " + url);
+		$location.path(url);
+	};
 });
 
 // Tested by ogzcm
@@ -285,13 +310,13 @@ app.controller("myFriends", function($scope, $http, $window, $location) {
 	};
 });
 
-app.controller("myProfile", function($scope, $http, $window, $location){
+// app.controller("myProfile", function($scope, $http, $window, $location){
 
-	$scope.goToPage = function(url) {
-		console.log("GoToPage: " + url);
-		$location.path(url);
-	};
-});
+// 	$scope.goToPage = function(url) {
+// 		console.log("GoToPage: " + url);
+// 		$location.path(url);
+// 	};
+// });
 
 // Tested by ogzcm
 app.controller("myEvents", function($scope, $http, $window, $location, timeOutFactory){
