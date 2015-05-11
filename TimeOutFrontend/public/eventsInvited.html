@@ -64,17 +64,15 @@
                                         </div>
                                         <legend>Your Events</legend>
                                         <div class="myEventList" ng-repeat="event in eventsInvited">
-                                            <div class="eventOwnerName">{{event.name}}</div>
-                                            <!-- <div class="eventLink nextLine">has created an event:</div>
-                                            <div class="eventName">Problem Session</div>
-                                            <div class="eventLink">on</div>
-                                            <div class="eventDate">April 10th</div>
-                                            <div class="eventLink">at</div>
-                                            <div class="eventTime">9.00  - 11.00 </div>
-                                            <div class="eventLink">at</div>
-                                            <div class="eventPlace">ETA - A23</div>
-                                            <div class="eventNumber">7</div> -->
+                                            <div class="eventActionId">{{event.actionId}}</div>
+                                            <div class="eventName">{{event.name}}</div>
+                                            <div class="eventNumber">{{event.count}}</div>
                                         </div>
+
+                                        <div class="noEvent" ng-show="eventsInvited == 'empty'">
+                                            Sorry, no related events have been found.
+                                        </div>
+
                                     </fieldset>
                                 </div>
                             </div>

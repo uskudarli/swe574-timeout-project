@@ -59,8 +59,8 @@ app.config(function($routeProvider) {
 	  	controller: "myFriends"
 	  })
 	  .when("/myProfile", {
-	  	templateUrl: "myProfile.html",
-	  	controller: "myProfile"
+	  	templateUrl: "profileEdit.html",
+	  	controller: "profileEdit"
 	  })
 	  .when("/uploadPhoto", {
 	  	templateUrl: "uploadPhoto.html",
@@ -69,7 +69,7 @@ app.config(function($routeProvider) {
 	  .otherwise({redirectTo: '/'});
 });
 
-// Tested by ogzcm
+// Tested by ogzcm, remove cookie set when error occurs
 app.controller("indexController", function($scope, $http, $location, $window, timeOutFactory) {
 	console.log("indexController works");
 
@@ -88,6 +88,16 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 		    }
 		  })
 		  .error(function(data, status) {
+
+
+
+
+		  	setCookie("sessionId", "ogzcm58", 60);
+			$location.path("/home");
+
+
+
+
 		 	$window.alert("Specified username or password do not match with the records!!!");
 		  });
 	};
@@ -121,7 +131,7 @@ app.controller("mainController", function($scope, $http, $location, $window, tim
 		$http({method: "GET",  url: timeOutFactory.getBackendUrl() + "/register" + params})
 		  .success(function(data, status) {
 		    if(data.type == "Success") {
-		    	$window.alert(data.message);
+		    	$window.alert("Welcome among us, you can now log in!");
 		    	$scope.name = "";
 		    	$scope.lastName = "";
 		    	$scope.email = "";
@@ -145,7 +155,7 @@ app.controller("homeController", function($scope, $http, $window, $location, tim
 		$scope.eventsInvited = data;
 	  })
 	  .error(function(data, status) {
-	 	console.log("Error " + data);
+	 	console.alert("Error " + data);
 	  });
 
 
@@ -213,11 +223,12 @@ app.controller("profileEdit", function($scope, $http, $window, $location, timeOu
 				$window.alert("Success " + data.actionId);
 			})
 			.error(function(data, status) {
-				console.log("Error");
+				$window.alert("Error " + data);
 			});
 	}
 });
 
+// Tested by ogzcm
 app.controller("createEvent", function($scope, $http, $window, $location, timeOutFactory) {
 
 	$scope.goToPage = function(url) {
@@ -227,18 +238,25 @@ app.controller("createEvent", function($scope, $http, $window, $location, timeOu
 
 	$scope.createEvent = function(){
 		var params = "?sessionId=" + getCookie("sessionId");
-		params += "&eventName=" + $scope.eventName + "&eventDescription=" + $scope.eventDescription;
+		params += "&eventName=" + $scope.eventName +
+				  "&eventDescription=" + $scope.eventDescription +
+				  //"&startTime=" + $scope.startTime +
+				  //"&endTime=" + $scope.endTime +
+				  //"&invitedPeople=" + $scope.invitedPeople +
+				  "&tag=" + $scope.tag +
+				  "&privacy=" + $scope.privacy;
 
 		$http.get(timeOutFactory.getBackendUrl() + "/event/create" + params)
 		 .success(function(data, status) {
 			$window.alert("Success " + data.actionId);
 		  })
 		  .error(function(data, status) {
-		 	console.log("Error " + data);
+		 	$window.alert("Error " + data);
 		  });
 	};
 });
 
+// Code reviewed due to backend is not available by ogzcm
 app.controller("createGroup", function($scope, $http, $window, $location, timeOutFactory) {
 
 	$scope.goToPage = function(url) {
@@ -248,14 +266,16 @@ app.controller("createGroup", function($scope, $http, $window, $location, timeOu
 
 	$scope.createGroup = function() {
 		var params = "?sessionId=" + getCookie("sessionId");
-		params += "&groupName=" + $scope.groupName + "&groupDescription=" + $scope.groupDescription + "&tag=" + $scope.tag;
+		params += "&groupName=" + $scope.groupName +
+				  "&groupDescription=" + $scope.groupDescription +
+				  "&tag=" + $scope.tag;
 
 		$http.get(timeOutFactory.getBackendUrl() + "/group/create" + params)
 		 .success(function(data, status) {
 			$window.alert("Success ");
 		  })
 		  .error(function(data, status) {
-		 	console.log("Error");
+		 	$window.alert("Error " + data);
 		  });
 	};
 });
@@ -287,7 +307,7 @@ app.controller("myEvents", function($scope, $http, $window, $location, timeOutFa
 		$scope.myEvents = data;
 	  })
 	  .error(function(data, status) {
-	 	console.log("Error " + data);
+	 	$window.alert("Error " + data);
 	  });
 
 	$scope.goToPage = function(url) {
@@ -296,7 +316,7 @@ app.controller("myEvents", function($scope, $http, $window, $location, timeOutFa
 	};
 });
 
-app.controller('eventsCreated', function($scope, $http, $location, timeOutFactory, EventsService){
+app.controller("eventsCreated", function($scope, $http, $location, timeOutFactory){
 	var params = "?sessionId=" + getCookie("sessionId");
 
 	$http.get(timeOutFactory.getBackendUrl() + "/event/created" + params)
@@ -304,7 +324,7 @@ app.controller('eventsCreated', function($scope, $http, $location, timeOutFactor
 		$scope.eventsCreated = data;
 	  })
 	  .error(function(data, status) {
-	 	console.log("Error " + data);
+	 	$window.alert("Error " + data);
 	  });
 
 	$scope.goToPage = function(url) {
@@ -320,9 +340,29 @@ app.controller("eventsInvited", function($scope, $http, $window, $location, time
 	 .success(function(data, status) {
 		$window.alert("Success " + data.actionId);
 		$scope.eventsInvited = data;
+		console.log(data);
 	  })
 	  .error(function(data, status) {
-	 	console.log("Error " + data);
+	 	$window.alert("Error " + data);
+	  });
+
+	$scope.goToPage = function(url) {
+		console.log("GoToPage: " + url);
+		$location.path(url);
+	};
+});
+
+// Code reviewed due to backend is not available by ogzcm
+app.controller("myGroups", function($scope, $http, $window, $location, timeOutFactory){
+	var params = "?sessionId=" + getCookie("sessionId");
+
+	$http.get(timeOutFactory.getBackendUrl() + "/group/my" + params)
+	 .success(function(data, status) {
+		$window.alert("Success " + data.actionId);
+		$scope.myGroups = data;
+	  })
+	  .error(function(data, status) {
+	 	$window.alert("Error " + data);
 	  });
 
 	$scope.goToPage = function(url) {
@@ -340,7 +380,7 @@ app.controller("newGroups", function($scope, $http, $window, $location, timeOutF
 		$scope.newGroups = data;
 	  })
 	  .error(function(data, status) {
-	 	console.log("Error " + data);
+	 	$window.alert("Error " + data);
 	  });
 
 	$scope.goToPage = function(url) {
@@ -358,7 +398,7 @@ app.controller("friendsGroups", function($scope, $http, $window, $location, time
 		$scope.friendsGroups = data;
 	  })
 	  .error(function(data, status) {
-	 	console.log("Error " + data);
+	 	$window.alert("Error " + data);
 	  });
 
 
@@ -377,7 +417,7 @@ app.controller("suggestedGroups", function($scope, $http, $window, $location, ti
 		$scope.suggestedGroups = data;
 	  })
 	  .error(function(data, status) {
-	 	console.log("Error " + data);
+	 	$window.alert("Error " + data);
 	  });
 
 	$scope.goToPage = function(url) {
@@ -395,7 +435,7 @@ app.controller("eventsInvited", function($scope, $http, $window, $location, time
 		$scope.eventsInvited = data;
 	  })
 	  .error(function(data, status) {
-	 	console.log("Error " + data);
+	 	$window.alert("Error " + data);
 	  });
 
 

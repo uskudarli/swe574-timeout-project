@@ -47,8 +47,14 @@
 	</div>
 	<div class="midcolumn">
 		<div class="group-creation">
-			<p>Search Results</p><hr><br>
-            <p>as many as result queries from databse, dynamically all of them will be shown here through JS</p>
+			<legend>Your Events</legend>
+        <div class="myEventList" ng-repeat="friend in myFriends">
+            <div class="friendName">{{friend.name}}</div>
+        </div>
+
+        <div class="noEvent" ng-show="eventsInvited == 'empty'">
+            Sorry, no related events have been found.
+        </div>
 		</div>
 	</div>
 	<div class="rightcolumn">

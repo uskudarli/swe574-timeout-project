@@ -64,7 +64,13 @@
                 </div>
                 <legend>Your Events</legend>
                 <div class="myEventList" ng-repeat="event in eventsCreated">
-                    <div class="eventOwnerName">{{event.name}}</div>
+                    <div class="eventActionId">{{event.actionId}}</div>
+                    <div class="eventName">{{event.name}}</div>
+                    <div class="eventNumber">{{event.count}}</div>
+                </div>
+
+                <div class="noEvent" ng-show="eventsCreated == 'empty'">
+                    Sorry, no related events have been found.
                 </div>
 
             </fieldset>

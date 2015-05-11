@@ -68,6 +68,11 @@
                     <div class="eventName">{{event.name}}</div>
                     <div class="eventNumber">{{event.count}}</div>
                 </div>
+
+                <div class="noEvent" ng-show="eventsInvited == 'empty'">
+                    Sorry, no related events have been found.
+                </div>
+
             </fieldset>
         </div>
     </div>
