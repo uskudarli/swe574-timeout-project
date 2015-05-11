@@ -88,17 +88,10 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 		    }
 		  })
 		  .error(function(data, status) {
+			$window.alert("Specified username or password do not match with the records!!!");
 
-
-
-
-		  	setCookie("sessionId", "ogzcm58", 60);
-			$location.path("/home");
-
-
-
-
-		 	$window.alert("Specified username or password do not match with the records!!!");
+			// setCookie("sessionId", "ogzcm58", 60);
+			// $location.path("/home");
 		  });
 	};
 
@@ -179,17 +172,21 @@ app.controller("homeController", function($scope, $http, $window, $location, tim
 });
 
 app.controller("searchController", function($scope, $http, $location, $window, timeOutFactory) {
-	$scope.resultSet = ["deneme", "deneme"];
-	// Simple GET request example :
 	console.log("searchController: " + timeOutFactory.getSearchText());
-	// $http({method: "GET",  url: timeOutFactory.getBackendUrl() + "/searchTag?tag=" + timeOutFactory.getSearchText()})
-	//   .success(function(data, status) {
-	//     console.log(JSON.stringify(data));
-	//     $scope.resultSet = data;
-	//   })
-	//   .error(function(data, status) {
-	//  	$window.alert("Specified username or password do not match with the records!!!");
-	//   });
+
+	var params = "?sessionId=" + getCookie("sessionId");
+	params += "&tag=" + timeOutFactory.getSearchText();
+
+	//$scope.resultSet = [{"title": "title", "desc": "desc"}];
+
+	$http({method: "GET",  url: timeOutFactory.getBackendUrl() + "/findRelatedGroupsforTag" + params})
+	  .success(function(data, status) {
+	    $scope.resultSet = data;
+	    console.log(JSON.stringify(data));
+	  })
+	  .error(function(data, status) {
+	 	$window.alert("No records have been found!!!");
+	  });
 });
 
 app.controller("profileEdit", function($scope, $http, $window, $location, timeOutFactory) {
