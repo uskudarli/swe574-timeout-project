@@ -239,7 +239,8 @@ app.controller("profileEdit", function($scope, $http, $window, $location, timeOu
 
 		$http.post(timeOutFactory.getBackendUrl() + "/profile/edit" + paramsEdit)
 			.success(function(data, status) {
-				$window.alert("Success: " + data.actionId + " (1010)");
+				$window.alert("Your profile successfully saved. (1010)");
+				console.log(JSON.stringify(data));
 			})
 			.error(function(data, status) {
 				$window.alert("Error: " + data + " (1011)");
@@ -272,7 +273,8 @@ app.controller("createEvent", function($scope, $http, $window, $location, timeOu
 
 		$http.get(timeOutFactory.getBackendUrl() + "/event/create" + params)
 		 .success(function(data, status) {
-			$window.alert("Success " + data.actionId + " (1014)");
+			$window.alert("Event successfully created. (1014)");
+			console.log(JSON.stringify(data));
 		  })
 		  .error(function(data, status) {
 		 	$window.alert("Error " + data + " (1015)");
@@ -296,7 +298,8 @@ app.controller("createGroup", function($scope, $http, $window, $location, timeOu
 
 		$http.get(timeOutFactory.getBackendUrl() + "/group/create" + params)
 		 .success(function(data, status) {
-			$window.alert("Success: " + data + " (1017)");
+			$window.alert("Group successfully created. (1017)");
+			console.log(JSON.stringify(data));
 		  })
 		  .error(function(data, status) {
 		 	$window.alert("Error: " + data + " (1018)");
