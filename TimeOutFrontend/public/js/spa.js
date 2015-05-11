@@ -227,17 +227,18 @@ app.controller("profileEdit", function($scope, $http, $window, $location, timeOu
 	$scope.profileEdit = function(){
 		var paramsEdit = "?sessionId=" + getCookie("sessionId");
 		paramsEdit += "&firstName=" + $scope.firstName +
-					  "&lastName=" + $scope.lastName +
-					  "&Gsm=" + $scope.Gsm +
-					  "&address=" + $scope.address +
-					  "&birthdate=" + $scope.birthdate +
-					  "&about=" + $scope.about +
-					  "&interests=" + $scope.interests +
-					  "&gender=" + $scope.gender +
-					  "&languages=" + $scope.languages;
+					  "&lastName=" + $scope.lastName //+
+					  //"&Gsm=" + $scope.Gsm +
+					  //"&address=" + $scope.address +
+					  //"&birthdate=" + $scope.birthdate +
+					  //"&about=" + $scope.about +
+					  //"&interests=" + $scope.interests +
+					  //"&gender=" + $scope.gender +
+					  //"&languages=" + $scope.languages
+					  ;
 
 
-		$http.post(timeOutFactory.getBackendUrl() + "/profile/edit" + paramsEdit)
+		$http.get(timeOutFactory.getBackendUrl() + "/profile/edit" + paramsEdit)
 			.success(function(data, status) {
 				$window.alert("Your profile successfully saved. (1010)");
 				console.log(JSON.stringify(data));
