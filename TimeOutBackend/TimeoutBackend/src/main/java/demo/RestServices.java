@@ -1,6 +1,20 @@
 package demo;
 
 import dto.ActionDTO;
+import entity.Action;
+import entity.ActionTag;
+import entity.ActionUser;
+import entity.Attribute;
+import entity.CustomType;
+import entity.Friendship;
+import entity.Session;
+import entity.Tag;
+import entity.User;
+import entity.UserBasicInfo;
+import entity.UserCommInfo;
+import entity.UserExtraInfo;
+import enums.ActionType;
+import enums.ActionUserStatus;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -130,6 +144,7 @@ public class RestServices {
         setResponseHeaders(resp);
 
         User user = getSessionUser(sessionId);
+        
 /*		if (user == null){
             ResponseHeader wrongResponse = new ResponseHeader();
 			wrongResponse.setType("Fail");
@@ -373,6 +388,43 @@ public class RestServices {
 		return createCustomType(sessionId, actionId, name, attributesJsonListString);
 	}
 	
+	@RequestMapping(value = "/customType/getListByActionId")
+	@ResponseBody
+	public List<CustomType> getCustomTypeListByActionId(
+            @RequestParam(value = "sessionId") String sessionId, 
+            @RequestParam(value = "actionId") Long actionId,
+            HttpServletResponse resp) {
+		setResponseHeaders(resp);
+		return getCustomTypeListByActionId(sessionId, actionId);
+	}
+	
+//	@RequestMapping(value = "/post/create")
+//	@ResponseBody
+//	public Post createPost(
+//            @RequestParam(value = "sessionId") String sessionId, 
+//            @RequestParam(value = "customTypeId") Long customTypeId,
+//            HttpServletResponse resp) {
+//		setResponseHeaders(resp);
+//		return getCustomTypeListByActionId(sessionId, actionId);
+//	}
+	
+	private List<CustomType> getCustomTypeListByActionId(String sessionId,
+			Long actionId) {
+		EntityManager em = DBUtility.startTransaction();
+		User user = getSessionUser(sessionId);
+
+		List<CustomType> returnVal = null;
+		
+		if (actionId > 0) {
+			Query query = null;
+			query = em.createQuery(
+					"FROM CustomType C WHERE C.actionId = :actionId")
+					.setParameter("actionId", actionId);
+			returnVal = query.getResultList();
+		}
+		return returnVal;
+	}
+
 //	@RequestMapping(value = "/friends/invite")
 //	@ResponseBody
 //	public List<User> inviteFriends(
@@ -416,7 +468,7 @@ public class RestServices {
         for (int i = 0; i < attributes.size(); i++) {
         	Attribute attribute = new Attribute();
         	attribute.setAttributeKey(attributes.get(i).getAttributeKey());
-        	attribute.setAttributeValue(attributes.get(i).getAttributeValue());
+        	//attribute.setAttributeValue(attributes.get(i).getAttributeValue());
         	attribute.setCustomType(cusType);
             em.persist(attribute);
         }

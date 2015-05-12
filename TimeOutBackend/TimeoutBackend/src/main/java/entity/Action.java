@@ -1,4 +1,4 @@
-package demo;
+package entity;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -18,6 +18,7 @@ import javax.persistence.TemporalType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import dto.ActionDTO;
+import enums.PrivacyType;
 
 import org.hibernate.annotations.GenericGenerator;
 

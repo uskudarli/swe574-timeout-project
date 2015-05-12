@@ -1,7 +1,7 @@
 /**
  * 
  */
-package demo;
+package entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

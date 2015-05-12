@@ -1,8 +1,10 @@
-package demo;
+package entity;
 
 import javax.persistence.*;
 
 import org.hibernate.annotations.GenericGenerator;
+
+import enums.ActionUserStatus;
 
 @Entity
 @Table(name = "ActionUser")

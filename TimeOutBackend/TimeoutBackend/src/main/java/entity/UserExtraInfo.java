@@ -3,7 +3,7 @@
  * User Extra Info Class holds extra information of users.
  * 
  */
-package demo;
+package entity;
 
 import java.util.Date;
 

@@ -3,7 +3,7 @@
  * Every user has a role and this class assigns roles to the users.
  * 
  */
-package demo;
+package entity;
 
 import java.util.HashSet;
 import java.util.Set;

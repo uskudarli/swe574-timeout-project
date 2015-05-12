@@ -6,25 +6,25 @@
 	version="2.0">
 
 	<persistence-unit name="Demo">
-		<class>demo.User</class>
-		<class>demo.UserBasicInfo</class>
-		<class>demo.UserCommInfo</class>
-		<class>demo.UserExtraInfo</class>
-		<class>demo.Role</class>
+		<class>entity.User</class>
+		<class>entity.UserBasicInfo</class>
+		<class>entity.UserCommInfo</class>
+		<class>entity.UserExtraInfo</class>
+		<class>entity.Role</class>
 		<class>demo.Greeting</class>
-		<class>demo.Action</class>
-		<class>demo.ActionUser</class>
-		<class>demo.ActionTag</class>
-		<class>demo.Tag</class>
-		<class>demo.CustomType</class>
-		<class>demo.Attribute</class>
-		<class>demo.Comment</class>
-		<class>demo.Post</class>
-		<class>demo.Session</class>
-		<class>demo.UserRecommendation</class>
-		<class>demo.ActionRecommendation</class>
-		<class>demo.Friendship</class>
-		<class>demo.ActionInvitation</class>
+		<class>entity.Action</class>
+		<class>entity.ActionUser</class>
+		<class>entity.ActionTag</class>
+		<class>entity.Tag</class>
+		<class>entity.CustomType</class>
+		<class>entity.Attribute</class>
+		<class>entity.Comment</class>
+		<class>entity.Post</class>
+		<class>entity.Session</class>
+		<class>entity.UserRecommendation</class>
+		<class>entity.ActionRecommendation</class>
+		<class>entity.Friendship</class>
+		<class>entity.ActionInvitation</class>
 		<class>demo.Notification</class>
 		<properties>
 			<property name="javax.persistence.jdbc.user" value="root" />

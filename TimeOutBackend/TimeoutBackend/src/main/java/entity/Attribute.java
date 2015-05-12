@@ -1,4 +1,4 @@
-package demo;
+package entity;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,7 +20,9 @@ public class Attribute {
 	private Long attributeId;
 	
 	private String attributeKey;
-	private String attributeValue;
+	
+	//kullanilmiyor
+	//private String attributeValue;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customTypeId")
@@ -50,15 +52,4 @@ public class Attribute {
 	public void setAttributeKey(String attributeKey) {
 		this.attributeKey = attributeKey;
 	}
-
-	public String getAttributeValue() {
-		return attributeValue;
-	}
-
-	public void setAttributeValue(String attributeValue) {
-		this.attributeValue = attributeValue;
-	}
-
-
-
 }

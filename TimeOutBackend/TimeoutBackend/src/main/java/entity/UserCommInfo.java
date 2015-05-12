@@ -3,7 +3,7 @@
  * User Communication Info Class holds communication information of users.
  * 
  */
-package demo;
+package entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

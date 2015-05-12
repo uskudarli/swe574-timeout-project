@@ -1,4 +1,4 @@
-package demo;
+package enums;
 
 public enum ActionType {
 
