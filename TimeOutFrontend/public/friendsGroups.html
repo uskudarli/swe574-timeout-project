@@ -73,7 +73,7 @@
                     <div class="others"> Ali Köftehor<br />Veli Patlıcan<br />Ayşe Kızartma<br />Fatma Mercimek<br />Murat Şehriye</div>
                 </div>
                 <div class="myGroupList" ng-repeat="group in friendsGroups">
-                    <div class="groupName">{{group.name}}</div>
+                    <a href="" ng-click="goToPage('/theGroup')"><div class="groupName">{{group.name}}</div></a>
                     <div class="friendsInfo">
                         <div class="groupFriends" ng-repeat="friend in group.friendList | limitTo: 3">
                             <a href="#">{{friend.name}}</a>

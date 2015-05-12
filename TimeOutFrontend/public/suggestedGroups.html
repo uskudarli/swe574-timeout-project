@@ -67,7 +67,7 @@
                 </div>
                 <legend>Groups You're In</legend>
                 <div class="myGroupList"   ng-repeat="group in suggestedGroups">
-                    <div class="groupName">{{group.name}}</div>
+                    <a href="" ng-click="goToPage('/theGroup')"><div class="groupName">{{group.name}}</div></a>
                     <div class="groupNumber">{{group.count}}</div>
                 </div> 
             </div>

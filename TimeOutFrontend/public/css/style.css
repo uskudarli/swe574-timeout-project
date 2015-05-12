@@ -29,6 +29,7 @@ section {
     min-height: 800px;
     padding-bottom: 10px;
     width: 100%;
+    height: auto;
 }
 
 div.intro{
@@ -167,10 +168,17 @@ label {
     width: 450px;
 }
 
+.postDetay{
+    float: left;
+    margin: 0 15px;
+    width: 450px;
+}
+
 .closeLightbox{
     border: 2px solid #0fa4dd;
     float: right;
     width: 25px;
+    text-align: center;
 }
 
 .addCustomType{
@@ -184,7 +192,6 @@ label {
 
 .addCustomType table tr{
     float: left;
-    margin-left: 187px;
     width: 600px;
 }
 
@@ -198,31 +205,38 @@ label {
     width: 150px;
 }
 
+.addCustomType table tr td textarea{
+    float: left;
+    height: 22px;
+    width: 650px;
+}
+
 .black_overlay{
-display: none;
-position: absolute;
-top: 0%;
-left: 0%;
-width: 100%;
-height: 100%;
-background-color: black;
-z-index:1001;
--moz-opacity: 0.8;
-opacity:.80;
-filter: alpha(opacity=80);
+    display: none;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    z-index:1001;
+    -moz-opacity: 0.8;
+    opacity:.80;
+    filter: alpha(opacity=80);
 }
 .white_content {
-display: none;
-position: absolute;
-top: 25%;
-left: 25%;
-width: 50%;
-height: 50%;
-padding: 16px;
-border: 16px solid #0fa4dd;
-background-color: white;
-z-index:1002;
-overflow: auto;
+    background-color: white;
+    border: 5px solid #0073ac;
+    border-radius: 20px;
+    display: none;
+    height: 41%;
+    left: 28%;
+    overflow: auto;
+    padding: 16px;
+    position: absolute;
+    top: 25%;
+    width: 40%;
+    z-index: 1002;
 }
 
 .groupDetay img{
@@ -241,6 +255,8 @@ overflow: auto;
 .clearBoth{
     width: 100%;
     clear:both;
+    margin-top: 20px;
+    height: 25px;
 }
 
 .addPost{
@@ -258,18 +274,68 @@ overflow: auto;
     float: left;
 }
 
+.posts{
+    float: left;
+    width: 650px;
+}
+
+.posts span{
+    color: #12295d;
+    float: left;
+    font-weight: bold;
+    margin-bottom: 10px;
+    margin-top: 20px;
+    width: 650px;
+}
+
+.posts table{
+    float: left;
+}
+
+.posts table tr{
+    float: left;
+    margin-left: 13px;
+}
+
+.posts table tr td{
+    border-radius: 10px;
+    float: left;
+    margin: 5px;
+    padding: 5px;
+    width: 200px;
+    border: 1px solid #fff;
+}
+
+.posts table tr td:hover{
+    box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+    border: 1px solid rgba(81, 203, 238, 1);
+
+}
+
+.posts table tr td span{
+    float: left;
+    text-align: center;
+    width: 200px;
+}
+
+.posts table tr td img{
+    border-radius: 10px;
+    float: left;
+    height: 190px;
+    width: 190px;
+}
+
 .commentPosted{
     float: left;
     width: 650px;
 }
 
 .commentPosted span{
-    border-bottom: 3px solid #12295d;
     color: #12295d;
     float: left;
     font-weight: bold;
     margin-bottom: 10px;
-    margin-top: 40px;
+    margin-top: 20px;
     width: 650px;
 }
 
@@ -373,11 +439,35 @@ overflow: auto;
     width: auto;
 }
 
+.groupTab ul li:hover {
+    background: none repeat scroll 0 0 #12295d;
+}
+
+.customActive{
+    background: none repeat scroll 0 0 #12295d !important;
+}
+
+.line {
+    border-bottom: 3px solid #12295d;
+    margin: 25px 0 0;
+    width: 650px;
+}
+
+.groupTab ul li a{
+    color: #fff;
+    text-decoration: none;
+}
+
 #search-button{
 	width:300px;
 	padding-top: 17px;
 	margin: 30px 0 0 130px;
 }
+
+.searchInput{
+    height:20px;
+}
+
 div.menu{
     float: left;
     height: 70px;
@@ -649,7 +739,6 @@ div.eventLink{
 }
 
 div.leftcolumn{
-    border-right: 1px solid #999;
     float: left;
     margin-top: 15px;
     min-height: 600px;
@@ -724,14 +813,15 @@ div.leftcolumn ul li a img{
 }
 
 div.midcolumn{
+    border-left: 1px solid #999;
+    border-right: 1px solid #999;
     float: left;
-    height: 300px;
+    height: auto;
     padding: 5px;
     width: 670px;
 }
 
 div.rightcolumn{
-    border-left: 1px solid #999;
     float: left;
     margin-top: -70px;
     min-height: 600px;
