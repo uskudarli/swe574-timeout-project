@@ -168,10 +168,81 @@ label {
     width: 450px;
 }
 
-.postDetay{
+
+.groupDetay img{
+    border-radius: 10px;
+    max-width: 450px;
+}
+
+.groupDetay span{
     float: left;
-    margin: 0 15px;
-    width: 450px;
+    font-size: 12px;
+    margin-top: 15px;
+    text-align: justify;
+    width: 100%;
+}
+
+.postDetay{
+    ffloat: left;
+    margin: 25px 15px 0;
+    width: 625px;
+}
+
+.postBlock{
+    border-radius: 10px;
+    float: left;
+    max-width: 120px;
+}
+
+.postTitle{
+    fcolor: #12295d;
+    float: left;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0 19px;
+}
+.postDetay .postBlock img{
+    border-radius: 10px;
+    float: left;
+    max-width: 120px;
+}
+
+.postDetay .postBlock .whoPosted{
+    float: left;
+}
+
+.postDetay .postBlock .whoPosted img{
+    float: left;
+    height: 27px;
+    margin: 11px 0;
+    width: 27px;
+}
+
+.postDetay .postBlock .whoPosted div{
+    float: left;
+    margin: 9px 4px;
+    width: 85px;
+}
+
+.postDetay .postBlock .whoPosted div span{
+    float: left;
+    font-size: 12px;
+    margin: 0 4px;
+    width: 15px;
+}
+
+.postDetay .postBlock .whoPosted div p{
+    float: left;
+    font-size: 12px;
+    width: auto;
+}
+
+.postDetay span{
+    float: left;
+    font-size: 12px;
+    margin-left: 20px;
+    text-align: justify;
+    width: 75%;
 }
 
 .closeLightbox{
@@ -208,7 +279,7 @@ label {
 .addCustomType table tr td textarea{
     float: left;
     height: 22px;
-    width: 650px;
+    width: 625px;
 }
 
 .black_overlay{
@@ -237,19 +308,6 @@ label {
     top: 25%;
     width: 40%;
     z-index: 1002;
-}
-
-.groupDetay img{
-    border-radius: 10px;
-    max-width: 450px;
-}
-
-.groupDetay span{
-    float: left;
-    font-size: 12px;
-    margin-top: 15px;
-    text-align: justify;
-    width: 100%;
 }
 
 .clearBoth{
@@ -342,12 +400,12 @@ label {
 .commentPosted table{
     border-bottom: 1px solid #12295d;
     float: left;
-    width: 650px;
+    width: 625px;
 }
 
 .commentPosted table tr{
     float: left;
-    width: 650px;
+    width: 625px;
 }
 
 .commentPosted table tr td{
@@ -451,6 +509,11 @@ label {
     border-bottom: 3px solid #12295d;
     margin: 25px 0 0;
     width: 650px;
+}
+
+.line1 {
+    border-bottom: 2px solid #12295d;
+    width: 625px;
 }
 
 .groupTab ul li a{
