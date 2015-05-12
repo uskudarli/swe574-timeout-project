@@ -48,4 +48,9 @@ public class DBUtility {
 		em.getTransaction().commit();
 		em.close();
 	}
+	
+	public static void rollbackTransaction(EntityManager em){
+		em.getTransaction().rollback();
+		em.close();
+	}
 }

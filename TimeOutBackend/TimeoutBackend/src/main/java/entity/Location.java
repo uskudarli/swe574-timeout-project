@@ -1,4 +1,4 @@
-package demo;
+package entity;
 
 public class Location {
 
