@@ -1,97 +1,37 @@
-
 <section>
-	<div class="leftcolumn">
-		<div class="profile">
-			<img ALT="Münevver Calayır" title="Münevver Calayır" src="images/profile.jpg" />
-			<p>Münevver Calayır</p>
-			<a href="" ng-click="goToPage('/profileEdit')">Edit Profile</a>
-		</div>
-		<ul>
-			 <ul>
-          <li>
-            <a href="" ng-click="goToPage('/myProfile')">
-              <img src="images/profile.png" />
-              <p>My Profile</p>
-            </a>
-          </li>
-          <li>
-            <a href="" ng-click="goToPage('/myEvents')">
-              <img src="images/event.png" />
-              <p>Events</p>
-            </a>
-          </li>
-                  <li>
-                      <a href="" ng-click="goToPage('/myGroups')">
-                          <img src="images/group.png" />
-                          <p>Groups</p>
-                      </a>
-                  </li>
-                  <li>
-                      <a href="" ng-click="goToPage('/myFriends')">
-                          <img src="images/group.png" />
-                          <p>Friends</p>
-                      </a>
-                  </li>
-        </ul>
-		</ul>
-	</div>
+
+	<!-- Top Middle Menu start-->
 	<div class="menu">
 		<ul>
-  <li>
-    <a href="" ng-click="goToPage('/home')">Home</a>
-  </li>
-  <li>
-    <a href="" ng-click="goToPage('/createEvent')">Create Event</a>
-  </li>
-  <li>
-    <a href="" ng-click="goToPage('/createGroup')">Create Group</a>
-  </li>
-</ul>
+			<li>
+				<a href="home.html">Home</a>
+			</li>
+			<li>
+				<a href="createEvent.html">Create Event</a>
+			</li>
+			<li>
+				<a href="CreateGroup.html">Create Group</a>
+			</li>
+		</ul>
 	</div>
+	<!-- Top Middle Menu end-->
+
+	<!-- Middle Column start-->
 	<div class="midcolumn">
 		<div class="group-creation">
-			<p>Search Results</p>
-			<hr /><br />
+
+			<!-- Search Result List start-->
+			<legend>Search Results</legend>
 			<ul>
 				<li ng-repeat="result in resultSet">
 					{{result.title}} {{result.desc}}
 				</li>
 			</ul>
+			<!-- Search Result List end-->
+
 			<br />
 		</div>
 	</div>
-	<div class="rightcolumn">
-		<div class="notification">
-			<p class="title">NOTIFICATIONS</p>
-			<div class="notice">
-                <img src="images/2.jpg" />
-                <p class="not-title">Sara</p>
-                <p class="not-detail"> joined the group "Math funs".</p>
-            </div>
-            <div class="notice">
-                <img src="images/3.jpg" />
-                <p class="not-title">Ali</p>
-                <p class="not-detail"> joined the group "Math funs".</p>
-            </div>
-            <div class="notice">
-                <img src="images/suzan.jpg" />
-                <p class="not-title">Suzan </p>
-                <p class="not-detail"> joined the group "Math funs".</p>
-            </div>
-        </div>
-        <div class="suggested-groups">
-            <p class="title">SUGGESTED GROUPS</p>
-           <div class="notice">
-                <img src="images/1.jpg" />
-                <p class="not-title">Ali</p>
-                <p class="not-detail"> joined the group "Math funs".</p>
-            </div>
-            <div class="notice">
-                <img src="images/suzan.jpg" />
-                <p class="not-title">Suzan Üsküdarlı</p>
-                <p class="not-detail"> joined the group "Math funs".</p>
-            </div>
-		</div>
+	<!-- Middle Column start-->
 
-	</div>
 </section>

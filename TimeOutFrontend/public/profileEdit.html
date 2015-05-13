@@ -1,159 +1,113 @@
 <section>
-      <div class="leftcolumn">
-        <div class="profile">
-          <img ALT="Münevver Calayır" title="Münevver Calayır" src="images/profile.jpg" />
-          <p>Münevver Calayır</p>
-          <a href="" ng-click="goToPage('/profileEdit')">Edit Profile</a>
+  <!-- Top Menu Start-->
+  <div class="menu">
+    <ul>
+      <li>
+        <a href="" ng-click="goToPage('/home')">Home</a>
+      </li>
+      <li>
+        <a href="" ng-click="goToPage('/createEvent')">Create Event</a>
+      </li>
+      <li>
+        <a href="" ng-click="goToPage('/createGroup')">Create Group</a>
+      </li>
+    </ul>
+  </div>
+  <!-- Top Menu End-->
+
+  <!-- MidColumn Start-->
+  <div class="midcolumn">
+    <div class="group-creation profileEditForm">
+
+      <!-- Edit Profile Form Start-->
+      <fieldset>
+        <legend>Edit profile</legend>
+
+        <form ng-submit="profileEdit()">
+
+        <label > First name: </label>
+        <input type="text" name="name" size="30" ng-model="firstName" required> </input> <br><br>
+
+        <label>Last name: </label>
+        <input type="text" name="lastName" size="30" ng-model="lastName" required> </input><br><br>
+
+        <label>Email:  </label>
+        <input type="email" name="email" size="30" ng-model="email" required> </input><br><br>
+
+        <label>Password:  </label>
+        <input type="password" name="password" size="30" ng-model="password" required> </input><br><br>
+        <label>Photo</label>
+        
+
+        <!-- Lightbox button code end-->
+        <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='block';document.getElementById('fade').style.display='block'">
+          Upload Photo
+        </a><br><br>
+        <div id="light" class="white_content">
+          <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'">
+            <div class="closeLightbox">X</div>
+          </a>
+
+
+          <!--Inside lightbox start-->
+          <div class="group-creation">
+            <fieldset id="addPhoto">
+              <legend>Upload photo</legend>
+              <input type="file" id="photo" name="photo" accept="image/*"> <br>
+              <input type="button" ng-click="add()" name="add" value="add">
+              <p>{{data}}</p>
+              <!-- <a href="" ng-click="goToPage('/profileEdit')"><--Back</a> -->
+            </fieldset>
+          </div>
+          <!--Inside lightbox end-->
+
+
         </div>
-        <ul>
-          <li>
-            <a href="" ng-click="goToPage('/myProfile')">
-              <img src="images/profile.png" />
-              <p>My Profile</p>
-            </a>
-          </li>
-          <li>
-            <a href="" ng-click="goToPage('/myEvents')">
-              <img src="images/event.png" />
-              <p>Events</p>
-            </a>
-          </li>
-                  <li>
-                      <a href="" ng-click="goToPage('/myGroups')">
-                          <img src="images/group.png" />
-                          <p>Groups</p>
-                      </a>
-                  </li>
-                  <li>
-                      <a href="" ng-click="goToPage('/myFriends')">
-                          <img src="images/group.png" />
-                          <p>Friends</p>
-                      </a>
-                  </li>
-        </ul>
-</div>
-<div class="menu">
- <ul>
-  <li>
-    <a href="" ng-click="goToPage('/home')">Home</a>
-  </li>
-  <li>
-    <a href="" ng-click="goToPage('/createEvent')">Create Event</a>
-  </li>
-  <li>
-    <a href="" ng-click="goToPage('/createGroup')">Create Group</a>
-  </li>
-</ul>
-</div>
-
-<div class="midcolumn">
- <div class="group-creation">
+        <div id="fade" class="black_overlay"></div>
+        <!-- Lightbox button code end-->
 
 
 
-  <fieldset>
+        <label>GSM:  </label>
+        <input type="text" name="gsm" size="30" ng-model="Gsm"> </input><br><br>
 
-    <legend>Edit profile</legend>
+        <label>Address  </label>
+        <input type="text" name="address" size="50" ng-model="address"> </input><br><br>
 
-    <form ng-submit="profileEdit()" enctype="multipart/form-data">
+        <label>Birthdate  </label>
+        <input type="date" name="birth" ng-model="birthdate" > </input><br><br>
 
-    <label > First name: </label>
-    <input type="text" name="name" size="30" ng-model="firstName" required> </input> <br><br>
-
-    <label>Last name: </label>
-    <input type="text" name="lastName" size="30" ng-model="lastName" required> </input><br><br>
-
-    <label>Email:  </label>
-    <input type="email" name="email" size="30" ng-model="email" required> </input><br><br>
-
-    <label>Password:  </label>
-    <input type="password" name="password" size="30" ng-model="password" required> </input><br><br> 
-
-    <label>Upload profile photo: </label>
-    <input type="file" id="photo" name="photo" accept="image/*"><br> 
-
-  <!-- <label>Photo</label><a href="" ng-click="goToPage('/uploadPhoto')">Upload Photo</a><br><br> -->
-
-    <label>GSM:  </label>
-    <input type="text" name="gsm" size="30" ng-model="Gsm"> </input><br><br>
-
-    <label>Address  </label>
-    <input type="text" name="address" size="50" ng-model="address"> </input><br><br>
-
-    <label>Birthdate  </label>
-    <input type="date" name="birth" ng-model="birthdate" > </input><br><br>
-
-    <label>about me:  </label>
-    <textarea name="about" rows="6" cols="50" ng-model="about"></textarea><br><br>
+        <label>About me:  </label>
+        <textarea name="about" rows="6" cols="50" ng-model="about"></textarea><br><br>
 
 
-    <label >Interests:  </label>
-    <input type="text" name="tag" size="50" ng-model="interests"> </input><br><br>
+        <label >Interests:  </label>
+        <input type="text" name="tag" size="50" ng-model="interests"> </input><br><br>
 
-    <label >Gender:  </label>
-    <select name="gender" ng-model="gender">
-      <option ng-repeat="item in genderOption">{{item}}</option>
-      
-    </select> <br><br>
-    <p>you have selected {{gender}}</p>
+        <label >Gender:  </label>
+        <select name="gender" ng-model="gender">
+          <option ng-repeat="item in genderOption">{{item}}</option>
+          
+        </select> <br><br>
+        <p>You have selected {{gender}}</p>
 
-    <label >Languages:  </label>
-    <select name="language" ng-model="languages" multiple>
-      <option ng-repeat="item in selectedLanguage">{{item}}</option>
-     
-    </select> <br><br>
-    <p>you have selected: {{language}}</p>
-
-
-    <button type="submit">Submit</button>
-    <button type="reset">Reset</button>
-
-    </form>
+        <label >Languages:  </label>
+        <select name="language" ng-model="languages" multiple>
+          <option ng-repeat="item in selectedLanguage">{{item}}</option>
+         
+        </select> <br><br>
+        <p>You have selected: {{language}}</p>
 
 
-  </fieldset>
+        <button type="submit">Submit</button>
+        <button type="reset">Reset</button>
 
+        </form>
 
+      </fieldset>
+      <!-- Edit Profile Form End-->
 
-
-
-
-</div>
-
-</div>
-
-<div class="rightcolumn">
-  <div class="notification">
-   <p class="title">NOTIFICATIONS</p>
-   <div class="notice">
-    <img src="images/2.jpg" />
-    <p class="not-title">Sara</p>
-    <p class="not-detail"> joined the group "Math funs".</p>
+    </div>
+    <!-- MidColumn End-->
   </div>
-  <div class="notice">
-    <img src="images/3.jpg" />
-    <p class="not-title">Ali</p>
-    <p class="not-detail"> joined the group "Math funs".</p>
-  </div>
-  <div class="notice">
-    <img src="images/suzan.jpg" />
-    <p class="not-title">Suzan </p>
-    <p class="not-detail"> joined the group "Math funs".</p>
-  </div>
-</div>
-<div class="suggested-groups">
- <p class="title">SUGGESTED GROUPS</p>
- <div class="notice">
-  <img src="images/1.jpg" />
-  <p class="not-title">Ali</p>
-  <p class="not-detail"> joined the group "Math funs".</p>
-</div>
-<div class="notice">
-  <img src="images/suzan.jpg" />
-  <p class="not-title">Suzan Üsküdarlı</p>
-  <p class="not-detail"> joined the group "Math funs".</p>
-</div>
-</div>
-
-</div>
 </section>

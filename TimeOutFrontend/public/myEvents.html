@@ -1,37 +1,6 @@
 <section>
-      <div class="leftcolumn">
-        <div class="profile">
-            <img ALT="Münevver Calayır" title="Münevver Calayır" src="images/profile.jpg" />
-            <p>Münevver Calayır</p>
-            <a href="" ng-click="goToPage('/profileEdit')">Edit Profile</a>
-        </div>
-        <ul>
-            <li>
-                <a href="" ng-click="goToPage('/myProfile')">
-                    <img src="images/profile.png" />
-                    <p>My Profile</p>
-                </a>
-            </li>
-            <li>
-                <a href="" ng-click="goToPage('/myEvents')">
-                    <img src="images/event.png" />
-                    <p>Events</p>
-                </a>
-            </li>
-                  <li>
-                      <a href="" ng-click="goToPage('/myGroups')">
-                          <img src="images/group.png" />
-                          <p>Groups</p>
-                      </a>
-                  </li>
-                  <li>
-                      <a href="" ng-click="goToPage('/myFriends')">
-                          <img src="images/group.png" />
-                          <p>Friends</p>
-                      </a>
-                  </li>
-        </ul>
-    </div>
+    
+    <!-- Top Middle Menu start-->
     <div class="menu">
         <ul>
             <li >
@@ -45,10 +14,14 @@
             </li>
         </ul>
     </div>
+    <!-- Top Middle Menu end-->
 
+    <!-- Middle Column start-->
     <div class="midcolumn">
         <div class="my-events">
             <fieldset>
+
+                <!-- Event List option tab start-->
                 <div class="eventMenu">
                     <ul>
                         <li>
@@ -62,53 +35,27 @@
                         </li>
                     </ul>
                 </div>
+                <!-- Event List option tab end-->
+
                 <legend>Your Events</legend>
+
+                <!-- Event List start-->
                 <div class="myEventList" ng-repeat="event in myEvents">
                     <div class="eventActionId">{{event.actionId}}</div>
                     <div class="eventName">{{event.name}}</div>
                     <div class="eventNumber">{{event.count}}</div>
                 </div>
+                <!-- Event List end-->
 
+                <!-- No event alert start-->
                 <div class="noEvent" ng-show="eventsInvited == 'empty'">
                     Sorry, no related events have been found.
                 </div>
+                <!-- No event alert end-->
 
             </fieldset>
         </div>
     </div>
+    <!-- Middle Column end-->
 
-    <div class="rightcolumn">
-        <div class="notification">
-            <p class="title">NOTIFICATIONS</p>
-            <div class="notice">
-                <img src="images/2.jpg" />
-                <p class="not-title">Sara</p>
-                <p class="not-detail"> joined the group "Math funs".</p>
-            </div>
-            <div class="notice">
-                <img src="images/3.jpg" />
-                <p class="not-title">Ali</p>
-                <p class="not-detail"> joined the group "Math funs".</p>
-            </div>
-            <div class="notice">
-                <img src="images/suzan.jpg" />
-                <p class="not-title">Suzan </p>
-                <p class="not-detail"> joined the group "Math funs".</p>
-            </div>
-        </div>
-        <div class="suggested-groups">
-            <p class="title">SUGGESTED GROUPS</p>
-            <div class="notice">
-                <img src="images/1.jpg" />
-                <p class="not-title">Ali</p>
-                <p class="not-detail"> joined the group "Math funs".</p>
-            </div>
-            <div class="notice">
-                <img src="images/suzan.jpg" />
-                <p class="not-title">Suzan Üsküdarlı</p>
-                <p class="not-detail"> joined the group "Math funs".</p>
-            </div>
-        </div>
-
-    </div>
 </section>

@@ -1,12 +1,17 @@
 <section>
-<!--p>The ID is {{greeting.id}}</p>
-<p>The content is {{greeting.content}}</p-->
+    <!--p>The ID is {{greeting.id}}</p>
+    <p>The content is {{greeting.content}}</p-->
+    
+    <!-- Left Column - Cmpe Logo and Login with Facebook part start-->
     <div class="intro">
         <img src="images/cmpelogo.png" />
         <a href="#">
             <img id="fbconnect" alt="Connect Facebook" title="Connect Facebook" src="images/facebook-connect-button.png">
         </a>
     </div>
+    <!-- Left Column - Cmpe Logo and Login with Facebook part end-->
+
+    <!-- Signup Form start-->
     <div class="signup">
         <fieldset>
             <legend>Sign Up</legend>
@@ -29,11 +34,11 @@
                 </p>
                 <p>
                     <label for="password">Password:</label>
-                    <input type="password" ng-model="sigUpPassword"/>
+                    <input type="text" ng-model="sigUpPassword"/>
                 </p>
                 <p>
                     <label for="re-password">Re-password:</label>
-                    <input type="password" ng-model="rePassword"/>
+                    <input type="text" ng-model="rePassword"/>
                 </p>
                 <p>
                     <span>By clicking Sign Up, you agree to our <a href="#">Terms</a> and that you have read our <a href="#">Data Policy</a>.</span>
@@ -44,4 +49,6 @@
             </form>
         </fieldset>
     </div>
+    <!-- Signup Form end-->
+
 </section>

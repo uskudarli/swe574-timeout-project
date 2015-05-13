@@ -26,10 +26,19 @@ body {
 
 section {
 	float: right;
-    min-height: 800px;
+    height: auto;
+    min-height: 630px;
     padding-bottom: 10px;
     width: 100%;
-    height: auto;
+}
+
+.contBg{
+    background-color: #fff;
+    float: left;
+    margin-left: 277px;
+    margin-top: 125px;
+    top: 0 !important;
+    width: 1070px;
 }
 
 div.intro{
@@ -126,13 +135,12 @@ label {
 }
 
 .midcontainer{
-    background-color: #fff;
+    border-left: 1px solid #ededed;
+    border-right: 1px solid #ededed;
     float: left;
     height: auto;
-    margin-left: 278px;
-    margin-top: 125px;
     min-height: 550px;
-    width: 1070px;
+    width: 670px;
 }
 
 .groupTitle{
@@ -570,7 +578,7 @@ div.groupMenu{
     float: left;
     height: 70px;
     margin-top: 15px;
-    width: 670px;
+    width: 653px;
 }
 
 div.groupMenu ul{
@@ -803,7 +811,6 @@ div.eventLink{
 
 div.leftcolumn{
     float: left;
-    margin-top: 15px;
     min-height: 600px;
     padding: 15px;
     width: 200px;
@@ -876,8 +883,6 @@ div.leftcolumn ul li a img{
 }
 
 div.midcolumn{
-    border-left: 1px solid #999;
-    border-right: 1px solid #999;
     float: left;
     height: auto;
     padding: 5px;
@@ -886,7 +891,6 @@ div.midcolumn{
 
 div.rightcolumn{
     float: left;
-    margin-top: -70px;
     min-height: 600px;
     padding: 5px;
     width: 200px;
@@ -1071,4 +1075,28 @@ footer {
     padding-top: 5px;
     position: fixed;
     width: 100%;
+}
+
+#addPhoto{
+    float: left;
+}
+
+#addPhoto input{
+}
+
+#addPhoto legend{
+    float: left;
+}
+
+#addPhoto label{
+    float: left;
+}
+
+#addPhoto p{
+    float: left;
+}
+
+.profileEditForm{
+    float: left;
+    height: 875px;
 }

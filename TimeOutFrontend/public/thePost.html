@@ -1,237 +1,172 @@
 <section>
-      <div class="leftcolumn">
-      	<div class="profile">
-      		<img ALT="Münevver Calayır" title="Münevver Calayır" src="images/profile.jpg" />
-      		<p>Münevver Calayır</p>
-      		<a href="" ng-click="goToPage('/profileEdit')">Edit Profile</a>
-      	</div>
-      	<ul>
-      		<li>
-      			<a href="" ng-click="goToPage('/myProfile')">
-      				<img src="images/profile.png" />
-      				<p>My Profile</p>
-      			</a>
-      		</li>
-      		<li>
-      			<a href="" ng-click="goToPage('/myEvents')">
-      				<img src="images/event.png" />
-      				<p>Events</p>
-      			</a>
-      		</li>
-                  <li>
-                      <a href="" ng-click="goToPage('/myGroups')">
-                          <img src="images/group.png" />
-                          <p>Groups</p>
-                      </a>
-                  </li>
-                  <li>
-                      <a href="" ng-click="goToPage('/myFriends')">
-                          <img src="images/friends.png" />
-                          <p>Friends</p>
-                      </a>
-                  </li>
-      	</ul>
+  <div class="groupTitle">
+    <span>PASTA</span>
+
+    <!-- Lightbox button code end-->
+    <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='block';document.getElementById('fade').style.display='block'"><div class="customType">Add Post</div></a>
+    <div id="light" class="white_content">
+      <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'">
+        <div class="closeLightbox">X</div>
+      </a>
+      <div class="addCustomType">
+          <table>
+            <tr>
+              <td>Attribute Type:</td>
+              <td><input type="text" name="attributeType" ng-model="attributeType"/></td>
+            </tr>
+            <tr>
+              <td>Attribute Description:</td>
+              <td><input type="text" name="attributeDescription" ng-model="attributeDescription"/></td>
+            </tr>
+            <tr>
+              <td colspan="2"><button class="btn btn-primary" style="padding: 1px 12px;" type="submit">Add Attribute</button></td>
+            </tr>
+          </table>
+        </div>
+    </div>
+    <div id="fade" class="black_overlay"></div>
+    <!-- Lightbox button code end-->
+  </div> 
+
+  <!-- MidColumn Start--> 	
+  <div class="midcolumn">
+    
+    <!-- Post Detail column Start-->
+    <div class="postDetay">
+      <div class="postBlock">
+        <img src="images/p1.jpg" />
+        <div class="whoPosted">
+          <img src="images/3.jpg" />
+          <div>
+            <span>By</span>
+            <p>Gülnihal Bağcı</p>
+          </div>
+        </div>
       </div>
-      <div class="groupTitle">
-          <span>PASTA</span>
+      <div class="postTitle">Fresh Tomato, Sausage, and Pecorino Pasta</div>
+      <span>
+        <b>Ingredients</b><br/>
 
-          <!-- Lightbox button code end-->
-          <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='block';document.getElementById('fade').style.display='block'"><div class="customType">Add Post</div></a>
-          <div id="light" class="white_content">
-            <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'">
-              <div class="closeLightbox">X</div>
-            </a>
-            <div class="addCustomType">
-                <table>
-                  <tr>
-                    <td>Attribute Type:</td>
-                    <td><input type="text" name="attributeType" ng-model="attributeType"/></td>
-                  </tr>
-                  <tr>
-                    <td>Attribute Description:</td>
-                    <td><input type="text" name="attributeDescription" ng-model="attributeDescription"/></td>
-                  </tr>
-                  <tr>
-                    <td colspan="2"><button class="btn btn-primary" style="padding: 1px 12px;" type="submit">Add Attribute</button></td>
-                  </tr>
-                </table>
-              </div>
-          </div>
-          <div id="fade" class="black_overlay"></div>
-          <!-- Lightbox button code end-->
+        <p>8 ounces uncooked penne, 8 ounces sweet Italian sausage, 2 teaspoons olive oil, 1 cup vertically sliced onion, 2 teaspoons minced garlic, 1 1/4 pounds tomatoes, chopped, 6 tablespoons grated fresh pecorino Romano cheese, divided 1/4 teaspoon salt 1/8 teaspoon black pepper, 1/4 cup torn fresh basil leaves, </p>
 
-      </div>     	
-      <div class="midcolumn">
-        <div class="postDetay">
-          <div class="postBlock">
-            <img src="images/p1.jpg" />
-            <div class="whoPosted">
-              <img src="images/3.jpg" />
-              <div>
-                <span>By</span>
-                <p>Gülnihal Bağcı</p>
-              </div>
-            </div>
-          </div>
-          <div class="postTitle">Fresh Tomato, Sausage, and Pecorino Pasta</div>
-          <span>
-            <b>Ingredients</b><br/>
+        <br/><b>Preparation</b><br/>
 
-            <p>8 ounces uncooked penne, 8 ounces sweet Italian sausage, 2 teaspoons olive oil, 1 cup vertically sliced onion, 2 teaspoons minced garlic, 1 1/4 pounds tomatoes, chopped, 6 tablespoons grated fresh pecorino Romano cheese, divided 1/4 teaspoon salt 1/8 teaspoon black pepper, 1/4 cup torn fresh basil leaves, </p>
+        <p>1. Cook pasta according to package directions, omitting salt and fat; drain. 2. Heat a large nonstick skillet over medium-high heat. Remove casings from sausage. Add oil to pan; swirl to coat. Add sausage and onion to pan; cook 4 minutes, stirring to crumble sausage. Add garlic; cook 2 minutes. Stir in tomatoes; cook 2 minutes. Remove from heat; stir in pasta, 2 tablespoons cheese, salt, and pepper. Sprinkle with remaining 1/4 cup cheese and basil.</p>
 
-            <br/><b>Preparation</b><br/>
+        <br/><b>Where to Eat?</b><br/>
 
-            <p>1. Cook pasta according to package directions, omitting salt and fat; drain. 2. Heat a large nonstick skillet over medium-high heat. Remove casings from sausage. Add oil to pan; swirl to coat. Add sausage and onion to pan; cook 4 minutes, stirring to crumble sausage. Add garlic; cook 2 minutes. Stir in tomatoes; cook 2 minutes. Remove from heat; stir in pasta, 2 tablespoons cheese, salt, and pepper. Sprinkle with remaining 1/4 cup cheese and basil.</p>
+        <p>Dorry Pasta at İstiklal</p>
 
-            <br/><b>Where to Eat?</b><br/>
+        <br/><b>Which city's food?</b><br/>
 
-            <p>Dorry Pasta at İstiklal</p>
+        <p>Rome</p>
+      </span>
 
-            <br/><b>Which city's food?</b><br/>
-
-            <p>Rome</p>
-          </span>
-
-          <div class="clearBoth"></div>
-          <div class="line1"></div>
-
-          <!--Comment block start-->
-          <div class="commentPosted">
-          <span>Comments</span>
-          <table>
-            <tr>
-              <td><img src="images/2.jpg" /></td></td>
-              <td><span>Ali Dostoglu</span></td></td>
-            </tr>
-            <tr>
-              <td colspan="2"><p>Bir restoran var nispetiye caddesi no:3 kaşıkkapı isminde orada künefe bir harika dostlar! Gidin yiyin derim!</p></td>
-            </tr>
-          </table>
-         <div class="addCustomType">
-            <table style="border: none !important;">
-              <tr>
-                <td>Comment: </td>
-              </tr>
-              <tr>
-                <td><textarea name="comment" ng-model="comment"></textarea>
-              </tr>
-              <tr>
-                <td><button class="btn btn-primary" style="padding: 1px 12px;" type="submit">Comment</button></td>
-              </tr>
-            </table>
-          </div>
-        </div>
-        <!--Comment block end-->
-
-          <div class="clearBoth"></div>
-          <div class="line"></div>
-
-        </div>
-
-
-
-
-
-
-        <div class="postDetay">
-          <div class="postBlock">
-            <img src="images/p1.jpg" />
-            <div class="whoPosted">
-              <img src="images/1.jpg" />
-              <div>
-                <span>By</span>
-                <p>Fatih Alagöz</p>
-              </div>
-            </div>
-          </div>
-          <div class="postTitle">Healthy Vegetarian Pasta and Grains</div>
-          <span>
-            <b>Ingredients</b><br/>
-
-            <p>8 ounces uncooked penne, 8 ounces sweet Italian sausage, 2 teaspoons olive oil, 1 cup vertically sliced onion, 2 teaspoons minced garlic, 1 1/4 pounds tomatoes, chopped, 6 tablespoons grated fresh pecorino Romano cheese, divided 1/4 teaspoon salt 1/8 teaspoon black pepper, 1/4 cup torn fresh basil leaves, </p>
-
-            <br/><b>Preparation</b><br/>
-
-            <p>1. Cook pasta according to package directions, omitting salt and fat; drain. 2. Heat a large nonstick skillet over medium-high heat. Remove casings from sausage. Add oil to pan; swirl to coat. Add sausage and onion to pan; cook 4 minutes, stirring to crumble sausage. Add garlic; cook 2 minutes. Stir in tomatoes; cook 2 minutes. Remove from heat; stir in pasta, 2 tablespoons cheese, salt, and pepper. Sprinkle with remaining 1/4 cup cheese and basil.</p>
-
-            <br/><b>Where to Eat?</b><br/>
-
-            <p>Dorry Pasta at İstiklal</p>
-
-            <br/><b>Which city's food?</b><br/>
-
-            <p>Rome</p>
-          </span>
-
-          <div class="clearBoth"></div>
-          <div class="line1"></div>
-
-          <!--Comment block start-->
-          <div class="commentPosted">
-          <span>Comments</span>
-          <table>
-            <tr>
-              <td><img src="images/1.jpg" /></td></td>
-              <td><span>Ali Dostoglu</span></td></td>
-            </tr>
-            <tr>
-              <td colspan="2"><p>Bir restoran var nispetiye caddesi no:3 kaşıkkapı isminde orada künefe bir harika dostlar! Gidin yiyin derim!</p></td>
-            </tr>
-          </table>
-         <div class="addCustomType">
-            <table style="border: none !important;">
-              <tr>
-                <td>Comment: </td>
-              </tr>
-              <tr>
-                <td><textarea name="comment" ng-model="comment"></textarea>
-              </tr>
-              <tr>
-                <td><button class="btn btn-primary" style="padding: 1px 12px;" type="submit">Comment</button></td>
-              </tr>
-            </table>
-          </div>
-        </div>
-        <!--Comment block end-->
-
-          <div class="clearBoth"></div>
-          <div class="line"></div>
-
-        </div>
-
-
-
-
-
-
-
-         
-
-        
       <div class="clearBoth"></div>
+      <div class="line1"></div>
+
+      <!--Comment block start-->
+      <div class="commentPosted">
+        <span>Comments</span>
+        <table>
+          <tr>
+            <td><img src="images/2.jpg" /></td></td>
+            <td><span>Ali Dostoglu</span></td></td>
+          </tr>
+          <tr>
+            <td colspan="2"><p>Bir restoran var nispetiye caddesi no:3 kaşıkkapı isminde orada künefe bir harika dostlar! Gidin yiyin derim!</p></td>
+          </tr>
+        </table>
+        <div class="addCustomType">
+          <table style="border: none !important;">
+            <tr>
+              <td>Comment: </td>
+            </tr>
+            <tr>
+              <td><textarea name="comment" ng-model="comment"></textarea></td>
+            </tr>
+            <tr>
+              <td><button class="btn btn-primary" style="padding: 1px 12px;" type="submit">Comment</button></td>
+            </tr>
+          </table>
+        </div>
       </div>
-      <div class="rightcolumn">
-      	<div class="notification">
-      		<p class="title">NOTIFICATIONS</p>
-      		<div class="notice" ng-repeat="notification in notificationList ">
-      			
-      			<p class="not-title">{{notification.name}}</p>
-      			<p class="not-detail"> joined the group {{notification.detail}}</p>
-      		</div>
-      		
-      	</div>
-      	<div class="suggested-groups">
-      		<p class="title">SUGGESTED GROUPS</p>
-      		<div class="notice">
-      			<img src="images/1.jpg" />
-      			<p class="not-title">Ali</p>
-      			<p class="not-detail"> joined the group "Math funs".</p>
-      		</div>
-      		<div class="notice">
-      			<img src="images/suzan.jpg" />
-      			<p class="not-title">Suzan Üsküdarlı</p>
-      			<p class="not-detail"> joined the group "Math funs".</p>
-      		</div>
-      	</div>
+      <!--Comment block end-->
+
+      <div class="clearBoth"></div>
+      <div class="line"></div>
+
+    </div>
+    <!-- Post Detail column End-->
+
+    <!-- Post Detail column Start-->
+    <div class="postDetay">
+      <div class="postBlock">
+        <img src="images/p1.jpg" />
+        <div class="whoPosted">
+          <img src="images/1.jpg" />
+          <div>
+            <span>By</span>
+            <p>Fatih Alagöz</p>
+          </div>
+        </div>
       </div>
+      <div class="postTitle">Healthy Vegetarian Pasta and Grains</div>
+      <span>
+        <b>Ingredients</b><br/>
+
+        <p>8 ounces uncooked penne, 8 ounces sweet Italian sausage, 2 teaspoons olive oil, 1 cup vertically sliced onion, 2 teaspoons minced garlic, 1 1/4 pounds tomatoes, chopped, 6 tablespoons grated fresh pecorino Romano cheese, divided 1/4 teaspoon salt 1/8 teaspoon black pepper, 1/4 cup torn fresh basil leaves, </p>
+
+        <br/><b>Preparation</b><br/>
+
+        <p>1. Cook pasta according to package directions, omitting salt and fat; drain. 2. Heat a large nonstick skillet over medium-high heat. Remove casings from sausage. Add oil to pan; swirl to coat. Add sausage and onion to pan; cook 4 minutes, stirring to crumble sausage. Add garlic; cook 2 minutes. Stir in tomatoes; cook 2 minutes. Remove from heat; stir in pasta, 2 tablespoons cheese, salt, and pepper. Sprinkle with remaining 1/4 cup cheese and basil.</p>
+
+        <br/><b>Where to Eat?</b><br/>
+
+        <p>Dorry Pasta at İstiklal</p>
+
+        <br/><b>Which city's food?</b><br/>
+
+        <p>Rome</p>
+      </span>
+
+      <div class="clearBoth"></div>
+      <div class="line1"></div>
+
+      <!--Comment block start-->
+      <div class="commentPosted">
+        <span>Comments</span>
+        <table>
+          <tr>
+            <td><img src="images/1.jpg" /></td></td>
+            <td><span>Ali Dostoglu</span></td></td>
+          </tr>
+          <tr>
+            <td colspan="2"><p>Bir restoran var nispetiye caddesi no:3 kaşıkkapı isminde orada künefe bir harika dostlar! Gidin yiyin derim!</p></td>
+          </tr>
+        </table>
+        <div class="addCustomType">
+          <table style="border: none !important;">
+            <tr>
+              <td>Comment: </td>
+            </tr>
+            <tr>
+              <td><textarea name="comment" ng-model="comment"></textarea></td>
+            </tr>
+            <tr>
+              <td><button class="btn btn-primary" style="padding: 1px 12px;" type="submit">Comment</button></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <!--Comment block end-->
+
+      <div class="clearBoth"></div>
+      <div class="line"></div>
+
+    </div>
+    <!-- Post Detail column End-->
+
+    <div class="clearBoth"></div>
+  </div>
 </section>

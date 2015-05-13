@@ -1,232 +1,203 @@
 <section>
-      <div class="leftcolumn">
-      	<div class="profile">
-      		<img ALT="Münevver Calayır" title="Münevver Calayır" src="images/profile.jpg" />
-      		<p>Münevver Calayır</p>
-      		<a href="" ng-click="goToPage('/profileEdit')">Edit Profile</a>
-      	</div>
-      	<ul>
-      		<li>
-      			<a href="" ng-click="goToPage('/myProfile')">
-      				<img src="images/profile.png" />
-      				<p>My Profile</p>
-      			</a>
-      		</li>
-      		<li>
-      			<a href="" ng-click="goToPage('/myEvents')">
-      				<img src="images/event.png" />
-      				<p>Events</p>
-      			</a>
-      		</li>
-                  <li>
-                      <a href="" ng-click="goToPage('/myGroups')">
-                          <img src="images/group.png" />
-                          <p>Groups</p>
-                      </a>
-                  </li>
-                  <li>
-                      <a href="" ng-click="goToPage('/myFriends')">
-                          <img src="images/friends.png" />
-                          <p>Friends</p>
-                      </a>
-                  </li>
-      	</ul>
+  <!-- Midcolumn title part start-->
+  <div class="groupTitle">
+    <span>GROUP GOURMET</span>
+      
+    <!-- Lightbox button code start-->
+    <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='block';document.getElementById('fade').style.display='block'"><div class="customType">Add Post</div></a>
+    <div id="light" class="white_content">
+      <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'">
+        <div class="closeLightbox">X</div>
+      </a>
+      <div class="addCustomType">
+          <table>
+            <tr>
+              <td>Attribute Type:</td>
+              <td><input type="text" name="attributeType" ng-model="attributeType"/></td>
+            </tr>
+            <tr>
+              <td>Attribute Description:</td>
+              <td><input type="text" name="attributeDescription" ng-model="attributeDescription"/></td>
+            </tr>
+            <tr>
+              <td colspan="2"><button class="btn btn-primary" style="padding: 1px 12px;" type="submit">Add Attribute</button></td>
+            </tr>
+          </table>
+        </div>
+    </div>
+    <div id="fade" class="black_overlay"></div>
+    <!-- Lightbox button code end-->
+
+  </div>  
+  <!-- Midcolumn title part end-->   
+
+  <!-- Midcolumn part start-->	
+  <div class="midcolumn">
+
+    <!-- Group Custom Type Tab start-->  
+  	<div class="groupTab">
+      <ul>
+        <li class="customActive"><a href="">Default</a></li>
+        <li><a href="">Restaurant</a></li>
+        <li> <a href = "javascript:void(0)" onclick = "document.getElementById('lightCustomType').style.display='block';document.getElementById('fade').style.display='block'">+</a></li>
+      </ul>
+    </div>
+    <!-- Group Custom Type Tab end-->  
+
+    <!-- Custom Type Adding Lightbox start--> 
+    <div id="lightCustomType" class="white_content">
+      <a href = "javascript:void(0)" onclick = "document.getElementById('lightCustomType').style.display='none';document.getElementById('fade').style.display='none'">
+        <div class="closeLightbox">X</div>
+      </a>
+      <div class="addCustomType">
+        <table>
+          <tr>
+            <td>Type Name: </td>
+            <td><input type="text" name="customType" ng-model="customType"/></td>
+          </tr>
+          <tr>
+            <td>Attribute Type:</td>
+            <td><input type="text" name="attributeType" ng-model="attributeType"/></td>
+          </tr>
+          <tr>
+            <td>Attribute Description:</td>
+            <td><input type="text" name="attributeDescription" ng-model="attributeDescription"/></td>
+          </tr>
+          <tr>
+            <td colspan="2"><button class="btn btn-primary" style="padding: 1px 12px;" type="submit">Add Attribute</button></td>
+          </tr>
+        </table>
+        <button class="btn btn-primary" style="padding: 1px 12px; float: right;" type="submit">Create Custom Type</button>
       </div>
-      <div class="groupTitle">
-          <span>GROUP GOURMET</span>
-          
-          <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='block';document.getElementById('fade').style.display='block'"><div class="customType">Add Post</div></a>
-          <div id="light" class="white_content">
-            <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'">
-              <div class="closeLightbox">X</div>
+    </div>
+    <div id="fade" class="black_overlay"></div>
+    <!-- Custom Type Adding Lightbox end--> 
+
+    <div class="clearBoth"></div>
+
+    <!-- Group Detail part start--> 
+    <div class="groupDetay">
+      <img src="images/groupGourmet.jpg" />
+      <span>This group is created for sharing info, experiences, receipt, advices, etc. for Gourmets.This group is created for sharing info, experiences, receipt, advices, etc. for Gourmets.This group is created for sharing info, experiences, receipt, advices, etc. for Gourmets.This group is created for sharing info, experiences, receipt, advices, etc. for Gourmets.This group is created for sharing info, experiences, receipt, advices, etc. for Gourmets.This group is created for sharing info, experiences, receipt, advices, etc. for Gourmets. </span>
+    </div>
+    <!-- Group Detail part end-->
+
+    <!-- Group Member List part start--> 
+    <div class="groupMember">
+      <span>Group Members</span>
+      <table>
+        <tr>
+          <td><img src="images/suzan.jpg" /></td>
+          <td><img src="images/1.jpg" /></td>
+          <td><img src="images/2.jpg" /></td>
+        </tr>
+        <tr>
+          <td><img src="images/3.jpg" /></td>
+          <td><img src="images/profile.JPG" /></td>
+          <td><img src="images/suzan.jpg" /></td>
+        </tr>
+        <tr>
+          <td><img src="images/1.jpg" /></td>
+          <td><img src="images/2.jpg" /></td>
+          <td><img src="images/3.jpg" /></td>
+        </tr>
+        <tr>
+          <td colspan="3"><a href="">More</a></td>
+        </tr>
+      </table>
+    </div>
+    <!-- Group Member List part end--> 
+
+    <div class="clearBoth"></div>
+    <div class="line"></div>
+
+    <!-- Posts part start--> 
+    <div class="posts">
+      <span>Posts</span>
+      <table>
+        <tr>
+          <td>
+            <a href="" ng-click="goToPage('/thePost')">
+              <img src="images/y1.jpg" />
+              <span>Pasta</span>
+              <p>Recipe, where to eat, which city's food, etc.</p>
             </a>
-            <div class="addCustomType">
-                <table>
-                  <tr>
-                    <td>Attribute Type:</td>
-                    <td><input type="text" name="attributeType" ng-model="attributeType"/></td>
-                  </tr>
-                  <tr>
-                    <td>Attribute Description:</td>
-                    <td><input type="text" name="attributeDescription" ng-model="attributeDescription"/></td>
-                  </tr>
-                  <tr>
-                    <td colspan="2"><button class="btn btn-primary" style="padding: 1px 12px;" type="submit">Add Attribute</button></td>
-                  </tr>
-                </table>
-              </div>
-          </div>
-          <div id="fade" class="black_overlay"></div>
-      </div>     	
-      <div class="midcolumn">
-      	<div class="groupTab">
-            <ul>
-              <li class="customActive"><a href="">Default</a></li>
-              <li><a href="">Restaurant</a></li>
-              <li> <a href = "javascript:void(0)" onclick = "document.getElementById('lightCustomType').style.display='block';document.getElementById('fade').style.display='block'">+</a></li>
-            </ul>
-        </div>
-        <div id="lightCustomType" class="white_content">
-          <a href = "javascript:void(0)" onclick = "document.getElementById('lightCustomType').style.display='none';document.getElementById('fade').style.display='none'">
-            <div class="closeLightbox">X</div>
-          </a>
-          <div class="addCustomType">
-            <table>
-              <tr>
-                <td>Type Name: </td>
-                <td><input type="text" name="customType" ng-model="customType"/></td>
-              </tr>
-              <tr>
-                <td>Attribute Type:</td>
-                <td><input type="text" name="attributeType" ng-model="attributeType"/></td>
-              </tr>
-              <tr>
-                <td>Attribute Description:</td>
-                <td><input type="text" name="attributeDescription" ng-model="attributeDescription"/></td>
-              </tr>
-              <tr>
-                <td colspan="2"><button class="btn btn-primary" style="padding: 1px 12px;" type="submit">Add Attribute</button></td>
-              </tr>
-            </table>
-            <button class="btn btn-primary" style="padding: 1px 12px; float: right;" type="submit">Create Custom Type</button>
-          </div>
-        </div>
-        <div id="fade" class="black_overlay"></div>
-        <!---->
-        <div class="clearBoth"></div>
-        <div class="groupDetay">
-          <img src="images/groupGourmet.jpg" />
-          <span>This group is created for sharing info, experiences, receipt, advices, etc. for Gourmets.This group is created for sharing info, experiences, receipt, advices, etc. for Gourmets.This group is created for sharing info, experiences, receipt, advices, etc. for Gourmets.This group is created for sharing info, experiences, receipt, advices, etc. for Gourmets.This group is created for sharing info, experiences, receipt, advices, etc. for Gourmets.This group is created for sharing info, experiences, receipt, advices, etc. for Gourmets. </span>
-        </div>
-        <div class="groupMember">
-          <span>Group Members</span>
-          <table>
-            <tr>
-              <td><img src="images/suzan.jpg" /></td>
-              <td><img src="images/1.jpg" /></td>
-              <td><img src="images/2.jpg" /></td>
-            </tr>
-            <tr>
-              <td><img src="images/3.jpg" /></td>
-              <td><img src="images/profile.JPG" /></td>
-              <td><img src="images/suzan.jpg" /></td>
-            </tr>
-            <tr>
-              <td><img src="images/1.jpg" /></td>
-              <td><img src="images/2.jpg" /></td>
-              <td><img src="images/3.jpg" /></td>
-            </tr>
-            <tr>
-              <td colspan="3"><a href="">More</a></td>
-            </tr>
-          </table>
-        </div>
-        <div class="clearBoth"></div>
-        <div class="line"></div>
+          </td>
+          <td>
+            <a href="" ng-click="goToPage('/thePost')">
+              <img src="images/y2.jpg" />
+              <span>Pide</span>
+              <p>Recipe, where to eat, which city's food, etc.</p>
+            </a>
+          </td>
+          <td>
+            <a href="" ng-click="goToPage('/thePost')">
+              <img src="images/y3.jpg" />
+              <span>Baklava</span>
+              <p>Recipe, where to eat, which city's food, etc.</p>
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <a href="" ng-click="goToPage('/thePost')">
+              <img src="images/y4.jpg" />
+              <span>Sushi</span>
+              <p>Recipe, where to eat, which city's food, etc.</p>
+            </a>
+          </td>
+          <td>
+            <a href="" ng-click="goToPage('/thePost')">
+              <img src="images/kebap.jpg" />
+              <span>Kebab</span>
+              <p>Recipe, where to eat, which city's food, etc.</p>
+            </a>
+          </td>
+          <td>
+            <a href="" ng-click="goToPage('/thePost')">
+              <img src="images/y6.jpg" />
+              <span>Mexican Food</span>
+              <p>Recipe, where to eat, which city's food, etc.</p>
+            </a>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <!-- Posts part end-->
 
-        <div class="posts">
-          <span>Posts</span>
-          <table>
-            <tr>
-              <td>
-                <a href="" ng-click="goToPage('/thePost')">
-                  <img src="images/y1.jpg" />
-                  <span>Pasta</span>
-                  <p>Recipe, where to eat, which city's food, etc.</p>
-                </a>
-              </td>
-              <td>
-                <a href="" ng-click="goToPage('/thePost')">
-                  <img src="images/y2.jpg" />
-                  <span>Pide</span>
-                  <p>Recipe, where to eat, which city's food, etc.</p>
-                </a>
-              </td>
-              <td>
-                <a href="" ng-click="goToPage('/thePost')">
-                  <img src="images/y3.jpg" />
-                  <span>Baklava</span>
-                  <p>Recipe, where to eat, which city's food, etc.</p>
-                </a>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <a href="" ng-click="goToPage('/thePost')">
-                  <img src="images/y4.jpg" />
-                  <span>Sushi</span>
-                  <p>Recipe, where to eat, which city's food, etc.</p>
-                </a>
-              </td>
-              <td>
-                <a href="" ng-click="goToPage('/thePost')">
-                  <img src="images/kebap.jpg" />
-                  <span>Kebab</span>
-                  <p>Recipe, where to eat, which city's food, etc.</p>
-                </a>
-              </td>
-              <td>
-                <a href="" ng-click="goToPage('/thePost')">
-                  <img src="images/y6.jpg" />
-                  <span>Mexican Food</span>
-                  <p>Recipe, where to eat, which city's food, etc.</p>
-                </a>
-              </td>
-            </tr>
-          </table>
-        </div>
+    <div class="clearBoth"></div>
+    <div class="line"></div>
 
-        <div class="clearBoth"></div>
-        <div class="line"></div>
-        <div class="commentPosted">
-          <span>Comments</span>
-          <table>
-            <tr>
-              <td><img src="images/1.jpg" /></td></td>
-              <td><span>Ali Dostoglu</span></td></td>
-            </tr>
-            <tr>
-              <td colspan="2"><p>Bir restoran var nispetiye caddesi no:3 kaşıkkapı isminde orada künefe bir harika dostlar! Gidin yiyin derim!</p></td>
-            </tr>
-          </table>
-         <div class="addCustomType">
-            <table style="border: none !important;">
-              <tr>
-                <td>Comment: </td>
-              </tr>
-              <tr>
-                <td><textarea name="comment" ng-model="comment"></textarea>
-              </tr>
-              <tr>
-                <td><button class="btn btn-primary" style="padding: 1px 12px;" type="submit">Comment</button></td>
-              </tr>
-            </table>
-          </div>
-        </div>
-        <div class="clearBoth"></div>
+    <!-- Comment part start-->
+    <div class="commentPosted">
+      <span>Comments</span>
+      <table>
+        <tr>
+          <td><img src="images/1.jpg" /></td></td>
+          <td><span>Ali Dostoglu</span></td></td>
+        </tr>
+        <tr>
+          <td colspan="2"><p>Bir restoran var nispetiye caddesi no:3 kaşıkkapı isminde orada künefe bir harika dostlar! Gidin yiyin derim!</p></td>
+        </tr>
+      </table>
+      <div class="addCustomType">
+        <table style="border: none !important;">
+          <tr>
+            <td>Comment: </td>
+          </tr>
+          <tr>
+            <td><textarea name="comment" ng-model="comment"></textarea></td>
+          </tr>
+          <tr>
+            <td><button class="btn btn-primary" style="padding: 1px 12px;" type="submit">Comment</button></td>
+          </tr>
+        </table>
       </div>
-      <div class="rightcolumn">
-      	<div class="notification">
-      		<p class="title">NOTIFICATIONS</p>
-      		<div class="notice" ng-repeat="notification in notificationList ">
-      			
-      			<p class="not-title">{{notification.name}}</p>
-      			<p class="not-detail"> joined the group {{notification.detail}}</p>
-      		</div>
-      		
-      	</div>
-      	<div class="suggested-groups">
-      		<p class="title">SUGGESTED GROUPS</p>
-      		<div class="notice">
-      			<img src="images/1.jpg" />
-      			<p class="not-title">Ali</p>
-      			<p class="not-detail"> joined the group "Math funs".</p>
-      		</div>
-      		<div class="notice">
-      			<img src="images/suzan.jpg" />
-      			<p class="not-title">Suzan Üsküdarlı</p>
-      			<p class="not-detail"> joined the group "Math funs".</p>
-      		</div>
-      	</div>
-      </div>
+    </div>
+    <!-- Comment part start-->
+
+    <div class="clearBoth"></div>
+  </div>
+  <!-- Midcolumn part end-->  
+  
 </section>

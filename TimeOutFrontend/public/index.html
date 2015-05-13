@@ -1,6 +1,7 @@
 <!doctype html>
 <html ng-app="timeout">
 	<head>
+
 		<meta charset="utf-8">
     	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -31,7 +32,12 @@
 			<nav class="navbar navbar-inverse navbar-fixed-top">
             	<div class="container">
                     <div class="navbar-header">
+
+                        <!-- Left header - Logo start-->
                         <a id="bounlogo" class="navbar-brand"  href="" ng-click="goToPage('/home')"><img alt="Home" title="Home" src="images/logo.fw.png"></a>
+                        <!-- Left header - Logo end-->
+
+                        <!-- Right header - Login Form start-->
 						<div class="righttop">
                             <div class="login" ng-show="!isCookieSet()">
                                 <form ng-submit="doLogin()">
@@ -75,22 +81,104 @@
                                     </fieldset> -->
                                 </form>
                             </div>
+                            <!-- Right header - Login Form end-->
 
+                            <!-- Right header - Search form start-->
                             <p id="search-button" ng-show="isCookieSet()">
                                 <input class="searchInput" type="text" name="search"  ng-model="searchText"/>
                                 <button class="btn btn-primary" style="padding: 1px 12px;" type="submit" 
                                 ng-click="search('/search')">Search</button>
                             </p>
+                            <!-- Right header - Search form start-->
+
                         </div>
                     </div>
                 </div>
             </nav>
-            <div class="midcontainer" ng-view>
+            <div class="contBg">
 
+                <!-- Left Column - General menu start -->
+                <div class="leftcolumn">
+                    <div class="profile">
+                        <img ALT="Münevver Calayır" title="Münevver Calayır" src="images/profile.jpg" />
+                        <p>Münevver Calayır</p>
+                        <a href="" ng-click="goToPage('/profileEdit')">Edit Profile</a>
+                    </div>
+                    <ul>
+                        <li>
+                            <a href="" ng-click="goToPage('/myProfile')">
+                                <img src="images/profile.png" />
+                                <p>My Profile</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="" ng-click="goToPage('/myEvents')">
+                                <img src="images/event.png" />
+                                <p>Events</p>
+                            </a>
+                        </li>
+                              <li>
+                                  <a href="" ng-click="goToPage('/myGroups')">
+                                      <img src="images/group.png" />
+                                      <p>Groups</p>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a href="" ng-click="goToPage('/myFriends')">
+                                      <img src="images/friends.png" />
+                                      <p>Friends</p>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a href="">
+                                    <img src="images/logout.png" />
+                                    <p>Logout</p>
+                                  </a>
+                              </li>
+                    </ul>
+                </div>
+                <!--Left Column - General Menu end-->
+
+                <!--Middle Container start-->
+                <div class="midcontainer" ng-view>
+
+                </div>
+                <!--Middle Container end-->
+
+                <!-- Right Column -Notification and suggested group list- Start-->
+                <div class="rightcolumn">
+                    <div class="notification">
+                        <p class="title">NOTIFICATIONS</p>
+                        <div class="notice" ng-repeat="notification in notificationList ">
+                            <img src="images/2.jpg" />
+                            <p class="not-title">{{notification.name}}</p>
+                            <p class="not-detail"> joined the group {{notification.detail}}</p>
+                        </div>
+                    </div>
+
+                    <div class="suggested-groups">
+                        <p class="title">SUGGESTED GROUPS</p>
+                        <div class="notice">
+                            <img src="images/1.jpg" />
+                            <p class="not-title">Ali</p>
+                            <p class="not-detail"> joined the group "Math funs".</p>
+                        </div>
+                        <div class="notice">
+                            <img src="images/suzan.jpg" />
+                            <p class="not-title">Suzan Üsküdarlı</p>
+                            <p class="not-detail"> joined the group "Math funs".</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Right Column -Notification and suggested group list- End-->
             </div>
+
+            <!-- Footer Start-->
             <footer>
                 Copyright 2015 Team Timeout For SWE574 Course, Bogazici University, Software Engineering. All Rights Reserved.
             </footer>
+            <!-- Footer End-->
+
 		</div>
 	</body>
 </html>
