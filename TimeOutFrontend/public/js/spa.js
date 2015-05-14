@@ -349,14 +349,6 @@ app.controller("myFriends", function($scope, $http, $window, $location) {
 	};
 });
 
-// app.controller("myProfile", function($scope, $http, $window, $location){
-
-// 	$scope.goToPage = function(url) {
-// 		console.log("GoToPage: " + url);
-// 		$location.path(url);
-// 	};
-// });
-
 // Tested by ogzcm
 app.controller("myEvents", function($scope, $http, $window, $location, timeOutFactory){
 	var params = "?sessionId=" + getCookie("sessionId");
@@ -583,18 +575,3 @@ function getCookie(cname) {
 	}
 	return "";
 };
-
-// It looks if the cookie is set, or gets a value to set in order to check cookies.
-function checkCookie() {
-	var user = getCookie("username");
-	if (user != "") {
-		alert("Welcome again " + user);
-	} else {
-		user = prompt("Please enter your name:", "");
-		if (user != "" && user != null) {
-			setCookie("username", user, 365);
-		}
-	}
-};
-
-
