@@ -1,4 +1,4 @@
-app = angular.module('timeout', ['ngRoute']);
+app = angular.module('timeout', ['ngRoute', 'angular-md5']);
 
 // When html address is typed with one of the following links,
 // RouteProvider (ng-route) will directly stick controller and html together
@@ -90,14 +90,14 @@ app.run(function($rootScope, $location, $window) {
 });
 
 // Non-dynamic content is controlled by this controller.
-app.controller("indexController", function($scope, $http, $location, $window, timeOutFactory) {
+app.controller("indexController", function($scope, $http, $location, $window, timeOutFactory, md5) {
 	// For logging
 	console.log("indexController works");
 
 	// Get sessionId from backend by calling login rest api, then set sessionId cookie
 	$scope.doLogin = function() {
-		console.log("DoLogin works");
-		var params = "?userEmail=" + $scope.userEmail + "&password=" + $scope.loginPassword;
+		// For security reasons, password is encrypted with MD5 hash
+		var params = "?userEmail=" + $scope.userEmail + "&password=" + md5.createHash($scope.loginPassword);
 
 		var loginUrl = timeOutFactory.getBackendUrl() + "/login" + params;
 		$http({method: "GET",  url: loginUrl})
@@ -140,7 +140,7 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 });
 
 // SignUp screen or root address shows the html which is managed by this controller.
-app.controller("mainController", function($scope, $http, $location, $window, timeOutFactory) {
+app.controller("mainController", function($scope, $http, $location, $window, timeOutFactory, md5) {
 	if(getCookie("sessionId") != undefined && getCookie("sessionId") != "") {
 		console.log("GoToPage: /home");
 		$location.path("/home");
@@ -148,8 +148,11 @@ app.controller("mainController", function($scope, $http, $location, $window, tim
 
 	// This method will be used when a user tries to be a member of the system.
 	$scope.signUp = function() {
-		// Parameters for register is sent
-		var params = "?userEmail=" + $scope.email + "&password=" + $scope.sigUpPassword;
+		// Check if specified information is OK
+		// validate();
+
+		// Parameters for register is adjusted and password is encrypted with MD5 hash
+		var params = "?userEmail=" + $scope.email + "&password=" + md5.createHash($scope.sigUpPassword);
 
 		// register api of backend is called
 		$http.get(timeOutFactory.getBackendUrl() + "/register" + params)
