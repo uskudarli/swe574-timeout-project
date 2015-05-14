@@ -33,11 +33,35 @@
                     <label style="width: 150px">Location: </label>
                     <input type="text" name="location" ng-model="location" size="50"> </input><br><br>
 
-                    <label style="width: 150px">Start time/Date </label>
-                    <input type="datetime-local" name="startTime" ng-model="startTime" > </input><br><br>
+                    <label>Start Date/Time: </label>
+                    <div id="Sdatetimepicker" class="input-append date">
+                        <input type="text" ng-model="startTime"></input>
+                        <span class="add-on">
+                            <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                        </span>
+                    </div><br>
 
-                    <label style="width: 150px">End time/Date </label>
-                    <input type="datetime-local" name="endTime" ng-model="endTime" > </input><br><br>
+                    <script type="text/javascript">
+                        $('#Sdatetimepicker').datetimepicker({
+                            format: 'dd/MM/yyyy hh:mm:ss',
+                            language: 'En'
+                        });
+                    </script>
+
+                    <label>End Date/Time: </label>
+                    <div id="Edatetimepicker" class="input-append date">
+                        <input type="text" ng-model="endTime"></input>
+                        <span class="add-on">
+                            <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                        </span>
+                    </div><br>
+
+                    <script type="text/javascript">
+                        $('#Edatetimepicker').datetimepicker({
+                            format: 'dd/MM/yyyy hh:mm:ss',
+                            language: 'En'
+                        });
+                    </script>
 
                     <label style="width: 150px">Invite people/groups:  </label>
                     <input type="text" name="invitedPeople" size="50" ng-model="invitedPeople" > </input><br><br>
