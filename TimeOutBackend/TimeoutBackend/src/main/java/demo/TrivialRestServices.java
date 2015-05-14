@@ -8,8 +8,9 @@ import javax.persistence.EntityManager;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import common.BusinessException;
 import common.DBUtility;
-
+import common.ResponseHeader;
 import entity.Greeting;
 
 @RestController
@@ -22,10 +23,14 @@ public class TrivialRestServices {
 
         EntityManager em = DBUtility.startTransaction();
 
-        em.persist(new Greeting("user", new Date(), "Hello!"));
+        try {
+			em.persist(new Greeting("user", new Date(), "Hello!"));
 
-        DBUtility.commitTransaction(em);
-
+			DBUtility.commitTransaction(em);
+		}catch (Exception e) {
+			DBUtility.rollbackTransaction(em);
+			return false;
+		}
         return true;
     }
 	

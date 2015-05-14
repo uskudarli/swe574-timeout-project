@@ -24,12 +24,13 @@ import repository.ActionRepository;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import common.BusinessException;
 import common.DBUtility;
+import common.ResponseHeader;
 import dto.ActionDTO;
 import entity.Action;
 import entity.ActionTag;
 import entity.ActionUser;
-import entity.Session;
 import entity.Tag;
 import entity.User;
 import enums.ActionType;
@@ -40,7 +41,7 @@ public class ActionRestServices {
 
 	@RequestMapping(value = "/event/create")
 	@ResponseBody
-	public Action createEvent(
+	public Object createEvent(
 			@RequestParam(value = "sessionId") String sessionId,
 			@RequestParam(value = "eventName") String eventName,
 			@RequestParam(value = "eventDescription", required = false) String eventDescription,
@@ -51,29 +52,40 @@ public class ActionRestServices {
 			@RequestParam(value = "privacy", required = false) String privacy,
 			HttpServletResponse resp) {
 
-		ServiceHelper.setResponseHeaders(resp);
+		EntityManager em = ServiceHelper.initialize(resp);
 
-		EntityManager em = DBUtility.startTransaction();
+		Action action;
+		try {
+			User creator = ServiceHelper.getSessionUser(em, sessionId);
+			
+			action = new Action(eventName, eventDescription,
+					ActionType.EVENT.toString(), startTime, endTime);
+			action.setPrivacy(privacy);
+			
+			ActionRepository ar = new ActionRepository(em);
+			ar.insertAction(action);
 
-		Action action = new Action(eventName, eventDescription,
-				ActionType.EVENT.toString(), startTime, endTime);
-		action.setPrivacy(privacy);
-		em.persist(action);
+			ar.insertCreator(creator, action);
 
-		insertCreator(ServiceHelper.getSessionUser(em, sessionId), em, action);
+			ar.insertInvitedPeople(invitedPeople, action);
 
-		insertInvitedPeople(invitedPeople, em, action);
+			ar.insertTagsOfActions(tagString, action);
 
-		insertTagsOfActions(tagString, em, action);
-
-		DBUtility.commitTransaction(em);
+			DBUtility.commitTransaction(em);
+		}catch (BusinessException e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getCode(), e.getMessage());
+		}catch (Exception e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getMessage());
+		}
 
 		return action;
 	}
 
 	@RequestMapping(value = "/group/create")
 	@ResponseBody
-	public Action createGroup(
+	public Object createGroup(
 			@RequestParam(value = "sessionId") String sessionId,
 			@RequestParam(value = "groupName") String groupName,
 			@RequestParam(value = "groupDescription", required = false) String groupDescription,
@@ -82,233 +94,231 @@ public class ActionRestServices {
 			@RequestParam(value = "privacy", required = false) String privacy,
 			HttpServletResponse resp) {
 
-		ServiceHelper.setResponseHeaders(resp);
+		EntityManager em = ServiceHelper.initialize(resp);
+		
+		Action action;
+		try {
+			User creator = ServiceHelper.getSessionUser(em, sessionId);
+			
+			action = new Action(groupName, groupDescription,
+					ActionType.GROUP.toString());
+			action.setPrivacy(privacy);
 
-		EntityManager em = DBUtility.startTransaction();
+			ActionRepository ar = new ActionRepository(em);
+			ar.insertAction(action);
 
-		Action action = new Action(groupName, groupDescription,
-				ActionType.GROUP.toString());
-		action.setPrivacy(privacy);
+			ar.insertCreator(creator, action);
+			
+			ar.insertInvitedPeople(invitedPeople, action);
 
-		em.persist(action);
+			ar.insertTagsOfActions(tagString, action);
 
-		insertCreator(ServiceHelper.getSessionUser(em, sessionId), em, action);
-
-		insertInvitedPeople(invitedPeople, em, action);
-
-		insertTagsOfActions(tagString, em, action);
-
-		DBUtility.commitTransaction(em);
+			DBUtility.commitTransaction(em);
+		}catch (BusinessException e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getCode(), e.getMessage());
+		}catch (Exception e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getMessage());
+		}
 
 		return action;
 	}
 
 	@RequestMapping(value = "/event/created")
 	@ResponseBody
-	public List<ActionDTO> getCreatedEvents(
+	public Object getCreatedEvents(
 			@RequestParam(value = "sessionId") String sessionId,
 			HttpServletResponse resp) {
-		ServiceHelper.setResponseHeaders(resp);
-		return prepareCreatedActionForUser(sessionId, ActionType.EVENT.toString());
+		EntityManager em = ServiceHelper.initialize(resp);
+		
+		List<ActionDTO> actionDTOs;
+		try {
+			User user = ServiceHelper.getSessionUser(em, sessionId);
+			
+			ActionRepository ar = new ActionRepository(em);
+
+			actionDTOs = ar.prepareCreatedActionForUser(user, 
+					ActionType.EVENT.toString());
+			DBUtility.commitTransaction(em);
+		}catch (BusinessException e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getCode(), e.getMessage());
+		}catch (Exception e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getMessage());
+		}
+		return actionDTOs;
 	}
 
 	@RequestMapping(value = "/group/created")
 	@ResponseBody
-	public List<ActionDTO> getCreatedGroups(
+	public Object getCreatedGroups(
 			@RequestParam(value = "sessionId") String sessionId,
 			HttpServletResponse resp) {
-		ServiceHelper.setResponseHeaders(resp);
-		return prepareCreatedActionForUser(sessionId, ActionType.GROUP.toString());
+		EntityManager em = ServiceHelper.initialize(resp);
+		
+		List<ActionDTO> actionDTOs;
+		try {
+			User user = ServiceHelper.getSessionUser(em, sessionId);
+			ActionRepository ar = new ActionRepository(em);
+			actionDTOs = ar.prepareCreatedActionForUser(user,
+					ActionType.GROUP.toString());
+			DBUtility.commitTransaction(em);
+		}catch (BusinessException e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getCode(), e.getMessage());
+		}catch (Exception e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getMessage());
+		}
+		return actionDTOs;
 	}
 
 	@RequestMapping(value = "/event/invited")
 	@ResponseBody
-	public List<ActionDTO> getInvitedEvents(
+	public Object getInvitedEvents(
 			@RequestParam(value = "sessionId") String sessionId,
 			HttpServletResponse resp) {
-		ServiceHelper.setResponseHeaders(resp);
-		return prepareInvitedActionForUser(sessionId, ActionType.EVENT.toString());
+		
+		EntityManager em = ServiceHelper.initialize(resp);
+		
+		List<ActionDTO> actionDTOs;
+		try {
+			User user = ServiceHelper.getSessionUser(em, sessionId);
+			ActionRepository ar = new ActionRepository(em);
+			
+			actionDTOs = ar.prepareInvitedActionForUser(user,
+					ActionType.EVENT.toString());
+			DBUtility.commitTransaction(em);
+		}catch (BusinessException e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getCode(), e.getMessage());
+		}catch (Exception e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getMessage());
+		}
+		return actionDTOs;
 	}
 
 	@RequestMapping(value = "/group/invited")
 	@ResponseBody
-	public List<ActionDTO> getInvitedGroups(
+	public Object getInvitedGroups(
 			@RequestParam(value = "sessionId") String sessionId,
 			HttpServletResponse resp) {
-		ServiceHelper.setResponseHeaders(resp);
-		return prepareInvitedActionForUser(sessionId, ActionType.GROUP.toString());
+		EntityManager em = ServiceHelper.initialize(resp);
+		
+		List<ActionDTO> actionDTOs;
+		try {
+			User user = ServiceHelper.getSessionUser(em, sessionId);
+			ActionRepository ar = new ActionRepository(em);
+			
+			actionDTOs = ar.prepareInvitedActionForUser(user,
+					ActionType.GROUP.toString());
+			DBUtility.commitTransaction(em);
+		}catch (BusinessException e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getCode(), e.getMessage());
+		}catch (Exception e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getMessage());
+		}
+		return actionDTOs;
 	}
 
 	@RequestMapping(value = "/event/my")
 	@ResponseBody
-	public List<ActionDTO> getMyEvents(
+	public Object getMyEvents(
 			@RequestParam(value = "sessionId") String sessionId,
 			HttpServletResponse resp) {
-		ServiceHelper.setResponseHeaders(resp);
-		return prepareActionForUser(sessionId, ActionType.EVENT.toString());
+		EntityManager em = ServiceHelper.initialize(resp);
+		
+		List<ActionDTO> actionDTOs;
+		try {
+			User user = ServiceHelper.getSessionUser(em, sessionId);
+			ActionRepository ar = new ActionRepository(em);
+			
+			actionDTOs = ar.prepareActionForUser(user,
+					ActionType.EVENT.toString());
+			DBUtility.commitTransaction(em);
+		}catch (BusinessException e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getCode(), e.getMessage());
+		}catch (Exception e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getMessage());
+		}
+		return actionDTOs;
 	}
 
 	@RequestMapping(value = "/group/my")
 	@ResponseBody
-	public List<ActionDTO> getMyGroups(
+	public Object getMyGroups(
 			@RequestParam(value = "sessionId") String sessionId,
 			HttpServletResponse resp) {
-		ServiceHelper.setResponseHeaders(resp);
-		return prepareActionForUser(sessionId, ActionType.GROUP.toString());
+		EntityManager em = ServiceHelper.initialize(resp);
+		
+		List<ActionDTO> actionDTOs;
+		try {
+			User user = ServiceHelper.getSessionUser(em, sessionId);
+			ActionRepository ar = new ActionRepository(em);
+			
+			actionDTOs = ar.prepareActionForUser(user,
+					ActionType.GROUP.toString());
+			DBUtility.commitTransaction(em);
+		}catch (BusinessException e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getCode(), e.getMessage());
+		}catch (Exception e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getMessage());
+		}
+		return actionDTOs;
 	}
 	
 	@RequestMapping(value = "/event/getById")
 	@ResponseBody
-	public Action getEventById(
+	public Object getEventById(
             @RequestParam(value = "sessionId") String sessionId, 
             @RequestParam(value = "id") Long actionId,
             HttpServletResponse resp) {
-		ServiceHelper.setResponseHeaders(resp);
-		EntityManager em = DBUtility.startTransaction();
-		ActionRepository ar = new ActionRepository(em);
-		return ar.getActionById(actionId, ActionType.EVENT.toString());
+		EntityManager em = ServiceHelper.initialize(resp);
+		
+		Action action;
+		try {
+			User user = ServiceHelper.getSessionUser(em, sessionId);
+			ActionRepository ar = new ActionRepository(em);
+			action = ar.getActionById(actionId, ActionType.EVENT.toString());
+		}catch (BusinessException e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getCode(), e.getMessage());
+		}catch (Exception e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getMessage());
+		}
+		return action;
 	}
 	
 	@RequestMapping(value = "/group/getById")
 	@ResponseBody
-	public Action getGroupById(
+	public Object getGroupById(
             @RequestParam(value = "sessionId") String sessionId, 
             @RequestParam(value = "id") Long actionId,
             HttpServletResponse resp) {
-		ServiceHelper.setResponseHeaders(resp);
-		EntityManager em = DBUtility.startTransaction();
-		ActionRepository ar = new ActionRepository(em);
-		return ar.getActionById(actionId, ActionType.GROUP.toString());
-	}
-
-	private void insertCreator(User creatorUser, EntityManager em, Action action) {
-
-		ActionUser actionUser = new ActionUser();
-		actionUser.setUser(creatorUser);
-		actionUser.setAction(action);
-		actionUser.setActionUserStatus(ActionUserStatus.CREATED);
-		em.persist(actionUser);
-
-	}
-
-	private void insertInvitedPeople(String invitedPeopleString,
-			EntityManager em, Action action) {
-		if (invitedPeopleString == null || invitedPeopleString == "")
-			return;
-		// if (invitedPeople.size() < 1)
-		// return;
-
-		List<Integer> invitedPeople = null;
-		Gson gson = new Gson();
-
-		Type listType = new TypeToken<ArrayList<Integer>>() {
-		}.getType();
-
-		invitedPeople = gson.fromJson(invitedPeopleString, listType);
-
-		for (int i = 0; i < invitedPeople.size(); i++) {
-
-			ActionUser actionUser = new ActionUser();
-			Query query = em
-					.createQuery("FROM User U WHERE U.userId = :userId");
-			query.setParameter("userId", invitedPeople.get(i).longValue());
-			actionUser.setUser((User) query.getSingleResult());
-
-			actionUser.setAction(action);
-			actionUser.setActionUserStatus(ActionUserStatus.INVITED);
-			em.persist(actionUser);
+		EntityManager em = ServiceHelper.initialize(resp);
+		
+		Action action;
+		try {
+			User user = ServiceHelper.getSessionUser(em, sessionId);
+			ActionRepository ar = new ActionRepository(em);
+			action = ar.getActionById(actionId, ActionType.GROUP.toString());
+		}catch (BusinessException e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getCode(), e.getMessage());
+		}catch (Exception e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getMessage());
 		}
+		return action;
 	}
-
-	private void insertTagsOfActions(String tagString, EntityManager em,
-			Action action) {
-		if (tagString == null || tagString == "")
-			return;
-		String delims = ";|,";
-		String[] tagArray = tagString.split(delims);
-		List<String> tagList = Arrays.asList(tagArray);
-		for (int i = 0; i < tagList.size(); i++) {
-			String hql = "FROM Tag T WHERE T.tagName = :tagName";
-			Query query = em.createQuery(hql);
-			query.setParameter("tagName", tagList.get(i).trim());
-			List<Tag> results = query.getResultList();
-			Tag tag;
-			if (results == null || results.size() < 1) {
-				tag = new Tag();
-				tag.setTagName(tagList.get(i).trim());
-				em.persist(tag);
-			} else {
-				tag = results.get(0);
-			}
-
-			ActionTag actionTag = new ActionTag();
-			actionTag.setAction(action);
-			actionTag.setTag(tag);
-			em.persist(actionTag);
-		}
-	}
-	
-    private List<ActionDTO> prepareCreatedActionForUser(String cookie, String actionType) {
-        EntityManager em = DBUtility.startTransaction();
-
-        User user = ServiceHelper.getSessionUser(em, cookie);
-
-        Query query = em
-                .createQuery(
-                        "FROM ActionUser A WHERE A.actionUserStatus = :actionUserStatus AND A.user = :user")
-                .setParameter("actionUserStatus",
-                        ActionUserStatus.CREATED)
-                .setParameter("user", user);
-
-        return prepareActionDTOList(actionType, query);
-    }
-    
-
-
-	private List<ActionDTO> prepareActionDTOList(String actionType, Query query) {
-		List<ActionUser> results = query.getResultList();
-        List<ActionDTO> actionList = new ArrayList<>();
-		Set<Long> actionIds = new HashSet<Long>();
-
-		for (ActionUser actionUser : results) {
-			ActionDTO actionDTO = actionUser.getAction().getActionDTO();
-			if (actionUser.getAction().getActionType().equals(actionType)
-					&& !actionIds.contains(actionDTO.getActionId())) {
-				actionList.add(actionDTO);
-				actionIds.add(actionDTO.getActionId());
-			}
-		}
-
-        return actionList;
-	}
-
-	private List<ActionDTO> prepareActionForUser(String cookie, String actionType) {
-		EntityManager em = DBUtility.startTransaction();
-
-		User user = ServiceHelper.getSessionUser(em, cookie);
-
-		Query query = em
-				.createQuery(
-						"FROM ActionUser A WHERE A.user = :user")
-				.setParameter("user", user);
-
-		return prepareActionDTOList(actionType, query);
-	}
-
-	private List<ActionDTO> prepareInvitedActionForUser(String cookie,
-			String actionType) {
-		EntityManager em = DBUtility.startTransaction();
-
-		User user = ServiceHelper.getSessionUser(em, cookie);
-
-		Query query = em
-				.createQuery(
-						"FROM ActionUser A WHERE A.actionUserStatus = :actionUserStatus AND A.user = :user")
-				.setParameter("actionUserStatus",
-						ActionUserStatus.INVITED)
-				.setParameter("user", user);
-
-		return prepareActionDTOList(actionType, query);
-	}
-
 }

@@ -39,6 +39,9 @@ public class Post {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
 	private Set<Comment> comments = new HashSet<Comment>(0);
 	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
+	private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>(0);
+	
 	public Long getPostId() {
 		return postId;
 	}

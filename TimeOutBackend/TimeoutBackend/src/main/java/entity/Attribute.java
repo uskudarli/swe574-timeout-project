@@ -1,14 +1,20 @@
 package entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "Attribute")
@@ -28,6 +34,9 @@ public class Attribute {
     @JoinColumn(name = "customTypeId")
 	private CustomType customType;
 	
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "attribute")
+	private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>(0);
 	
 	public Long getAttributeId() {
 		return attributeId;

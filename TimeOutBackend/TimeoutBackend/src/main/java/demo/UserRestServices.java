@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import repository.UserRepository;
+import common.BusinessException;
 import common.DBUtility;
+import common.ErrorMessages;
 import common.ResponseHeader;
 import entity.Session;
 import entity.User;
@@ -35,8 +37,7 @@ public class UserRestServices {
 			@RequestParam(value = "password") String password,
 			HttpServletResponse resp) {
 		
-		EntityManager em = DBUtility.startTransaction();
-		ServiceHelper.setResponseHeaders(resp);
+		EntityManager em = ServiceHelper.initialize(resp);
 		
 		try {
 
@@ -44,15 +45,23 @@ public class UserRestServices {
 			ValidationHelper.validatePassword(password);
 			
 			UserRepository ur = new UserRepository(em);
-			ur.insertUser(userEmail, password);
-			
+
+			if (ur.getUserByUserNumberEmail(userEmail) > 0){
+				throw new BusinessException(
+						ErrorMessages.userAlreadyExistCode, ErrorMessages.userAlreadyExist);
+			}else{
+				ur.insertUser(userEmail, password);
+			}
+
 			DBUtility.commitTransaction(em);
-			return new ResponseHeader();
-			
+		} catch (BusinessException e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getCode(), e.getMessage());
 		} catch (Exception e) {
 			DBUtility.rollbackTransaction(em);
 			return new ResponseHeader(false, e.getMessage());
 		}
+		return new ResponseHeader();
 	}
 
 	//edit user function
@@ -70,12 +79,10 @@ public class UserRestServices {
 			@RequestParam(value = "languages", required = false) String languages,
 			HttpServletResponse resp) {
 
-		EntityManager em = DBUtility.startTransaction();
-		ServiceHelper.setResponseHeaders(resp);
+		EntityManager em = ServiceHelper.initialize(resp);
 
 		try {
 			User user = ServiceHelper.getSessionUser(em, sessionId);
-			ServiceHelper.authorize(user);
 			
 			if (user.getUserBasicInfo() == null) {
 				user.setUserBasicInfo(new UserBasicInfo());
@@ -119,7 +126,10 @@ public class UserRestServices {
 			em.merge(user1.getUserCommInfo());
 			em.merge(user1.getUserExtraInfo());
 			DBUtility.commitTransaction(em);
-		} catch (Exception e) {
+		}catch (BusinessException e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getCode(), e.getMessage());
+		}catch (Exception e) {
 			DBUtility.rollbackTransaction(em);
 			return new ResponseHeader(false, e.getMessage());
 		}
@@ -128,21 +138,23 @@ public class UserRestServices {
 
 	//get user profile
 	@RequestMapping(value = "/profile/get")
-	public @ResponseBody User getProfile(
+	public @ResponseBody Object getProfile(
 			@RequestParam(value = "sessionId") String sessionId,
 			HttpServletResponse resp) {
 
-		EntityManager em = DBUtility.startTransaction();
-		ServiceHelper.setResponseHeaders(resp);
+		EntityManager em = ServiceHelper.initialize(resp);
 
-		User user = ServiceHelper.getSessionUser(em, sessionId);
-
-		/*
-		 * if (user == null){ ResponseHeader wrongResponse = new
-		 * ResponseHeader(); wrongResponse.setType("Fail");
-		 * wrongResponse.setMessage("Specified information is wrong!"); return
-		 * wrongResponse; }
-		 */
+		User user;
+		try {
+			user = ServiceHelper.getSessionUser(em, sessionId);
+			DBUtility.commitTransaction(em);
+		}catch (BusinessException e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getCode(), e.getMessage());
+		}catch (Exception e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getMessage());
+		}
 		return user;
 	}
 	
@@ -154,27 +166,23 @@ public class UserRestServices {
             @RequestParam(value = "userEmail") String userEmail,
             @RequestParam(value = "password") String password, HttpServletResponse resp) {
 
-		ServiceHelper.setResponseHeaders(resp);
-
-        EntityManager em = DBUtility.startTransaction();
-        List<User> result =
-                em.createQuery("FROM User U WHERE U.userEmail = :userEmail AND U.password = :password")
-                        .setParameter("userEmail", userEmail)
-                        .setParameter("password", password)
-                        .getResultList();
-        if (result != null && result.size() > 0) {
-
-            String sessionId = new BigInteger(130, new Random()).toString(32).toUpperCase();
-
-            em.persist(new Session(result.get(0), sessionId));
-            DBUtility.commitTransaction(em);
-
-            return new ResponseHeader(sessionId);
-        } else {
-            ResponseHeader wrongResponse = new ResponseHeader();
-            wrongResponse.setType("Fail");
-            wrongResponse.setMessage("Specified information is wrong!");
-            return wrongResponse;
-        }
+		EntityManager em = ServiceHelper.initialize(resp);
+        
+        ResponseHeader rh;
+        
+        try {
+			UserRepository ur = new UserRepository(em);
+			
+			rh = ur.login(userEmail, password);
+			
+			DBUtility.commitTransaction(em);
+		}catch (BusinessException e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getCode(), e.getMessage());
+		}catch (Exception e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getMessage());
+		}
+		return rh;
     }
 }

@@ -18,6 +18,7 @@
 		<class>entity.Tag</class>
 		<class>entity.CustomType</class>
 		<class>entity.Attribute</class>
+		<class>entity.AttributeValue</class>
 		<class>entity.Comment</class>
 		<class>entity.Post</class>
 		<class>entity.Session</class>

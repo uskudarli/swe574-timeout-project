@@ -14,37 +14,38 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import repository.FriendshipRepository;
+import common.BusinessException;
 import common.DBUtility;
+import common.ResponseHeader;
 import entity.Friendship;
 import entity.User;
 
 @RestController
 public class FriendshipRestServices {
-	
+
 	@RequestMapping(value = "/friends/my")
 	@ResponseBody
-	public List<User> getMyFriends(
-            @RequestParam(value = "sessionId") String sessionId, HttpServletResponse resp) {
-		ServiceHelper.setResponseHeaders(resp);
-		return prepareFriendsForUser(sessionId);
-	}
-	
-	private List<User> prepareFriendsForUser(String cookie) {
-		EntityManager em = DBUtility.startTransaction();
-		User user = ServiceHelper.getSessionUser(em, cookie);
+	public Object getMyFriends(
+			@RequestParam(value = "sessionId") String sessionId,
+			HttpServletResponse resp) {
+		List<User> users;
+
+		EntityManager em = ServiceHelper.initialize(resp);
 		
-		Query query = em
-				.createQuery(
-						"FROM Friendship F WHERE F.person = :person")
-				.setParameter("person", user);
-		
-		List<Friendship> list = query.getResultList();
-		List<User> returnList = new ArrayList<User>();
-		
-		for (Friendship friendship : list) {
-			returnList.add(friendship.getFriend());
+		try {
+			User user = ServiceHelper.getSessionUser(em, sessionId);
+			FriendshipRepository fr = new FriendshipRepository(em);
+			users = fr.prepareFriendsForUser(user);
+
+			DBUtility.commitTransaction(em);
+		} catch (BusinessException e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getCode(), e.getMessage());
+		} catch (Exception e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getMessage());
 		}
-	
-		return returnList;
+		return users;
 	}
 }

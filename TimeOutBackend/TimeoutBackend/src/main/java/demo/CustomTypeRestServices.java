@@ -19,7 +19,10 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import repository.ActionRepository;
+import repository.CustomTypeRepository;
+import common.BusinessException;
 import common.DBUtility;
+import common.ResponseHeader;
 import entity.Action;
 import entity.Attribute;
 import entity.CustomType;
@@ -30,82 +33,56 @@ public class CustomTypeRestServices {
 
 	@RequestMapping(value = "/customType/create")
 	@ResponseBody
-	public CustomType createCustomType(
+	public Object createCustomType(
             @RequestParam(value = "sessionId") String sessionId, 
             @RequestParam(value = "actionId") Long actionId,
             @RequestParam(value = "name") String name,
             @RequestParam(value = "attributes", required = false) String attributesJsonListString,
             HttpServletResponse resp) {
-		ServiceHelper.setResponseHeaders(resp);
-		return createCustomType(sessionId, actionId, name, attributesJsonListString);
+		EntityManager em = ServiceHelper.initialize(resp);
+		
+		CustomType customType;
+		try {
+			User user = ServiceHelper.getSessionUser(em, sessionId);
+			
+			CustomTypeRepository cr = new CustomTypeRepository(em);
+			
+			customType = cr.createCustomType(user, actionId, name, attributesJsonListString);
+			DBUtility.commitTransaction(em);
+		} catch (BusinessException e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getCode(), e.getMessage());
+		} catch (Exception e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getMessage());
+		}
+		return customType;
 	}
 	
 	@RequestMapping(value = "/customType/getListByActionId")
 	@ResponseBody
-	public List<CustomType> getCustomTypeListByActionId(
+	public Object getCustomTypeListByActionId(
             @RequestParam(value = "sessionId") String sessionId, 
             @RequestParam(value = "actionId") Long actionId,
             HttpServletResponse resp) {
-		ServiceHelper.setResponseHeaders(resp);
-		return getCustomTypeListByActionId(sessionId, actionId);
-	}
-	
-	private List<CustomType> getCustomTypeListByActionId(String sessionId,
-			Long actionId) {
-		EntityManager em = DBUtility.startTransaction();
-		User user = ServiceHelper.getSessionUser(em, sessionId);
-
-		List<CustomType> returnVal = null;
+		EntityManager em = ServiceHelper.initialize(resp);
 		
-		if (actionId > 0) {
-			Query query = null;
-			query = em.createQuery(
-					"FROM CustomType C WHERE C.actionId = :actionId")
-					.setParameter("actionId", actionId);
-			returnVal = query.getResultList();
+		List<CustomType> customTypes;
+		try {
+			User user = ServiceHelper.getSessionUser(em, sessionId);
+			
+			CustomTypeRepository cr = new CustomTypeRepository(em);
+			customTypes = cr.getCustomTypeListByActionId(actionId);
+			DBUtility.commitTransaction(em);
+		} catch (BusinessException e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getCode(), e.getMessage());
+		} catch (Exception e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getMessage());
 		}
-		return returnVal;
+		return customTypes;
 	}
-	
-	private CustomType createCustomType(String sessionId, Long actionId,
-			String name, String attributesString) {
-		EntityManager em = DBUtility.startTransaction();
-		User user = ServiceHelper.getSessionUser(em, sessionId);
-		
-		CustomType cusType = new CustomType();
-		cusType.setName(name);
-		cusType.setUser(user);
-        
-		ActionRepository ar = new ActionRepository(em);
-		Action action = ar.getActionById(actionId, "");
-		cusType.setAction(action);
-		
-		insertAttributes(attributesString, cusType, em);
-		
-        em.persist(cusType); 
 
-        DBUtility.commitTransaction(em);
 
-        return cusType;
-	}
-	
-	private void insertAttributes(String attributesString, CustomType cusType, EntityManager em) {
-		if (attributesString == null || attributesString == "")
-            return;
-        
-        List<Attribute> attributes = null;
-        Gson gson = new Gson();
-        
-        Type listType = new TypeToken<ArrayList<Attribute>>() {}.getType();
-
-        attributes = gson.fromJson(attributesString, listType);
-        
-        for (int i = 0; i < attributes.size(); i++) {
-        	Attribute attribute = new Attribute();
-        	attribute.setAttributeKey(attributes.get(i).getAttributeKey());
-        	//attribute.setAttributeValue(attributes.get(i).getAttributeValue());
-        	attribute.setCustomType(cusType);
-            em.persist(attribute);
-        }
-	}
 }

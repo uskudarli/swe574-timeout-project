@@ -1,5 +1,6 @@
 package helpers;
 
+import common.BusinessException;
 import common.ErrorMessages;
 
 public class ValidationHelper {
@@ -9,7 +10,7 @@ public class ValidationHelper {
 		java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
 		java.util.regex.Matcher m = p.matcher(email);
 		if (!m.matches()){
-			throw new Exception(ErrorMessages.emailValidate);
+			throw new BusinessException(ErrorMessages.emailValidateCode, ErrorMessages.emailValidate);
 		}
 	}
 
