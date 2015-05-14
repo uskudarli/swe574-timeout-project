@@ -1,5 +1,8 @@
 app = angular.module('timeout', ['ngRoute']);
 
+// When html address is typed with one of the following links,
+// RouteProvider (ng-route) will directly stick controller and html together
+// and serve them in the place of dynamic content .
 app.config(function($routeProvider) {
   $routeProvider
    	 .when("/", {
@@ -77,10 +80,21 @@ app.config(function($routeProvider) {
 	  .otherwise({redirectTo: '/'});
 });
 
-// Tested by ogzcm, remove cookie set when error occurs
+// To avoid see any pages without login.
+app.run(function($rootScope, $location, $window) {
+	$rootScope.$on( "$routeChangeStart", function(event, next, current) {
+		if ((getCookie("sessionId") == undefined || getCookie("sessionId") == "")) {
+			$location.path("/");
+		}
+	});
+});
+
+// Non-dynamic content is controlled by this controller.
 app.controller("indexController", function($scope, $http, $location, $window, timeOutFactory) {
+	// For logging
 	console.log("indexController works");
 
+	// Get sessionId from backend by calling login rest api, then set sessionId cookie
 	$scope.doLogin = function() {
 		console.log("DoLogin works");
 		var params = "?userEmail=" + $scope.userEmail + "&password=" + $scope.loginPassword;
@@ -97,39 +111,49 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 		  })
 		  .error(function(data, status) {
 			$window.alert("Specified username or password do not match with the records!!!");
-
-			// setCookie("sessionId", "ogzcm58", 60);
-			// $location.path("/home");
 		  });
 	};
 
+	// Set sessionId cookies to ""
+	$scope.doLogout = function() {
+		setCookie("sessionId", "", 0);
+		$location.path("/");
+	};
+
+	// In order to decide whether showing search or login on the right top corner,
+	// check if the cookie is set or not
 	$scope.isCookieSet = function() {
 		return getCookie("sessionId") != undefined && getCookie("sessionId") != "";
 	};
 
+	// To change dynamic content when a link is pressed, $location.path method is used.
 	$scope.goToPage = function(url) {
 		console.log("GoToPage: " + url);
 		$location.path(url);
 	};
 
+	// When a search is being done, search string is saved to the factory to be reached from other controllers.
 	$scope.search = function(url){
 		timeOutFactory.setSearchText($scope.searchText);
 		$scope.goToPage(url);
 	};
 });
 
-// Tested by ogzcm
+// SignUp screen or root address shows the html which is managed by this controller.
 app.controller("mainController", function($scope, $http, $location, $window, timeOutFactory) {
 	if(getCookie("sessionId") != undefined && getCookie("sessionId") != "") {
 		console.log("GoToPage: /home");
 		$location.path("/home");
 	}
 
+	// This method will be used when a user tries to be a member of the system.
 	$scope.signUp = function() {
-		// Simple GET request example :
+		// Parameters for register is sent
 		var params = "?userEmail=" + $scope.email + "&password=" + $scope.sigUpPassword;
 
-		$http({method: "GET",  url: timeOutFactory.getBackendUrl() + "/register" + params})
+		// register api of backend is called
+		$http.get(timeOutFactory.getBackendUrl() + "/register" + params)
+		  // if register api call is successful
 		  .success(function(data, status) {
 		    if(data.type == "Success") {
 		    	$window.alert("Welcome among us, you can now log in!");
@@ -141,12 +165,14 @@ app.controller("mainController", function($scope, $http, $location, $window, tim
 		    	$scope.rePassword = "";
 		    }
 		  })
+		  // if register api call is unsuccessful
 		  .error(function(data, status) {
 		 	$window.alert(JSON.stringify(data));
 		  });
 	};
 });
 
+// After user logged in, home.html will be seen which managed by this controller
 app.controller("homeController", function($scope, $http, $window, $location, timeOutFactory) {
 	var params = "?sessionId=" + getCookie("sessionId");
 
@@ -179,6 +205,7 @@ app.controller("homeController", function($scope, $http, $window, $location, tim
 	];
 });
 
+// When a search request is done, search.html and this controller shows the dynamic content.
 app.controller("searchController", function($scope, $http, $location, $window, timeOutFactory) {
 	console.log("searchController: " + timeOutFactory.getSearchText());
 
@@ -197,6 +224,7 @@ app.controller("searchController", function($scope, $http, $location, $window, t
 	  });
 });
 
+// When user wants to edit own profile, this controller works to support the html on the dynamic content.
 app.controller("profileEdit", function($scope, $http, $window, $location, timeOutFactory) {
 
 	var params = "?sessionId=" + getCookie("sessionId");
@@ -493,6 +521,7 @@ app.controller("eventsInvited", function($scope, $http, $window, $location, time
 	};
 });
 
+// This factory keeps values shared among controllers.
 app.factory("timeOutFactory", function(){
 	var timeOutFactory = {};
 	var lists = {};
@@ -529,6 +558,7 @@ app.factory("timeOutFactory", function(){
 });
 
 // JS Functions
+// For setting a cookie on the browser
 function setCookie(cname, cvalue, exdays) {
 	var d = new Date();
 	console.log("Date d: " + d);
@@ -539,6 +569,7 @@ function setCookie(cname, cvalue, exdays) {
 	document.cookie = cname + "=" + cvalue + "; " + expires;
 };
 
+// For getting the value of cookie which was set before.
 function getCookie(cname) {
 	var name = cname + "=";
 	var ca = document.cookie.split(';');
@@ -550,6 +581,7 @@ function getCookie(cname) {
 	return "";
 };
 
+// It looks if the cookie is set, or gets a value to set in order to check cookies.
 function checkCookie() {
 	var user = getCookie("username");
 	if (user != "") {

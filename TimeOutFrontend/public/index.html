@@ -49,7 +49,7 @@
                                         </tr>
                                         <tr>
                                             <td><input type="text" name="username" ng-model="userEmail"/></td>
-                                            <td><input type="text" name="password" ng-model="loginPassword"/></td>
+                                            <td><input type="password" name="password" ng-model="loginPassword"/></td>
                                             <td><button class="btn btn-primary" style="padding: 1px 12px;" type="submit">Login</button></td>
                                         </tr>
                                         <tr>
@@ -98,7 +98,7 @@
             <div class="contBg">
 
                 <!-- Left Column - General menu start -->
-                <div class="leftcolumn">
+                <div class="leftcolumn" ng-show="isCookieSet()">
                     <div class="profile">
                         <img ALT="Münevver Calayır" title="Münevver Calayır" src="images/profile.jpg" />
                         <p>Münevver Calayır</p>
@@ -130,7 +130,7 @@
                                   </a>
                               </li>
                               <li>
-                                  <a href="">
+                                  <a href="" ng-click="doLogout()">
                                     <img src="images/logout.png" />
                                     <p>Logout</p>
                                   </a>
@@ -146,7 +146,7 @@
                 <!--Middle Container end-->
 
                 <!-- Right Column -Notification and suggested group list- Start-->
-                <div class="rightcolumn">
+                <div class="rightcolumn" ng-show="isCookieSet()">
                     <div class="notification">
                         <p class="title">NOTIFICATIONS</p>
                         <div class="notice" ng-repeat="notification in notificationList ">
