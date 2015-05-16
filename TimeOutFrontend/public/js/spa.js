@@ -65,10 +65,6 @@ app.config(function($routeProvider) {
 	  	templateUrl: "profileEdit.html",
 	  	controller: "profileEdit"
 	  })
-	  .when("/uploadPhoto", {
-	  	templateUrl: "uploadPhoto.html",
-	  	controller: "profileEdit"
-	  })
 	  .when("/theGroup", {
 	  	templateUrl: "theGroup.html",
 	  	controller: "theGroup"
@@ -274,7 +270,7 @@ app.controller("profileEdit", function($scope, $http, $window, $location, timeOu
 					  "&languages=" + $scope.languages;
 
 
-		$http.post(timeOutFactory.getBackendUrl() + "/profile/edit" + paramsEdit)
+		$http.get(timeOutFactory.getBackendUrl() + "/profile/edit" + paramsEdit)
 			.success(function(data, status) {
 				$window.alert("Success " + data.actionId);
 			})
