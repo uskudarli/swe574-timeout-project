@@ -74,8 +74,19 @@
         <label>Address  </label>
         <input type="text" name="address" size="50" ng-model="address"> </input><br><br>
 
-        <label>Birthdate  </label>
-        <input type="date" name="birth" ng-model="birthdate" > </input><br><br>
+        <label>Birthdate: </label>
+                    <div id="Bdate" class="input-append date">
+                        <input type="text" ng-model="birthdate"></input>
+                        <span class="add-on">
+                            <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                        </span>
+                    </div><br>
+
+                    <script type="text/javascript">
+                        $('#Bdate').datetimepicker({
+                           pickTime : false
+                        });
+                    </script>
 
         <label>About me:  </label>
         <textarea name="about" rows="6" cols="50" ng-model="about"></textarea><br><br>
