@@ -25,6 +25,8 @@ body {
 }
 
 section {
+    border-left: 1px solid #ededed;
+    border-right: 1px solid #ededed;
 	float: right;
     height: auto;
     min-height: 630px;
@@ -63,7 +65,11 @@ div.signup {
 }
 
 div.signup fieldset legend{
-	width:365px;
+    width:365px;
+}
+
+div.signup fieldset form p input{
+    height: 24px !important;
 }
 
 div.signup p span{
@@ -96,7 +102,7 @@ div.login{
 
 #loginForm tr td{
     float: left;
-    width: 150px;
+    width: 135px;
 }
 
 #login-button{
@@ -135,8 +141,6 @@ label {
 }
 
 .midcontainer{
-    border-left: 1px solid #ededed;
-    border-right: 1px solid #ededed;
     float: left;
     height: auto;
     min-height: 550px;
