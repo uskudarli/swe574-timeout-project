@@ -144,15 +144,25 @@ app.controller("mainController", function($scope, $http, $location, $window, tim
 
 	$scope.roleSet = ["student", "prep. student", "alumni", "erasmus & exchange","professor", "staff", ];
 
+	
+	/*var emailOk = "";
+	$http.get(timeOutFactory.getBackendUrl() + "/email/isAvailable")
+		.success(function(data){
+			if (data.type=="success") {
+				emailOk = data.type;
+			};
+		})
+*/
 	// This method will be used when a user tries to be a member of the system.
 	$scope.signUp = function() {
 		// Check if specified information is OK
 		// validate();
 
 		// validate if email is unique 
-		if(emailOk) {
+		 //if(emailOk == "success") {
 		// Parameters for register is adjusted and password is encrypted with MD5 hash
 		var params = "?userEmail=" + $scope.email + "&password=" + md5.createHash($scope.sigUpPassword);
+		params = params +"&firstName=" + $scope.name + "&lastName=" + $scope.lastName + "&role=" + $scope.role;
 
 		// register api of backend is called
 		$http.get(timeOutFactory.getBackendUrl() + "/register" + params)
@@ -172,10 +182,9 @@ app.controller("mainController", function($scope, $http, $location, $window, tim
 		  .error(function(data, status) {
 		 	$window.alert(JSON.stringify(data));
 		  });
-		}
-		else {
+		/*else {
 			$window.alert("The email" +$scope.email + "already exist in the system. Please enter another email.");
-		}
+		}*/
 	};
 });
 
@@ -525,8 +534,8 @@ app.factory("timeOutFactory", function(){
 	var timeOutFactory = {};
 	var lists = {};
 	var userLoggedIn = false;
-	// var backendUrl = "http://localhost:8080";
-	var backendUrl = "http://timeoutswe5743.appspot.com";
+	// var backendUrl = "http://timeoutswe5743.appspot.com";
+	var backendUrl = "http://localhost:8080";
 	var searchText = "";
 
 	timeOutFactory.getLists = function(){
