@@ -39,9 +39,16 @@ public class DBUtility {
 	}
 
 	public static EntityManager startTransaction(){
-		EntityManager em = createEntityManager();
+		EntityManager em = getEntityManager();
 		em.getTransaction().begin();
 		return em;
+	}
+
+	private static EntityManager getEntityManager() {
+		if (EntityManagerHolder.em == null){
+			EntityManagerHolder.em = createEntityManager();
+		}
+		return EntityManagerHolder.em;
 	}
 
 	public static void commitTransaction(EntityManager em){

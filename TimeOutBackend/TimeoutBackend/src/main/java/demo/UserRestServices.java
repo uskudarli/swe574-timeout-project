@@ -35,6 +35,9 @@ public class UserRestServices {
 	public @ResponseBody Object registerUser(
 			@RequestParam(value = "userEmail") String userEmail,
 			@RequestParam(value = "password") String password,
+			@RequestParam(value = "firstName") String firstName,
+			@RequestParam(value = "lastName") String lastName,
+			@RequestParam(value = "role") String role,
 			HttpServletResponse resp) {
 		
 		EntityManager em = ServiceHelper.initialize(resp);
