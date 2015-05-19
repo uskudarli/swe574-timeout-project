@@ -66,6 +66,34 @@ public class UserRestServices {
 		}
 		return new ResponseHeader();
 	}
+	
+	@RequestMapping(value = "/email/isAvailable")
+	public @ResponseBody Object emailIsAvailable(
+			@RequestParam(value = "userEmail") String userEmail,
+			HttpServletResponse resp) {
+		
+		EntityManager em = ServiceHelper.initialize(resp);
+
+		try {
+
+			ValidationHelper.validateEmail(userEmail);
+			
+			UserRepository ur = new UserRepository(em);
+
+			if (ur.getUserByUserNumberEmail(userEmail) > 0){
+				throw new BusinessException(ErrorMessages.emailNotAvailableCode, ErrorMessages.emailNotAvailable);
+			}
+
+			DBUtility.commitTransaction(em);
+		} catch (BusinessException e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getCode(), e.getMessage());
+		} catch (Exception e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getMessage());
+		}
+		return new ResponseHeader();
+	}
 
 	//edit user function
 	@RequestMapping(value = "/profile/edit")

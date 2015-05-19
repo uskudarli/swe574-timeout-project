@@ -12,4 +12,6 @@ public class ErrorMessages {
 	public static String sessionUserNotFound = "Invalid user";
 	public static String invalidLoginCode = "E104";
 	public static String invalidLogin = "Wrong Email or Password ";
+	public static String emailNotAvailableCode = "E105";
+	public static String emailNotAvailable = "Email not available";
 }
