@@ -24,6 +24,12 @@
                     <label for="surname">Last Name:</label>
                     <input type="text" ng-model="lastName"/>
                 </p>
+                 <p>
+                    <label for="surname">Role:</label>
+                    <select name="role" ng-model="role">
+                        <option ng-repeat="item in roleSet">{{item}}</option>
+                    </select>
+                </p>
                 <p>
                     <label for="username">Email:</label>
                     <input type="text" ng-model="email"/>

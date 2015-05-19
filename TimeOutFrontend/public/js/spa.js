@@ -73,10 +73,6 @@ app.config(function($routeProvider) {
 	  	templateUrl: "thePost.html",
 	  	controller: "thePost"
 	  })
-	  .when("/theUser", {
-	  	templateUrl: "theUser.html",
-	  	controller: "theUser"
-	  })
 	  .otherwise({redirectTo: '/'});
 });
 
@@ -146,11 +142,15 @@ app.controller("mainController", function($scope, $http, $location, $window, tim
 		$location.path("/home");
 	}
 
+	$scope.roleSet = ["student", "prep. student", "alumni", "erasmus & exchange","professor", "staff", ];
+
 	// This method will be used when a user tries to be a member of the system.
 	$scope.signUp = function() {
 		// Check if specified information is OK
 		// validate();
 
+		// validate if email is unique 
+		if(emailOk) {
 		// Parameters for register is adjusted and password is encrypted with MD5 hash
 		var params = "?userEmail=" + $scope.email + "&password=" + md5.createHash($scope.sigUpPassword);
 
@@ -172,6 +172,10 @@ app.controller("mainController", function($scope, $http, $location, $window, tim
 		  .error(function(data, status) {
 		 	$window.alert(JSON.stringify(data));
 		  });
+		}
+		else {
+			$window.alert("The email" +$scope.email + "already exist in the system. Please enter another email.");
+		}
 	};
 });
 
@@ -452,15 +456,6 @@ app.controller("theGroup", function($scope, $http, $window, $location, timeOutFa
 });
 
 app.controller("thePost", function($scope, $http, $window, $location, timeOutFactory){
-	var params = "?sessionId=" + getCookie("sessionId");
-
-	$scope.goToPage = function(url) {
-		console.log("GoToPage: " + url);
-		$location.path(url);
-	};
-});
-
-app.controller("theUser", function($scope, $http, $window, $location, timeOutFactory){
 	var params = "?sessionId=" + getCookie("sessionId");
 
 	$scope.goToPage = function(url) {
