@@ -53,11 +53,11 @@ public class DBUtility {
 
 	public static void commitTransaction(EntityManager em){
 		em.getTransaction().commit();
-		em.close();
+		//em.close();
 	}
 	
 	public static void rollbackTransaction(EntityManager em){
 		em.getTransaction().rollback();
-		em.close();
+		//em.close();
 	}
 }
