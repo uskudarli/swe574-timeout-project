@@ -9,7 +9,7 @@ public class CommonReturnObject {
 
     String type;
     String message;
-    String cookie;
+    String sessionId;
 
     public String getType() {
         return type;
@@ -27,11 +27,11 @@ public class CommonReturnObject {
         this.message = message;
     }
 
-    public String getCookie() {
-        return cookie;
+    public String getSessionId() {
+        return sessionId;
     }
 
-    public void setCookie(String cookie) {
-        this.cookie = cookie;
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
     }
 }

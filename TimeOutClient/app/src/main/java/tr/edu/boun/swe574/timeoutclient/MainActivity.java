@@ -1,5 +1,7 @@
 package tr.edu.boun.swe574.timeoutclient;
 
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,15 +19,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
 
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import tr.edu.boun.swe574.timeoutclient.utils.JsonRequest;
 
 
 public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
@@ -239,9 +246,67 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                 case 2:
                     // friends
                     break;
+                case 3:
+                    // group
+                    LinearLayout ll_group = (LinearLayout) rootView.findViewById(R.id.main_layout);
+
+                    Button btn_addGroup = new Button(getActivity());
+                    btn_addGroup.setText("Create Group");
+                    btn_addGroup.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            List<Integer> people = new ArrayList<Integer>();
+                            people.add(1);
+                            people.add(2);
+                            people.add(333);
+
+                            Gson gson = new Gson();
+                            String peopleString = gson.toJson(people);
+
+                            createGroupTask cgt = new createGroupTask(getActivity().getApplicationContext());
+                            cgt.execute("süper grup", "dünyanın en süper grubu", peopleString, "", "public");
+                        }
+                    });
+
+
+                    ll_group.addView(btn_addGroup);
+
+
+                    break;
             }
             return rootView;
         }
+
+        public class createGroupTask extends AsyncTask<String, Void, Boolean> {
+
+            private Context mContext;
+
+            public createGroupTask(Context ctx) {
+                mContext = ctx;
+            }
+
+            @Override
+            protected Boolean doInBackground(String... params) {
+
+                String groupName = params[0];
+                String groupDesc = params[1];
+                String people = params[2];
+                String tags = params[3];
+                String privacy = params[4];
+
+
+                JsonRequest jr = new JsonRequest(mContext);
+                jr.sendRequestCreateGroup(groupName, groupDesc, people, tags, privacy);
+
+
+                return true;
+            }
+        }
+
+
+
+
 
         public class basicItem {
             int drawable;

@@ -1,6 +1,8 @@
 package tr.edu.boun.swe574.timeoutclient.utils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -16,6 +18,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.net.URLEncoder;
 
 import tr.edu.boun.swe574.timeoutclient.jsonObjects.CommonReturnObject;
 
@@ -106,6 +109,15 @@ public class JsonRequest {
             CommonReturnObject obj = gson.fromJson(loginJson, CommonReturnObject.class);
 
             if (obj != null && obj.getType().equals("Success")) {
+
+                SharedPreferences mPrefs = mContext.getApplicationContext().getSharedPreferences(
+                        mContext.getApplicationContext().getClass().getName(), Context.MODE_PRIVATE);
+                SharedPreferences.Editor prefsEditor = mPrefs.edit();
+                prefsEditor.clear();
+                prefsEditor.putString("sessionId", obj.getSessionId());
+                prefsEditor.commit();
+
+
                 return true;
             } else {
                 return false;
@@ -136,6 +148,47 @@ public class JsonRequest {
             } else {
                 return false;
             }
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /*
+            @RequestParam(value = "sessionId") String sessionId,
+            @RequestParam(value = "groupName") String groupName,
+            @RequestParam(value = "groupDescription", required = false) String groupDescription,
+            @RequestParam(value = "invitedPeople", required = false) List<User> invitedPeople,
+            @RequestParam(value = "tag", required = false) String tagString,
+            @RequestParam(value = "privacy", required = false) String privacy
+     */
+    public boolean sendRequestCreateGroup(String name, String desc, String invitedPeople, String tags, String privacy) {
+
+        try {
+
+            SharedPreferences mPrefs = mContext.getApplicationContext()
+                    .getSharedPreferences(
+                            mContext.getClass().getName(),
+                            Context.MODE_PRIVATE);
+            String sessionId = mPrefs.getString("sessionId", "");
+
+            String uri = ipadServiceUri + "group/create?sessionId=" + sessionId
+                    + "&groupName=" + URLEncoder.encode(name, "utf-8")
+                    + "&groupDescription=" + URLEncoder.encode(desc, "utf-8");
+
+            if (invitedPeople.length() > 0) {
+                uri += "&invitedPeople=" + invitedPeople;
+            }
+            if (tags.length() > 0) {
+                uri += "&tag=" + tags;
+            }
+            uri += "&privacy=" + privacy;
+
+            String jsonString = sendRequest(uri);
+
+            Log.d("", jsonString);
+
+            return true;
+
         } catch (Exception e) {
             return false;
         }
