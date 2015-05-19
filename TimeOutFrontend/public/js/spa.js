@@ -145,21 +145,21 @@ app.controller("mainController", function($scope, $http, $location, $window, tim
 	$scope.roleSet = ["student", "prep. student", "alumni", "erasmus & exchange","professor", "staff", ];
 
 	
-	/*var emailOk = "";
+	var emailOk = "";
 	$http.get(timeOutFactory.getBackendUrl() + "/email/isAvailable")
 		.success(function(data){
 			if (data.type=="success") {
 				emailOk = data.type;
 			};
 		})
-*/
+
 	// This method will be used when a user tries to be a member of the system.
 	$scope.signUp = function() {
 		// Check if specified information is OK
 		// validate();
 
 		// validate if email is unique 
-		 //if(emailOk == "success") {
+		 if(emailOk == "success") {
 		// Parameters for register is adjusted and password is encrypted with MD5 hash
 		var params = "?userEmail=" + $scope.email + "&password=" + md5.createHash($scope.sigUpPassword);
 		params = params +"&firstName=" + $scope.name + "&lastName=" + $scope.lastName + "&role=" + $scope.role;
@@ -178,13 +178,16 @@ app.controller("mainController", function($scope, $http, $location, $window, tim
 		    	$scope.rePassword = "";
 		    }
 		  })
+
 		  // if register api call is unsuccessful
 		  .error(function(data, status) {
 		 	$window.alert(JSON.stringify(data));
 		  });
-		/*else {
-			$window.alert("The email" +$scope.email + "already exist in the system. Please enter another email.");
-		}*/
+		}
+
+		else {
+			$window.alert("The email: " +$scope.email + " already exist in the system! Please enter another email.");
+		}
 	};
 });
 
