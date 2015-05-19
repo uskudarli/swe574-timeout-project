@@ -68,8 +68,8 @@ public class ActionRestServices {
 			ar.insertCreator(creator, action);
 
 			ar.insertInvitedPeople(invitedPeople, action);
-
-			ar.insertTagsOfActions(tagString, action);
+			
+			ar.insertTags(tagString, creator, action);
 
 			DBUtility.commitTransaction(em);
 		}catch (BusinessException e) {
@@ -111,7 +111,7 @@ public class ActionRestServices {
 			
 			ar.insertInvitedPeople(invitedPeople, action);
 
-			ar.insertTagsOfActions(tagString, action);
+			ar.insertTags(tagString, creator, action);
 
 			DBUtility.commitTransaction(em);
 		}catch (BusinessException e) {

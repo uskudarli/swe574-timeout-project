@@ -15,6 +15,7 @@
 		<class>entity.Action</class>
 		<class>entity.ActionUser</class>
 		<class>entity.ActionTag</class>
+		<class>entity.UserTag</class>
 		<class>entity.Tag</class>
 		<class>entity.CustomType</class>
 		<class>entity.Attribute</class>

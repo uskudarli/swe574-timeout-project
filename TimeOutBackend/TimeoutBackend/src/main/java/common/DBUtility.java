@@ -34,8 +34,11 @@ public class DBUtility {
 			Map<String, String> properties = new HashMap<>();
 			properties = DBUtility.putProperties();
 		}
-		return Persistence.createEntityManagerFactory(
-				"Demo", properties).createEntityManager();
+		if (EntityManagerHolder.emf == null){
+			EntityManagerHolder.emf = Persistence.createEntityManagerFactory(
+				"Demo", properties);
+		}
+		return EntityManagerHolder.emf.createEntityManager();
 	}
 
 	public static EntityManager startTransaction(){
