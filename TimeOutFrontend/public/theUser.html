@@ -1,0 +1,76 @@
+<section>
+  <div class="groupTitle">
+    <div class="userAvatar">
+      <img src="images/profile.jpg" />
+      <span>Münevver Calayır</span>
+      <button class="btn btn-primary addFriend" style="width: 150px; float: right; margin: 110px 0px 0px;" type="button" ng-click="search('/search')">
+        <img src="images/addFriend.png" />
+        <p>Add Friend</p>
+      </button>
+    </div>
+  </div> 
+
+  <!-- MidColumn Start--> 	
+  <div class="midcolumn">
+
+    <!-- User Detail part starts -->
+    <div class="userDetail">
+      <table>
+        <tr>
+          <td>First name:</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Last name:</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Email:</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>GSM:</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Address:</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Birthdate:</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>About:</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Interests:</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Gender:</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Languages:</td>
+          <td></td>
+        </tr>
+      </table>
+    </div>
+    <!-- User Detail part starts -->
+
+    <div class="clearBoth"></div>
+    <div class="line"></div>
+
+    <!-- News Feed start-->
+    <div class="news-feed">
+      <div class="news" ng-repeat="newFeed in newsFeed">
+        <p class="news-title">{{newFeed.name}}</p>
+        <p class="news-detail"> joined the group {{newFeed.detail}}</p>
+      </div>
+    </div>
+    <!-- News Feed end-->
+    
+  </div>
+</section>

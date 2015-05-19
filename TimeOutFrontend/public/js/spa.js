@@ -73,6 +73,10 @@ app.config(function($routeProvider) {
 	  	templateUrl: "thePost.html",
 	  	controller: "thePost"
 	  })
+	  .when("/theUser", {
+	  	templateUrl: "theUser.html",
+	  	controller: "theUser"
+	  })
 	  .otherwise({redirectTo: '/'});
 });
 
@@ -468,6 +472,15 @@ app.controller("theGroup", function($scope, $http, $window, $location, timeOutFa
 });
 
 app.controller("thePost", function($scope, $http, $window, $location, timeOutFactory){
+	var params = "?sessionId=" + getCookie("sessionId");
+
+	$scope.goToPage = function(url) {
+		console.log("GoToPage: " + url);
+		$location.path(url);
+	};
+});
+
+app.controller("theUser", function($scope, $http, $window, $location, timeOutFactory){
 	var params = "?sessionId=" + getCookie("sessionId");
 
 	$scope.goToPage = function(url) {
