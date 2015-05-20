@@ -27,6 +27,10 @@ public class User {
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
 	private Set<ActionUser> actionUsers = new HashSet<ActionUser>(0);
+	
+	@JsonIgnore
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+	private Set<UserTag> userTags = new HashSet<UserTag>(0);
 
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userRecommended1")

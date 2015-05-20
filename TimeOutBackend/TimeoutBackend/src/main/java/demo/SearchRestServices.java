@@ -3,7 +3,6 @@ package demo;
 import helpers.ServiceHelper;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -17,78 +16,97 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import common.DBUtility;
+
 import entity.Action;
 import enums.ActionType;
 
 @RestController
 public class SearchRestServices {
-    @RequestMapping("/searchTag")
-    public ArrayList<String> searchTag(@RequestParam(value = "sessionId") String sessionId, @RequestParam(value = "tag") String tag, HttpServletResponse resp) {
-        ServiceHelper.setResponseHeaders(resp);
-        return findRelatedTags(tag);
-    }
+	@RequestMapping("/searchContext")
+	public Object searchTag(
+			@RequestParam(value = "tag") String tag, HttpServletResponse resp) {
+		ServiceHelper.setResponseHeaders(resp);
+		return findRelatedTags(tag);
+	}
 
-    @RequestMapping("/findRelatedGroupsforTag")
-    public List<Action> findRelatedGroupsforTag(@RequestParam(value = "sessionId") String sessionId, @RequestParam(value = "tag") String tag, HttpServletResponse resp) {
+	@RequestMapping("/findRelatedGroupsforTag")
+	public List<Action> findRelatedGroupsforTag(
+			@RequestParam(value = "sessionId") String sessionId,
+			@RequestParam(value = "tag") String tag, HttpServletResponse resp) {
 
-    	ServiceHelper.setResponseHeaders(resp);
+		ServiceHelper.setResponseHeaders(resp);
 
-        EntityManager em = DBUtility.startTransaction();
+		EntityManager em = DBUtility.startTransaction();
 
-        ArrayList<String> relatedTags = findRelatedTags(tag);
+		Object relatedTags = findRelatedTags(tag);
 
-        ArrayList<Action> relatedGroups = new ArrayList<>();
+		ArrayList<Action> relatedGroups = new ArrayList<>();
 
-        Query query = em
-                .createQuery(
-                        "FROM Action A INNER JOIN A.actionTags tags WHERE tags.tag.tagName IN (:relatedTags) AND A.actionType = :actionType")
-                .setParameter("actionType",
-                        ActionType.GROUP.toString())
-                .setParameter("relatedTags", relatedTags);
+		Query query = em
+				.createQuery(
+						"FROM Action A INNER JOIN A.actionTags tags WHERE tags.tag.tagName IN (:relatedTags) AND A.actionType = :actionType")
+				.setParameter("actionType", ActionType.GROUP.toString())
+				.setParameter("relatedTags", relatedTags);
 
-        List<Object[]> queryResult = query.getResultList();
-        for (Object[] o : queryResult) {
-            relatedGroups.add((Action) o[0]);
-        }
-        return relatedGroups;
-    }
-    
-    private ArrayList<String> findRelatedTags(String tag) {
-        RestTemplate restTemplate = new RestTemplate();
+		List<Object[]> queryResult = query.getResultList();
+		for (Object[] o : queryResult) {
+			relatedGroups.add((Action) o[0]);
+		}
+		return relatedGroups;
+	}
 
-        String getItemIdUrl = "https://www.wikidata.org/w/api.php?action=wbgetentities&sites=enwiki&titles="
-                + tag + "&normalize=&format=json";
-        Object getItemIdResponse = restTemplate.getForObject(getItemIdUrl,
-                Object.class);
-        String itemId = ((HashMap) Arrays
-                .asList(((HashMap) ((HashMap) getItemIdResponse)
-                        .get("entities")).values()).get(0).iterator().next())
-                .get("id").toString();
+	// private ArrayList<String> findRelatedTags(String tag) {
+	// RestTemplate restTemplate = new RestTemplate();
+	//
+	// String getItemIdUrl =
+	// "https://www.wikidata.org/w/api.php?action=wbgetentities&sites=enwiki&titles="
+	// + tag + "&normalize=&format=json";
+	// Object getItemIdResponse = restTemplate.getForObject(getItemIdUrl,
+	// Object.class);
+	// String itemId = ((HashMap) Arrays
+	// .asList(((HashMap) ((HashMap) getItemIdResponse)
+	// .get("entities")).values()).get(0).iterator().next())
+	// .get("id").toString();
+	//
+	// String searchTagQueryUrl = "https://wdq.wmflabs.org/api?q=tree["
+	// + itemId.substring(1) + "][31] OR tree[" + itemId.substring(1)
+	// + "][279]";
+	// Object searchTagQueryResponse = restTemplate.getForObject(
+	// searchTagQueryUrl, Object.class);
+	// ArrayList<Integer> searchTagResultList = (ArrayList<Integer>) ((HashMap)
+	// searchTagQueryResponse)
+	// .get("items");
+	//
+	// ArrayList<String> searchTagResults = new ArrayList<>();
+	//
+	// for (Integer searchTagResult : searchTagResultList) {
+	// String getItemNameUrl =
+	// "https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q"
+	// + searchTagResult
+	// + "&props=labels&languages=en&format=json";
+	// Object getItemNameResponse = restTemplate.getForObject(
+	// getItemNameUrl, Object.class);
+	// String item = ((HashMap) (Arrays
+	// .asList(((HashMap) ((HashMap) Arrays
+	// .asList(((HashMap) ((HashMap) getItemNameResponse)
+	// .get("entities")).values()).get(0)
+	// .iterator().next()).get("labels")).values()).get(0)
+	// .iterator().next())).get("value").toString();
+	// searchTagResults.add(item);
+	// }
+	// return searchTagResults;
+	// }
 
-        String searchTagQueryUrl = "https://wdq.wmflabs.org/api?q=tree["
-                + itemId.substring(1) + "][31] OR tree[" + itemId.substring(1)
-                + "][279]";
-        Object searchTagQueryResponse = restTemplate.getForObject(
-                searchTagQueryUrl, Object.class);
-        ArrayList<Integer> searchTagResultList = (ArrayList<Integer>) ((HashMap) searchTagQueryResponse)
-                .get("items");
+	private Object findRelatedTags(String tag) {
+		RestTemplate restTemplate = new RestTemplate();
 
-        ArrayList<String> searchTagResults = new ArrayList<>();
+		String getItemIdUrl = "https://www.wikidata.org/w/api.php?action=wbsearchentities&search="
+				+ tag + "&format=json&language=en";
 
-        for (Integer searchTagResult : searchTagResultList) {
-            String getItemNameUrl = "https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q"
-                    + searchTagResult
-                    + "&props=labels&languages=en&format=json";
-            Object getItemNameResponse = restTemplate.getForObject(
-                    getItemNameUrl, Object.class);
-            String item = ((HashMap) (Arrays
-                    .asList(((HashMap) ((HashMap) Arrays
-                            .asList(((HashMap) ((HashMap) getItemNameResponse)
-                                    .get("entities")).values()).get(0)
-                            .iterator().next()).get("labels")).values()).get(0)
-                    .iterator().next())).get("value").toString();
-            searchTagResults.add(item);
-        }
-        return searchTagResults;
-    }
+		Object getResult = restTemplate
+				.getForObject(getItemIdUrl, Object.class);
+		Object obj = ((HashMap) getResult).get("search");
+
+		return obj;
+	}
 }

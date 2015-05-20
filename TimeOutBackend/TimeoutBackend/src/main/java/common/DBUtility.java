@@ -39,25 +39,18 @@ public class DBUtility {
 	}
 
 	public static EntityManager startTransaction(){
-		EntityManager em = getEntityManager();
+		EntityManager em = createEntityManager();
 		em.getTransaction().begin();
 		return em;
 	}
 
-	private static EntityManager getEntityManager() {
-		if (EntityManagerHolder.em == null){
-			EntityManagerHolder.em = createEntityManager();
-		}
-		return EntityManagerHolder.em;
-	}
-
 	public static void commitTransaction(EntityManager em){
 		em.getTransaction().commit();
-		//em.close();
+		em.close();
 	}
 	
 	public static void rollbackTransaction(EntityManager em){
 		em.getTransaction().rollback();
-		//em.close();
+		em.close();
 	}
 }
