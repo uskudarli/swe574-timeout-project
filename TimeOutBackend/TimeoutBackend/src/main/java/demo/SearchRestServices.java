@@ -22,6 +22,7 @@ import enums.ActionType;
 
 @RestController
 public class SearchRestServices {
+	
 	@RequestMapping("/searchContext")
 	public Object searchTag(
 			@RequestParam(value = "tag") String tag, HttpServletResponse resp) {
