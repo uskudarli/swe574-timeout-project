@@ -1,7 +1,5 @@
 package common;
 
-import com.google.appengine.api.utils.SystemProperty;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -16,14 +14,14 @@ public class DBUtility {
 	public static Map<String, String> putProperties() {
 
 	//	For Cloud Usage
-		if (SystemProperty.environment.value() ==
-				SystemProperty.Environment.Value.Production) {
-			properties.put("javax.persistence.jdbc.driver",
-					"com.mysql.jdbc.GoogleDriver");
-			properties.put("javax.persistence.jdbc.url",
-					"jdbc:google:mysql://timeout5746:timeout5746db/demo?user=root");
-			return properties;
-		}
+//		if (SystemProperty.environment.value() ==
+//				SystemProperty.Environment.Value.Production) {
+//			properties.put("javax.persistence.jdbc.driver",
+//					"com.mysql.jdbc.GoogleDriver");
+//			properties.put("javax.persistence.jdbc.url",
+//					"jdbc:google:mysql://timeout5746:timeout5746db/demo?user=root");
+//			return properties;
+//		}
 
 		// For Local Usage
 		properties.put("javax.persistence.jdbc.driver",
