@@ -51,7 +51,7 @@ public class UserRestServices {
 			UserRepository ur = new UserRepository(em);
 			
 			if (ur.getUserByUserNumberEmail(userEmail) > 0){
-				throw new BusinessException(ErrorMessages.userAlreadyExistCode,
+				ServiceHelper.businessError(ErrorMessages.userAlreadyExistCode,
 						ErrorMessages.userAlreadyExist);
 			}
 
@@ -100,7 +100,7 @@ public class UserRestServices {
 			UserRepository ur = new UserRepository(em);
 
 			if (ur.getUserByUserNumberEmail(userEmail) > 0){
-				throw new BusinessException(ErrorMessages.emailNotAvailableCode, ErrorMessages.emailNotAvailable);
+				ServiceHelper.businessError(ErrorMessages.emailNotAvailableCode, ErrorMessages.emailNotAvailable);
 			}
 
 			DBUtility.commitTransaction(em);

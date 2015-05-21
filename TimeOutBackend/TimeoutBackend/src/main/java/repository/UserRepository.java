@@ -1,5 +1,7 @@
 package repository;
 
+import helpers.ServiceHelper;
+
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Random;
@@ -46,8 +48,9 @@ public class UserRepository {
 
             return new ResponseHeader(sessionId);
         } else {
-            throw new BusinessException(
+        	ServiceHelper.businessError(
             		ErrorMessages.invalidLoginCode, ErrorMessages.invalidLogin);
+        	return new ResponseHeader();
         }
 	}
 

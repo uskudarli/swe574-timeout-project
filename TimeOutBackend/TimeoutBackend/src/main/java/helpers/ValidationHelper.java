@@ -10,15 +10,36 @@ public class ValidationHelper {
 		java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
 		java.util.regex.Matcher m = p.matcher(email);
 		if (!m.matches()){
-			throw new BusinessException(ErrorMessages.emailValidateCode, ErrorMessages.emailValidate);
+			ServiceHelper.businessError(ErrorMessages.emailValidateCode, ErrorMessages.emailValidate);
 		}
 	}
 
 	public static void validatePassword(String password) throws BusinessException {
 		if (password.isEmpty() || password == null)
-			throw new BusinessException(ErrorMessages.emailValidateCode, ErrorMessages.emailValidate);
+			ServiceHelper.businessError(ErrorMessages.emailValidateCode, ErrorMessages.emailValidate);
 		
 		if (password.length() <= 4)
-			throw new BusinessException(ErrorMessages.emailValidateCode, ErrorMessages.emailValidate);
+			ServiceHelper.businessError(ErrorMessages.emailValidateCode, ErrorMessages.emailValidate);
+	}
+	
+	public static boolean isNullOrEmpty(String s) {
+	    return s == null || s.length() == 0;
+	}
+
+	public static boolean isNullOrWhitespace(String s) {
+	    return s == null || isWhitespace(s);
+
+	}
+	private static boolean isWhitespace(String s) {
+	    int length = s.length();
+	    if (length > 0) {
+	        for (int i = 0; i < length; i++) {
+	            if (!Character.isWhitespace(s.charAt(i))) {
+	                return false;
+	            }
+	        }
+	        return true;
+	    }
+	    return false;
 	}
 }

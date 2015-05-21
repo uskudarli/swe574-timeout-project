@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import helpers.ServiceHelper;
+import helpers.ValidationHelper;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -73,10 +74,8 @@ public class ActionRepository {
 	}
 
 	public void insertInvitedPeople(String invitedPeopleString, Action action) {
-		if (invitedPeopleString == null || invitedPeopleString == "")
+		if (ValidationHelper.isNullOrWhitespace(invitedPeopleString))
 			return;
-		// if (invitedPeople.size() < 1)
-		// return;
 
 		List<Integer> invitedPeople = null;
 		Gson gson = new Gson();

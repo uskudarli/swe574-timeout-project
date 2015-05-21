@@ -30,7 +30,7 @@ public class ServiceHelper {
 
 	public static void authorize(User user) throws BusinessException {
 		if (user == null) {
-			throw new BusinessException(ErrorMessages.notAuthorizedCode, ErrorMessages.notAuthorized);
+			businessError(ErrorMessages.notAuthorizedCode, ErrorMessages.notAuthorized);
 		}
 	}
 
@@ -38,6 +38,11 @@ public class ServiceHelper {
 		ServiceHelper.setResponseHeaders(resp);
 		EntityManager em = DBUtility.startTransaction();
 		return em;
+	}
+
+	public static void businessError(String code,
+			String message) throws BusinessException {
+		throw new BusinessException(code, message);
 	}
 
 }

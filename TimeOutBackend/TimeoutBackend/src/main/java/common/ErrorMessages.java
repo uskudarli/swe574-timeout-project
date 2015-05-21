@@ -16,4 +16,6 @@ public class ErrorMessages {
 	public static String emailNotAvailable = "Email not available";
 	public static String roleInvalidCode = "E106";
 	public static String roleInvalid = "Role is invalid";
+	public static String inviteFriendFailCode = "E107";
+	public static String inviteFriendFail = "Friend invite unsuccessful";
 }

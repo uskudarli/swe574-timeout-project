@@ -47,8 +47,8 @@ public class ActionRestServices {
 			@RequestParam(value = "eventDescription", required = false) String eventDescription,
 			@RequestParam(value = "startTime", required = false) Date startTime,
 			@RequestParam(value = "endTime", required = false) Date endTime,
-			@RequestParam(value = "invitedPeople", required = false) String invitedPeople,
-			@RequestParam(value = "tag", required = false) String tagString,
+			@RequestParam(value = "invitedPeople", required = false) String invitedPeople, //json List<integer> olarak user idleri
+			@RequestParam(value = "tag", required = false) String tagString,//json List<Tag> olarak Tag objeleri (tagName + context)
 			@RequestParam(value = "privacy", required = false) String privacy,
 			HttpServletResponse resp) {
 
