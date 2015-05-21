@@ -17,6 +17,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "Role")
 public class Role {
@@ -28,6 +30,7 @@ public class Role {
 	
 	private String name;
 
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "role")
 	private Set<User> users = new HashSet<User>(0);
 	
@@ -58,6 +61,11 @@ public class Role {
 		super();
 		this.roleId = roleId;
 		this.name = name;
+	}
+
+	public Role(String role) {
+		super();
+		this.name = role;
 	}
 
 	public Set<User> getUsers() {

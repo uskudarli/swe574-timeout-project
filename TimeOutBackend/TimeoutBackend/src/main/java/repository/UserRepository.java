@@ -10,6 +10,7 @@ import common.BusinessException;
 import common.DBUtility;
 import common.ErrorMessages;
 import common.ResponseHeader;
+import entity.Role;
 import entity.Session;
 import entity.User;
 
@@ -19,10 +20,6 @@ public class UserRepository {
 	
 	public UserRepository(EntityManager em){
 		this.em = em;
-	}
-
-	public void insertUser(String userEmail, String password) {
-		em.persist(new User(userEmail, password));
 	}
 
 	public int getUserByUserNumberEmail(String userEmail) {
@@ -52,5 +49,32 @@ public class UserRepository {
             throw new BusinessException(
             		ErrorMessages.invalidLoginCode, ErrorMessages.invalidLogin);
         }
+	}
+
+	public Role getRoleByName(String role) {
+		if (role.isEmpty())
+			return null;
+		Role roleDb;
+		try {
+			roleDb = (Role) em.createQuery("FROM Role R WHERE R.name = :name")
+			        .setParameter("name", role)
+			        .getSingleResult();
+		} catch (Exception e) {
+			return null;
+		}
+		return roleDb;		
+	}
+
+	public void insertUser(User user) {
+//		User user1 = em.merge(user);
+//		em.merge(user1.getUserBasicInfo());
+//		em.merge(user1.getUserCommInfo());
+//		em.merge(user1.getUserExtraInfo());
+//		em.merge(user1.getRole());
+		em.persist(user);
+	}
+
+	public void insertRole(Role role) {
+		em.persist(role);
 	}
 }

@@ -14,4 +14,6 @@ public class ErrorMessages {
 	public static String invalidLogin = "Wrong Email or Password ";
 	public static String emailNotAvailableCode = "E105";
 	public static String emailNotAvailable = "Email not available";
+	public static String roleInvalidCode = "E106";
+	public static String roleInvalid = "Role is invalid";
 }

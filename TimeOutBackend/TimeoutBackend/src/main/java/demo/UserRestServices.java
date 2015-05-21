@@ -21,6 +21,7 @@ import common.BusinessException;
 import common.DBUtility;
 import common.ErrorMessages;
 import common.ResponseHeader;
+import entity.Role;
 import entity.Session;
 import entity.User;
 import entity.UserBasicInfo;
@@ -41,20 +42,38 @@ public class UserRestServices {
 			HttpServletResponse resp) {
 		
 		EntityManager em = ServiceHelper.initialize(resp);
-		
+		User user = null;
 		try {
 
 			ValidationHelper.validateEmail(userEmail);
 			ValidationHelper.validatePassword(password);
 			
 			UserRepository ur = new UserRepository(em);
-
+			
 			if (ur.getUserByUserNumberEmail(userEmail) > 0){
-				throw new BusinessException(
-						ErrorMessages.userAlreadyExistCode, ErrorMessages.userAlreadyExist);
-			}else{
-				ur.insertUser(userEmail, password);
+				throw new BusinessException(ErrorMessages.userAlreadyExistCode,
+						ErrorMessages.userAlreadyExist);
 			}
+
+			user = new User(userEmail, password);
+			user.setUserBasicInfo(new UserBasicInfo());
+			user.getUserBasicInfo().setUser(user);
+			user.setUserCommInfo(new UserCommInfo());
+			user.getUserCommInfo().setUser(user);
+			user.setUserExtraInfo(new UserExtraInfo());
+			user.getUserExtraInfo().setUser(user);
+
+			Role roleObj = ur.getRoleByName(role);
+			if (roleObj == null) {
+				roleObj = new Role(role);
+				ur.insertRole(roleObj);
+			}
+			user.setRole(roleObj);
+
+			user.getUserBasicInfo().setFirstName(firstName);
+			user.getUserBasicInfo().setLastName(lastName);
+
+			ur.insertUser(user);
 
 			DBUtility.commitTransaction(em);
 		} catch (BusinessException e) {
@@ -119,12 +138,12 @@ public class UserRestServices {
 				user.setUserBasicInfo(new UserBasicInfo());
 				user.getUserBasicInfo().setUser(user);
 			}
-			// user.getUserBasicInfo().setUserId(user.getUserId());
+
 			if (user.getUserCommInfo() == null) {
 				user.setUserCommInfo(new UserCommInfo());
 				user.getUserCommInfo().setUser(user);
 			}
-			// user.getUserCommInfo().setUserId(user.getUserId());
+
 			if (user.getUserExtraInfo() == null) {
 				user.setUserExtraInfo(new UserExtraInfo());
 				user.getUserExtraInfo().setUser(user);
@@ -152,10 +171,10 @@ public class UserRestServices {
 				user.getUserBasicInfo().setGender(gender);
 			if (languages != "" && languages != null)
 				user.getUserExtraInfo().setLanguages(languages);
-			User user1 = em.merge(user);
-			em.merge(user1.getUserBasicInfo());
-			em.merge(user1.getUserCommInfo());
-			em.merge(user1.getUserExtraInfo());
+			
+			UserRepository ur = new UserRepository(em);
+			ur.insertUser(user);
+			
 			DBUtility.commitTransaction(em);
 		}catch (BusinessException e) {
 			DBUtility.rollbackTransaction(em);
@@ -178,6 +197,7 @@ public class UserRestServices {
 		User user;
 		try {
 			user = ServiceHelper.getSessionUser(em, sessionId);
+			
 			DBUtility.commitTransaction(em);
 		}catch (BusinessException e) {
 			DBUtility.rollbackTransaction(em);

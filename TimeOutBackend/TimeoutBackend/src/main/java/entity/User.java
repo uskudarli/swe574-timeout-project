@@ -15,8 +15,7 @@ import java.util.Set;
 public class User {
 
 	@Id
-	@GeneratedValue(generator = "incrementUser")
-	@GenericGenerator(name = "incrementUser", strategy = "increment")
+	@GeneratedValue()
 	private Long userId;
 
 	@Column(name = "userName")
@@ -72,22 +71,19 @@ public class User {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private Set<Comment> comments = new HashSet<Comment>(0);
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "roleId")
 	private Role role;
 
-	@JsonIgnore
-	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, mappedBy = "user")
 	@PrimaryKeyJoinColumn
 	private UserBasicInfo userBasicInfo;
 
-	@JsonIgnore
-	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, mappedBy = "user")
 	@PrimaryKeyJoinColumn
 	private UserCommInfo userCommInfo;
 
-	@JsonIgnore
-	@OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, mappedBy = "user")
 	@PrimaryKeyJoinColumn
 	private UserExtraInfo userExtraInfo;
 
@@ -137,6 +133,7 @@ public class User {
 
 	public void setUserBasicInfo(UserBasicInfo userBasicInfo) {
 		this.userBasicInfo = userBasicInfo;
+		userBasicInfo.setUser(this);
 	}
 
 	public UserCommInfo getUserCommInfo() {
@@ -145,6 +142,7 @@ public class User {
 
 	public void setUserCommInfo(UserCommInfo userCommInfo) {
 		this.userCommInfo = userCommInfo;
+		userCommInfo.setUser(this);
 	}
 
 	public UserExtraInfo getUserExtraInfo() {
@@ -153,6 +151,7 @@ public class User {
 
 	public void setUserExtraInfo(UserExtraInfo userExtraInfo) {
 		this.userExtraInfo = userExtraInfo;
+		userExtraInfo.setUser(this);
 	}
 
 	public User() {
