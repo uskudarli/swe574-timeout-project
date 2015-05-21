@@ -21,7 +21,6 @@ public class Friendship {
 	@GenericGenerator(name = "incrementFriendship", strategy = "increment")
 	private int friendshipId;
 
-	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER )
 	@JoinColumn(name = "personId")
 	private User person;

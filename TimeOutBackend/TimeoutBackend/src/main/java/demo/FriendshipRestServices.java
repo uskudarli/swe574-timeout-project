@@ -82,16 +82,43 @@ public class FriendshipRestServices {
 	@ResponseBody
 	public Object acceptFriends(
 			@RequestParam(value = "sessionId") String sessionId,
-			@RequestParam(value = "userIds") String friendsString,//json List<integer> olarak user idleri
+			@RequestParam(value = "friendshipIds") String friendshipsString,//json List<integer> olarak Friendship idleri
 			HttpServletResponse resp) {
-		List<User> users;
-
+		
 		EntityManager em = ServiceHelper.initialize(resp);
 		
 		try {
 			User user = ServiceHelper.getSessionUser(em, sessionId);
 			FriendshipRepository fr = new FriendshipRepository(em);
-			boolean result = fr.acceptFriends(user, friendsString);
+			boolean result = fr.acceptFriends(user, friendshipsString);
+			if (!result)
+				ServiceHelper.businessError(
+						ErrorMessages.inviteFriendFailCode, ErrorMessages.inviteFriendFail);
+
+			DBUtility.commitTransaction(em);
+		} catch (BusinessException e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getCode(), e.getMessage());
+		} catch (Exception e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getMessage());
+		}
+		return new ResponseHeader();
+	}
+	
+	@RequestMapping(value = "/friends/reject")
+	@ResponseBody
+	public Object rejectFriends(
+			@RequestParam(value = "sessionId") String sessionId,
+			@RequestParam(value = "friendshipIds") String friendshipsString,//json List<integer> olarak Friendship idleri
+			HttpServletResponse resp) {
+		
+		EntityManager em = ServiceHelper.initialize(resp);
+		
+		try {
+			User user = ServiceHelper.getSessionUser(em, sessionId);
+			FriendshipRepository fr = new FriendshipRepository(em);
+			boolean result = fr.rejectFriends(user, friendshipsString);
 			if (!result)
 				ServiceHelper.businessError(
 						ErrorMessages.inviteFriendFailCode, ErrorMessages.inviteFriendFail);
