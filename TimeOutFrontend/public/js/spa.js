@@ -77,6 +77,10 @@ app.config(function($routeProvider) {
 	  	templateUrl: "theUser.html",
 	  	controller: "theUser"
 	  })
+	  .when("/updateGroup", {
+	  	templateUrl: "updateGroup.html",
+	  	controller: "updateGroup"
+	  })
 	  .otherwise({redirectTo: '/'});
 });
 
@@ -487,6 +491,27 @@ app.controller("theUser", function($scope, $http, $window, $location, timeOutFac
 	$scope.goToPage = function(url) {
 		console.log("GoToPage: " + url);
 		$location.path(url);
+	};
+});
+
+app.controller("updateGroup", function($scope, $http, $window, $location, timeOutFactory){
+	//var params = "?sessionId=" + getCookie("sessionId");
+
+	$scope.goToPage = function(url) {
+		console.log("GoToPage: " + url);
+		$location.path(url);
+
+
+	$scope.updateGroup = function(){
+
+		if(success){
+			//update code 
+		$location.path("/myGroups");
+		}
+		else{
+			//error code
+		}
+	}
 	};
 });
 
