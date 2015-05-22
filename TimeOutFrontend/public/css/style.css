@@ -1136,3 +1136,7 @@ footer {
     float: left;
     height: 875px;
 }
+
+.highlight {
+    color: #ff0000;
+}

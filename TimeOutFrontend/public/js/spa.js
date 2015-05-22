@@ -1,4 +1,4 @@
-app = angular.module('timeout', ['ngRoute', 'angular-md5']);
+app = angular.module('timeout', ['ngRoute', 'angular-md5', 'ngTouch', 'angucomplete']);
 
 // When html address is typed with one of the following links,
 // RouteProvider (ng-route) will directly stick controller and html together
@@ -155,22 +155,23 @@ app.controller("mainController", function($scope, $http, $location, $window, tim
 
 	$scope.roleSet = ["student", "prep. student", "alumni", "erasmus & exchange","professor", "staff", ];
 
-	
-	/*var emailOk = "";
-	$http.get(timeOutFactory.getBackendUrl() + "/email/isAvailable")
-		.success(function(data){
-			if (data.type=="success") {
-				emailOk =="success";
-			};
-		})*/
-
 	// This method will be used when a user tries to be a member of the system.
 	$scope.signUp = function() {
 		// Check if specified information is OK
 		// validate();
 
-		// validate if email is unique 
-		
+		// validate if email is unique
+		/*var emailOk = "";
+		$http.get(timeOutFactory.getBackendUrl() + "/email/isAvailable")
+			.success(function(data){
+				if (data.type=="success") {
+					emailOk =="success";
+				}
+			})
+			.error(function(data){
+				$window.alert("An error occurred ()");
+			})*/
+
 		// Parameters for register is adjusted and password is encrypted with MD5 hash
 		var params = "?userEmail=" + $scope.email + "&password=" + md5.createHash($scope.sigUpPassword);
 		params = params +"&firstName=" + $scope.name + "&lastName=" + $scope.lastName + "&role=" + $scope.role;
@@ -191,9 +192,6 @@ app.controller("mainController", function($scope, $http, $location, $window, tim
 		  })
 
 		  // if register api call is unsuccessful
-		  
-		
-
 		.error(function(data, status) {
 		 	$window.alert(JSON.stringify(data));
 		  });
@@ -210,7 +208,7 @@ app.controller("homeController", function($scope, $http, $window, $location, tim
 		$scope.eventsInvited = data;
 	  })
 	  .error(function(data, status) {
-	 	console.alert("Error " + data);
+	 	console.log("Error " + data);
 	  });
 
 
@@ -315,7 +313,18 @@ app.controller("profileEdit", function($scope, $http, $window, $location, timeOu
 });
 
 // Tested by ogzcm
-app.controller("createEvent", function($scope, $http, $window, $location, timeOutFactory) {
+app.controller("createEvent", function($scope, $http, $window, $location, $filter, timeOutFactory) {
+
+	// Initialize variables and set default values
+	$scope.selectedTags = [];
+	$scope.tagUrl = timeOutFactory.getBackendUrl() + '/searchContext?tag=';
+	$scope.startTime = $filter('date')(new Date(), "dd/MM/yyyy HH:mm:ss");
+	$scope.endTime = $filter('date')(new Date() + 30*60*60, "dd/MM/yyyy HH:mm:ss");
+
+
+	$scope.deleteTag = function(index) {
+		console.log(index);
+	}
 
 	$scope.goToPage = function(url) {
 		console.log("GoToPage: " + url);
@@ -430,7 +439,6 @@ app.controller("eventsInvited", function($scope, $http, $window, $location, time
 	};
 });
 
-// Code reviewed due to backend is not available by ogzcm
 app.controller("myGroups", function($scope, $http, $window, $location, timeOutFactory){
 	var params = "?sessionId=" + getCookie("sessionId");
 
