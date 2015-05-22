@@ -80,6 +80,7 @@ app.config(function($routeProvider) {
 	  .otherwise({redirectTo: '/'});
 });
 
+
 // To avoid see any pages without login.
 app.run(function($rootScope, $location, $window) {
 	$rootScope.$on( "$routeChangeStart", function(event, next, current) {
@@ -93,6 +94,7 @@ app.run(function($rootScope, $location, $window) {
 app.controller("indexController", function($scope, $http, $location, $window, timeOutFactory, md5) {
 	// For logging
 	console.log("indexController works");
+	$scope.email ;
 
 	// Get sessionId from backend by calling login rest api, then set sessionId cookie
 	$scope.doLogin = function() {
@@ -105,6 +107,7 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 		    if(data.type == "Success") {
 				setCookie("sessionId", data.sessionId, 60);
 				$location.path("/home");
+				$scope.email = $scope.userEmail;
 		    } else {
 		    	$window.alert(data.type + ": " + data.message);
 		    }
@@ -149,13 +152,13 @@ app.controller("mainController", function($scope, $http, $location, $window, tim
 	$scope.roleSet = ["student", "prep. student", "alumni", "erasmus & exchange","professor", "staff", ];
 
 	
-	var emailOk = "";
+	/*var emailOk = "";
 	$http.get(timeOutFactory.getBackendUrl() + "/email/isAvailable")
 		.success(function(data){
 			if (data.type=="success") {
 				emailOk =="success";
 			};
-		})
+		})*/
 
 	// This method will be used when a user tries to be a member of the system.
 	$scope.signUp = function() {
@@ -548,8 +551,8 @@ app.factory("timeOutFactory", function(){
 	var timeOutFactory = {};
 	var lists = {};
 	var userLoggedIn = false;
-	// var backendUrl = "http://timeoutswe5743.appspot.com";
-	var backendUrl = "http://localhost:8080";
+	// var backendUrl = " http://localhost:8080";
+	var backendUrl = "http://timeout5746.appspot.com";
 	var searchText = "";
 
 	timeOutFactory.getLists = function(){
