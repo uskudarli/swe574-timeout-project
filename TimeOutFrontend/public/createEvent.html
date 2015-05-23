@@ -35,7 +35,7 @@
                     <label style="width: 150px">*Start Date/Time: </label>
                     <div id="Sdatetimepicker" class="input-append date">
                         <input type="text" ng-model="startTime"></input>
-                        <span class="add-on">
+                        <span class="add-on dateBtn">
                             <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
                         </span>
                     </div><br>
@@ -50,7 +50,7 @@
                     <label style="width: 150px">*End Date/Time: </label>
                     <div id="Edatetimepicker" class="input-append date">
                         <input type="text" ng-model="endTime"></input>
-                        <span class="add-on">
+                        <span class="add-on dateBtn">
                             <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
                         </span>
                     </div><br>
@@ -87,7 +87,7 @@
                     ng-true-value="'true'" ng-false-value="'false'" ></input>
                     <label style="width: 150px">Public to all  </label> <br><br>
 
-                    <button type="button" ng-click="createEvent()">Create</button>
+                    <button class="btn btn-primary" type="button" ng-click="createEvent()">Create</button>
                 </form>
                 <!-- Create Event Form end-->
 

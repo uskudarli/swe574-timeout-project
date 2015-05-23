@@ -1,4 +1,8 @@
 
+input{
+    height: 25px !important;
+}
+
 .logo1{
     width: 490px;
     height: 90px;
@@ -599,11 +603,17 @@ label {
 .searchBtn{
     float: left;
     height: 30px !important;
-    margin: 42px 0 0 -1px !important;
+    margin: 45px 0 0 -1px !important;
+}
+
+.dateBtn{
+    height: 25px !important;
+    padding-left: 12px !important;
+    width: 40px !important;
 }
 
 .searchInput{
-    font-size: 10px !important;
+    font-size: 12px !important;
 }
 
 .searchInput{
