@@ -1,8 +1,8 @@
 <section>
     
     <!-- Top Middle Menu start-->
-	<div class="menu">
-		<ul>
+    <div class="menu">
+        <ul>
             <li>
                 <a href="" ng-click="goToPage('/home')">Home</a>
             </li>
@@ -12,18 +12,18 @@
             <li>
                 <a href="" ng-click="goToPage('/createGroup')">Create Group</a>
             </li>
-		</ul>
-	</div>
+        </ul>
+    </div>
     <!-- Top Middle Menu end-->
 
     <!-- Middle Column start-->
-	<div class="midcolumn">
-		<div class="group-creation">	 
+    <div class="midcolumn">
+        <div class="group-creation">     
             <fieldset>
             <legend>Update Group</legend>
 
                 <!-- Create Group Form start-->
-                <form ng-submit="updateGroup()">
+                <form ng-submit="createGroup()">
                     <label style="width: 150px">Group name: </label>
                     <input type="text" name="groupName" size="30" ng-model="groupName" > </input><br><br>
 
@@ -33,14 +33,29 @@
                     <label style="width: 150px">Invite people/groups:  </label>
                     <input type="text" name="invitedPeople" size="50" ng-model="invitedPeople" > </input><br><br>
 
-                    <label style="width: 150px">tag:  </label>
-                    <input type="text" name="tag" size="50" ng-model="tag" > </input><br><br>
+                    <label style="width: 150px">Tag:  </label>
+                    <angucomplete id="tagsSearch"
+                        placeholder="Search tags"
+                        pause="100"
+                        selectedobject="selectedTags"
+                        url="searchContextUrl"
+                        searchfields="description"
+                        titlefield="label,description,aliases"
+                        inputclass="ng-pristine ng-valid"
+                        matchclass="highlight"
+                        setemptyaftersearch="true" />
+                    <div class="" ng-repeat="selectedTag in selectedTags">
+                        <span class="bold-span">{{selectedTag.searchString}} - </span>
+                        <span class="bold-span">{{selectedTag.originalObject.label}} - </span>
+                        <span class="bold-span">{{selectedTag.originalObject.description}} </span>
+                        <button type="button" ng-click="deleteTag($index)">X</button><br>
+                    </div><br>
 
                       <input type="checkbox" name="isPublic" ng-model="privacy"
                     ng-true-value="'true'" ng-false-value="'false'" ></input>
                     <label>Public to all  </label> <br>
 
-                    <button type="submit">Update</button>
+                    <button type="submit">Create</button>
                     <button type="reset">Reset</button>
                 </form>
                 <!-- Create Group Form end-->
