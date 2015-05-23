@@ -85,6 +85,22 @@ app.config(function($routeProvider) {
 		templateUrl: "updateEvent.html",
 		controller: "updateEvent"
 	})
+	.when("/newEvents", {
+		templateUrl: "newEvents.html",
+		controller: "newEvents"
+	})
+	.when("/eventInvitation", {
+		templateUrl: "eventInvitation.html",
+		controller: "eventInvitation"
+	})
+	.when("/groupInvitation", {
+		templateUrl: "groupInvitation.html",
+		controller: "groupInvitation"
+	})
+	.when("/suggestedEvents", {
+		templateUrl: "suggestedEvents.html",
+		controller: "suggestedEvents"
+	})
 	.otherwise({redirectTo: '/'});
 });
 
@@ -453,6 +469,38 @@ app.controller("myFriends", function($scope, $http, $window, $location) {
 
 	$scope.goToPage = function(url) {
 		console.log("GoToPage: " + url + " (1049)");
+		$location.path(url);
+	};
+});
+
+app.controller("newEvents", function($scope, $http, $window, $location) {
+
+	$scope.goToPage = function(url) {
+		console.log("GoToPage: " + url + " (1070)");
+		$location.path(url);
+	};
+});
+
+app.controller("eventInvitation", function($scope, $http, $window, $location) {
+
+	$scope.goToPage = function(url) {
+		console.log("GoToPage: " + url + " (1071)");
+		$location.path(url);
+	};
+});
+
+app.controller("groupInvitation", function($scope, $http, $window, $location) {
+
+	$scope.goToPage = function(url) {
+		console.log("GoToPage: " + url + " (1072)");
+		$location.path(url);
+	};
+});
+
+app.controller("suggestedEvents", function($scope, $http, $window, $location) {
+
+	$scope.goToPage = function(url) {
+		console.log("GoToPage: " + url + " (1073)");
 		$location.path(url);
 	};
 });
