@@ -566,7 +566,7 @@ label {
 }
 
 #search-button{
-	width:300px;
+	width:500px;
 	padding-top: 17px;
 	margin: 30px 0 0 130px;
 }
@@ -1139,4 +1139,12 @@ footer {
 
 .highlight {
     color: #ff0000;
+}
+
+.angucomplete-dropdown {
+    background-color: #eaeaff;
+}
+
+.angucomplete-selected-row {
+    background-color: #eaffff;
 }

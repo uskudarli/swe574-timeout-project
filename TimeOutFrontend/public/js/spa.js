@@ -97,8 +97,8 @@ app.run(function($rootScope, $location, $window) {
 // Non-dynamic content is controlled by this controller.
 app.controller("indexController", function($scope, $http, $location, $window, timeOutFactory, md5) {
 	// For logging
-	console.log("indexController works");
-	$scope.email ;
+	$scope.searchText = [];
+	$scope.searchContextUrl = timeOutFactory.getBackendUrl() + '/searchContext?tag=';
 
 	// Get sessionId from backend by calling login rest api, then set sessionId cookie
 	$scope.doLogin = function() {
@@ -233,10 +233,10 @@ app.controller("homeController", function($scope, $http, $window, $location, tim
 
 // When a search request is done, search.html and this controller shows the dynamic content.
 app.controller("searchController", function($scope, $http, $location, $window, timeOutFactory) {
-	console.log("searchController: " + timeOutFactory.getSearchText());
+	console.log("searchController: " + JSON.stringify(timeOutFactory.getSearchText()));
 
 	var params = "?sessionId=" + getCookie("sessionId");
-	params += "&tag=" + timeOutFactory.getSearchText();
+	params += "&tag=" + JSON.stringify(timeOutFactory.getSearchText());
 
 	//$scope.resultSet = [{"title": "title", "desc": "desc"}];
 
@@ -317,13 +317,15 @@ app.controller("createEvent", function($scope, $http, $window, $location, $filte
 
 	// Initialize variables and set default values
 	$scope.selectedTags = [];
-	$scope.tagUrl = timeOutFactory.getBackendUrl() + '/searchContext?tag=';
-	$scope.startTime = $filter('date')(new Date(), "dd/MM/yyyy HH:mm:ss");
-	$scope.endTime = $filter('date')(new Date() + 30*60*60, "dd/MM/yyyy HH:mm:ss");
+	$scope.searchContextUrl = timeOutFactory.getBackendUrl() + '/searchContext?tag=';
+	var defaultDate = new Date();
+	$scope.startTime = $filter('date')(defaultDate, "dd/MM/yyyy HH:mm:ss");
+	defaultDate.setMinutes(defaultDate.getMinutes() + 30);
+	$scope.endTime = $filter('date')(defaultDate, "dd/MM/yyyy HH:mm:ss");
 
-
+	// If user wants to delete an entered tag
 	$scope.deleteTag = function(index) {
-		console.log(index);
+		$scope.selectedTags.splice(index, 1);
 	}
 
 	$scope.goToPage = function(url) {
@@ -332,27 +334,51 @@ app.controller("createEvent", function($scope, $http, $window, $location, $filte
 	};
 
 	$scope.createEvent = function(){
-		var params = "?sessionId=" + getCookie("sessionId");
-		params += "&eventName=" + $scope.eventName +
-				  "&eventDescription=" + $scope.eventDescription +
-				  //"&startTime=" + $scope.startTime +
-				  //"&endTime=" + $scope.endTime +
-				  //"&invitedPeople=" + $scope.invitedPeople +
-				  "&tag=" + $scope.tag +
-				  "&privacy=" + $scope.privacy;
+		// Convert to date
+		var startDate = convertDate($scope.startTime);
+		var endDate = convertDate($scope.endTime);
 
-		$http.get(timeOutFactory.getBackendUrl() + "/event/create" + params)
-		 .success(function(data, status) {
-			$window.alert("Success " + data.actionId);
-		  })
-		  .error(function(data, status) {
-		 	$window.alert("Error " + data);
-		  });
+		if (startDate > endDate) {
+			$window.alert("Start time should not be later than end time!!!");
+			return;
+		}
+		if ($scope.eventName == undefined || $scope.eventName == "" ||
+			$scope.eventDescription == undefined || $scope.eventDescription == "" ||
+			$scope.startTime == undefined || $scope.startTime == "" ||
+			$scope.endTime == undefined || $scope.endTime == "") {
+			$window.alert("Please fill required fields which have *!!!");
+		} else {
+			var params = "?sessionId=" + getCookie("sessionId");
+			params += "&eventName=" + $scope.eventName +
+					  "&eventDescription=" + $scope.eventDescription +
+					  //"&startTime=" + $scope.startTime +
+					  //"&endTime=" + $scope.endTime +
+					  //"&invitedPeople=" + $scope.invitedPeople +
+					  "&tag=" + JSON.stringify($scope.selectedTags) +
+					  "&privacy=" + $scope.privacy;
+
+			$http.get(timeOutFactory.getBackendUrl() + "/event/create" + params)
+			 .success(function(data, status) {
+				$window.alert("Success " + data.actionId);
+			  })
+			  .error(function(data, status) {
+			 	$window.alert("Error " + data);
+			  });
+		}
 	};
 });
 
 // Code reviewed due to backend is not available by ogzcm
 app.controller("createGroup", function($scope, $http, $window, $location, timeOutFactory) {
+
+	// Initialize variables
+	$scope.selectedTags = [];
+	$scope.searchContextUrl = timeOutFactory.getBackendUrl() + '/searchContext?tag=';
+
+	// If user wants to delete an entered tag
+	$scope.deleteTag = function(index) {
+		$scope.selectedTags.splice(index, 1);
+	}
 
 	$scope.goToPage = function(url) {
 		console.log("GoToPage: " + url);
@@ -586,7 +612,7 @@ app.factory("timeOutFactory", function(){
 	var userLoggedIn = false;
 	// var backendUrl = " http://localhost:8080";
 	var backendUrl = "http://timeout5746.appspot.com";
-	var searchText = "";
+	var searchText = [];
 
 	timeOutFactory.getLists = function(){
 		return lists;
@@ -619,11 +645,8 @@ app.factory("timeOutFactory", function(){
 // For setting a cookie on the browser
 function setCookie(cname, cvalue, exdays) {
 	var d = new Date();
-	console.log("Date d: " + d);
 	d.setDate(d.getDate() + exdays);
-	console.log("d.getDate + exdays: " + d);
 	var expires = "expires=" + d;
-	console.log(expires);
 	document.cookie = cname + "=" + cvalue + "; " + expires;
 };
 
@@ -637,4 +660,16 @@ function getCookie(cname) {
 		if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
 	}
 	return "";
+};
+
+// JS Functions
+// For converting a string with format 25/12/2015 09:20:59 to JS Date
+function convertDate(time) {
+	if (time == undefined || time.length != 19) {
+		console.log("Time is not valid!");
+		return new Date();
+	}
+	var d = new Date(time.substring(6,10), time.substring(3,5), time.substring(0,2), time.substring(11,13), time.substring(14,16), time.substring(17,19));
+	console.log("Converted time from " + time + " to " + d);
+	return d;
 };

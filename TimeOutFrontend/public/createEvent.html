@@ -23,16 +23,16 @@
 
                 <!-- Create Event Form start-->
                 <form>
-                    <label style="width: 150px">Event name: </label>
-                    <input type="text" name="eventName" size="30" ng-model="eventName" > </input><br><br>
+                    <label style="width: 150px">*Event name: </label>
+                    <input type="text" name="eventName" size="30" ng-model="eventName"> </input><br><br>
 
-                    <label style="width: 150px">Event description: </label>
+                    <label style="width: 150px">*Event description: </label>
                     <input type="text" name="eventDescription" ng-model="eventDescription" size="50"> </input><br><br>
 
                     <label style="width: 150px">Location: </label>
                     <input type="text" name="location" ng-model="location" size="50"> </input><br><br>
 
-                    <label style="width: 150px">Start Date/Time: </label>
+                    <label style="width: 150px">*Start Date/Time: </label>
                     <div id="Sdatetimepicker" class="input-append date">
                         <input type="text" ng-model="startTime"></input>
                         <span class="add-on">
@@ -47,7 +47,7 @@
                         });
                     </script>
 
-                    <label style="width: 150px">End Date/Time: </label>
+                    <label style="width: 150px">*End Date/Time: </label>
                     <div id="Edatetimepicker" class="input-append date">
                         <input type="text" ng-model="endTime"></input>
                         <span class="add-on">
@@ -63,25 +63,24 @@
                     </script>
 
                     <label style="width: 150px">Invite people/groups:  </label>
-                    <input type="text" name="invitedPeople" size="50" ng-model="invitedPeople" > </input><br><br>
+                    <input type="text" name="invitedPeople" size="50" ng-model="invitedPeople"> </input><br><br>
 
                     <label style="width: 150px">Tag:</label>
-                    <angucomplete id="ex1"
+                    <angucomplete id="tagsSearch"
                         placeholder="Search tags"
                         pause="100"
                         selectedobject="selectedTags"
-                        url="tagUrl"
+                        url="searchContextUrl"
                         searchfields="description"
                         titlefield="label,description,aliases"
-                        minlength="3"
                         inputclass="ng-pristine ng-valid"
-                        matchclass="highlight" />
+                        matchclass="highlight"
+                        setemptyaftersearch="true" />
                     <div class="" ng-repeat="selectedTag in selectedTags">
-                        <span class="bold-span">{{selectedTag.originalObject.id}} - </span>
-                        <span class="bold-span">{{selectedTag.originalObject.url}} - </span>
+                        <span class="bold-span">{{selectedTag.searchString}} - </span>
                         <span class="bold-span">{{selectedTag.originalObject.label}} - </span>
-                        <span class="bold-span">{{selectedTag.originalObject.description}}</span>
-                        <button type="button" ng-click="deleteTag($index)"></button><br>
+                        <span class="bold-span">{{selectedTag.originalObject.description}} </span>
+                        <button type="button" ng-click="deleteTag($index)">X</button><br>
                     </div><br>
 
                     <input type="checkbox" name="isPublic" ng-model="privacy"
@@ -89,7 +88,6 @@
                     <label style="width: 150px">Public to all  </label> <br><br>
 
                     <button type="button" ng-click="createEvent()">Create</button>
-                    <button type="reset">Reset</button><br><br>
                 </form>
                 <!-- Create Event Form end-->
 
