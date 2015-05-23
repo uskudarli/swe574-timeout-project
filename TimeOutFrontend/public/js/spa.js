@@ -95,11 +95,11 @@ app.run(function($rootScope, $location, $window) {
 });
 
 // Non-dynamic content is controlled by this controller.
-app.controller("indexController", function($scope, $http, $location, $window, timeOutFactory, md5) {
+app.controller("indexController", function($scope, $http, $location, $window, timeOutFactory, md5, getProfile) {
 	// For logging
 	$scope.searchText = [];
 	$scope.searchContextUrl = timeOutFactory.getBackendUrl() + '/searchContext?tag=';
-	$scope.profile = timeOutFactory.getProfile();
+	$scope.profileInfo = null;
 
 	// Get sessionId from backend by calling login rest api, then set sessionId cookie
 	$scope.doLogin = function() {
@@ -107,20 +107,10 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 		var params = "?userEmail=" + $scope.userEmail + "&password=" + md5.createHash($scope.loginPassword);
 
 		var loginUrl = timeOutFactory.getBackendUrl() + "/login" + params;
-		$http({method: "GET",  url: loginUrl})
+		$http.get(loginUrl)
 		  .success(function(data, status) {
 		    if(data.type == "Success") {
 				setCookie("sessionId", data.sessionId, 60);
-
-				$http.get(timeOutFactory.getBackendUrl() + "/profile/get?sessionId=" + data.sessionId)
-					  .success(function(data, status) {
-					    timeOutFactory.setProfile(data);
-					    console.log("Profile data = " + JSON.stringify(data));
-					  })
-					  .error(function(data, status) {
-					 	$window.alert("No profile data has been found!!!" + " (1031)");
-					  });
-
 				$location.path("/home");
 		    } else {
 		    	$window.alert(data.type + ": " + data.message + " (1001)");
@@ -131,6 +121,12 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 		  });
 	};
 
+	if($scope.profileInfo == null && getCookie("sessionId")) {
+		var getProfilePromise = getProfile.getData();
+	    getProfilePromise.then(function(result) {  // this is only run after $http completes
+	       $scope.profileInfo = result;
+	    });
+	}
 	// Set sessionId cookies to ""
 	$scope.doLogout = function() {
 		setCookie("sessionId", "", 0);
@@ -227,7 +223,6 @@ app.controller("homeController", function($scope, $http, $window, $location, tim
 
 
 	var suggestedGroups = [{name:'' ,detail:'"Math "'}];
-	console.log("homeController works properly");
 	$scope.notificationList2 = [{name:'sara', detail:'"Math fans"'}];
 
 	timeOutFactory.addList("notificationList", $scope.notificationList2);
@@ -618,14 +613,13 @@ app.controller("eventsInvited", function($scope, $http, $window, $location, time
 });
 
 // This factory keeps values shared among controllers.
-app.factory("timeOutFactory", function(){
+app.factory("timeOutFactory", function($http){
 	var timeOutFactory = {};
 	var lists = {};
 	var userLoggedIn = false;
 	// var backendUrl = " http://localhost:8080";
 	var backendUrl = "http://timeout5746.appspot.com";
 	var searchText = [];
-	var profile = {};
 
 	timeOutFactory.getLists = function(){
 		return lists;
@@ -651,15 +645,16 @@ app.factory("timeOutFactory", function(){
 		searchText = text;
 	};
 
-	timeOutFactory.setProfile = function(profileObj){
-		profile = profileObj;
-	}
-
-	timeOutFactory.getProfile = function(){
-		return profile;
-	}
-
 	return timeOutFactory;
+});
+
+app.factory('getProfile', function($http, timeOutFactory) {
+    var getData = function() {
+        return $http.get(timeOutFactory.getBackendUrl() + "/profile/get?sessionId=" + getCookie("sessionId")).then(function(result){
+            return result.data;
+        });
+    };
+    return { getData: getData };
 });
 
 // JS Functions
