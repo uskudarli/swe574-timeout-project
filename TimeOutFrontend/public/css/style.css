@@ -730,15 +730,17 @@ div.groupMenu ul li a{
     width: 100px;
     z-index: 99999;   
 }
+
 .otherFriends{
     float: left;
     width: auto;
+    height: 30px;
     color: #0fa4dd;
     text-decoration: underline;
     margin: 0 5px 0 5px;
 }
 .otherFriends:hover .others{
-    display: block;
+    display: block !important;
 }
 
 .friendsInfo{
@@ -806,6 +808,7 @@ div.groupName{
     font: 15px arial;
     margin: 0 5px 0 0;
     width: auto;
+    font-weight:bold;
 }
 
 div.groupNumber{
@@ -1251,6 +1254,7 @@ footer {
     width:23px;
     height: 26px;
     margin-right: 10px;
+    cursor: pointer;
 }
 
 .delete:hover{
@@ -1258,9 +1262,14 @@ footer {
     width:32px;
     height: 26px;
     margin-right: 20px;
+    cursor: pointer;
 }
 
 .right{
     float: right;
     margin-right: 30px;
+}
+
+.whoIsIn{
+    float: right;
 }
