@@ -43,7 +43,7 @@
                 <legend>Groups You're In</legend>
                 <!-- Group List start-->
                 <div class="myGroupList" ng-repeat="group in myGroups">
-                    <a href="" ng-click="goToPage('/theGroup')"><div class="groupName">{{group.name}}</div></a>
+                    <a href="" ng-click="goToPage('/theGroup/' + group.actionId)"><div class="groupName">{{group.name}}</div></a>
                     <div class="groupNumber">{{group.count}}</div>
                     <div align="right">
                         <div class="iconDelUp delete" ng-click=""></div>
