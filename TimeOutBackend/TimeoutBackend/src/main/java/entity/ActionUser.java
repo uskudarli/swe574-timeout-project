@@ -15,8 +15,6 @@ public class ActionUser {
 	@GenericGenerator(name="incrementActionUser", strategy = "increment")
 	private Long actionUserId;
 
-
-
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userId")
 	private User user;

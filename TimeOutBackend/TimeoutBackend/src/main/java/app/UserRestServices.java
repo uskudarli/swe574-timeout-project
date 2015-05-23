@@ -1,12 +1,10 @@
-package demo;
+package app;
 
 import helpers.ServiceHelper;
 import helpers.ValidationHelper;
 
-import java.math.BigInteger;
+import java.text.ParseException;
 import java.util.Date;
-import java.util.List;
-import java.util.Random;
 
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletResponse;
@@ -17,12 +15,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import repository.UserRepository;
+
 import common.BusinessException;
 import common.DBUtility;
 import common.ErrorMessages;
 import common.ResponseHeader;
+
 import entity.Role;
-import entity.Session;
 import entity.User;
 import entity.UserBasicInfo;
 import entity.UserCommInfo;
@@ -122,7 +121,7 @@ public class UserRestServices {
 			@RequestParam(value = "lastName", required = false) String lastName,
 			@RequestParam(value = "Gsm", required = false) Long Gsm,
 			@RequestParam(value = "address", required = false) String address,
-			@RequestParam(value = "birthdate", required = false) Date birthdate,
+			@RequestParam(value = "birthdate", required = false) String birthdateString,
 			@RequestParam(value = "about", required = false) String about,
 			@RequestParam(value = "interests", required = false) String interests,
 			@RequestParam(value = "gender", required = false) String gender,
@@ -161,8 +160,14 @@ public class UserRestServices {
 				user.getUserCommInfo().setMobilePhone(Gsm);
 			if (address != "" && address != null)
 				user.getUserCommInfo().setAddress(address);
-			if (birthdate != null)
-				user.getUserExtraInfo().setBirthDate(birthdate);
+			if (birthdateString != null){
+				try {
+			        Date birthdate = ServiceHelper.dateParser(birthdateString);
+			        user.getUserExtraInfo().setBirthDate(birthdate);
+			    } catch (ParseException e) {
+			        //do nothing
+			    }
+			}
 			if (about != "" && about != null)
 				user.getUserExtraInfo().setAbout(about);
 			if (interests != "" && interests != null)

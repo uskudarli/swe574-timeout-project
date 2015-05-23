@@ -1,8 +1,7 @@
-package demo;
+package app;
 
 import helpers.ServiceHelper;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -14,9 +13,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import repository.ActionRepository;
+
 import common.BusinessException;
 import common.DBUtility;
 import common.ResponseHeader;
+
 import entity.Action;
 import entity.ActionUser;
 import entity.User;
@@ -86,7 +87,7 @@ public class MembersRestServices {
 	public Object inviteToEvent(
 			@RequestParam(value = "sessionId") String sessionId,
 			@RequestParam(value = "actionId") Integer actionId,
-			@RequestParam(value = "invitedPeople") String invitedPeople, //json List<integer> olarak user idleri
+			@RequestParam(value = "invitedPeople") String invitedPeople, //json List<Integer> olarak user idleri
 			HttpServletResponse resp) {
 
 		EntityManager em = ServiceHelper.initialize(resp);
@@ -115,7 +116,7 @@ public class MembersRestServices {
 	public Object inviteToGroup(
 			@RequestParam(value = "sessionId") String sessionId,
 			@RequestParam(value = "actionId") Integer actionId,
-			@RequestParam(value = "invitedPeople") String invitedPeople, //json List<integer> olarak user idleri
+			@RequestParam(value = "invitedPeople") String invitedPeople, //json List<Integer> olarak user idleri
 			HttpServletResponse resp) {
 
 		EntityManager em = ServiceHelper.initialize(resp);
@@ -145,13 +146,11 @@ public class MembersRestServices {
 	@ResponseBody
 	public Object acceptInviteToGroup(
 			@RequestParam(value = "sessionId") String sessionId,
-			@RequestParam(value = "actionUserId") Integer actionUserId,
+			@RequestParam(value = "actionUserId") Integer actionUserId, //ActionUser object id'si
 			HttpServletResponse resp) {
-		
-   //todo devam et
-		
-//		EntityManager em = ServiceHelper.initialize(resp);
-//
+
+		EntityManager em = ServiceHelper.initialize(resp);
+
 //		try {
 //			User user = ServiceHelper.getSessionUser(em, sessionId);
 //			

@@ -1,5 +1,10 @@
 package helpers;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletResponse;
 
@@ -44,5 +49,14 @@ public class ServiceHelper {
 			String message) throws BusinessException {
 		throw new BusinessException(code, message);
 	}
-
+	
+	/**
+     * Format a time from a given format to given target format
+     */
+    public static Date dateParser(String inputTimeStamp)
+            throws ParseException {
+    	String format = "yyyy-MM-DD_HH:mm:ss";
+    	DateFormat formatter = new SimpleDateFormat(format);
+    	return formatter.parse(inputTimeStamp);
+    }
 }

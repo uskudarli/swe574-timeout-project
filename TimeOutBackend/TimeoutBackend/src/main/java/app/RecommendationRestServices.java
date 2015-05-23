@@ -1,4 +1,4 @@
-package demo;
+package app;
 
 import common.BusinessException;
 import common.DBUtility;

@@ -1,17 +1,11 @@
-package demo;
+package app;
 
 import helpers.ServiceHelper;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,20 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import repository.ActionRepository;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import common.BusinessException;
 import common.DBUtility;
 import common.ResponseHeader;
+
 import dto.ActionDTO;
 import entity.Action;
-import entity.ActionTag;
-import entity.ActionUser;
-import entity.Tag;
 import entity.User;
 import enums.ActionType;
-import enums.ActionUserStatus;
 
 @RestController
 public class ActionRestServices {
@@ -45,8 +33,8 @@ public class ActionRestServices {
 			@RequestParam(value = "sessionId") String sessionId,
 			@RequestParam(value = "eventName") String eventName,
 			@RequestParam(value = "eventDescription", required = false) String eventDescription,
-			@RequestParam(value = "startTime", required = false) Date startTime,
-			@RequestParam(value = "endTime", required = false) Date endTime,
+			@RequestParam(value = "startTime", required = false) String startTimeString,
+			@RequestParam(value = "endTime", required = false) String endTimeString,
 			@RequestParam(value = "invitedPeople", required = false) String invitedPeople, //json List<integer> olarak user idleri
 			@RequestParam(value = "tag", required = false) String tagString,//json List<Tag> olarak Tag objeleri (tagName + context)
 			@RequestParam(value = "privacy", required = false) String privacy,
@@ -57,6 +45,8 @@ public class ActionRestServices {
 		Action action;
 		try {
 			User creator = ServiceHelper.getSessionUser(em, sessionId);
+			Date startTime = ServiceHelper.dateParser(startTimeString);
+			Date endTime = ServiceHelper.dateParser(endTimeString);
 			
 			action = new Action(eventName, eventDescription,
 					ActionType.EVENT.toString(), startTime, endTime);
