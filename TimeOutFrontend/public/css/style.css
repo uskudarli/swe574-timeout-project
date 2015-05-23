@@ -861,7 +861,7 @@ div.eventNumber{
     border-radius: 5px;
     float: left;
     font-size: 11px;
-    margin: 0 5px;
+    margin: -5px 5px 0;
     padding: 3px 7px;
 }
 
@@ -1216,4 +1216,22 @@ footer {
 
 .angucomplete-row {
     margin-top: 10px;
+}
+
+.noEvent{
+    float: left;
+    margin-left: 10px;
+
+}
+
+.division{
+    float: right;
+    margin-right: 10px;
+}
+
+.iconDelUp{
+    float: right;
+    width:25px;
+    height: 25px;
+    margin-right: 20px;
 }
