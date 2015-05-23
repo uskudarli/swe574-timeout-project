@@ -27,13 +27,13 @@
                         <li>
                             <a href="" ng-click="goToPage('/suggestedEvents')">Suggested Events</a>
                         </li>
-                        <li>
+                        <li class="active">
                             <a href="" ng-click="goToPage('/eventInvitation')">Invitation</a>
                         </li>
                         <li>
                             <a href="" ng-click="goToPage('/newEvents')">New Events</a>
                         </li>
-                        <li class="active">
+                        <li>
                             <a href="" ng-click="goToPage('/myEvents')">My Events</a>
                         </li>
                     </ul>
@@ -43,13 +43,26 @@
                 <legend style="width:98%;">Your Events</legend>
 
                 <!-- Event List start-->
-                <div class="myEventList" ng-repeat="event in myEvents">
-                    <div class="eventName">{{event.name}}</div>
-                    <div class="eventNumber">{{event.count}}</div>
+                <div class="myEventList">
+                    <div class="eventName">dene</div>
+                    <div class="eventNumber">3</div>
+                    <!-- <div class="whoIsIn">
+                        <div class="groupFriends" ng-repeat="friend in event.friendList | limitTo: 3">
+                            <a href="#">{{friend.name}}</a>
+                            <span>,</span>
+                        </div> 
+                        <div class="groupFriends">and 
+                            <a class="otherFriends" href="" ng-show="event.friendList.count>3">
+                                {{group.friendList.count-3}} others
+                                <div class="others" ng-repeat="friend in group.friendList"> 
+                                    {{friend.name}} <br />
+                                </div>
+                            </a> 
+                            in this group.
+                        </div>
+                    </div> -->
                     <div align="right">
-                        <div class="iconDelUp delete" ng-click=""></div>
-                        <p class="division">|</p>
-                        <div class="iconDelUp update" ng-click="goToPage('/updateEvent')"></div>
+                        <button class="btn btn-primary rightButton" type="button" ng-click="">Join to the Event</button>
                     </div>
                 </div>
                 <!-- Event List end-->
