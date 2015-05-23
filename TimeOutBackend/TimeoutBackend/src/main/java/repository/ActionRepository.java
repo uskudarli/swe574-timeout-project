@@ -157,8 +157,11 @@ public class ActionRepository {
 		if (tagString == null || tagString == "")
 			return;
 		
-		ArrayList<Tag> tagList = ServiceHelper.parseListFromJsonString(tagString);
-		
+		Gson gson = new Gson();
+		Type listType = new TypeToken<ArrayList<Tag>>() {
+		}.getType();
+		ArrayList<Tag> tagList = gson.fromJson(tagString, listType);
+
 		for (Tag tag : tagList) {
 			List<Tag> results = getTagsFromTagNameAndContextId(tag);
 			
@@ -214,5 +217,17 @@ public class ActionRepository {
 			actionTag.setTag(tag);
 			em.persist(actionTag);
 		}
+	}
+
+	public List<Action> getNewActions(String actionType) {
+		String hql = "FROM Action A order by A.actionId desc WHERE "
+				+ "A.actionType = :actionType";
+		Query query = em.createQuery(hql);
+		query
+		.setParameter("actionType", actionType)
+		.setMaxResults(10);
+		
+		List<Action> results = query.getResultList();
+		return results;
 	}
 }

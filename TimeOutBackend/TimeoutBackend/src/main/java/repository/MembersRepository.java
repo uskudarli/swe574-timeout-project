@@ -17,6 +17,7 @@ import entity.Action;
 import entity.ActionUser;
 import entity.User;
 import enums.ActionUserStatus;
+import enums.PrivacyType;
 
 public class MembersRepository {
 
@@ -50,7 +51,11 @@ public class MembersRepository {
 			actionUser.setUser((User) query.getSingleResult());
 
 			actionUser.setAction(action);
-			actionUser.setActionUserStatus(ActionUserStatus.INVITED);
+			if (action.getPrivacy() == PrivacyType.PUBLIC.toString()){
+				actionUser.setActionUserStatus(ActionUserStatus.MEMBER);
+			}else{
+				actionUser.setActionUserStatus(ActionUserStatus.INVITED);
+			}
 			em.persist(actionUser);
 		}
 

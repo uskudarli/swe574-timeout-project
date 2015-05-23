@@ -316,4 +316,48 @@ public class ActionRestServices {
 		}
 		return action;
 	}
+	
+	@RequestMapping(value = "/group/new")
+	@ResponseBody
+	public Object getNewGroups(
+            @RequestParam(value = "sessionId") String sessionId, 
+            HttpServletResponse resp) {
+		EntityManager em = ServiceHelper.initialize(resp);
+		
+		List<Action> newActions;
+		try {
+			User user = ServiceHelper.getSessionUser(em, sessionId);
+			ActionRepository ar = new ActionRepository(em);
+			newActions = ar.getNewActions(ActionType.GROUP.toString());
+		}catch (BusinessException e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getCode(), e.getMessage());
+		}catch (Exception e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getMessage());
+		}
+		return newActions;
+	}
+	
+	@RequestMapping(value = "/event/new")
+	@ResponseBody
+	public Object getNewEvents(
+            @RequestParam(value = "sessionId") String sessionId, 
+            HttpServletResponse resp) {
+		EntityManager em = ServiceHelper.initialize(resp);
+		
+		List<Action> newActions;
+		try {
+			User user = ServiceHelper.getSessionUser(em, sessionId);
+			ActionRepository ar = new ActionRepository(em);
+			newActions = ar.getNewActions(ActionType.EVENT.toString());
+		}catch (BusinessException e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getCode(), e.getMessage());
+		}catch (Exception e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getMessage());
+		}
+		return newActions;
+	}
 }
