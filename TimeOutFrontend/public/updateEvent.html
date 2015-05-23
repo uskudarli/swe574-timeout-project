@@ -1,0 +1,99 @@
+<section>
+    <!-- Top Middle Menu start-->
+    <div class="menu">
+        <ul>
+            <li>
+                <a href="" ng-click="goToPage('/home')">Home</a>
+            </li>
+            <li>
+                <a href="" ng-click="goToPage('/createEvent')">Create Event</a>
+            </li>
+            <li >
+                <a href="" ng-click="goToPage('/createGroup')">Create Group</a>
+            </li>
+        </ul>
+    </div>
+    <!-- Top Middle Menu end-->
+
+    <!-- Middle Column start-->
+    <div class="midcolumn">
+        <div class="group-creation">
+            <fieldset>
+                <legend>Update Event </legend>
+
+                <!-- Create Event Form start-->
+                <form>
+                    <label style="width: 150px">*Event name: </label>
+                    <input type="text" name="eventName" size="30" ng-model="eventName"> </input><br><br>
+
+                    <label style="width: 150px">*Event description: </label>
+                    <input type="text" name="eventDescription" ng-model="eventDescription" size="50"> </input><br><br>
+
+                    <label style="width: 150px">Location: </label>
+                    <input type="text" name="location" ng-model="location" size="50"> </input><br><br>
+
+                    <label style="width: 150px">*Start Date/Time: </label>
+                    <div id="Sdatetimepicker" class="input-append date">
+                        <input type="text" ng-model="startTime"></input>
+                        <span class="add-on dateBtn">
+                            <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                        </span>
+                    </div><br>
+
+                    <script type="text/javascript">
+                        $('#Sdatetimepicker').datetimepicker({
+                            format: 'dd/MM/yyyy hh:mm:ss',
+                            language: 'En'
+                        });
+                    </script>
+
+                    <label style="width: 150px">*End Date/Time: </label>
+                    <div id="Edatetimepicker" class="input-append date">
+                        <input type="text" ng-model="endTime"></input>
+                        <span class="add-on dateBtn">
+                            <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                        </span>
+                    </div><br>
+
+                    <script type="text/javascript">
+                        $('#Edatetimepicker').datetimepicker({
+                            format: 'dd/MM/yyyy hh:mm:ss',
+                            language: 'En'
+                        });
+                    </script>
+
+                    <label style="width: 150px">Invite people/groups:  </label>
+                    <input type="text" name="invitedPeople" size="50" ng-model="invitedPeople"> </input><br><br>
+
+                    <label style="width: 150px">Tag:</label>
+                    <angucomplete id="tagsSearch"
+                        placeholder="Search tags"
+                        pause="100"
+                        selectedobject="selectedTags"
+                        url="searchContextUrl"
+                        searchfields="description"
+                        titlefield="label,description,aliases"
+                        inputclass="ng-pristine ng-valid"
+                        matchclass="highlight"
+                        setemptyaftersearch="true" />
+                    <div class="" ng-repeat="selectedTag in selectedTags">
+                        <span class="bold-span">{{selectedTag.searchString}} - </span>
+                        <span class="bold-span">{{selectedTag.originalObject.label}} - </span>
+                        <span class="bold-span">{{selectedTag.originalObject.description}} </span>
+                        <button type="button" ng-click="deleteTag($index)">X</button><br>
+                    </div><br>
+
+                    <input type="checkbox" name="isPublic" ng-model="privacy"
+                    ng-true-value="'true'" ng-false-value="'false'" ></input>
+                    <label style="width: 150px">Public to all  </label> <br><br>
+
+                    <button class="btn btn-primary" type="button" ng-click="createEvent()">Update</button>
+                </form>
+                <!-- Create Event Form end-->
+
+            </fieldset>
+        </div>
+    </div>
+    <!-- Middle Column end-->
+
+</section>

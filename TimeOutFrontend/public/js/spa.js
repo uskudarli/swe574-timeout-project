@@ -4,84 +4,88 @@ app = angular.module('timeout', ['ngRoute', 'angular-md5', 'ngTouch', 'angucompl
 // RouteProvider (ng-route) will directly stick controller and html together
 // and serve them in the place of dynamic content .
 app.config(function($routeProvider) {
-  $routeProvider
-   	 .when("/", {
-	    templateUrl: "main.html",
-	    controller: "mainController"
-	  })
-	  .when("/home", {
-	    templateUrl: "home.html",
-	    controller: "homeController"
-	  })
-	  .when("/createEvent", {
-	  	templateUrl: "createEvent.html",
-	  	controller: "createEvent"
-	  })
-	  .when("/createGroup", {
-	  	templateUrl: "createGroup.html",
-	  	controller: "createGroup"
-	  })
-	  .when("/profileEdit", {
-	  	templateUrl: "profileEdit.html",
-	  	controller: "profileEdit"
-	  })
-	  .when("/eventsInvited", {
-	  	templateUrl: "eventsInvited.html",
-	  	controller: "eventsInvited"
-	  })
-	  .when("/eventsCreated", {
-	  	templateUrl: "eventsCreated.html",
-	  	controller: "eventsCreated"
-	  })
-	  .when("/friendsGroups", {
-	  	templateUrl: "friendsGroups.html",
-	  	controller: "friendsGroups"
-	  })
-	  .when("/myEvents", {
-	  	templateUrl: "myEvents.html",
-	  	controller: "myEvents"
-	  })
-	  .when("/myGroups", {
-	  	templateUrl: "myGroups.html",
-	  	controller: "myGroups"
-	  })
-	  .when("/newGroups", {
-	  	templateUrl: "newGroups.html",
-	  	controller: "newGroups"
-	  })
-	  .when("/search", {
-	  	templateUrl: "search.html",
-	  	controller: "searchController"
-	  })
-	  .when("/suggestedGroups", {
-	  	templateUrl: "suggestedGroups.html",
-	  	controller: "suggestedGroups"
-	  })
-	  .when("/myFriends", {
-	  	templateUrl: "myFriends.html",
-	  	controller: "myFriends"
-	  })
-	  .when("/myProfile", {
-	  	templateUrl: "profileEdit.html",
-	  	controller: "profileEdit"
-	  })
-	  .when("/theGroup", {
-	  	templateUrl: "theGroup.html",
-	  	controller: "theGroup"
-	  })
-	  .when("/thePost", {
-	  	templateUrl: "thePost.html",
-	  	controller: "thePost"
-	  })
-	  .when("/theUser", {
-	  	templateUrl: "theUser.html",
-	  	controller: "theUser"
-	  })
-	  .when("/updateGroup", {
-	  	templateUrl: "updateGroup.html",
-	  	controller: "updateGroup"
-	  })
-	  .otherwise({redirectTo: '/'});
+	$routeProvider
+	.when("/", {
+		templateUrl: "main.html",
+		controller: "mainController"
+	})
+	.when("/home", {
+		templateUrl: "home.html",
+		controller: "homeController"
+	})
+	.when("/createEvent", {
+		templateUrl: "createEvent.html",
+		controller: "createEvent"
+	})
+	.when("/createGroup", {
+		templateUrl: "createGroup.html",
+		controller: "createGroup"
+	})
+	.when("/profileEdit", {
+		templateUrl: "profileEdit.html",
+		controller: "profileEdit"
+	})
+	.when("/eventsInvited", {
+		templateUrl: "eventsInvited.html",
+		controller: "eventsInvited"
+	})
+	.when("/eventsCreated", {
+		templateUrl: "eventsCreated.html",
+		controller: "eventsCreated"
+	})
+	.when("/friendsGroups", {
+		templateUrl: "friendsGroups.html",
+		controller: "friendsGroups"
+	})
+	.when("/myEvents", {
+		templateUrl: "myEvents.html",
+		controller: "myEvents"
+	})
+	.when("/myGroups", {
+		templateUrl: "myGroups.html",
+		controller: "myGroups"
+	})
+	.when("/newGroups", {
+		templateUrl: "newGroups.html",
+		controller: "newGroups"
+	})
+	.when("/search", {
+		templateUrl: "search.html",
+		controller: "searchController"
+	})
+	.when("/suggestedGroups", {
+		templateUrl: "suggestedGroups.html",
+		controller: "suggestedGroups"
+	})
+	.when("/myFriends", {
+		templateUrl: "myFriends.html",
+		controller: "myFriends"
+	})
+	.when("/myProfile", {
+		templateUrl: "profileEdit.html",
+		controller: "profileEdit"
+	})
+	.when("/theGroup", {
+		templateUrl: "theGroup.html",
+		controller: "theGroup"
+	})
+	.when("/thePost", {
+		templateUrl: "thePost.html",
+		controller: "thePost"
+	})
+	.when("/theUser", {
+		templateUrl: "theUser.html",
+		controller: "theUser"
+	})
+	.when("/updateGroup", {
+		templateUrl: "updateGroup.html",
+		controller: "updateGroup"
+	})
+	.when("/updateEvent", {
+		templateUrl: "updateEvent.html",
+		controller: "updateEvent"
+	})
+	.otherwise({redirectTo: '/'});
 });
 
 
@@ -108,23 +112,23 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 
 		var loginUrl = timeOutFactory.getBackendUrl() + "/login" + params;
 		$http.get(loginUrl)
-		  .success(function(data, status) {
-		    if(data.type == "Success") {
+		.success(function(data, status) {
+			if(data.type == "Success") {
 				setCookie("sessionId", data.sessionId, 60);
 				$location.path("/home");
-		    } else {
-		    	$window.alert(data.type + ": " + data.message + " (1001)");
-		    }
-		  })
-		  .error(function(data, status) {
+			} else {
+				$window.alert(data.type + ": " + data.message + " (1001)");
+			}
+		})
+		.error(function(data, status) {
 			$window.alert("Specified username or password do not match with the records!!!" + " (1002)");
-		  });
+		});
 	};
 
 	if($scope.profileInfo == null && getCookie("sessionId")) {
 		var getProfilePromise = getProfile.getData();
 	    getProfilePromise.then(function(result) {  // this is only run after $http completes
-	       $scope.profileInfo = result;
+	    	$scope.profileInfo = result;
 	    });
 	}
 	// Set sessionId cookies to ""
@@ -169,17 +173,17 @@ app.controller("mainController", function($scope, $http, $location, $window, tim
 		// validate if email is unique
 		var emailOk = "";
 		$http.get(timeOutFactory.getBackendUrl() + "/email/isAvailable")
-			.success(function(data){
-				if (data.type == "Success") {
-					emailOk == "success";
-				} else {
-					$window.alert(data.message + " (1034)");
-					return;
-				}
-			})
-			.error(function(data){
-				$window.alert("An error occurred ()" + " (1003)");
-			})
+		.success(function(data){
+			if (data.type == "Success") {
+				emailOk == "success";
+			} else {
+				$window.alert(data.message + " (1034)");
+				return;
+			}
+		})
+		.error(function(data){
+			$window.alert("An error occurred ()" + " (1003)");
+		})
 
 		// Parameters for register is adjusted and password is encrypted with MD5 hash
 		var params = "?userEmail=" + $scope.email + "&password=" + md5.createHash($scope.sigUpPassword);
@@ -205,21 +209,21 @@ app.controller("mainController", function($scope, $http, $location, $window, tim
 			.error(function(data, status) {
 				$window.alert(JSON.stringify(data) + " (1005)");
 			});
-	};
-});
+		};
+	});
 
 // After user logged in, home.html will be seen which managed by this controller
 app.controller("homeController", function($scope, $http, $window, $location, timeOutFactory) {
 	var params = "?sessionId=" + getCookie("sessionId");
 
 	$http.get(timeOutFactory.getBackendUrl() + '/' + params)
-	 .success(function(data, status) {
+	.success(function(data, status) {
 		$window.alert("Success " + data.actionId + " (1006)");
 		$scope.eventsInvited = data;
-	  })
-	  .error(function(data, status) {
-	 	console.log("Error " + data + " (1032)");
-	  });
+	})
+	.error(function(data, status) {
+		console.log("Error " + data + " (1032)");
+	});
 
 
 	var suggestedGroups = [{name:'' ,detail:'"Math "'}];
@@ -250,13 +254,13 @@ app.controller("searchController", function($scope, $http, $location, $window, t
 	//$scope.resultSet = [{"title": "title", "desc": "desc"}];
 
 	$http({method: "GET",  url: timeOutFactory.getBackendUrl() + "/findRelatedGroupsforTag" + params})
-	  .success(function(data, status) {
-	    $scope.resultSet = data;
-	    console.log(JSON.stringify(data));
-	  })
-	  .error(function(data, status) {
-	 	$window.alert("No records have been found!!!" + " (1007)");
-	  });
+	.success(function(data, status) {
+		$scope.resultSet = data;
+		console.log(JSON.stringify(data));
+	})
+	.error(function(data, status) {
+		$window.alert("No records have been found!!!" + " (1007)");
+	});
 });
 
 // When user wants to edit own profile, this controller works to support the html on the dynamic content.
@@ -265,14 +269,14 @@ app.controller("profileEdit", function($scope, $http, $window, $location, timeOu
 	var params = "?sessionId=" + getCookie("sessionId");
 
 	$http.get(timeOutFactory.getBackendUrl() + "/profile/get" + params)
-	  .success(function(data, status) {
-	    $scope.email = data.userName;
-	    $scope.password = data.password;
-	    console.log(JSON.stringify(data));
-	  })
-	  .error(function(data, status) {
-	 	$window.alert("No records have been found!!!" + " (1008)");
-	  });
+	.success(function(data, status) {
+		$scope.email = data.userName;
+		$scope.password = data.password;
+		console.log(JSON.stringify(data));
+	})
+	.error(function(data, status) {
+		$window.alert("No records have been found!!!" + " (1008)");
+	});
 
 	$("#imgInp").change(function(){
 		readURL(this);
@@ -294,23 +298,23 @@ app.controller("profileEdit", function($scope, $http, $window, $location, timeOu
 	$scope.profileEdit = function(){
 		var paramsEdit = "?sessionId=" + getCookie("sessionId");
 		paramsEdit += "&firstName=" + $scope.firstName +
-					  "&lastName=" + $scope.lastName +
-					  "&Gsm=" + $scope.Gsm +
-					  "&address=" + $scope.address +
-					  "&birthdate=" + $scope.birthdate +
-					  "&about=" + $scope.about +
-					  "&interests=" + $scope.interests +
-					  "&gender=" + $scope.gender +
-					  "&languages=" + $scope.languages;
+		"&lastName=" + $scope.lastName +
+		"&Gsm=" + $scope.Gsm +
+		"&address=" + $scope.address +
+		"&birthdate=" + $scope.birthdate +
+		"&about=" + $scope.about +
+		"&interests=" + $scope.interests +
+		"&gender=" + $scope.gender +
+		"&languages=" + $scope.languages;
 
 
 		$http.get(timeOutFactory.getBackendUrl() + "/profile/edit" + paramsEdit)
-			.success(function(data, status) {
-				$window.alert("Success " + data.actionId) + " (1009)";
-			})
-			.error(function(data, status) {
-				$window.alert("Error " + data + " (1010)");
-			});
+		.success(function(data, status) {
+			$window.alert("Success " + data.actionId) + " (1009)";
+		})
+		.error(function(data, status) {
+			$window.alert("Error " + data + " (1010)");
+		});
 	};
 
 	$scope.goToPage = function(url) {
@@ -354,26 +358,26 @@ app.controller("createEvent", function($scope, $http, $window, $location, $filte
 			$scope.startTime == undefined || $scope.startTime == "" ||
 			$scope.endTime == undefined || $scope.endTime == "") {
 			$window.alert("Please fill required fields which have *!!!" + " (1012)");
-		} else {
-			var params = "?sessionId=" + getCookie("sessionId");
-			params += "&eventName=" + $scope.eventName +
-					  "&eventDescription=" + $scope.eventDescription +
+	} else {
+		var params = "?sessionId=" + getCookie("sessionId");
+		params += "&eventName=" + $scope.eventName +
+		"&eventDescription=" + $scope.eventDescription +
 					  //"&startTime=" + $scope.startTime +
 					  //"&endTime=" + $scope.endTime +
 					  //"&invitedPeople=" + $scope.invitedPeople +
 					  "&tag=" + JSON.stringify($scope.selectedTags) +
 					  "&privacy=" + $scope.privacy;
 
-			$http.get(timeOutFactory.getBackendUrl() + "/event/create" + params)
-			 .success(function(data, status) {
-				$window.alert("Success " + data.actionId + " (1013)");
-			  })
-			  .error(function(data, status) {
-			 	$window.alert("Error " + data + " (1014)");
-			  });
-		}
-	};
-});
+					  $http.get(timeOutFactory.getBackendUrl() + "/event/create" + params)
+					  .success(function(data, status) {
+					  	$window.alert("Success " + data.actionId + " (1013)");
+					  })
+					  .error(function(data, status) {
+					  	$window.alert("Error " + data + " (1014)");
+					  });
+					}
+				};
+			});
 
 // Code reviewed due to backend is not available by ogzcm
 app.controller("createGroup", function($scope, $http, $window, $location, timeOutFactory) {
@@ -395,16 +399,16 @@ app.controller("createGroup", function($scope, $http, $window, $location, timeOu
 	$scope.createGroup = function() {
 		var params = "?sessionId=" + getCookie("sessionId");
 		params += "&groupName=" + $scope.groupName +
-				  "&groupDescription=" + $scope.groupDescription +
-				  "&tag=" + $scope.tag;
+		"&groupDescription=" + $scope.groupDescription +
+		"&tag=" + $scope.tag;
 
 		$http.get(timeOutFactory.getBackendUrl() + "/group/create" + params)
-		 .success(function(data, status) {
+		.success(function(data, status) {
 			$window.alert("Success " + " (1015)");
-		  })
-		  .error(function(data, status) {
-		 	$window.alert("Error " + data + " (1016)");
-		  });
+		})
+		.error(function(data, status) {
+			$window.alert("Error " + data + " (1016)");
+		});
 	};
 });
 
@@ -423,12 +427,12 @@ app.controller("myEvents", function($scope, $http, $window, $location, timeOutFa
 	console.log("myEvents");
 
 	$http.get(timeOutFactory.getBackendUrl() + "/event/created/" + params)
-	 .success(function(data, status) {
+	.success(function(data, status) {
 		$scope.myEvents = data;
-	  })
-	  .error(function(data, status) {
-	 	$window.alert("Error " + data + " (1017)");
-	  });
+	})
+	.error(function(data, status) {
+		$window.alert("Error " + data + " (1017)");
+	});
 
 	$scope.goToPage = function(url) {
 		console.log("GoToPage: " + url);
@@ -440,12 +444,12 @@ app.controller("eventsCreated", function($scope, $http, $location, timeOutFactor
 	var params = "?sessionId=" + getCookie("sessionId");
 
 	$http.get(timeOutFactory.getBackendUrl() + "/event/created" + params)
-	 .success(function(data, status) {
+	.success(function(data, status) {
 		$scope.eventsCreated = data;
-	  })
-	  .error(function(data, status) {
-	 	$window.alert("Error " + data + " (1018)");
-	  });
+	})
+	.error(function(data, status) {
+		$window.alert("Error " + data + " (1018)");
+	});
 
 	$scope.goToPage = function(url) {
 		console.log("GoToPage: " + url);
@@ -457,14 +461,14 @@ app.controller("eventsInvited", function($scope, $http, $window, $location, time
 	var params = "?sessionId=" + getCookie("sessionId");
 
 	$http.get(timeOutFactory.getBackendUrl() + "/event/invited" + params)
-	 .success(function(data, status) {
+	.success(function(data, status) {
 		$window.alert("Success " + data.actionId + " (1019)");
 		$scope.eventsInvited = data;
 		console.log(data);
-	  })
-	  .error(function(data, status) {
-	 	$window.alert("Error " + data + " (1020)");
-	  });
+	})
+	.error(function(data, status) {
+		$window.alert("Error " + data + " (1020)");
+	});
 
 	$scope.goToPage = function(url) {
 		console.log("GoToPage: " + url);
@@ -476,13 +480,13 @@ app.controller("myGroups", function($scope, $http, $window, $location, timeOutFa
 	var params = "?sessionId=" + getCookie("sessionId");
 
 	$http.get(timeOutFactory.getBackendUrl() + "/group/my" + params)
-	 .success(function(data, status) {
+	.success(function(data, status) {
 		$window.alert("Success " + data.actionId + " (1021)");
 		$scope.myGroups = data;
-	  })
-	  .error(function(data, status) {
-	 	$window.alert("Error " + data + " (1022)");
-	  });
+	})
+	.error(function(data, status) {
+		$window.alert("Error " + data + " (1022)");
+	});
 
 	$scope.goToPage = function(url) {
 		console.log("GoToPage: " + url);
@@ -494,13 +498,13 @@ app.controller("newGroups", function($scope, $http, $window, $location, timeOutF
 	var params = "?sessionId=" + getCookie("sessionId");
 
 	$http.get(timeOutFactory.getBackendUrl() + "/group/degisecekkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk/" + params)
-	 .success(function(data, status) {
+	.success(function(data, status) {
 		$window.alert("Success " + data.actionId + " (1023)");
 		$scope.newGroups = data;
-	  })
-	  .error(function(data, status) {
-	 	$window.alert("Error " + data + " (1024)");
-	  });
+	})
+	.error(function(data, status) {
+		$window.alert("Error " + data + " (1024)");
+	});
 
 	$scope.goToPage = function(url) {
 		console.log("GoToPage: " + url);
@@ -536,37 +540,73 @@ app.controller("theUser", function($scope, $http, $window, $location, timeOutFac
 });
 
 app.controller("updateGroup", function($scope, $http, $window, $location, timeOutFactory){
+	$scope.goToPage = function(url) {
+		console.log("GoToPage: " + url);
+		$location.path(url); };
+	
+
+		$scope.updateGroup = function(){
+			var params ="?sessionId=" + getCookie("sessionId")+
+						"&groupName=" + $scope.groupName +
+						"&groupDescription=" + $scope.groupDescription +
+						"&tag=" + $scope.tag;
+
+			  $http.get(timeOutFactory.getBackendUrl() + "no backend part yet" + params)
+			  .success(function(data, status) {
+			  	$window.alert("Success " + " (1035)");
+			  	$scope.myGroups = data;
+			  	$location.path("/myGroups");
+			  })
+			  .error(function(data, status) {
+			  	$window.alert("Error " + data + " (1036)");
+			  });
+		}
+});
+
+app.controller("updateEvent", function($scope, $http, $window, $location, timeOutFactory){
 	//var params = "?sessionId=" + getCookie("sessionId");
 
 	$scope.goToPage = function(url) {
 		console.log("GoToPage: " + url);
-		$location.path(url);
-
-
-	$scope.updateGroup = function(){
-
-		if(success){
-			//update code 
-		$location.path("/myGroups");
-		}
-		else{
-			//error code
-		}
-	}
+		$location.path(url); 
 	};
+
+
+		$scope.updateEvent = function(){
+
+			var params ="?sessionId=" + getCookie("sessionId") +
+						"&eventName=" + $scope.eventName +
+						"&eventDescription=" + $scope.eventDescription +
+						//"&startTime=" + $scope.startTime +
+						//"&endTime=" + $scope.endTime +
+						//"&invitedPeople=" + $scope.invitedPeople +
+						"&tag=" + JSON.stringify($scope.selectedTags) +
+						"&privacy=" + $scope.privacy;
+
+			  $http.get(timeOutFactory.getBackendUrl() + "no backend part yet" + params)
+			  .success(function(data, status) {
+			  	$window.alert("Success " + " (1035)");
+			  	$scope.myGroups = data;
+			  	$location.path("/myEvents");
+			  })
+			  .error(function(data, status) {
+			  	$window.alert("Error " + data + " (1036)");
+			  });
+		}
 });
+
 
 app.controller("friendsGroups", function($scope, $http, $window, $location, timeOutFactory){
 	var params = "?sessionId=" + getCookie("sessionId");
 
 	$http.get(timeOutFactory.getBackendUrl() + "/group/degisecekkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk/" + params)
-	 .success(function(data, status) {
+	.success(function(data, status) {
 		$window.alert("Success " + data.actionId + " (1025)");
 		$scope.friendsGroups = data;
-	  })
-	  .error(function(data, status) {
-	 	$window.alert("Error " + data + " (1026)");
-	  });
+	})
+	.error(function(data, status) {
+		$window.alert("Error " + data + " (1026)");
+	});
 
 
 	$scope.goToPage = function(url) {
@@ -579,13 +619,13 @@ app.controller("suggestedGroups", function($scope, $http, $window, $location, ti
 	var params = "?sessionId=" + getCookie("sessionId");
 
 	$http.get(timeOutFactory.getBackendUrl() + "/group/degisecekkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk/" + params)
-	 .success(function(data, status) {
+	.success(function(data, status) {
 		$window.alert("Success " + data.actionId + " (1027)");
 		$scope.suggestedGroups = data;
-	  })
-	  .error(function(data, status) {
-	 	$window.alert("Error " + data + " (1028)");
-	  });
+	})
+	.error(function(data, status) {
+		$window.alert("Error " + data + " (1028)");
+	});
 
 	$scope.goToPage = function(url) {
 		console.log("GoToPage: " + url);
@@ -597,13 +637,13 @@ app.controller("eventsInvited", function($scope, $http, $window, $location, time
 	var params = "?sessionId=" + getCookie("sessionId");
 
 	$http.get(timeOutFactory.getBackendUrl() + "/event/invited" + params)
-	 .success(function(data, status) {
+	.success(function(data, status) {
 		$window.alert("Success " + data.actionId + " (1029)");
 		$scope.eventsInvited = data;
-	  })
-	  .error(function(data, status) {
-	 	$window.alert("Error " + data + " (1030)");
-	  });
+	})
+	.error(function(data, status) {
+		$window.alert("Error " + data + " (1030)");
+	});
 
 
 	$scope.goToPage = function(url) {
@@ -649,12 +689,12 @@ app.factory("timeOutFactory", function($http){
 });
 
 app.factory('getProfile', function($http, timeOutFactory) {
-    var getData = function() {
-        return $http.get(timeOutFactory.getBackendUrl() + "/profile/get?sessionId=" + getCookie("sessionId")).then(function(result){
-            return result.data;
-        });
-    };
-    return { getData: getData };
+	var getData = function() {
+		return $http.get(timeOutFactory.getBackendUrl() + "/profile/get?sessionId=" + getCookie("sessionId")).then(function(result){
+			return result.data;
+		});
+	};
+	return { getData: getData };
 });
 
 // JS Functions
@@ -671,8 +711,8 @@ function getCookie(cname) {
 	var name = cname + "=";
 	var ca = document.cookie.split(';');
 	for(var i=0; i<ca.length; i++) {
-	var c = ca[i];
-	while (c.charAt(0)==' ') c = c.substring(1);
+		var c = ca[i];
+		while (c.charAt(0)==' ') c = c.substring(1);
 		if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
 	}
 	return "";
