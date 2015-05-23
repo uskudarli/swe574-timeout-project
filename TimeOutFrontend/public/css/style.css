@@ -1072,6 +1072,7 @@ div.notice{
 	padding: 5px;
 }
 
+
 div.notice img{
 	height: 30px;
     margin-right: 10px;
@@ -1131,11 +1132,17 @@ div.news{
 }
 
 div.news img{
-	border: 1px solid #ededed;
+    border: 1px solid #ededed;
     border-radius: 3px;
-    height: 50px;
+    height: 40px;
     margin-right: 10px;
-    width: 50px;
+    width: 40px;
+}
+
+div.news p{
+    float: left;
+    font-size: 12px;
+    margin-top: 6px !important;
 }
 
 p.news-title{
