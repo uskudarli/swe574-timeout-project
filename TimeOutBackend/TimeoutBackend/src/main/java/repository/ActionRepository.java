@@ -156,17 +156,19 @@ public class ActionRepository {
 	public void insertTags(String tagString, User creator, Action action) {
 		if (tagString == null || tagString == "")
 			return;
-		
+
 		Gson gson = new Gson();
 		Type listType = new TypeToken<ArrayList<Tag>>() {
 		}.getType();
 		ArrayList<Tag> tagList = gson.fromJson(tagString, listType);
-
+		
 		for (Tag tag : tagList) {
 			List<Tag> results = getTagsFromTagNameAndContextId(tag);
-			
+
 			if (results == null || results.size() < 1) {
-				em.persist(tag);
+				tag = em.merge(tag);
+			} else {
+				tag = results.get(0);
 			}
 
 			insertActionTags(tag, action);
