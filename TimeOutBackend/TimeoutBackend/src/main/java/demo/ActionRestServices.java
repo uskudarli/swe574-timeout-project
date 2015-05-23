@@ -20,6 +20,7 @@ import common.BusinessException;
 import common.DBUtility;
 import common.ResponseHeader;
 import dto.ActionDTO;
+import dto.ActionMemberDTO;
 import entity.Action;
 import entity.User;
 import enums.ActionType;
@@ -324,7 +325,7 @@ public class ActionRestServices {
             HttpServletResponse resp) {
 		EntityManager em = ServiceHelper.initialize(resp);
 		
-		List<Action> newActions;
+		List<ActionMemberDTO> newActions;
 		try {
 			User user = ServiceHelper.getSessionUser(em, sessionId);
 			ActionRepository ar = new ActionRepository(em);
@@ -346,7 +347,7 @@ public class ActionRestServices {
             HttpServletResponse resp) {
 		EntityManager em = ServiceHelper.initialize(resp);
 		
-		List<Action> newActions;
+		List<ActionMemberDTO> newActions;
 		try {
 			User user = ServiceHelper.getSessionUser(em, sessionId);
 			ActionRepository ar = new ActionRepository(em);

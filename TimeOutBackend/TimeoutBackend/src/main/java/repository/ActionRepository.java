@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import dto.ActionDTO;
+import dto.ActionMemberDTO;
 import entity.Action;
 import entity.ActionTag;
 import entity.ActionUser;
@@ -221,18 +222,35 @@ public class ActionRepository {
 		}
 	}
 
-	public List<Action> getNewActions(String actionType) {
+	public List<ActionMemberDTO> getNewActions(String actionType) {
 		String hql = "FROM Action A order by A.actionId desc ";
 		Query query = em.createQuery(hql);
 		query.setMaxResults(30);
 
+		MembersRepository mr = new MembersRepository(em);
 		List<Action> actions = query.getResultList();
+		List<ActionMemberDTO> results = new ArrayList<ActionMemberDTO>();
 		
 		for (int i = 0; i < actions.size(); i++){
 			if (!actions.get(i).getActionType().equals(actionType)){
 				actions.remove(i);
 			}
 		}
-		return actions;
+		
+		for (int i = 0; i < actions.size(); i++){
+			Action action = actions.get(i);
+			ActionMemberDTO actionMemberDTO = new ActionMemberDTO();
+			actionMemberDTO.setAction(action);
+			
+			List<ActionUser> actionUsers = mr.getMembersOfAction(action);
+			List<User> users = new ArrayList<User>();
+			for (ActionUser item : actionUsers){
+				users.add(item.getUser()); 
+			}
+			actionMemberDTO.setUsers(users);
+			actionMemberDTO.setCount(users.size());
+			results.add(actionMemberDTO);
+		}
+		return results;
 	}
 }
