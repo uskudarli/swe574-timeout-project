@@ -104,6 +104,31 @@ div.righttop{
     margin: 60px 0 0 20px !important;
 }
 
+.userDetail{
+    float: left;
+}
+
+.userDetail table{
+    float: left;
+    margin-left: 20px;
+}
+
+.userDetail table tr{
+    border-bottom: 1px solid #ededed;
+}
+
+.userDetail table tr td{
+    color: #666;
+    float: left;
+    margin: 10px 0;
+    width: 420px;
+}
+
+.userDetail table tr td:first-child{
+    font-weight: bold;
+    width: 200px;
+}
+
 .groupTitle button img{
     border: medium none;
     float: left;
@@ -566,9 +591,19 @@ label {
 }
 
 #search-button{
-	width:500px;
-	padding-top: 17px;
-	margin: 30px 0 0 130px;
+	float: left;
+    margin: 30px 0 0 128px;
+    padding-top: 17px;
+    width: 210px;
+}
+.searchBtn{
+    float: left;
+    height: 30px !important;
+    margin: 42px 0 0 -1px !important;
+}
+
+.searchInput{
+    font-size: 10px !important;
 }
 
 .searchInput{
