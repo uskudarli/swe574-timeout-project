@@ -41,17 +41,39 @@
 
                 <!-- Event List start-->
                 <div class="myEventList" ng-repeat="event in myEvents">
-                    <div class="eventActionId">{{event.actionId}}</div>
                     <div class="eventName">{{event.name}}</div>
                     <div class="eventNumber">{{event.count}}</div>
+                    <div align="right">
+                        <div class="iconDelUp delete" ng-click=""></div>
+                        <p class="division">|</p>
+                        <div class="iconDelUp update" ng-click="goToPage('/updateEvent')"></div>
+                    </div>
                 </div>
                 <!-- Event List end-->
 
                 <!-- No event alert start-->
-                <div class="noEvent" ng-show="eventsInvited == 'empty'">
+                <div border="0" width="380" id="myexample" style="border:3px solid gray; border-radius:5px; padding:5px;" class="noEvent" ng-show="myEvents">
                     Sorry, no related events have been found.
                 </div>
                 <!-- No event alert end-->
+
+          
+                <!-- No event fancy border javascript code start-->
+                <script language="JavaScript1.2">
+                    var speed=500
+                    function flashit(){
+                    var crosstable=document.getElementById? document.getElementById("myexample") : document.all? document.all.myexample : ""
+                    if (crosstable){
+                    if (crosstable.style.borderColor.indexOf("gray")!=-1)
+                    crosstable.style.borderColor="#008FD5"
+                    else
+                    crosstable.style.borderColor="gray"
+                    }
+                    }
+                    setInterval("flashit()", speed)
+                </script> 
+                <!-- No event fancy border javascript code end-->
+
 
             </fieldset>
         </div>

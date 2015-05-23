@@ -621,7 +621,6 @@ label {
     padding-left: 12px !important;
     width: 40px !important;
 }
-
 .searchInput{
     font-size: 12px !important;
 }
@@ -1231,7 +1230,37 @@ footer {
 
 .iconDelUp{
     float: right;
-    width:25px;
-    height: 25px;
+}
+
+.update{
+    background: rgba(0,0,0,0) url('images/update.jpg') repeat scroll 0 0;
+    width:23px;
+    height: 26px;
+    margin-right: 10px;
+}
+
+.delete{
+    background: rgba(0,0,0,0) url('images/delete.jpg') repeat scroll 0 0;
+    width:32px;
+    height: 26px;
     margin-right: 20px;
+}
+
+.update:hover{
+    background: rgba(0,0,0,0) url('images/update.jpg') repeat scroll -25px 0;
+    width:23px;
+    height: 26px;
+    margin-right: 10px;
+}
+
+.delete:hover{
+    background: rgba(0,0,0,0) url('images/delete.jpg') repeat scroll -33px 0;
+    width:32px;
+    height: 26px;
+    margin-right: 20px;
+}
+
+.right{
+    float: right;
+    margin-right: 30px;
 }

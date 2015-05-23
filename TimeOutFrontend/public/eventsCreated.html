@@ -40,13 +40,13 @@
                 <legend>Your Events</legend>
 
                 <!-- Event List start-->
-                <div class="myEventList"  ng-repeat="event in eventsCreated" >
-                    <div class="eventName"><!-- {{event.name}} --></div>
-                    <div class="eventNumber"><!-- {{event.count}} --></div>
+                <div class="myEventList" ng-repeat="event in myEventList">
+                    <div class="eventName">{{event.name}}</div>
+                    <div class="eventNumber">{{event.count}}</div>
                     <div align="right">
-                        <img class="iconDelUp" ng-click="goToPage('/updateEvent')" src="images/delete.png" />
+                        <div class="iconDelUp delete" ng-click=""></div>
                         <p class="division">|</p>
-                        <img class="iconDelUp" style="margin-right:10px !important;" ng-click="" src="images/update.png" />
+                        <div class="iconDelUp update" ng-click="goToPage('/updateEvent')"></div>
                     </div>
                 </div>
                 <!-- Event List end-->
