@@ -1,6 +1,7 @@
 package demo;
 
 import helpers.ServiceHelper;
+import helpers.ValidationHelper;
 
 import java.util.Date;
 import java.util.List;
@@ -44,6 +45,8 @@ public class ActionRestServices {
 		Action action;
 		try {
 			User creator = ServiceHelper.getSessionUser(em, sessionId);
+			ValidationHelper.validateEvent(eventName);
+			
 			Date startTime = ServiceHelper.dateParser(startTimeString);
 			Date endTime = ServiceHelper.dateParser(endTimeString);
 			
@@ -89,6 +92,7 @@ public class ActionRestServices {
 		Action action;
 		try {
 			User creator = ServiceHelper.getSessionUser(em, sessionId);
+			ValidationHelper.validateGroup(groupName);
 			
 			action = new Action(groupName, groupDescription,
 					ActionType.GROUP.toString());

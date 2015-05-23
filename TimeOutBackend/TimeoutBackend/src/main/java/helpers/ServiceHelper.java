@@ -69,8 +69,15 @@ public class ServiceHelper {
     public static <T> ArrayList<T> parseListFromJsonString(String jsonString){
     	Gson gson = new Gson();
     	Type listType = new TypeToken<ArrayList<T>>() {}.getType();
-    	ArrayList<T> ActionIdList = gson.fromJson(jsonString, listType);
-		return ActionIdList;
+    	ArrayList<T> t = gson.fromJson(jsonString, listType);
+		return t;
+    }
+    
+    public static <T> T parseObjectFromJsonString(String jsonString){
+    	Gson gson = new Gson();
+    	Type type = new TypeToken<T>() {}.getType();
+    	T t = gson.fromJson(jsonString, type);
+		return t;
     }
     
 }

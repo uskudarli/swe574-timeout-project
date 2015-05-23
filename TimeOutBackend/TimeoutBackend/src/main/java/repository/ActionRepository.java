@@ -1,5 +1,7 @@
 package repository;
 
+import helpers.ServiceHelper;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -155,10 +157,7 @@ public class ActionRepository {
 		if (tagString == null || tagString == "")
 			return;
 		
-		Gson gson = new Gson();
-		Type listType = new TypeToken<ArrayList<Tag>>() {
-		}.getType();
-		ArrayList<Tag> tagList = gson.fromJson(tagString, listType);
+		ArrayList<Tag> tagList = ServiceHelper.parseListFromJsonString(tagString);
 		
 		for (Tag tag : tagList) {
 			List<Tag> results = getTagsFromTagNameAndContextId(tag);

@@ -1,5 +1,6 @@
 package repository;
 
+import helpers.ServiceHelper;
 import helpers.ValidationHelper;
 
 import java.lang.reflect.Type;
@@ -38,13 +39,7 @@ public class MembersRepository {
 		if (ValidationHelper.isNullOrWhitespace(invitedPeopleString))
 			return;
 
-		List<Integer> invitedPeople = null;
-		Gson gson = new Gson();
-
-		Type listType = new TypeToken<ArrayList<Integer>>() {
-		}.getType();
-
-		invitedPeople = gson.fromJson(invitedPeopleString, listType);
+		List<Integer> invitedPeople = ServiceHelper.parseListFromJsonString(invitedPeopleString);
 
 		for (int i = 0; i < invitedPeople.size(); i++) {
 
@@ -59,5 +54,18 @@ public class MembersRepository {
 			em.persist(actionUser);
 		}
 
+	}
+
+	public void acceptInvitation(User user, Action action) {
+		Query query = em
+				.createQuery("FROM ActionUser AU WHERE AU.user = :user AND"
+						+ "AU.action = :action");
+		query
+		.setParameter("user", user)
+		.setParameter("action", action);
+		
+		ActionUser actionUser =  (ActionUser) query.getSingleResult();
+		actionUser.setActionUserStatus(ActionUserStatus.MEMBER);
+		em.persist(actionUser);
 	}
 }

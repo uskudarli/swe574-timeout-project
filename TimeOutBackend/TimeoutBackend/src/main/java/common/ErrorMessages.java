@@ -17,5 +17,9 @@ public class ErrorMessages {
 	public static String roleInvalidCode = "E106";
 	public static String roleInvalid = "Role is invalid";
 	public static String inviteFriendFailCode = "E107";
-	public static String inviteFriendFail = "Friend invite unsuccessful";
+	public static String inviteFriendFail = "Friend invite unsuccessful.";
+	public static String eventNameEmptyCode = "E108";
+	public static String eventNameEmpty = "Event name is empty";
+	public static String groupNameEmptyCode = "E109";
+	public static String groupNameEmpty = "Group name is empty";
 }
