@@ -1,5 +1,4 @@
 <section>
-    
     <!-- Top Middle Menu start-->
 	<div class="menu">
 		<ul>
@@ -18,12 +17,12 @@
 
     <!-- Middle Column start-->
 	<div class="midcolumn">
-		<div class="group-creation">	 
+		<div class="group-creation">
             <fieldset>
             <legend>Create Group</legend>
 
                 <!-- Create Group Form start-->
-                <form ng-submit="createGroup()">
+                <form>
                     <label style="width: 150px">Group name: </label>
                     <input type="text" name="groupName" size="30" ng-model="groupName" > </input><br><br>
 
@@ -53,9 +52,9 @@
 
                       <input type="checkbox" name="isPublic" ng-model="privacy"
                     ng-true-value="'true'" ng-false-value="'false'" ></input>
-                    <label>Public to all  </label> <br>
+                    <label style="width: 150px">Public to all</label><br>
 
-                    <button class="btn btn-primary" type="submit">Create</button>
+                    <button class="btn btn-primary" type="button" ng-click="createGroup()">Create</button>
                     <button class="btn btn-primary" type="reset">Reset</button>
                 </form>
                 <!-- Create Group Form end-->
