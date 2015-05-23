@@ -57,8 +57,8 @@ public class ActionRepository {
 		return returnVal;
 	}
 
-	public void insertAction(Action action) {
-		em.persist(action);
+	public Action insertAction(Action action) {
+		return em.merge(action);
 	}
 
 	public void insertCreator(User creatorUser, Action action) {

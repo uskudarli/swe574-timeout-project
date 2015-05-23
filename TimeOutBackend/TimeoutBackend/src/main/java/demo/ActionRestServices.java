@@ -1,21 +1,5 @@
 package demo;
 
-import helpers.ServiceHelper;
-import helpers.ValidationHelper;
-
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import repository.ActionRepository;
-import repository.MembersRepository;
 import common.BusinessException;
 import common.DBUtility;
 import common.ResponseHeader;
@@ -24,6 +8,19 @@ import dto.ActionMemberDTO;
 import entity.Action;
 import entity.User;
 import enums.ActionType;
+import helpers.ServiceHelper;
+import helpers.ValidationHelper;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import repository.ActionRepository;
+import repository.MembersRepository;
+
+import javax.persistence.EntityManager;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
+import java.util.List;
 
 @RestController
 public class ActionRestServices {
@@ -47,7 +44,7 @@ public class ActionRestServices {
 		try {
 			User creator = ServiceHelper.getSessionUser(em, sessionId);
 			ValidationHelper.validateEvent(eventName);
-			
+
 			Date startTime = ServiceHelper.dateParser(startTimeString);
 			Date endTime = ServiceHelper.dateParser(endTimeString);
 			
@@ -57,7 +54,7 @@ public class ActionRestServices {
 			
 			ActionRepository ar = new ActionRepository(em);
 			MembersRepository mr = new MembersRepository(em);
-			ar.insertAction(action);
+			action = ar.insertAction(action);
 
 			ar.insertCreator(creator, action);
 
@@ -101,7 +98,7 @@ public class ActionRestServices {
 
 			ActionRepository ar = new ActionRepository(em);
 			MembersRepository mr = new MembersRepository(em);
-			ar.insertAction(action);
+			action = ar.insertAction(action);
 
 			ar.insertCreator(creator, action);
 			
