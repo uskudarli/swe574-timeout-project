@@ -99,6 +99,7 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 	// For logging
 	$scope.searchText = [];
 	$scope.searchContextUrl = timeOutFactory.getBackendUrl() + '/searchContext?tag=';
+	$scope.profile = timeOutFactory.getProfile();
 
 	// Get sessionId from backend by calling login rest api, then set sessionId cookie
 	$scope.doLogin = function() {
@@ -110,14 +111,23 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 		  .success(function(data, status) {
 		    if(data.type == "Success") {
 				setCookie("sessionId", data.sessionId, 60);
+
+				$http.get(timeOutFactory.getBackendUrl() + "/profile/get?sessionId=" + data.sessionId)
+					  .success(function(data, status) {
+					    timeOutFactory.setProfile(data);
+					    console.log("Profile data = " + JSON.stringify(data));
+					  })
+					  .error(function(data, status) {
+					 	$window.alert("No profile data has been found!!!" + " (1031)");
+					  });
+
 				$location.path("/home");
-				$scope.email = $scope.userEmail;
 		    } else {
-		    	$window.alert(data.type + ": " + data.message + "(1001)");
+		    	$window.alert(data.type + ": " + data.message + " (1001)");
 		    }
 		  })
 		  .error(function(data, status) {
-			$window.alert("Specified username or password do not match with the records!!!" + "(1002)");
+			$window.alert("Specified username or password do not match with the records!!!" + " (1002)");
 		  });
 	};
 
@@ -161,40 +171,44 @@ app.controller("mainController", function($scope, $http, $location, $window, tim
 		// validate();
 
 		// validate if email is unique
-		/*var emailOk = "";
+		var emailOk = "";
 		$http.get(timeOutFactory.getBackendUrl() + "/email/isAvailable")
 			.success(function(data){
-				if (data.type=="success") {
-					emailOk =="success";
+				if (data.type == "Success") {
+					emailOk == "success";
+				} else {
+					$window.alert(data.message + " (1034)");
+					return;
 				}
 			})
 			.error(function(data){
-				$window.alert("An error occurred ()" + "(1003)");
-			})*/
+				$window.alert("An error occurred ()" + " (1003)");
+			})
 
 		// Parameters for register is adjusted and password is encrypted with MD5 hash
 		var params = "?userEmail=" + $scope.email + "&password=" + md5.createHash($scope.sigUpPassword);
-		params = params +"&firstName=" + $scope.name + "&lastName=" + $scope.lastName + "&role=" + $scope.role;
+		params = params + "&firstName=" + $scope.name + "&lastName=" + $scope.lastName + "&role=" + $scope.role;
 
 		// register api of backend is called
 		$http.get(timeOutFactory.getBackendUrl() + "/register" + params)
-		  // if register api call is successful
-		  .success(function(data, status) {
-		    if(data.type == "Success") {
-		    	$window.alert("Welcome among us, you can now log in!" + "(1004)");
-		    	$scope.name = "";
-		    	$scope.lastName = "";
-		    	$scope.email = "";
-		    	$scope.reEmail = "";
-		    	$scope.sigUpPassword = "";
-		    	$scope.rePassword = "";
-		    }
-		  })
-
-		  // if register api call is unsuccessful
-		.error(function(data, status) {
-		 	$window.alert(JSON.stringify(data) + "(1005)");
-		  });
+			// if register api call is successful
+			.success(function(data, status) {
+				if(data.type == "Success") {
+					$window.alert("Welcome among us, you can now log in!" + " (1004)");
+					$scope.name = "";
+					$scope.lastName = "";
+					$scope.email = "";
+					$scope.reEmail = "";
+					$scope.sigUpPassword = "";
+					$scope.rePassword = "";
+				} else {
+					$window.alert(data.message + " (1033)");
+				}
+			})
+			// if register api call is unsuccessful
+			.error(function(data, status) {
+				$window.alert(JSON.stringify(data) + " (1005)");
+			});
 	};
 });
 
@@ -204,11 +218,11 @@ app.controller("homeController", function($scope, $http, $window, $location, tim
 
 	$http.get(timeOutFactory.getBackendUrl() + '/' + params)
 	 .success(function(data, status) {
-		$window.alert("Success " + data.actionId + "(1006)");
+		$window.alert("Success " + data.actionId + " (1006)");
 		$scope.eventsInvited = data;
 	  })
 	  .error(function(data, status) {
-	 	console.log("Error " + data);
+	 	console.log("Error " + data + " (1032)");
 	  });
 
 
@@ -246,7 +260,7 @@ app.controller("searchController", function($scope, $http, $location, $window, t
 	    console.log(JSON.stringify(data));
 	  })
 	  .error(function(data, status) {
-	 	$window.alert("No records have been found!!!" + "(1007)");
+	 	$window.alert("No records have been found!!!" + " (1007)");
 	  });
 });
 
@@ -255,17 +269,15 @@ app.controller("profileEdit", function($scope, $http, $window, $location, timeOu
 
 	var params = "?sessionId=" + getCookie("sessionId");
 
-	$http({method: "GET",  url: timeOutFactory.getBackendUrl() + "/profile/get" + params})
+	$http.get(timeOutFactory.getBackendUrl() + "/profile/get" + params)
 	  .success(function(data, status) {
 	    $scope.email = data.userName;
 	    $scope.password = data.password;
 	    console.log(JSON.stringify(data));
 	  })
 	  .error(function(data, status) {
-	 	$window.alert("No records have been found!!!" + "(1008)");
+	 	$window.alert("No records have been found!!!" + " (1008)");
 	  });
-
-
 
 	$("#imgInp").change(function(){
 		readURL(this);
@@ -299,10 +311,10 @@ app.controller("profileEdit", function($scope, $http, $window, $location, timeOu
 
 		$http.get(timeOutFactory.getBackendUrl() + "/profile/edit" + paramsEdit)
 			.success(function(data, status) {
-				$window.alert("Success " + data.actionId) + "(1009)";
+				$window.alert("Success " + data.actionId) + " (1009)";
 			})
 			.error(function(data, status) {
-				$window.alert("Error " + data + "(1010)");
+				$window.alert("Error " + data + " (1010)");
 			});
 	};
 
@@ -339,14 +351,14 @@ app.controller("createEvent", function($scope, $http, $window, $location, $filte
 		var endDate = convertDate($scope.endTime);
 
 		if (startDate > endDate) {
-			$window.alert("Start time should not be later than end time!!!" + "(1011)");
+			$window.alert("Start time should not be later than end time!!!" + " (1011)");
 			return;
 		}
 		if ($scope.eventName == undefined || $scope.eventName == "" ||
 			$scope.eventDescription == undefined || $scope.eventDescription == "" ||
 			$scope.startTime == undefined || $scope.startTime == "" ||
 			$scope.endTime == undefined || $scope.endTime == "") {
-			$window.alert("Please fill required fields which have *!!!" + "(1012)");
+			$window.alert("Please fill required fields which have *!!!" + " (1012)");
 		} else {
 			var params = "?sessionId=" + getCookie("sessionId");
 			params += "&eventName=" + $scope.eventName +
@@ -359,10 +371,10 @@ app.controller("createEvent", function($scope, $http, $window, $location, $filte
 
 			$http.get(timeOutFactory.getBackendUrl() + "/event/create" + params)
 			 .success(function(data, status) {
-				$window.alert("Success " + data.actionId + "(1013)");
+				$window.alert("Success " + data.actionId + " (1013)");
 			  })
 			  .error(function(data, status) {
-			 	$window.alert("Error " + data + "(1014)");
+			 	$window.alert("Error " + data + " (1014)");
 			  });
 		}
 	};
@@ -393,10 +405,10 @@ app.controller("createGroup", function($scope, $http, $window, $location, timeOu
 
 		$http.get(timeOutFactory.getBackendUrl() + "/group/create" + params)
 		 .success(function(data, status) {
-			$window.alert("Success " + "(1015)");
+			$window.alert("Success " + " (1015)");
 		  })
 		  .error(function(data, status) {
-		 	$window.alert("Error " + data + "(1016)");
+		 	$window.alert("Error " + data + " (1016)");
 		  });
 	};
 });
@@ -420,7 +432,7 @@ app.controller("myEvents", function($scope, $http, $window, $location, timeOutFa
 		$scope.myEvents = data;
 	  })
 	  .error(function(data, status) {
-	 	$window.alert("Error " + data + "(1017)");
+	 	$window.alert("Error " + data + " (1017)");
 	  });
 
 	$scope.goToPage = function(url) {
@@ -437,7 +449,7 @@ app.controller("eventsCreated", function($scope, $http, $location, timeOutFactor
 		$scope.eventsCreated = data;
 	  })
 	  .error(function(data, status) {
-	 	$window.alert("Error " + data + "(1018)");
+	 	$window.alert("Error " + data + " (1018)");
 	  });
 
 	$scope.goToPage = function(url) {
@@ -451,12 +463,12 @@ app.controller("eventsInvited", function($scope, $http, $window, $location, time
 
 	$http.get(timeOutFactory.getBackendUrl() + "/event/invited" + params)
 	 .success(function(data, status) {
-		$window.alert("Success " + data.actionId + "(1019)");
+		$window.alert("Success " + data.actionId + " (1019)");
 		$scope.eventsInvited = data;
 		console.log(data);
 	  })
 	  .error(function(data, status) {
-	 	$window.alert("Error " + data + "(1020)");
+	 	$window.alert("Error " + data + " (1020)");
 	  });
 
 	$scope.goToPage = function(url) {
@@ -470,11 +482,11 @@ app.controller("myGroups", function($scope, $http, $window, $location, timeOutFa
 
 	$http.get(timeOutFactory.getBackendUrl() + "/group/my" + params)
 	 .success(function(data, status) {
-		$window.alert("Success " + data.actionId + "(1021)");
+		$window.alert("Success " + data.actionId + " (1021)");
 		$scope.myGroups = data;
 	  })
 	  .error(function(data, status) {
-	 	$window.alert("Error " + data + "(1022)");
+	 	$window.alert("Error " + data + " (1022)");
 	  });
 
 	$scope.goToPage = function(url) {
@@ -488,11 +500,11 @@ app.controller("newGroups", function($scope, $http, $window, $location, timeOutF
 
 	$http.get(timeOutFactory.getBackendUrl() + "/group/degisecekkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk/" + params)
 	 .success(function(data, status) {
-		$window.alert("Success " + data.actionId + "(1023)");
+		$window.alert("Success " + data.actionId + " (1023)");
 		$scope.newGroups = data;
 	  })
 	  .error(function(data, status) {
-	 	$window.alert("Error " + data + "(1024)");
+	 	$window.alert("Error " + data + " (1024)");
 	  });
 
 	$scope.goToPage = function(url) {
@@ -554,11 +566,11 @@ app.controller("friendsGroups", function($scope, $http, $window, $location, time
 
 	$http.get(timeOutFactory.getBackendUrl() + "/group/degisecekkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk/" + params)
 	 .success(function(data, status) {
-		$window.alert("Success " + data.actionId + "(1025)");
+		$window.alert("Success " + data.actionId + " (1025)");
 		$scope.friendsGroups = data;
 	  })
 	  .error(function(data, status) {
-	 	$window.alert("Error " + data + "(1026)");
+	 	$window.alert("Error " + data + " (1026)");
 	  });
 
 
@@ -573,11 +585,11 @@ app.controller("suggestedGroups", function($scope, $http, $window, $location, ti
 
 	$http.get(timeOutFactory.getBackendUrl() + "/group/degisecekkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk/" + params)
 	 .success(function(data, status) {
-		$window.alert("Success " + data.actionId + "(1027)");
+		$window.alert("Success " + data.actionId + " (1027)");
 		$scope.suggestedGroups = data;
 	  })
 	  .error(function(data, status) {
-	 	$window.alert("Error " + data + "(1028)");
+	 	$window.alert("Error " + data + " (1028)");
 	  });
 
 	$scope.goToPage = function(url) {
@@ -591,11 +603,11 @@ app.controller("eventsInvited", function($scope, $http, $window, $location, time
 
 	$http.get(timeOutFactory.getBackendUrl() + "/event/invited" + params)
 	 .success(function(data, status) {
-		$window.alert("Success " + data.actionId + "(1029)");
+		$window.alert("Success " + data.actionId + " (1029)");
 		$scope.eventsInvited = data;
 	  })
 	  .error(function(data, status) {
-	 	$window.alert("Error " + data + "(1030)");
+	 	$window.alert("Error " + data + " (1030)");
 	  });
 
 
@@ -613,6 +625,7 @@ app.factory("timeOutFactory", function(){
 	// var backendUrl = " http://localhost:8080";
 	var backendUrl = "http://timeout5746.appspot.com";
 	var searchText = [];
+	var profile = {};
 
 	timeOutFactory.getLists = function(){
 		return lists;
@@ -637,6 +650,14 @@ app.factory("timeOutFactory", function(){
 	timeOutFactory.setSearchText = function(text){
 		searchText = text;
 	};
+
+	timeOutFactory.setProfile = function(profileObj){
+		profile = profileObj;
+	}
+
+	timeOutFactory.getProfile = function(){
+		return profile;
+	}
 
 	return timeOutFactory;
 });

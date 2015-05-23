@@ -37,7 +37,6 @@
         <label>Password:  </label>
         <input type="password" name="password" size="30" ng-model="password" required> </input><br><br>
         <label>Photo</label>
-        
 
         <!-- Lightbox button code end-->
         <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='block';document.getElementById('fade').style.display='block'">
@@ -47,7 +46,6 @@
           <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'">
             <div class="closeLightbox">X</div>
           </a>
-
 
           <!--Inside lightbox start-->
           <div class="group-creation">
@@ -61,12 +59,9 @@
           </div>
           <!--Inside lightbox end-->
 
-
         </div>
         <div id="fade" class="black_overlay"></div>
         <!-- Lightbox button code end-->
-
-
 
         <label>GSM:  </label>
         <input type="text" name="gsm" size="30" ng-model="Gsm"> </input><br><br>
@@ -75,18 +70,18 @@
         <input type="text" name="address" size="50" ng-model="address"> </input><br><br>
 
         <label>Birthdate: </label>
-                    <div id="Bdate" class="input-append date">
-                        <input type="text" ng-model="birthdate"></input>
-                        <span class="add-on">
-                            <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
-                        </span>
-                    </div><br>
+        <div id="Bdate" class="input-append date">
+            <input type="text" ng-model="birthdate"></input>
+            <span class="add-on">
+                <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+            </span>
+        </div><br>
 
-                    <script type="text/javascript">
-                        $('#Bdate').datetimepicker({
-                           pickTime : false
-                        });
-                    </script>
+        <script type="text/javascript">
+            $('#Bdate').datetimepicker({
+               pickTime : false
+            });
+        </script>
 
         <label>About me:  </label>
         <textarea name="about" rows="6" cols="50" ng-model="about"></textarea><br><br>
@@ -98,14 +93,12 @@
         <label >Gender:  </label>
         <select name="gender" ng-model="gender">
           <option ng-repeat="item in genderOption">{{item}}</option>
-          
         </select> <br><br>
         <p>You have selected {{gender}}</p>
 
         <label >Languages:  </label>
         <select name="language" ng-model="languages" multiple>
           <option ng-repeat="item in selectedLanguage">{{item}}</option>
-         
         </select> <br><br>
         <p>You have selected: {{languages}}</p>
 
