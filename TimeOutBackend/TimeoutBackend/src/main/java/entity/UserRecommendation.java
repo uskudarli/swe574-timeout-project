@@ -27,12 +27,12 @@ public class UserRecommendation {
 	@GenericGenerator(name = "incrementUserRecommendation", strategy = "increment")
 	private int userRecommendationId;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "userId", insertable=false, updatable=false)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "userId")
 	private User userRecommended1;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "userId", insertable=false, updatable=false)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "recommendedUserId")
 	private User userRecommended2;
 
 	private char status;
