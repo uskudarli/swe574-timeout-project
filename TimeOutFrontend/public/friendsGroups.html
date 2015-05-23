@@ -43,31 +43,51 @@
                 <legend>Friends' Groups</legend>
 
                 <!-- Group List start-->
-                <div class="myGroupList">
-                    <div class="groupName"></div>
-                    <div class="groupFriends"><a href="#"></a>,</div> 
-                    <div class="groupFriends">and <a class="otherFriends" href="#">{{group.friendList.count-3}} others</a> in this group.</div>
-                    <div class="others"> Ali Köftehor<br />Veli Patlıcan<br />Ayşe Kızartma<br />Fatma Mercimek<br />Murat Şehriye</div>
-                </div>
-
-                <div class="myGroupList" ng-repeat="group in friendsGroups">
-                    <a href="" ng-click="goToPage('/theGroup')"><div class="groupName">{{group.name}}</div></a>
-                    <div class="friendsInfo">
+                 <div class="myGroupList" ng-repeat="group in friendsGroups">
+                    <a href="" ng-click="goToPage('/theGroup')">
+                        <div class="groupName">{{group.name}}</div>
+                    </a>
+                    <div class="whoIsIn">
                         <div class="groupFriends" ng-repeat="friend in group.friendList | limitTo: 3">
                             <a href="#">{{friend.name}}</a>
-                            <span>,</span> 
-                        </div>
-                        <span> and </span>
-                        <div class="otherFriends">
-                                {{group.friendList.count-3}} others
-                                <div class="others" ng-repeat="friend in group.friendList">{{friend.name}} <br /></div>
+                            <span>,</span>
                         </div> 
-                        <span>in this group.</span>
+                        <div class="groupFriends">and 
+                            <a class="otherFriends" href="" ng-show="group.friendList.count>3">
+                                {{group.friendList.count-3}} others
+                                <div class="others" ng-repeat="friend in group.friendList"> 
+                                    {{friend.name}} <br />
+                                </div>
+                            </a> 
+                            in this group.
+                        </div>
                     </div>
                 </div>
-                <!-- Group List end-->
-
             </div>
+
+            <!-- No group alert start-->
+            <div border="0" width="380" id="myexample" style="border:3px solid gray; border-radius:5px; padding:5px;" class="noEvent" ng-show="friendsGroups">
+                Sorry, no related events have been found.
+            </div>
+            <!-- No event alert end-->
+
+      
+            <!-- No event fancy border javascript code start-->
+            <script language="JavaScript1.2">
+                var speed=500
+                function flashit(){
+                var crosstable=document.getElementById? document.getElementById("myexample") : document.all? document.all.myexample : ""
+                if (crosstable){
+                if (crosstable.style.borderColor.indexOf("gray")!=-1)
+                crosstable.style.borderColor="#008FD5"
+                else
+                crosstable.style.borderColor="gray"
+                }
+                }
+                setInterval("flashit()", speed)
+            </script> 
+            <!-- No group fancy border javascript code end-->
+
         </fieldset>
     </div>
     <!-- Middle Column end-->

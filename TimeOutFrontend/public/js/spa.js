@@ -88,7 +88,6 @@ app.config(function($routeProvider) {
 	.otherwise({redirectTo: '/'});
 });
 
-
 // To avoid see any pages without login.
 app.run(function($rootScope, $location, $window) {
 	$rootScope.$on( "$routeChangeStart", function(event, next, current) {
@@ -115,6 +114,44 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 		.success(function(data, status) {
 			if(data.type == "Success") {
 				setCookie("sessionId", data.sessionId, 60);
+				$scope.getProfile();
+
+				// Trigger backend to run insert recommendation
+				$http.get(timeOutFactory.getBackendUrl() + "/insertRecommendation?sessionId=" + data.sessionId)
+					.success(function(data, status) {
+						console.log("Insert recommentation has been called (1036)");
+					});
+
+				// Get event notification for user
+				$http.get(timeOutFactory.getBackendUrl() + '/getEventRecommendation?sessionId=' + data.sessionId)
+					.success(function(data, status) {
+						$scope.eventRecommendation = data;
+						console.log("Event recommendation " + JSON.stringify(data));
+				  	})
+				  	.error(function(data, status) {
+				 		console.log("Error " + data.message + " (1037)");
+				  	});
+
+				// Get group notification for user
+				$http.get(timeOutFactory.getBackendUrl() + '/getGroupRecommendation?sessionId=' + data.sessionId)
+					.success(function(data, status) {
+						$scope.groupRecommendation = data;
+						console.log("Group recommendation " + JSON.stringify(data));
+				  	})
+				  	.error(function(data, status) {
+				 		console.log("Error " + data.message + " (1037)");
+				  	});
+
+				// Get event notification for user
+				$http.get(timeOutFactory.getBackendUrl() + '/getUserRecommendation?sessionId=' + data.sessionId)
+					.success(function(data, status) {
+						$scope.userRecommendation = data;
+						console.log("User recommendation " + JSON.stringify(data));
+				  	})
+				  	.error(function(data, status) {
+				 		console.log("Error " + data.message + " (1037)");
+				  	});
+
 				$location.path("/home");
 			} else {
 				$window.alert(data.type + ": " + data.message + " (1001)");
@@ -142,6 +179,16 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 	$scope.isCookieSet = function() {
 		return getCookie("sessionId") != undefined && getCookie("sessionId") != "";
 	};
+
+	// Gets profile and keeps it in the scope
+	$scope.getProfile = function() {
+		if($scope.profileInfo == null && getCookie("sessionId") != undefined && getCookie("sessionId") != "") {
+			var getProfilePromise = getProfile.getData();
+		    getProfilePromise.then(function(result) {  // this is only run after $http completes
+		       $scope.profileInfo = result;
+		    });
+		}
+	}
 
 	// To change dynamic content when a link is pressed, $location.path method is used.
 	$scope.goToPage = function(url) {
@@ -173,17 +220,17 @@ app.controller("mainController", function($scope, $http, $location, $window, tim
 		// validate if email is unique
 		var emailOk = "";
 		$http.get(timeOutFactory.getBackendUrl() + "/email/isAvailable")
-		.success(function(data){
-			if (data.type == "Success") {
-				emailOk == "success";
-			} else {
-				$window.alert(data.message + " (1034)");
-				return;
-			}
-		})
-		.error(function(data){
-			$window.alert("An error occurred ()" + " (1003)");
-		})
+			.success(function(data){
+				if (data.type == "Success") {
+					emailOk == "success";
+				} else {
+					$window.alert(data.message + " (1034)");
+					return;
+				}
+			})
+			.error(function(data){
+				$window.alert("An error occurred ()" + " (1003)");
+			});
 
 		// Parameters for register is adjusted and password is encrypted with MD5 hash
 		var params = "?userEmail=" + $scope.email + "&password=" + md5.createHash($scope.sigUpPassword);
@@ -214,18 +261,6 @@ app.controller("mainController", function($scope, $http, $location, $window, tim
 
 // After user logged in, home.html will be seen which managed by this controller
 app.controller("homeController", function($scope, $http, $window, $location, timeOutFactory) {
-	var params = "?sessionId=" + getCookie("sessionId");
-
-	$http.get(timeOutFactory.getBackendUrl() + '/' + params)
-	.success(function(data, status) {
-		$window.alert("Success " + data.actionId + " (1006)");
-		$scope.eventsInvited = data;
-	})
-	.error(function(data, status) {
-		console.log("Error " + data + " (1032)");
-	});
-
-
 	var suggestedGroups = [{name:'' ,detail:'"Math "'}];
 	$scope.notificationList2 = [{name:'sara', detail:'"Math fans"'}];
 
@@ -358,26 +393,26 @@ app.controller("createEvent", function($scope, $http, $window, $location, $filte
 			$scope.startTime == undefined || $scope.startTime == "" ||
 			$scope.endTime == undefined || $scope.endTime == "") {
 			$window.alert("Please fill required fields which have *!!!" + " (1012)");
-	} else {
-		var params = "?sessionId=" + getCookie("sessionId");
-		params += "&eventName=" + $scope.eventName +
-		"&eventDescription=" + $scope.eventDescription +
-					  //"&startTime=" + $scope.startTime +
-					  //"&endTime=" + $scope.endTime +
-					  //"&invitedPeople=" + $scope.invitedPeople +
-					  "&tag=" + JSON.stringify($scope.selectedTags) +
-					  "&privacy=" + $scope.privacy;
+		} else {
+			var params = "?sessionId=" + getCookie("sessionId");
+			params += 	"&eventName=" + $scope.eventName +
+						"&eventDescription=" + $scope.eventDescription +
+						"&startTime=" + $scope.startTime +
+						"&endTime=" + $scope.endTime +
+						//"&invitedPeople=" + $scope.invitedPeople +
+						"&tag=" + JSON.stringify(timeOutFactory.adjustTagsForRest($scope.selectedTags)) +
+						"&privacy=" + ($scope.privacy == true ? "P" : "C");
 
-					  $http.get(timeOutFactory.getBackendUrl() + "/event/create" + params)
-					  .success(function(data, status) {
-					  	$window.alert("Success " + data.actionId + " (1013)");
-					  })
-					  .error(function(data, status) {
-					  	$window.alert("Error " + data + " (1014)");
-					  });
-					}
-				};
-			});
+			$http.get(timeOutFactory.getBackendUrl() + "/event/create" + params)
+				.success(function(data, status) {
+					$window.alert("Success " + data.actionId + " (1013)");
+				})
+				.error(function(data, status) {
+					$window.alert("Error " + data + " (1014)");
+				});
+		}
+	};
+});
 
 // Code reviewed due to backend is not available by ogzcm
 app.controller("createGroup", function($scope, $http, $window, $location, timeOutFactory) {
@@ -398,9 +433,10 @@ app.controller("createGroup", function($scope, $http, $window, $location, timeOu
 
 	$scope.createGroup = function() {
 		var params = "?sessionId=" + getCookie("sessionId");
-		params += "&groupName=" + $scope.groupName +
-		"&groupDescription=" + $scope.groupDescription +
-		"&tag=" + $scope.tag;
+		params += 	"&groupName=" + $scope.groupName +
+					"&groupDescription=" + $scope.groupDescription +
+					"&tag=" + JSON.stringify(timeOutFactory.adjustTagsForRest($scope.selectedTags)) +
+					"&privacy=" + ($scope.privacy == true ? "P" : "C");
 
 		$http.get(timeOutFactory.getBackendUrl() + "/group/create" + params)
 		.success(function(data, status) {
@@ -595,7 +631,6 @@ app.controller("updateEvent", function($scope, $http, $window, $location, timeOu
 		}
 });
 
-
 app.controller("friendsGroups", function($scope, $http, $window, $location, timeOutFactory){
 	var params = "?sessionId=" + getCookie("sessionId");
 
@@ -685,9 +720,27 @@ app.factory("timeOutFactory", function($http){
 		searchText = text;
 	};
 
+	timeOutFactory.adjustTagsForRest = function(selectedTags) {
+		toBeSendTags = [];
+		for (var i = 0; i < selectedTags.length; i++) {
+			tag = {};
+			tag.tagName = selectedTags[i].searchString;
+			tag.contextId = selectedTags[i].originalObject.id;
+			tag.url = selectedTags[i].originalObject.url;
+			if (selectedTags[i].originalObject.aliases != null) {
+				tag.alias = selectedTags[i].originalObject.aliases;
+			}
+			tag.description = selectedTags[i].originalObject.description;
+			tag.label = selectedTags[i].originalObject.label;
+			toBeSendTags.push(tag);
+		};
+		return toBeSendTags;
+	};
+
 	return timeOutFactory;
 });
 
+// This factory gets profile and show it in the screen
 app.factory('getProfile', function($http, timeOutFactory) {
 	var getData = function() {
 		return $http.get(timeOutFactory.getBackendUrl() + "/profile/get?sessionId=" + getCookie("sessionId")).then(function(result){

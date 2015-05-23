@@ -141,6 +141,8 @@ angular.module('angucomplete', [] )
                             success(function(responseData, status, headers, config) {
                                 $scope.searching = false;
                                 $scope.processResults((($scope.dataField) ? responseData[$scope.dataField] : responseData ), str);
+
+                                console.log("responseData = " + JSON.stringify(responseData));
                             }).
                             error(function(data, status, headers, config) {
                                 console.log("An error occurred while calling " + $scope.url + " rest service.");
