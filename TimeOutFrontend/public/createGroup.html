@@ -44,9 +44,7 @@
                         matchclass="highlight"
                         setemptyaftersearch="true" />
                     <div class="" ng-repeat="selectedTag in selectedTags">
-                        <span class="bold-span">{{selectedTag.searchString}} - </span>
-                        <span class="bold-span">{{selectedTag.originalObject.label}} - </span>
-                        <span class="bold-span">{{selectedTag.originalObject.description}} </span>
+                        <span class="bold-span">{{selectedTag.title}} </span>
                         <button class="btn btn-primary tagDel" type="button" ng-click="deleteTag($index)">X</button><br>
                     </div><br>
 
@@ -55,7 +53,6 @@
                     <label style="width: 150px">Public to all</label><br>
 
                     <button class="btn btn-primary" type="button" ng-click="createGroup()">Create</button>
-                    <button class="btn btn-primary" type="reset">Reset</button>
                 </form>
                 <!-- Create Group Form end-->
 

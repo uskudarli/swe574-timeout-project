@@ -116,17 +116,37 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 				setCookie("sessionId", data.sessionId, 60);
 				$scope.getProfile();
 
-				// // Trigger backend to run insert recommendation
-				// $http.get(timeOutFactory.getBackendUrl() + "/insertRecommendation?sessionId=" + data.sessionId)
-				// 	.success(function(data, status) {
-				// 		console.log("Insert recommentation has been called (1036)");
-				// 	});
+				// Trigger backend to run insert recommendation
+				$http.get(timeOutFactory.getBackendUrl() + "/insertRecommendation?sessionId=" + data.sessionId)
+					.success(function(data, status) {
+						console.log("Insert recommentation has been called (1036)");
+					});
 
 				// Get event notification for user
 				$http.get(timeOutFactory.getBackendUrl() + '/getEventRecommendation?sessionId=' + data.sessionId)
 					.success(function(data, status) {
 						$scope.eventRecommendation = data;
 						console.log("Event recommendation " + JSON.stringify(data));
+				  	})
+				  	.error(function(data, status) {
+				 		console.log("Error " + data.message + " (1037)");
+				  	});
+
+				// Get group notification for user
+				$http.get(timeOutFactory.getBackendUrl() + '/getGroupRecommendation?sessionId=' + data.sessionId)
+					.success(function(data, status) {
+						$scope.groupRecommendation = data;
+						console.log("Group recommendation " + JSON.stringify(data));
+				  	})
+				  	.error(function(data, status) {
+				 		console.log("Error " + data.message + " (1037)");
+				  	});
+
+				// Get event notification for user
+				$http.get(timeOutFactory.getBackendUrl() + '/getUserRecommendation?sessionId=' + data.sessionId)
+					.success(function(data, status) {
+						$scope.userRecommendation = data;
+						console.log("User recommendation " + JSON.stringify(data));
 				  	})
 				  	.error(function(data, status) {
 				 		console.log("Error " + data.message + " (1037)");
@@ -373,26 +393,26 @@ app.controller("createEvent", function($scope, $http, $window, $location, $filte
 			$scope.startTime == undefined || $scope.startTime == "" ||
 			$scope.endTime == undefined || $scope.endTime == "") {
 			$window.alert("Please fill required fields which have *!!!" + " (1012)");
-	} else {
-		var params = "?sessionId=" + getCookie("sessionId");
-		params += 	"&eventName=" + $scope.eventName +
-					"&eventDescription=" + $scope.eventDescription +
-					"&startTime=" + $scope.startTime +
-					"&endTime=" + $scope.endTime +
-					//"&invitedPeople=" + $scope.invitedPeople +
-					"&tag=" + JSON.stringify(timeOutFactory.adjustTagsForRest($scope.selectedTags)) +
-					"&privacy=" + ($scope.privacy == true ? PUBLIC : CLOSED);
+		} else {
+			var params = "?sessionId=" + getCookie("sessionId");
+			params += 	"&eventName=" + $scope.eventName +
+						"&eventDescription=" + $scope.eventDescription +
+						"&startTime=" + $scope.startTime +
+						"&endTime=" + $scope.endTime +
+						//"&invitedPeople=" + $scope.invitedPeople +
+						"&tag=" + JSON.stringify(timeOutFactory.adjustTagsForRest($scope.selectedTags)) +
+						"&privacy=" + ($scope.privacy == true ? "P" : "C");
 
-					$http.get(timeOutFactory.getBackendUrl() + "/event/create" + params)
-						.success(function(data, status) {
-							$window.alert("Success " + data.actionId + " (1013)");
-						})
-						.error(function(data, status) {
-							$window.alert("Error " + data + " (1014)");
-						});
-					}
-				};
-			});
+			$http.get(timeOutFactory.getBackendUrl() + "/event/create" + params)
+				.success(function(data, status) {
+					$window.alert("Success " + data.actionId + " (1013)");
+				})
+				.error(function(data, status) {
+					$window.alert("Error " + data + " (1014)");
+				});
+		}
+	};
+});
 
 // Code reviewed due to backend is not available by ogzcm
 app.controller("createGroup", function($scope, $http, $window, $location, timeOutFactory) {
@@ -415,8 +435,8 @@ app.controller("createGroup", function($scope, $http, $window, $location, timeOu
 		var params = "?sessionId=" + getCookie("sessionId");
 		params += 	"&groupName=" + $scope.groupName +
 					"&groupDescription=" + $scope.groupDescription +
-					"&tag=" + JSON.stringify(timeOutFactory.adjustTagsForRest($scope.selectedTags))
-					"&privacy=" + ($scope.privacy == true ? PUBLIC : CLOSED);
+					"&tag=" + JSON.stringify(timeOutFactory.adjustTagsForRest($scope.selectedTags)) +
+					"&privacy=" + ($scope.privacy == true ? "P" : "C");
 
 		$http.get(timeOutFactory.getBackendUrl() + "/group/create" + params)
 		.success(function(data, status) {

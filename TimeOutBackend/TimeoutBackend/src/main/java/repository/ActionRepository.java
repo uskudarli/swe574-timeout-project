@@ -1,14 +1,12 @@
 package repository;
 
+import helpers.ServiceHelper;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import helpers.ServiceHelper;
-import helpers.ValidationHelper;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -16,7 +14,6 @@ import javax.persistence.Query;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import common.DBUtility;
 import dto.ActionDTO;
 import entity.Action;
 import entity.ActionTag;
@@ -113,6 +110,15 @@ public class ActionRepository {
 		return prepareActionDTOList(actionType, query);
 	}
 
+//	public List<ActionDTO> prepareGroups(List<Action> actionIds, String actionType) {
+//		Query query = em
+//				.createQuery(
+//						"SELECT A FROM Action A WHERE A.actionUserStatus = :actionUserStatus AND A.user = :user")
+//				.setParameter("actionIds", actionIds)
+//
+//		return prepareActionDTOList(actionType, query);
+//	}
+
 	public List<ActionDTO> prepareInvitedActionForUser(User user,
 			String actionType) {
 		Query query = em
@@ -137,7 +143,7 @@ public class ActionRepository {
 		Set<Long> actionIds = new HashSet<Long>();
 
 		for (ActionUser actionUser : results) {
-			ActionDTO actionDTO = actionUser.getAction().getActionDTO();
+			ActionDTO actionDTO = actionUser.getAction().createActionDTO();
 			if (actionUser.getAction().getActionType().equals(actionType)
 					&& !actionIds.contains(actionDTO.getActionId())) {
 				actionList.add(actionDTO);
@@ -151,10 +157,7 @@ public class ActionRepository {
 		if (tagString == null || tagString == "")
 			return;
 		
-		Gson gson = new Gson();
-		Type listType = new TypeToken<ArrayList<Tag>>() {
-		}.getType();
-		ArrayList<Tag> tagList = gson.fromJson(tagString, listType);
+		ArrayList<Tag> tagList = ServiceHelper.parseListFromJsonString(tagString);
 		
 		for (Tag tag : tagList) {
 			List<Tag> results = getTagsFromTagNameAndContextId(tag);
@@ -164,27 +167,27 @@ public class ActionRepository {
 			}
 
 			insertActionTags(tag, action);
-			insertUserTags(tag, creator);
+//			insertUserTags(tag, creator);
 		}
 	}
 
 	private List<Tag> getTagsFromTagNameAndContextId(Tag tag) {
 		String hql = "FROM Tag T WHERE T.tagName = :tagName AND "
-				+ "T.contectId = :contextId";
+				+ "T.contextId = :contextId";
 		Query query = em.createQuery(hql);
 		query
 		.setParameter("tagName", tag.getTagName())
-		.setParameter("contectId", tag.getContextId());
+		.setParameter("contextId", tag.getContextId());
 		List<Tag> results = query.getResultList();
 		return results;
 	}
 
 	private void insertUserTags(Tag tag, User creator) {
-		String hql = "FROM UserTag UT WHERE UT.tagId = :tagId AND "
+		String hql = "FROM UserTag UT WHERE UT.tag = :tag AND "
 				+ "UT.userId = :userId";
 		Query query = em.createQuery(hql);
 		query
-		.setParameter("tagId", tag.getTagId())
+		.setParameter("tag", tag)
 		.setParameter("userId", creator.getUserId());
 		List<Tag> results = query.getResultList();
 		
@@ -197,12 +200,12 @@ public class ActionRepository {
 	}
 
 	private void insertActionTags(Tag tag, Action action) {
-		String hql = "FROM ActionTag AT WHERE AT.tagId = :tagId AND "
-				+ "AT.actionId = :actionId";
+		String hql = "FROM ActionTag AT WHERE AT.tag = :tag AND "
+				+ "AT.action = :action";
 		Query query = em.createQuery(hql);
 		query
-		.setParameter("tagId", tag.getTagId())
-		.setParameter("actionId", action.getActionId());
+		.setParameter("tag", tag)
+		.setParameter("action", action);
 		List<Tag> results = query.getResultList();
 		
 		if (results == null || results.size() == 0){

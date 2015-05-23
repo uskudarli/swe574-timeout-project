@@ -1,5 +1,7 @@
 package repository;
 
+import helpers.ServiceHelper;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,12 +51,7 @@ public class CustomTypeRepository {
 		if (attributesString == null || attributesString == "")
             return;
         
-        List<Attribute> attributes = null;
-        Gson gson = new Gson();
-        
-        Type listType = new TypeToken<ArrayList<Attribute>>() {}.getType();
-
-        attributes = gson.fromJson(attributesString, listType);
+        List<Attribute> attributes = ServiceHelper.parseListFromJsonString(attributesString);
         
         for (int i = 0; i < attributes.size(); i++) {
         	Attribute attribute = new Attribute();

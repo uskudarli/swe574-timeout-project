@@ -168,6 +168,7 @@ public class MembersRestServices {
 			
 			for (Integer item : actionIds){
 				Action action = ar.getActionById(item.longValue(), ActionType.GROUP.toString());
+				mr.acceptInvitation(user, action);
 			}
 			
 //			List<Action> actions = mr.getActionListByIds(actionIdsString)

@@ -1,5 +1,6 @@
 package repository;
 
+import helpers.ServiceHelper;
 import helpers.ValidationHelper;
 
 import java.lang.reflect.Type;
@@ -43,11 +44,7 @@ public class FriendshipRepository {
 			return false;
 		
 		//parse json to List<Integer>
-		List<Integer> friendIds = null;
-		Gson gson = new Gson();
-		Type listType = new TypeToken<ArrayList<Integer>>() {
-		}.getType();
-		friendIds = gson.fromJson(friendsString, listType);
+		List<Integer> friendIds = ServiceHelper.parseListFromJsonString(friendsString);
 		
 		//find users from user id's and add friendship invite records.
 		for (Integer item : friendIds){
@@ -80,11 +77,7 @@ public class FriendshipRepository {
 			return false;
 		
 		//parse json to List<Integer>
-		List<Integer> friendshipIds = null;
-		Gson gson = new Gson();
-		Type listType = new TypeToken<ArrayList<Integer>>() {
-		}.getType();
-		friendshipIds = gson.fromJson(friendshipsString, listType);
+		List<Integer> friendshipIds = ServiceHelper.parseListFromJsonString(friendshipsString);
 		
 		// find users from user id's and add friendship invite records.
 		for (int item : friendshipIds) {
@@ -119,11 +112,7 @@ public class FriendshipRepository {
 			return false;
 		
 		//parse json to List<Integer>
-		List<Integer> friendshipIds = null;
-		Gson gson = new Gson();
-		Type listType = new TypeToken<ArrayList<Integer>>() {
-		}.getType();
-		friendshipIds = gson.fromJson(friendshipsString, listType);
+		List<Integer> friendshipIds = ServiceHelper.parseListFromJsonString(friendshipsString);
 		
 		// find users from user id's and add friendship invite records.
 		for (int item : friendshipIds) {

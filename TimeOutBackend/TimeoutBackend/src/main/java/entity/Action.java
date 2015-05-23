@@ -192,7 +192,7 @@ public class Action {
 		this.actionTags = actionTags;
 	}
 	
-	public ActionDTO getActionDTO() {
+	public ActionDTO createActionDTO() {
 		ActionDTO actionDTO = new ActionDTO();
 		actionDTO.setActionId(actionId);
 		actionDTO.setName(title);

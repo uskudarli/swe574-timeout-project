@@ -42,4 +42,14 @@ public class ValidationHelper {
 	    }
 	    return false;
 	}
+
+	public static void validateEvent(String eventName) throws BusinessException {
+		if(isNullOrWhitespace(eventName))
+			ServiceHelper.businessError(ErrorMessages.eventNameEmptyCode, ErrorMessages.eventNameEmpty);
+	}
+	
+	public static void validateGroup(String groupName) throws BusinessException {
+		if(isNullOrWhitespace(groupName))
+			ServiceHelper.businessError(ErrorMessages.groupNameEmptyCode, ErrorMessages.groupNameEmpty);
+	}
 }
