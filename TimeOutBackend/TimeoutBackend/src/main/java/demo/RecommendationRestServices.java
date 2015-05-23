@@ -25,7 +25,7 @@ public class RecommendationRestServices {
 
 	//edit user function
 	@RequestMapping(value = "/insertRecommendation")
-	 public @ResponseBody Object editProfile(
+	 public @ResponseBody Object insertRecommendation(
 			@RequestParam(value = "sessionId") String sessionId,
 			HttpServletResponse resp) {
 
@@ -45,7 +45,7 @@ public class RecommendationRestServices {
 		return new ResponseHeader();
 	}
 
-	@RequestMapping(value = "/getEventRecommendation")
+		@RequestMapping(value = "/getEventRecommendation")
 	public @ResponseBody Object eventRecommendation(
 			@RequestParam(value = "sessionId") String sessionId,
 			HttpServletResponse resp) {

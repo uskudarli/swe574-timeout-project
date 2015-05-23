@@ -24,29 +24,31 @@ public class RecommendationEngine {
         EntityManager em = DBUtility.startTransaction();
 
         List<String> semanticTagsofUser = findAllSemanticTagsOfUser(user);
-        List<Action> recommendedEvents = findSemanticEventsWithGivenTagId(semanticTagsofUser, user);
-        List<Action> recommendedGroups = findSemanticGroupsWithGivenTagId(semanticTagsofUser, user);
-        List<User> recommendedUsers  = findSemanticUsersWithGivenTagIds(semanticTagsofUser, user);
+        if(semanticTagsofUser != null && semanticTagsofUser.size() > 0) {
+            List<Action> recommendedEvents = findSemanticEventsWithGivenTagId(semanticTagsofUser, user);
+            List<Action> recommendedGroups = findSemanticGroupsWithGivenTagId(semanticTagsofUser, user);
+            List<User> recommendedUsers = findSemanticUsersWithGivenTagIds(semanticTagsofUser, user);
 
-        for(Action event : recommendedEvents){
-            ActionRecommendation eventRecommendation = new ActionRecommendation();
+            for (Action event : recommendedEvents) {
+                ActionRecommendation eventRecommendation = new ActionRecommendation();
 //            Action action = ActionRepository.getActionById(event.getActionId(), ActionType.EVENT.toString());
-            eventRecommendation.setAction(event);
-            eventRecommendation.setUser(user);
-            em.persist(eventRecommendation);
-        }
-        for(Action group : recommendedGroups){
-            ActionRecommendation groupRecommendation = new ActionRecommendation();
+                eventRecommendation.setAction(event);
+                eventRecommendation.setUser(user);
+                em.persist(eventRecommendation);
+            }
+            for (Action group : recommendedGroups) {
+                ActionRecommendation groupRecommendation = new ActionRecommendation();
 //            Action action = ActionRepository.getActionById(group.getActionId(), ActionType.EVENT.toString());
-            groupRecommendation.setAction(group);
-            groupRecommendation.setUser(user);
-            em.persist(groupRecommendation);
-        }
-        for(User recommendedUser : recommendedUsers){
-            UserRecommendation userRecommendation = new UserRecommendation();
-            userRecommendation.setUserRecommended1(user);
-            userRecommendation.setUserRecommended2(recommendedUser);
-            em.persist(userRecommendation);
+                groupRecommendation.setAction(group);
+                groupRecommendation.setUser(user);
+                em.persist(groupRecommendation);
+            }
+            for (User recommendedUser : recommendedUsers) {
+                UserRecommendation userRecommendation = new UserRecommendation();
+                userRecommendation.setUserRecommended1(user);
+                userRecommendation.setUserRecommended2(recommendedUser);
+                em.persist(userRecommendation);
+            }
         }
 
         DBUtility.commitTransaction(em);
@@ -74,7 +76,7 @@ public class RecommendationEngine {
     public static List<String> getActionTagsofUser(User user) {
         EntityManager em = DBUtility.startTransaction();
 
-        Query query = em.createQuery("SELECT At.tag.tagName FROM ActionTag At WHERE At.action IN " +
+        Query query = em.createQuery("SELECT At.tag.contextId FROM ActionTag At WHERE At.action IN " +
                 "(SELECT  A FROM Action A WHERE A IN" +
                 "(SELECT  Au.action FROM ActionUser Au WHERE Au.user = :user))")
                 .setParameter("user", user);
@@ -84,28 +86,7 @@ public class RecommendationEngine {
 
         return queryResult;
     }
-
-
-//        EntityManager em = DBUtility.startTransaction();
-//
-//        List<ActionDTO> actionDTOs = new ArrayList<>();
-//        List<ActionDTO> groups = new ArrayList<>();
-//        List<ActionDTO> events = new ArrayList<>();
-//        try {
-//            ActionRepository ar = new ActionRepository(em);
-//
-//            groups = ar.prepareActionForUser(user,
-//                    ActionType.GROUP.toString());
-//            events = ar.prepareActionForUser(user,
-//                    ActionType.EVENT.toString());
-//            DBUtility.commitTransaction(em);
-//        } catch (Exception e) {
-//            DBUtility.rollbackTransaction(em);
-//        }
-//        actionDTOs.addAll(groups);
-//        actionDTOs.addAll(events);
-//        return actionDTOs;
-
+    
 
     public static ArrayList<Action> findSemanticEventsWithGivenTagId(List<String> semanticTagIds, User user) {
         return findSemanticActionsWithGivenTagIds(semanticTagIds, user, ActionType.EVENT);
@@ -115,16 +96,49 @@ public class RecommendationEngine {
         return findSemanticActionsWithGivenTagIds(semanticTagIds, user, ActionType.GROUP);
     }
 
+    public static ArrayList<Action> searchSemanticEventsWithGivenTagId(String semanticTagId) {
+        return searchSemanticActionsWithGivenTagIds(semanticTagId, ActionType.EVENT);
+    }
+
+    public static ArrayList<Action> searchSemanticGroupsWithGivenTagId(String semanticTagId) {
+        return searchSemanticActionsWithGivenTagIds(semanticTagId, ActionType.GROUP);
+    }
+
+    public static ArrayList<Action> searchEventsWithGivenKeyword(String keyword) {
+        return searchActionsWithGivenKeyword(keyword, ActionType.EVENT);
+    }
+
+    public static ArrayList<Action> searchGroupWithGivenKeyword(String keyword) {
+        return searchActionsWithGivenKeyword(keyword, ActionType.GROUP);
+    }
+
     public static ArrayList<Action> findSemanticActionsWithGivenTagIds(List<String> semanticTagIds,  User user, ActionType actionType) {
         EntityManager em = DBUtility.startTransaction();
 
         Query query = em
                 .createQuery(
-                        "SELECT A FROM Action A INNER JOIN A.actionTags tags WHERE tags.tag.tagName " +
+                        "SELECT A FROM Action A INNER JOIN A.actionTags tags WHERE tags.tag.contextId " +
                                 "IN (:relatedTags) AND A NOT IN (SELECT Au.action FROM ActionUser Au WHERE Au.user = :user)AND A.actionType = :actionType ")
                 .setParameter("actionType", actionType.toString())
                 .setParameter("relatedTags", semanticTagIds)
                 .setParameter("user", user);
+
+        ArrayList<Action> relatedActions = (ArrayList<Action>)query.getResultList();
+
+        DBUtility.commitTransaction(em);
+
+        return relatedActions;
+    }
+
+    public static ArrayList<Action> searchSemanticActionsWithGivenTagIds(String semanticTagId,  ActionType actionType) {
+        EntityManager em = DBUtility.startTransaction();
+
+        Query query = em
+                .createQuery(
+                        "SELECT A FROM Action A INNER JOIN A.actionTags tags WHERE tags.tag.contextId " +
+                                "IN (:relatedTags) AND A.actionType = :actionType ")
+                .setParameter("actionType", actionType.toString())
+                .setParameter("relatedTags", semanticTagId);
 
         ArrayList<Action> relatedActions = (ArrayList<Action>)query.getResultList();
 
@@ -141,13 +155,63 @@ public class RecommendationEngine {
                         "SELECT U FROM User U WHERE U IN" +
                                 "(SELECT Au.user FROM ActionUser Au WHERE Au.action IN" +
                                 "(SELECT A FROM Action A INNER JOIN A.actionTags tags " +
-                                "WHERE tags.tag.tagName IN (:relatedTags))) AND U NOT IN " +
+                                "WHERE tags.tag.contextId IN (:relatedTags))) AND U NOT IN " +
                                 "(SELECT U2 FROM User U2 WHERE U2 IN " +
                                 "(SELECT F.friend FROM Friendship F WHERE F.person = (:user))) AND U NOT IN (:user)")
                 .setParameter("relatedTags", semanticTagIds)
                 .setParameter("user", user);
 
         ArrayList<User> relatedActions = (ArrayList<User>)query.getResultList();
+
+        DBUtility.commitTransaction(em);
+
+        return relatedActions;
+    }
+
+    public static ArrayList<User> searchSemanticUsersWithGivenTagIds(String semanticTagId) {
+        EntityManager em = DBUtility.startTransaction();
+
+        Query query = em
+                .createQuery(
+                        "SELECT U FROM User U WHERE U IN" +
+                                "(SELECT Au.user FROM ActionUser Au WHERE Au.action IN" +
+                                "(SELECT A FROM Action A INNER JOIN A.actionTags tags " +
+                                "WHERE tags.tag.contextId IN (:relatedTags)))")
+                .setParameter("relatedTags", semanticTagId);
+
+        ArrayList<User> relatedActions = (ArrayList<User>)query.getResultList();
+
+        DBUtility.commitTransaction(em);
+
+        return relatedActions;
+    }
+
+    public static ArrayList<User> searchUsersWithGivenKeyword(String keyword) {
+        EntityManager em = DBUtility.startTransaction();
+
+        Query query = em
+                .createQuery(
+                        "SELECT U FROM User U WHERE U.userEmail LIKE ('%' || (:keyword) || '%')")
+                .setParameter("keyword", keyword);
+
+        ArrayList<User> relatedActions = (ArrayList<User>)query.getResultList();
+
+        DBUtility.commitTransaction(em);
+
+        return relatedActions;
+    }
+
+    public static ArrayList<Action> searchActionsWithGivenKeyword(String keyword, ActionType actionType) {
+        EntityManager em = DBUtility.startTransaction();
+
+        Query query = em
+                .createQuery(
+                        "SELECT A FROM Action A WHERE A.title LIKE ('%' || (:keyword) || '%') " +
+                                "OR A.description LIKE ('%' || (:keyword) || '%') AND A.actionType = :actionType")
+                .setParameter("actionType", actionType.toString())
+                .setParameter("keyword",  keyword );
+
+        ArrayList<Action> relatedActions = (ArrayList<Action>)query.getResultList();
 
         DBUtility.commitTransaction(em);
 
@@ -190,7 +254,7 @@ public class RecommendationEngine {
         } catch (Exception e) {
         }
 
-        return itemId.substring(1);
+        return itemId;
     }
 
     public static ArrayList<String> executeSemanticQuery(String itemId) {
@@ -199,7 +263,7 @@ public class RecommendationEngine {
         ArrayList<String> searchTagResultListinString = new ArrayList<>();
 
         String searchTagQueryUrl = "https://wdq.wmflabs.org/api?q=tree["
-                + itemId + "][279,366]";
+                + itemId.substring(1) + "][279,366]";
         Object searchTagQueryResponse = restTemplate.getForObject(
                 searchTagQueryUrl, Object.class);
         ArrayList<Integer> searchTagResultList = (ArrayList<Integer>) ((HashMap)
@@ -207,7 +271,7 @@ public class RecommendationEngine {
                 .get("items");
 
         for (Integer s : searchTagResultList) {
-            searchTagResultListinString.add(s.toString());
+            searchTagResultListinString.add("Q" + s.toString());
         }
 
         return searchTagResultListinString;
@@ -220,7 +284,7 @@ public class RecommendationEngine {
         for (String searchTagResult : searchTagResultList) {
             try {
                 String getItemNameUrl =
-                        "https://www.wikidata.org/w/api.php?action=wbgetentities&ids=Q"
+                        "https://www.wikidata.org/w/api.php?action=wbgetentities&ids="
                                 + searchTagResult
                                 + "&props=labels&languages=en&format=json";
                 Object getItemNameResponse = restTemplate.getForObject(
