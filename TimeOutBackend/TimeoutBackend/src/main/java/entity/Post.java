@@ -72,5 +72,23 @@ public class Post {
 	public void setTime(Date time) {
 		this.time = time;
 	}
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
+	public Set<Comment> getComments() {
+		return comments;
+	}
+	public void setComments(Set<Comment> comments) {
+		this.comments = comments;
+	}
+	public Set<AttributeValue> getAttributeValues() {
+		return attributeValues;
+	}
+	public void setAttributeValues(Set<AttributeValue> attributeValues) {
+		this.attributeValues = attributeValues;
+	}
 	
 }

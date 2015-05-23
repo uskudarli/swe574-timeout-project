@@ -2,6 +2,7 @@ package helpers;
 
 import common.BusinessException;
 import common.ErrorMessages;
+import entity.Post;
 
 public class ValidationHelper {
 
@@ -51,5 +52,10 @@ public class ValidationHelper {
 	public static void validateGroup(String groupName) throws BusinessException {
 		if(isNullOrWhitespace(groupName))
 			ServiceHelper.businessError(ErrorMessages.groupNameEmptyCode, ErrorMessages.groupNameEmpty);
+	}
+
+	public static void validatePost(Post post) throws BusinessException {
+		if(isNullOrWhitespace(post.getTitle()))
+			ServiceHelper.businessError(ErrorMessages.postTitleEmptyCode, ErrorMessages.postTitleEmpty);
 	}
 }

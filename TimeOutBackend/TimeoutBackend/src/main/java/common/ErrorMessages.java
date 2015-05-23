@@ -22,4 +22,6 @@ public class ErrorMessages {
 	public static String eventNameEmpty = "Event name is empty";
 	public static String groupNameEmptyCode = "E109";
 	public static String groupNameEmpty = "Group name is empty";
+	public static String postTitleEmptyCode = "E110";
+	public static String postTitleEmpty = "Post title empty";
 }

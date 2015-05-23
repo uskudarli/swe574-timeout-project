@@ -1,11 +1,14 @@
 package repository;
 
 import helpers.ServiceHelper;
+import helpers.ValidationHelper;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -13,9 +16,11 @@ import javax.persistence.Query;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import common.BusinessException;
 import common.DBUtility;
 import entity.Action;
 import entity.Attribute;
+import entity.AttributeValue;
 import entity.CustomType;
 import entity.Post;
 import entity.User;
@@ -130,14 +135,57 @@ public class CustomTypeRepository {
 	public Post createPost(User user, Long customTypeId, String title,
 			String text, String attributeValuesJsonListString) {
 		Post post = null;
-		if (user != null && customTypeId > 0 && !title.isEmpty()){
-			post = new Post();
-			post.setCustomType(getCustomTypeById(customTypeId));
-			post.setTitle(title);
-			post.setText(text);
-			post.setTime(new Date());
-			em.persist(post);
+		if (user == null || customTypeId == 0 || title.isEmpty())
+			return null;
+
+		post = new Post();
+		post.setCustomType(getCustomTypeById(customTypeId));
+		post.setTitle(title);
+		post.setText(text);
+		post.setTime(new Date());
+		Post post1 = em.merge(post);
+
+		mergeAttributeValues(attributeValuesJsonListString, post1);
+		
+		return post1;
+	}
+
+	private void mergeAttributeValues(String attributeValuesJsonListString,
+			Post post1) {
+		ArrayList<AttributeValue> attributeValues = ServiceHelper
+				.parseListFromJsonString(attributeValuesJsonListString);
+		Set<AttributeValue> attributeValuesSet = new HashSet<>(attributeValues);
+		
+		post1.setAttributeValues(attributeValuesSet);
+		for(AttributeValue item : attributeValuesSet){
+			item.setPost(post1);
+			em.merge(item);
 		}
+	}
+
+	public Post editPost(User user, String postJsonString,
+			String attributeValuesJsonListString) throws BusinessException {
+		Post post = null;
+		if (user == null || ValidationHelper.isNullOrWhitespace(postJsonString))
+			return null; 
+		
+		post = (Post)ServiceHelper.parseObjectFromJsonString(postJsonString);
+		ValidationHelper.validatePost(post);
+		
+		Post post1 = em.merge(post);
+		mergeAttributeValues(attributeValuesJsonListString, post1);
+		
 		return post;
+	}
+
+	public Attribute getAttributeById(Long attributeId) {
+		Attribute returnVal = null;
+		if (attributeId > 0) {
+			Query query = em.createQuery(
+					"FROM Attribute A WHERE A.attributeId = :attributeId")
+					.setParameter("attributeId", attributeId);
+			returnVal = (Attribute) query.getSingleResult();
+		}
+		return returnVal;
 	}
 }

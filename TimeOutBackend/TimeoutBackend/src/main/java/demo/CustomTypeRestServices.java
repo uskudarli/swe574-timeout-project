@@ -160,6 +160,33 @@ public class CustomTypeRestServices {
 		return post;
 	}
 	
+	@RequestMapping(value = "/post/edit")
+	@ResponseBody
+	public Object editPost(
+            @RequestParam(value = "sessionId") String sessionId, 
+            @RequestParam(value = "post") String postJsonString,
+            @RequestParam(value = "attributeValues", required = false) String attributeValuesJsonListString,
+            HttpServletResponse resp) {
+		EntityManager em = ServiceHelper.initialize(resp);
+		
+		Post post;
+		try {
+			User user = ServiceHelper.getSessionUser(em, sessionId);
+			
+			CustomTypeRepository cr = new CustomTypeRepository(em);
+			
+			post = cr.editPost(user, postJsonString, attributeValuesJsonListString);
+			DBUtility.commitTransaction(em);
+		} catch (BusinessException e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getCode(), e.getMessage());
+		} catch (Exception e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getMessage());
+		}
+		return post;
+	}
+	
 	@RequestMapping(value = "/post/getListByCustomTypeId")
 	@ResponseBody
 	public Object getPostListByCustomTypeId(
@@ -233,5 +260,30 @@ public class CustomTypeRestServices {
 			return new ResponseHeader(false, e.getMessage());
 		}
 		return attributes;
+	}
+	
+	@RequestMapping(value = "/attribute/getById")
+	@ResponseBody
+	public Object getAttributeById(
+            @RequestParam(value = "sessionId") String sessionId, 
+            @RequestParam(value = "attributeId") Long attributeId,
+            HttpServletResponse resp) {
+		EntityManager em = ServiceHelper.initialize(resp);
+		
+		Attribute attribute;
+		try {
+			User user = ServiceHelper.getSessionUser(em, sessionId);
+			
+			CustomTypeRepository cr = new CustomTypeRepository(em);
+			attribute = cr.getAttributeById(attributeId);
+			DBUtility.commitTransaction(em);
+		} catch (BusinessException e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getCode(), e.getMessage());
+		} catch (Exception e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getMessage());
+		}
+		return attribute;
 	}
 }
