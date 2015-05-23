@@ -91,9 +91,8 @@
                                     titlefield="label,description,aliases"
                                     inputclass="searchInput"
                                     matchclass="highlight" />
-                                
                             </div>
-                            <button class="btn btn-primary searchBtn" ng-click="search('/search')">Search</button>
+                            <button class="btn btn-primary searchBtn" ng-click="search('/search')" ng-show="isCookieSet()">Search</button>
                             <!-- Right header - Search form end-->
 
                         </div>
@@ -106,7 +105,7 @@
                 <div class="leftcolumn" ng-show="isCookieSet()">
                     <div class="profile">
                         <img ALT="anonymous" title="{{email}}" src="images/anonymous.jpg" />
-                        <p>{{email}}</p>
+                        <p>{{profile.email}}</p>
                         <a href="" ng-click="goToPage('/profileEdit')">Edit Profile</a>
                     </div>
                     <ul>
