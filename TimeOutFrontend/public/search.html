@@ -4,14 +4,14 @@
 	<div class="menu">
 		<ul>
 			<li>
-				<a href="home.html">Home</a>
-			</li>
-			<li>
-				<a href="createEvent.html">Create Event</a>
-			</li>
-			<li>
-				<a href="CreateGroup.html">Create Group</a>
-			</li>
+                <a href="" ng-click="goToPage('/home')">Home</a>
+            </li>
+            <li>
+                <a href="" ng-click="goToPage('/createEvent')">Create Event</a>
+            </li>
+            <li>
+                <a href="" ng-click="goToPage('/createGroup')">Create Group</a>
+            </li>
 		</ul>
 	</div>
 	<!-- Top Middle Menu end-->
@@ -25,8 +25,8 @@
 
 			<div class="searchTitle">People</div>
 			<ul>
-				<li ng-repeat="result in resultSet">
-					{{result.title}} {{result.desc}}
+				<li ng-repeat="user in resultSet.users">
+					{{user.userBasicInfo.firstName}} {{user.userBasicInfo.lastName}} {{user.userEmail}}
 				</li>
 			</ul>
 
@@ -35,8 +35,8 @@
 
 			<div class="searchTitle">Groups</div>
 			<ul>
-				<li ng-repeat="result in resultSet">
-					{{result.title}} {{result.desc}}
+				<li ng-repeat="group in resultSet.groups">
+					{{group.title}} {{group.description}}
 				</li>
 			</ul>
 
@@ -45,7 +45,7 @@
 
 			<div class="searchTitle">Events</div>
 			<ul>
-				<li ng-repeat="result in resultSet">
+				<li ng-repeat="event in resultSet.events">
 					{{result.title}} {{result.desc}}
 				</li>
 			</ul>
