@@ -222,14 +222,17 @@ public class ActionRepository {
 	}
 
 	public List<Action> getNewActions(String actionType) {
-		String hql = "FROM Action A order by A.actionId desc WHERE "
-				+ "A.actionType = :actionType";
+		String hql = "FROM Action A order by A.actionId desc ";
 		Query query = em.createQuery(hql);
-		query
-		.setParameter("actionType", actionType)
-		.setMaxResults(10);
+		query.setMaxResults(30);
+
+		List<Action> actions = query.getResultList();
 		
-		List<Action> results = query.getResultList();
-		return results;
+		for (int i = 0; i < actions.size(); i++){
+			if (!actions.get(i).getActionType().equals(actionType)){
+				actions.remove(i);
+			}
+		}
+		return actions;
 	}
 }
