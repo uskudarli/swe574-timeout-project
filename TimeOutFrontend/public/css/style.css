@@ -606,6 +606,16 @@ label {
     margin: 45px 0 0 -1px !important;
 }
 
+.tagDel{
+    float: left;
+    font-size: 10px;
+    font-weight: bold;
+    height: 20px !important;
+    margin-left: 10px;
+    padding: 0 !important;
+    width: 20px !important;
+}
+
 .dateBtn{
     height: 25px !important;
     padding-left: 12px !important;
@@ -1183,13 +1193,27 @@ footer {
 }
 
 .highlight {
-    color: #ff0000;
+    float: left;
+    background-color: #008FD5;
+    border-radius: 5px;
+    color: #fff;
+    padding: 0 4px;
 }
 
 .angucomplete-dropdown {
-    background-color: #eaeaff;
+    background-color: #ECFFFF;
+    color: #12295d;
+    border-radius: 5px;
+    border: 1px solid #008FD5;
+    padding: 10px;
 }
 
 .angucomplete-selected-row {
-    background-color: #eaffff;
+    background-color: #12295d;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.angucomplete-row {
+    margin-top: 10px;
 }
