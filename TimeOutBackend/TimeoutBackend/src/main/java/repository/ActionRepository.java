@@ -237,4 +237,13 @@ public class ActionRepository {
 			em.persist(actionTag);
 		}
 	}
+
+	public List<ActionUser> getMembersOfAction(Action action) {
+		String hql = "FROM ActionUser AU WHERE AU.action = :action";
+		Query query = em.createQuery(hql);
+		query.setParameter("action", action);
+		List<ActionUser> result = query.getResultList();
+		
+		return result;
+	}
 }

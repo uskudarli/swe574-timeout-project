@@ -186,7 +186,7 @@ public class UserRestServices {
 		return new ResponseHeader();
 	}
 
-	//get user profile
+	//get session user profile
 	@RequestMapping(value = "/profile/get")
 	public @ResponseBody Object getProfile(
 			@RequestParam(value = "sessionId") String sessionId,
@@ -208,6 +208,60 @@ public class UserRestServices {
 		}
 		return user;
 	}
+	
+	//get any user profile by id
+	@RequestMapping(value = "/profile/getById")
+	public @ResponseBody Object getProfileByUserId(
+			@RequestParam(value = "sessionId") String sessionId,
+			@RequestParam(value = "userId") Integer userId,
+			HttpServletResponse resp) {
+
+		EntityManager em = ServiceHelper.initialize(resp);
+
+		User user;
+		User result;
+		try {
+			user = ServiceHelper.getSessionUser(em, sessionId);
+			UserRepository ur = new UserRepository(em);
+			result = ur.getUserById(userId);
+			
+			DBUtility.commitTransaction(em);
+		}catch (BusinessException e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getCode(), e.getMessage());
+		}catch (Exception e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getMessage());
+		}
+		return result;
+	}
+	
+	//get any user profile by id
+		@RequestMapping(value = "/profile/getByEmail")
+		public @ResponseBody Object getProfileByUserEmail(
+				@RequestParam(value = "sessionId") String sessionId,
+				@RequestParam(value = "userEmail") String userEmail,
+				HttpServletResponse resp) {
+
+			EntityManager em = ServiceHelper.initialize(resp);
+
+			User user;
+			User result;
+			try {
+				user = ServiceHelper.getSessionUser(em, sessionId);
+				UserRepository ur = new UserRepository(em);
+				result = ur.getUserByEmail(userEmail);
+				
+				DBUtility.commitTransaction(em);
+			}catch (BusinessException e) {
+				DBUtility.rollbackTransaction(em);
+				return new ResponseHeader(false, e.getCode(), e.getMessage());
+			}catch (Exception e) {
+				DBUtility.rollbackTransaction(em);
+				return new ResponseHeader(false, e.getMessage());
+			}
+			return result;
+		}
 	
 	//login function
 	@RequestMapping(value = "/login")

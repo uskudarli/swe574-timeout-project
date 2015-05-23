@@ -80,4 +80,18 @@ public class UserRepository {
 	public void insertRole(Role role) {
 		em.persist(role);
 	}
+
+	public User getUserById(Integer userId) {
+		User user = (User) em.createQuery("FROM User U WHERE U.userId = :userId")
+		        .setParameter("userId", userId)
+		        .getSingleResult();
+		return user;
+	}
+
+	public User getUserByEmail(String userEmail) {
+		User user = (User) em.createQuery("FROM User U WHERE U.userName = :userName")
+		        .setParameter("userName", userEmail)
+		        .getSingleResult();
+		return user;
+	}
 }
