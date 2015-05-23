@@ -22,11 +22,34 @@
 
 			<!-- Search Result List start-->
 			<legend>Search Results</legend>
+
+			<div class="searchTitle">People</div>
 			<ul>
 				<li ng-repeat="result in resultSet">
 					{{result.title}} {{result.desc}}
 				</li>
 			</ul>
+
+		    <div class="clearBoth"></div>
+		    <div class="line"></div>
+
+			<div class="searchTitle">Groups</div>
+			<ul>
+				<li ng-repeat="result in resultSet">
+					{{result.title}} {{result.desc}}
+				</li>
+			</ul>
+
+		    <div class="clearBoth"></div>
+		    <div class="line"></div>
+
+			<div class="searchTitle">Events</div>
+			<ul>
+				<li ng-repeat="result in resultSet">
+					{{result.title}} {{result.desc}}
+				</li>
+			</ul>
+
 			<!-- Search Result List end-->
 
 			<br />
