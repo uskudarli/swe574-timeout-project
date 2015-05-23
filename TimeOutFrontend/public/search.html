@@ -18,7 +18,7 @@
 
 	<!-- Middle Column start-->
 	<div class="midcolumn">
-		<div class="group-creation">
+		<div class="group-creation searchList">
 
 			<!-- Search Result List start-->
 			<legend>Search Results</legend>
@@ -26,7 +26,7 @@
 			<div class="searchTitle">People</div>
 			<ul>
 				<li ng-repeat="user in resultSet.users">
-					{{user.userBasicInfo.firstName}} {{user.userBasicInfo.lastName}} {{user.userEmail}}
+					<a href="" ng-click="goToPage('/theUser')">{{user.userBasicInfo.firstName}} {{user.userBasicInfo.lastName}} {{user.userEmail}}</a>
 				</li>
 			</ul>
 
@@ -36,7 +36,7 @@
 			<div class="searchTitle">Groups</div>
 			<ul>
 				<li ng-repeat="group in resultSet.groups">
-					{{group.title}} {{group.description}}
+					<a href="" ng-click="goToPage('/theGroup')">{{group.title}} {{group.description}}</a>
 				</li>
 			</ul>
 
@@ -46,7 +46,7 @@
 			<div class="searchTitle">Events</div>
 			<ul>
 				<li ng-repeat="event in resultSet.events">
-					{{result.title}} {{result.desc}}
+					<a href="" ng-click="goToPage('/theEvent')">{{result.title}} {{result.desc}}</a>
 				</li>
 			</ul>
 

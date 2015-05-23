@@ -1285,3 +1285,22 @@ footer {
     float: left !important;
     margin: 22px 0 10px -40px;
 }
+
+.searchTitle{
+    float: left;
+    font-weight: bold;
+    margin-top: 10px;
+    text-decoration: underline;
+}
+
+.searchList {
+    float:left;
+}
+.searchList ul{
+    float: left;
+    margin: 35px 0 0 -28px;
+}
+.searchList ul li{
+    color:#12295d;
+
+}
