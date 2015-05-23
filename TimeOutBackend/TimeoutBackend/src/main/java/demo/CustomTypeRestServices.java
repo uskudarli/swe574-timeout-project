@@ -1,13 +1,10 @@
-package app;
+package demo;
 
 import helpers.ServiceHelper;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,15 +12,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import repository.ActionRepository;
 import repository.CustomTypeRepository;
+
 import common.BusinessException;
 import common.DBUtility;
 import common.ResponseHeader;
-import entity.Action;
+
 import entity.Attribute;
 import entity.CustomType;
 import entity.Post;

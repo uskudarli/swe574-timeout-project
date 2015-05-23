@@ -1,7 +1,9 @@
-package app;
+package demo;
 
 import helpers.ServiceHelper;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -12,14 +14,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import repository.ActionRepository;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import repository.ActionRepository;
+import repository.MembersRepository;
 import common.BusinessException;
 import common.DBUtility;
 import common.ResponseHeader;
-
 import entity.Action;
 import entity.ActionUser;
+import entity.Tag;
 import entity.User;
 import enums.ActionType;
 
@@ -39,8 +44,9 @@ public class MembersRestServices {
 			User user = ServiceHelper.getSessionUser(em, sessionId);
 			
 			ActionRepository ar = new ActionRepository(em);
+			MembersRepository mr = new MembersRepository(em);
 			Action action = ar.getActionById(actionId.longValue(), ActionType.EVENT.toString());
-			actionUsers = ar.getMembersOfAction(action);
+			actionUsers = mr.getMembersOfAction(action);
 
 			DBUtility.commitTransaction(em);
 		}catch (BusinessException e) {
@@ -67,8 +73,9 @@ public class MembersRestServices {
 			User user = ServiceHelper.getSessionUser(em, sessionId);
 			
 			ActionRepository ar = new ActionRepository(em);
+			MembersRepository mr = new MembersRepository(em);
 			Action action = ar.getActionById(actionId.longValue(), ActionType.GROUP.toString());
-			actionUsers = ar.getMembersOfAction(action);
+			actionUsers = mr.getMembersOfAction(action);
 
 			DBUtility.commitTransaction(em);
 		}catch (BusinessException e) {
@@ -96,8 +103,9 @@ public class MembersRestServices {
 			User user = ServiceHelper.getSessionUser(em, sessionId);
 			
 			ActionRepository ar = new ActionRepository(em);
+			MembersRepository mr = new MembersRepository(em);
 			Action action = ar.getActionById(actionId.longValue(), ActionType.EVENT.toString());
-			ar.insertInvitedPeople(invitedPeople, action);
+			mr.insertInvitedPeople(invitedPeople, action);
 
 			DBUtility.commitTransaction(em);
 		}catch (BusinessException e) {
@@ -125,8 +133,9 @@ public class MembersRestServices {
 			User user = ServiceHelper.getSessionUser(em, sessionId);
 			
 			ActionRepository ar = new ActionRepository(em);
+			MembersRepository mr = new MembersRepository(em);
 			Action action = ar.getActionById(actionId.longValue(), ActionType.GROUP.toString());
-			ar.insertInvitedPeople(invitedPeople, action);
+			mr.insertInvitedPeople(invitedPeople, action);
 
 			DBUtility.commitTransaction(em);
 		}catch (BusinessException e) {
@@ -140,32 +149,39 @@ public class MembersRestServices {
 		return new ResponseHeader();
 	}
 	
-	
-	
 	@RequestMapping(value = "/group/acceptInvitation")
 	@ResponseBody
 	public Object acceptInviteToGroup(
 			@RequestParam(value = "sessionId") String sessionId,
-			@RequestParam(value = "actionUserId") Integer actionUserId, //ActionUser object id'si
+			@RequestParam(value = "actionIds") String actionIdsString, //json List<Integer> olarak action idleri
 			HttpServletResponse resp) {
 
 		EntityManager em = ServiceHelper.initialize(resp);
 
-//		try {
-//			User user = ServiceHelper.getSessionUser(em, sessionId);
-//			
-//			ActionRepository ar = new ActionRepository(em);
-//			Action action = ar.getActionById(actionId.longValue(), ActionType.GROUP.toString());
+		try {
+			User user = ServiceHelper.getSessionUser(em, sessionId);
+			
+			ActionRepository ar = new ActionRepository(em);
+			MembersRepository mr = new MembersRepository(em);
+			
+			ArrayList<Integer> actionIds = ServiceHelper.parseListFromJsonString(actionIdsString);
+			
+			for (Integer item : actionIds){
+				Action action = ar.getActionById(item.longValue(), ActionType.GROUP.toString());
+			}
+			
+//			List<Action> actions = mr.getActionListByIds(actionIdsString)
+			//Action action = ar.getActionById(actionId.longValue(), ActionType.GROUP.toString());
 //			ar.insertInvitedPeople(invitedPeople, action);
 //
-//			DBUtility.commitTransaction(em);
-//		}catch (BusinessException e) {
-//			DBUtility.rollbackTransaction(em);
-//			return new ResponseHeader(false, e.getCode(), e.getMessage());
-//		}catch (Exception e) {
-//			DBUtility.rollbackTransaction(em);
-//			return new ResponseHeader(false, e.getMessage());
-//		}
+			DBUtility.commitTransaction(em);
+		}catch (BusinessException e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getCode(), e.getMessage());
+		}catch (Exception e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getMessage());
+		}
 
 		return new ResponseHeader();
 	}

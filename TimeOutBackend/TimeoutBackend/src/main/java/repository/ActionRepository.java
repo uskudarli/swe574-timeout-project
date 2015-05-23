@@ -73,32 +73,7 @@ public class ActionRepository {
 
 	}
 
-	public void insertInvitedPeople(String invitedPeopleString, Action action) {
-		if (ValidationHelper.isNullOrWhitespace(invitedPeopleString))
-			return;
 
-		List<Integer> invitedPeople = null;
-		Gson gson = new Gson();
-
-		Type listType = new TypeToken<ArrayList<Integer>>() {
-		}.getType();
-
-		invitedPeople = gson.fromJson(invitedPeopleString, listType);
-
-		for (int i = 0; i < invitedPeople.size(); i++) {
-
-			ActionUser actionUser = new ActionUser();
-			Query query = em
-					.createQuery("FROM User U WHERE U.userId = :userId");
-			query.setParameter("userId", invitedPeople.get(i).longValue());
-			actionUser.setUser((User) query.getSingleResult());
-
-			actionUser.setAction(action);
-			actionUser.setActionUserStatus(ActionUserStatus.INVITED);
-			em.persist(actionUser);
-		}
-
-	}
 
 	// public void insertTagsOfActions(String tagString, Action action) {
 	// if (tagString == null || tagString == "")
@@ -236,14 +211,5 @@ public class ActionRepository {
 			actionTag.setTag(tag);
 			em.persist(actionTag);
 		}
-	}
-
-	public List<ActionUser> getMembersOfAction(Action action) {
-		String hql = "FROM ActionUser AU WHERE AU.action = :action";
-		Query query = em.createQuery(hql);
-		query.setParameter("action", action);
-		List<ActionUser> result = query.getResultList();
-		
-		return result;
 	}
 }

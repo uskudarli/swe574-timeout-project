@@ -1,4 +1,4 @@
-package app;
+package demo;
 
 import java.util.Date;
 import java.util.Map;

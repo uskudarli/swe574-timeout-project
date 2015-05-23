@@ -1,4 +1,4 @@
-package app;
+package demo;
 
 import entity.Action;
 import helpers.ServiceHelper;

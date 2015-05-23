@@ -1,4 +1,4 @@
-package app;
+package demo;
 
 import helpers.ServiceHelper;
 
@@ -14,11 +14,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import repository.ActionRepository;
-
+import repository.MembersRepository;
 import common.BusinessException;
 import common.DBUtility;
 import common.ResponseHeader;
-
 import dto.ActionDTO;
 import entity.Action;
 import entity.User;
@@ -53,11 +52,12 @@ public class ActionRestServices {
 			action.setPrivacy(privacy);
 			
 			ActionRepository ar = new ActionRepository(em);
+			MembersRepository mr = new MembersRepository(em);
 			ar.insertAction(action);
 
 			ar.insertCreator(creator, action);
 
-			ar.insertInvitedPeople(invitedPeople, action);
+			mr.insertInvitedPeople(invitedPeople, action);
 			
 			ar.insertTags(tagString, creator, action);
 
@@ -95,11 +95,12 @@ public class ActionRestServices {
 			action.setPrivacy(privacy);
 
 			ActionRepository ar = new ActionRepository(em);
+			MembersRepository mr = new MembersRepository(em);
 			ar.insertAction(action);
 
 			ar.insertCreator(creator, action);
 			
-			ar.insertInvitedPeople(invitedPeople, action);
+			mr.insertInvitedPeople(invitedPeople, action);
 
 			ar.insertTags(tagString, creator, action);
 

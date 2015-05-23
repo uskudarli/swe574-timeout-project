@@ -1,12 +1,18 @@
 package helpers;
 
+import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletResponse;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import common.BusinessException;
 import common.DBUtility;
@@ -59,4 +65,12 @@ public class ServiceHelper {
     	DateFormat formatter = new SimpleDateFormat(format);
     	return formatter.parse(inputTimeStamp);
     }
+    
+    public static <T> ArrayList<T> parseListFromJsonString(String jsonString){
+    	Gson gson = new Gson();
+    	Type listType = new TypeToken<ArrayList<T>>() {}.getType();
+    	ArrayList<T> ActionIdList = gson.fromJson(jsonString, listType);
+		return ActionIdList;
+    }
+    
 }
