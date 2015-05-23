@@ -65,7 +65,7 @@ app.config(function($routeProvider) {
 		templateUrl: "profileEdit.html",
 		controller: "profileEdit"
 	})
-	.when("/theGroup", {
+	.when("/theGroup/:groupId", {
 		templateUrl: "theGroup.html",
 		controller: "theGroup"
 	})
@@ -84,6 +84,22 @@ app.config(function($routeProvider) {
 	.when("/updateEvent", {
 		templateUrl: "updateEvent.html",
 		controller: "updateEvent"
+	})
+	.when("/newEvents", {
+		templateUrl: "newEvents.html",
+		controller: "newEvents"
+	})
+	.when("/eventInvitation", {
+		templateUrl: "eventInvitation.html",
+		controller: "eventInvitation"
+	})
+	.when("/groupInvitation", {
+		templateUrl: "groupInvitation.html",
+		controller: "groupInvitation"
+	})
+	.when("/suggestedEvents", {
+		templateUrl: "suggestedEvents.html",
+		controller: "suggestedEvents"
 	})
 	.otherwise({redirectTo: '/'});
 });
@@ -129,7 +145,7 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 						console.log("Event recommendation " + JSON.stringify(data) + " (1038)");
 				  	})
 				  	.error(function(data, status) {
-				 		console.log("Error " + data.message + " (1037)");
+				 		console.log("Error (1037)");
 				  	});
 
 				// Get group notification for user
@@ -139,7 +155,7 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 						console.log("Group recommendation " + JSON.stringify(data));
 				  	})
 				  	.error(function(data, status) {
-				 		console.log("Error " + data.message + " (1037)");
+				 		console.log("Error (1076)");
 				  	});
 
 				// Get event notification for user
@@ -149,7 +165,7 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 						console.log("User recommendation " + JSON.stringify(data) + " (1039)");
 				  	})
 				  	.error(function(data, status) {
-				 		console.log("Error " + data.message + " (1037)");
+				 		console.log("Error (1075)");
 				  	});
 
 				$location.path("/home");
@@ -199,6 +215,7 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 	// When a search is being done, search string is saved to the factory to be reached from other controllers.
 	$scope.search = function(url){
 		timeOutFactory.setSearchText($scope.searchText);
+		console.log("SearchText= " + JSON.stringify($scope.searchText) + " (1200)");
 		$scope.goToPage(url);
 	};
 });
@@ -283,19 +300,19 @@ app.controller("homeController", function($scope, $http, $window, $location, tim
 app.controller("searchController", function($scope, $http, $location, $window, timeOutFactory) {
 	console.log("searchController: " + JSON.stringify(timeOutFactory.getSearchText()) + " (1043)");
 
-	var params = "?sessionId=" + getCookie("sessionId");
-	params += "&tag=" + JSON.stringify(timeOutFactory.getSearchText());
+	// var params = "?sessionId=" + getCookie("sessionId");
+	// params += "&keyword=" + JSON.stringify(timeOutFactory.getSearchText());
 
-	//$scope.resultSet = [{"title": "title", "desc": "desc"}];
+	// //$scope.resultSet = [{"title": "title", "desc": "desc"}];
 
-	$http({method: "GET",  url: timeOutFactory.getBackendUrl() + "/findRelatedGroupsforTag" + params})
-	.success(function(data, status) {
-		$scope.resultSet = data;
-		console.log(JSON.stringify(data) + " (1044)");
-	})
-	.error(function(data, status) {
-		$window.alert("No records have been found!!!" + " (1007)");
-	});
+	// $http({method: "GET",  url: timeOutFactory.getBackendUrl() + "/find" + params})
+	// .success(function(data, status) {
+	// 	$scope.resultSet = data;
+	// 	console.log(JSON.stringify(data) + " (1044)");
+	// })
+	// .error(function(data, status) {
+	// 	$window.alert("No records have been found!!!" + " (1007)");
+	// });
 });
 
 // When user wants to edit own profile, this controller works to support the html on the dynamic content.
@@ -456,6 +473,38 @@ app.controller("myFriends", function($scope, $http, $window, $location) {
 	};
 });
 
+app.controller("newEvents", function($scope, $http, $window, $location) {
+
+	$scope.goToPage = function(url) {
+		console.log("GoToPage: " + url + " (1070)");
+		$location.path(url);
+	};
+});
+
+app.controller("eventInvitation", function($scope, $http, $window, $location) {
+
+	$scope.goToPage = function(url) {
+		console.log("GoToPage: " + url + " (1071)");
+		$location.path(url);
+	};
+});
+
+app.controller("groupInvitation", function($scope, $http, $window, $location) {
+
+	$scope.goToPage = function(url) {
+		console.log("GoToPage: " + url + " (1072)");
+		$location.path(url);
+	};
+});
+
+app.controller("suggestedEvents", function($scope, $http, $window, $location) {
+
+	$scope.goToPage = function(url) {
+		console.log("GoToPage: " + url + " (1073)");
+		$location.path(url);
+	};
+});
+
 // Tested by ogzcm
 app.controller("myEvents", function($scope, $http, $window, $location, timeOutFactory){
 	var params = "?sessionId=" + getCookie("sessionId");
@@ -531,13 +580,13 @@ app.controller("myGroups", function($scope, $http, $window, $location, timeOutFa
 app.controller("newGroups", function($scope, $http, $window, $location, timeOutFactory){
 	var params = "?sessionId=" + getCookie("sessionId");
 
-	$http.get(timeOutFactory.getBackendUrl() + "/group/degisecekkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk/" + params)
+	$http.get(timeOutFactory.getBackendUrl() + "/group/new" + params)
 	.success(function(data, status) {
-		$window.alert("Success " + data.actionId + " (1023)");
+		$window.alert("Success (1023)");
 		$scope.newGroups = data;
 	})
 	.error(function(data, status) {
-		$window.alert("Error " + data + " (1024)");
+		$window.alert("Error (1024)");
 	});
 
 	$scope.goToPage = function(url) {
@@ -714,7 +763,7 @@ app.factory("timeOutFactory", function($http){
 	};
 
 	timeOutFactory.setSearchText = function(text){
-		searchText = text;
+		searchText.push(text);
 	};
 
 	timeOutFactory.adjustTagsForRest = function(selectedTags) {

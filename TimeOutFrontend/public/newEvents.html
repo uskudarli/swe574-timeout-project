@@ -3,7 +3,7 @@
     <!-- Top Middle Menu start-->
     <div class="menu">
         <ul>
-            <li>
+            <li >
                 <a href="" ng-click="goToPage('/home')">Home</a>
             </li>
             <li>
@@ -24,11 +24,14 @@
                 <!-- Event List option tab start-->
                 <div class="eventMenu">
                     <ul>
-                        <li class="active">
-                            <a href="" ng-click="goToPage('/eventsInvited')">Events You're Invited</a>
+                        <li>
+                            <a href="" ng-click="goToPage('/suggestedEvents')">Suggested Events</a>
                         </li>
                         <li>
-                            <a href="" ng-click="goToPage('/eventsCreated')">Events Created</a>
+                            <a href="" ng-click="goToPage('/eventInvitation')">Invitation</a>
+                        </li>
+                        <li class="active">
+                            <a href="" ng-click="goToPage('/newEvents')">New Events</a>
                         </li>
                         <li>
                             <a href="" ng-click="goToPage('/myEvents')">My Events</a>
@@ -37,10 +40,10 @@
                 </div>
                 <!-- Event List option tab end-->
 
-                <legend>Events You're Invited</legend>
+                <legend style="width:98%;">Your Events</legend>
 
                 <!-- Event List start-->
-                <div class="myEventList" ng-repeat="event in eventsInvited">
+                <div class="myEventList" ng-repeat="event in myEvents">
                     <div class="eventName">{{event.name}}</div>
                     <div class="eventNumber">{{event.count}}</div>
                     <div align="right">
@@ -52,7 +55,7 @@
                 <!-- Event List end-->
 
                 <!-- No event alert start-->
-                <div border="0" width="380" id="myexample" style="border:3px solid gray; border-radius:5px; padding:5px;" class="noEvent" ng-show="eventsInvited">
+                <div border="0" width="380" id="myexample" style="border:3px solid gray; border-radius:5px; padding:5px;" class="noEvent" ng-show="myEvents">
                     Sorry, no related events have been found.
                 </div>
                 <!-- No event alert end-->
@@ -73,6 +76,7 @@
                     setInterval("flashit()", speed)
                 </script> 
                 <!-- No event fancy border javascript code end-->
+
 
             </fieldset>
         </div>

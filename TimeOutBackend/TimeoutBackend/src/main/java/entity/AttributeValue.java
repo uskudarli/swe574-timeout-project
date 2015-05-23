@@ -28,6 +28,38 @@ public class AttributeValue {
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "postId")
 	private Post post;
+
+	public Long getAttributeValueId() {
+		return attributeValueId;
+	}
+
+	public void setAttributeValueId(Long attributeValueId) {
+		this.attributeValueId = attributeValueId;
+	}
+
+	public String getAttributeValue() {
+		return attributeValue;
+	}
+
+	public void setAttributeValue(String attributeValue) {
+		this.attributeValue = attributeValue;
+	}
+
+	public Attribute getAttribute() {
+		return attribute;
+	}
+
+	public void setAttribute(Attribute attribute) {
+		this.attribute = attribute;
+	}
+
+	public Post getPost() {
+		return post;
+	}
+
+	public void setPost(Post post) {
+		this.post = post;
+	}
 	
 	
 }
