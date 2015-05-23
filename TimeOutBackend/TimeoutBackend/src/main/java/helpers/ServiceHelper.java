@@ -61,7 +61,7 @@ public class ServiceHelper {
      */
     public static Date dateParser(String inputTimeStamp)
             throws ParseException {
-    	String format = "yyyy-MM-DD_HH:mm:ss";
+    	String format = "DD/MM/yyyy HH:mm:ss";
     	DateFormat formatter = new SimpleDateFormat(format);
     	return formatter.parse(inputTimeStamp);
     }
