@@ -298,21 +298,19 @@ app.controller("homeController", function($scope, $http, $window, $location, tim
 
 // When a search request is done, search.html and this controller shows the dynamic content.
 app.controller("searchController", function($scope, $http, $location, $window, timeOutFactory) {
-	console.log("searchController: " + JSON.stringify(timeOutFactory.getSearchText()) + " (1043)");
+	var search = timeOutFactory.getSearchText();
+	console.log("Search= " + JSON.stringify(search));
+	var params = "?contextId=" + search[0].originalObject.id;
 
-	// var params = "?sessionId=" + getCookie("sessionId");
-	// params += "&keyword=" + JSON.stringify(timeOutFactory.getSearchText());
+	//$scope.resultSet = [{"title": "title", "desc": "desc"}];
 
-	// //$scope.resultSet = [{"title": "title", "desc": "desc"}];
-
-	// $http({method: "GET",  url: timeOutFactory.getBackendUrl() + "/find" + params})
-	// .success(function(data, status) {
-	// 	$scope.resultSet = data;
-	// 	console.log(JSON.stringify(data) + " (1044)");
-	// })
-	// .error(function(data, status) {
-	// 	$window.alert("No records have been found!!!" + " (1007)");
-	// });
+	$http({method: "GET",  url: timeOutFactory.getBackendUrl() + "/find" + params})
+	.success(function(data, status) {
+		$scope.resultSet = data;
+	})
+	.error(function(data, status) {
+		$window.alert("No records have been found!!!" + " (1007)");
+	});
 });
 
 // When user wants to edit own profile, this controller works to support the html on the dynamic content.
@@ -763,7 +761,7 @@ app.factory("timeOutFactory", function($http){
 	};
 
 	timeOutFactory.setSearchText = function(text){
-		searchText.push(text);
+		searchText = text;
 	};
 
 	timeOutFactory.adjustTagsForRest = function(selectedTags) {
