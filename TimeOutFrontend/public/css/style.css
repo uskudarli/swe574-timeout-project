@@ -594,11 +594,56 @@ label {
     text-decoration: none;
 }
 
+.searchSearch{
+    float: left !important;
+    height: 42px !important;
+    margin: 30px 0 0 95px;
+    padding: 0 !important;
+    width: 300px;
+}
+
+.searchSearch input{
+    float: left !important;
+    margin: 7px 15px 0 0;
+}
+
+.searchSearch button{
+    float: left !important;
+}
+
+.angSearch{
+    float: left;
+    width:660px;
+}
+
+.searchInside{
+    float: left;
+}
+
+.angSearch div{
+    float: left;
+}
+
+.angSearch div input{
+    float: left;
+    margin: 3px 0 0 357px;
+}
+
+.angSearch div button{
+    float: left;
+    margin: 0 0 0 220px;
+}
+
 #search-button{
-	float: left;
+    float: left;
     margin: 30px 0 0 128px;
     padding-top: 17px;
     width: 210px;
+}
+
+#search-button1{
+    float: left;
+    width: 570px;
 }
 .searchBtn{
     float: left;
