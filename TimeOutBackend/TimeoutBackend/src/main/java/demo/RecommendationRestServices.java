@@ -43,7 +43,12 @@ public class RecommendationRestServices {
 			DBUtility.rollbackTransaction(em);
 			return new ResponseHeader(false, e.getMessage());
 		}
-		return updated;
+		DBUtility.commitTransaction(em);
+		if(updated){
+			return new ResponseHeader();
+		} else {
+			return new ResponseHeader(false);
+		}
 	}
 
 		@RequestMapping(value = "/getEventRecommendation")

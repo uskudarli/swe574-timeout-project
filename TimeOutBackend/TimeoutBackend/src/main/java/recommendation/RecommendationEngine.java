@@ -17,15 +17,16 @@ public class RecommendationEngine {
 	public static boolean insertRecommendationsforUser(User user) {
 
 //		deleteCurrentRecommendationsOfUser(user);
+		boolean updated = false;
+
 
 		List<Long> currentActionRecommendationIds = getCurrentActionRecommendationsOfUser(user);
 		List<Long> currentUserRecommendationIds = getCurrentUserRecommendationsOfUser(user);
 
 		EntityManager em = DBUtility.startTransaction();
 
-		boolean updated = false;
 
-		List<String> semanticTagsofUser = findAllSemanticTagsOfUser(user);
+		Set<String> semanticTagsofUser = findAllSemanticTagsOfUser(user);
 		if (semanticTagsofUser != null && semanticTagsofUser.size() > 0) {
 			List<Action> recommendedEvents = findSemanticEventsWithGivenTagId(
 					semanticTagsofUser, user, currentActionRecommendationIds);
@@ -111,9 +112,9 @@ public class RecommendationEngine {
 
 	}
 
-	public static List<String> findAllSemanticTagsOfUser(User user) {
-		List<String> tagsOfUser = getActionTagsofUser(user);
-		List<String> semanticTagsofUser = new ArrayList<>();
+	public static Set<String> findAllSemanticTagsOfUser(User user) {
+		Set<String> tagsOfUser = getActionTagsofUser(user);
+		Set<String> semanticTagsofUser = new HashSet<>();
 		for (String tag : tagsOfUser) {
 			Set<String> semanticTagResults = executeSemanticQuery(tag);
 			semanticTagsofUser.addAll(semanticTagResults);
@@ -121,7 +122,7 @@ public class RecommendationEngine {
 		return semanticTagsofUser;
 	}
 
-	public static List<String> getActionTagsofUser(User user) {
+	public static Set<String> getActionTagsofUser(User user) {
 		EntityManager em = DBUtility.startTransaction();
 
 		Query query = em
@@ -130,7 +131,7 @@ public class RecommendationEngine {
 								+ "(SELECT  A FROM Action A WHERE A IN"
 								+ "(SELECT  Au.action FROM ActionUser Au WHERE Au.user = :user))")
 				.setParameter("user", user);
-		List<String> queryResult = query.getResultList();
+		Set<String> queryResult = new HashSet<>(query.getResultList());
 
 		DBUtility.commitTransaction(em);
 
@@ -138,13 +139,13 @@ public class RecommendationEngine {
 	}
 
 	public static ArrayList<Action> findSemanticEventsWithGivenTagId(
-			List<String> semanticTagIds, User user, List<Long> currentActionRecommendationIds) {
+			Set<String> semanticTagIds, User user, List<Long> currentActionRecommendationIds) {
 		return findSemanticActionsWithGivenTagIds(semanticTagIds, user,
 				ActionType.EVENT, currentActionRecommendationIds);
 	}
 
 	public static ArrayList<Action> findSemanticGroupsWithGivenTagId(
-			List<String> semanticTagIds, User user, List<Long> currentActionRecommendationIds) {
+			Set<String> semanticTagIds, User user, List<Long> currentActionRecommendationIds) {
 		return findSemanticActionsWithGivenTagIds(semanticTagIds, user,
 				ActionType.GROUP, currentActionRecommendationIds);
 	}
@@ -170,7 +171,7 @@ public class RecommendationEngine {
 	}
 
 	public static ArrayList<Action> findSemanticActionsWithGivenTagIds(
-			List<String> semanticTagIds, User user, ActionType actionType, List<Long> currentActionRecommendationIds) {
+			Set<String> semanticTagIds, User user, ActionType actionType, List<Long> currentActionRecommendationIds) {
 		EntityManager em = DBUtility.startTransaction();
 
 		Query query = em
@@ -211,7 +212,7 @@ public class RecommendationEngine {
 	}
 
 	public static ArrayList<User> findSemanticUsersWithGivenTagIds(
-			List<String> semanticTagIds, User user, List<Long> currentUserRecommendationIds) {
+			Set<String> semanticTagIds, User user, List<Long> currentUserRecommendationIds) {
 		EntityManager em = DBUtility.startTransaction();
 
 		Query query = em
