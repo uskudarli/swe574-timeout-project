@@ -76,7 +76,8 @@
                         inputclass="ng-pristine ng-valid"
                         matchclass="highlight"
                         setemptyaftersearch="true" />
-                    <div class="" ng-repeat="selectedTag in selectedTags">
+                        
+                    <div class="tagList" ng-repeat="selectedTag in selectedTags">
                         <button class="btn btn-primary" type="button" ng-click="deleteTag($index)">X</button>
                         <span class="bold-span">{{selectedTag.title}} </span>
                         <br>

@@ -1353,12 +1353,13 @@ footer {
 .searchList ul{
     float: left;
     margin: 35px 0 0 10px;
+    width:660px;
 }
 .searchList ul li{
     color: #12295d;
     height: 35px;
     list-style: outside none none;
-    width: 470px;
+    width: 660px;
 }
 
 .searchList ul li a{
@@ -1588,4 +1589,22 @@ animation-delay:1s;
 
 .toSide{
     float: right !important;
+}
+
+.tagList{
+    float: left;
+    width:660px;
+    margin: 5px;
+}
+
+.tagList button{
+    float: left;
+    height: 20px;
+    padding: 0;
+    width: 20px;
+}
+
+.tagList span{
+    float: left;
+    margin: 0 10px;
 }
