@@ -3,10 +3,15 @@ package repository;
 import helpers.ServiceHelper;
 import helpers.ValidationHelper;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import entity.Friendship;
 import entity.User;
@@ -35,10 +40,13 @@ public class FriendshipRepository {
 			return false;
 		if (ValidationHelper.isNullOrWhitespace(friendsString))
 			return false;
+		Gson gson = new Gson();
+		Type listType = new TypeToken<ArrayList<Integer>>() {
+		}.getType();
+		ArrayList<Integer> t = gson.fromJson(friendsString, listType);
 
 		// parse json to List<Integer>
-		List<Integer> friendIds = ServiceHelper
-				.parseListFromJsonString(friendsString);
+		List<Integer> friendIds = t;
 
 		// find users from user id's and add friendship invite records.
 		for (Integer item : friendIds) {
@@ -69,10 +77,13 @@ public class FriendshipRepository {
 			return false;
 		if (ValidationHelper.isNullOrWhitespace(friendshipsString))
 			return false;
+		Gson gson = new Gson();
+		Type listType = new TypeToken<ArrayList<Integer>>() {
+		}.getType();
+		ArrayList<Integer> t = gson.fromJson(friendshipsString, listType);
 
 		// parse json to List<Integer>
-		List<Integer> friendshipIds = ServiceHelper
-				.parseListFromJsonString(friendshipsString);
+		List<Integer> friendshipIds = t;
 
 		// find users from user id's and add friendship invite records.
 		for (int item : friendshipIds) {
@@ -107,10 +118,13 @@ public class FriendshipRepository {
 			return false;
 		if (ValidationHelper.isNullOrWhitespace(friendshipsString))
 			return false;
-
+		
+		Gson gson = new Gson();
+		Type listType = new TypeToken<ArrayList<Integer>>() {
+		}.getType();
+		ArrayList<Integer> t = gson.fromJson(friendshipsString, listType);
 		// parse json to List<Integer>
-		List<Integer> friendshipIds = ServiceHelper
-				.parseListFromJsonString(friendshipsString);
+		List<Integer> friendshipIds = t;
 
 		// find users from user id's and add friendship invite records.
 		for (int item : friendshipIds) {

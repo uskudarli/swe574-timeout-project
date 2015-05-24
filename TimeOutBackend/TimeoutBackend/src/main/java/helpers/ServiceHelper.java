@@ -12,10 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import common.BusinessException;
 import common.DBUtility;
 import common.ErrorMessages;
-
 import entity.Session;
 import entity.User;
 
@@ -61,26 +61,33 @@ public class ServiceHelper {
 	/**
 	 * Format a time from a given format to given target format
 	 */
-	public static Date dateParser(String inputTimeStamp) throws ParseException {
-		String format = "DD/MM/yyyy HH:mm:ss";
-		DateFormat formatter = new SimpleDateFormat(format);
-		return formatter.parse(inputTimeStamp);
+	public static Date dateParser(String inputTimeStamp) throws BusinessException {
+		Date date = null;
+		try {
+			String format = "DD/MM/yyyy HH:mm:ss";
+			DateFormat formatter = new SimpleDateFormat(format);
+			date = formatter.parse(inputTimeStamp);
+		} catch (ParseException e) {
+			businessError(ErrorMessages.dateNotParsedCode,
+					ErrorMessages.dateNotParsed);
+		}
+		return date;
 	}
 
-	public static <T> ArrayList<T> parseListFromJsonString(String jsonString) {
-		Gson gson = new Gson();
-		Type listType = new TypeToken<ArrayList<T>>() {
-		}.getType();
-		ArrayList<T> t = gson.fromJson(jsonString, listType);
-		return t;
-	}
-
-	public static <T> T parseObjectFromJsonString(String jsonString) {
-		Gson gson = new Gson();
-		Type type = new TypeToken<T>() {
-		}.getType();
-		T t = gson.fromJson(jsonString, type);
-		return t;
-	}
+//	public static <T> ArrayList<T> parseListFromJsonString(String jsonString) {
+//		Gson gson = new Gson();
+//		Type listType = new TypeToken<ArrayList<T>>() {
+//		}.getType();
+//		ArrayList<T> t = gson.fromJson(jsonString, listType);
+//		return t;
+//	}
+//
+//	public static <T> T parseObjectFromJsonString(String jsonString) {
+//		Gson gson = new Gson();
+//		Type type = new TypeToken<T>() {
+//		}.getType();
+//		T t = gson.fromJson(jsonString, type);
+//		return t;
+//	}
 
 }

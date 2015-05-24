@@ -5,6 +5,7 @@ import helpers.ValidationHelper;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletResponse;
@@ -15,12 +16,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import repository.UserRepository;
-
 import common.BusinessException;
 import common.DBUtility;
 import common.ErrorMessages;
 import common.ResponseHeader;
-
+import dto.NewsFeedDTO;
 import entity.Role;
 import entity.User;
 import entity.UserBasicInfo;
@@ -164,7 +164,7 @@ public class UserRestServices {
 				try {
 			        Date birthdate = ServiceHelper.dateParser(birthdateString);
 			        user.getUserExtraInfo().setBirthDate(birthdate);
-			    } catch (ParseException e) {
+			    } catch (BusinessException e) {
 			        //do nothing
 			    }
 			}
@@ -295,4 +295,31 @@ public class UserRestServices {
 		}
 		return rh;
     }
+	
+	// news feed function
+	@RequestMapping(value = "/newsFeed")
+	public @ResponseBody Object getNewsFeed(
+			@RequestParam(value = "sessionId") String sessionId,
+			HttpServletResponse resp) {
+
+		EntityManager em = ServiceHelper.initialize(resp);
+
+		User user;
+		List<NewsFeedDTO> feeds = null;
+		try {
+
+			user = ServiceHelper.getSessionUser(em, sessionId);
+			UserRepository ur = new UserRepository(em);
+			feeds = ur.getNewsFeed(user);
+
+			DBUtility.commitTransaction(em);
+		} catch (BusinessException e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getCode(), e.getMessage());
+		} catch (Exception e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getMessage());
+		}
+		return feeds;
+	}
 }

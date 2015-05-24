@@ -3,6 +3,7 @@ package repository;
 import helpers.ServiceHelper;
 import helpers.ValidationHelper;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -12,12 +13,15 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import common.BusinessException;
 import common.DBUtility;
-
 import entity.Action;
 import entity.Attribute;
 import entity.AttributeValue;
+import entity.Comment;
 import entity.CustomType;
 import entity.Post;
 import entity.User;
@@ -53,9 +57,11 @@ public class CustomTypeRepository {
 			EntityManager em) {
 		if (attributesString == null || attributesString == "")
 			return;
-
-		List<Attribute> attributes = ServiceHelper
-				.parseListFromJsonString(attributesString);
+		Gson gson = new Gson();
+		Type listType = new TypeToken<ArrayList<Attribute>>() {
+		}.getType();
+		ArrayList<Attribute> t = gson.fromJson(attributesString, listType);
+		List<Attribute> attributes = t;
 
 		for (int i = 0; i < attributes.size(); i++) {
 			Attribute attribute = new Attribute();
@@ -80,12 +86,57 @@ public class CustomTypeRepository {
 	public List<Post> getPostListByCustomTypeId(Long customTypeId) {
 		List<Post> returnVal = null;
 		if (customTypeId > 0) {
+			CustomType customType = getCustomTypeById(customTypeId);
+			
 			Query query = em.createQuery(
-					"FROM Post P WHERE P.customTypeId = :customTypeId")
-					.setParameter("customTypeId", customTypeId);
+					"FROM Post P WHERE P.customType = :customType")
+					.setParameter("customType", customType);
 			returnVal = query.getResultList();
 		}
 		return returnVal;
+	}
+	
+	public List<Post> getPostListByUser(User user) {
+		List<Post> returnVal = null;
+		if (user != null) {
+			Query query = em.createQuery(
+					"FROM Post P WHERE P.user = :user")
+					.setParameter("user", user);
+			returnVal = query.getResultList();
+		}
+		return returnVal;
+	}
+	
+	public List<Post> getNewPostsByCustomTypeId(Long customTypeId) {
+		List<Post> newPosts = null;
+		if (customTypeId > 0) {
+			Query query = em.createQuery(
+					"FROM Post P order by P.postId desc").setMaxResults(15);
+			newPosts = query.getResultList();
+			
+			for (int i = 0; i < newPosts.size(); i++) {
+				if (newPosts.get(i).getCustomType().getCustomTypeId() != customTypeId) {
+					newPosts.remove(i);
+				}
+			}
+		}
+		return newPosts;
+	}
+	
+	public List<Comment> getNewCommentsByPost(Post post) {
+		List<Comment> newComments = null;
+		if (post != null) {
+			Query query = em.createQuery(
+					"FROM Comment C order by C.commentId desc").setMaxResults(15);
+			newComments = query.getResultList();
+			
+			for (int i = 0; i < newComments.size(); i++) {
+				if (newComments.get(i).getPost().getPostId() != post.getPostId()) {
+					newComments.remove(i);
+				}
+			}
+		}
+		return newComments;
 	}
 
 	public List<Attribute> getAttributeListByCustomTypeId(Long customTypeId) {
@@ -151,8 +202,13 @@ public class CustomTypeRepository {
 
 	private void mergeAttributeValues(String attributeValuesJsonListString,
 			Post post1) {
-		ArrayList<AttributeValue> attributeValues = ServiceHelper
-				.parseListFromJsonString(attributeValuesJsonListString);
+		
+		Gson gson = new Gson();
+				Type listType = new TypeToken<ArrayList<AttributeValue>>() {
+				}.getType();
+				ArrayList<AttributeValue> t = gson.fromJson(attributeValuesJsonListString, listType);
+		ArrayList<AttributeValue> attributeValues = t;
+		
 		Set<AttributeValue> attributeValuesSet = new HashSet<>(attributeValues);
 
 		post1.setAttributeValues(attributeValuesSet);
@@ -168,7 +224,10 @@ public class CustomTypeRepository {
 		if (user == null || ValidationHelper.isNullOrWhitespace(postJsonString))
 			return null;
 
-		post = (Post) ServiceHelper.parseObjectFromJsonString(postJsonString);
+		Gson gson = new Gson();
+		Type type = new TypeToken<Post>() {}.getType();
+		post = (Post)gson.fromJson(postJsonString, type);
+		
 		ValidationHelper.validatePost(post);
 
 		Post post1 = em.merge(post);

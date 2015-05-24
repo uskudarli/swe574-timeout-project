@@ -2,6 +2,7 @@ package demo;
 
 import helpers.ServiceHelper;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,13 +14,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import repository.ActionRepository;
 import repository.MembersRepository;
-
 import common.BusinessException;
 import common.DBUtility;
 import common.ResponseHeader;
-
 import entity.Action;
 import entity.ActionUser;
 import entity.User;
@@ -161,7 +163,11 @@ public class MembersRestServices {
 			ActionRepository ar = new ActionRepository(em);
 			MembersRepository mr = new MembersRepository(em);
 			
-			ArrayList<Integer> actionIds = ServiceHelper.parseListFromJsonString(actionIdsString);
+			Gson gson = new Gson();
+			Type listType = new TypeToken<ArrayList<Integer>>() {
+			}.getType();
+			ArrayList<Integer> t = gson.fromJson(actionIdsString, listType);
+			ArrayList<Integer> actionIds = t;
 			
 			for (Integer item : actionIds){
 				Action action = ar.getActionById(item.longValue(), ActionType.GROUP.toString());

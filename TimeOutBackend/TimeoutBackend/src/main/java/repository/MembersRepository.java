@@ -3,10 +3,15 @@ package repository;
 import helpers.ServiceHelper;
 import helpers.ValidationHelper;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import entity.Action;
 import entity.ActionUser;
@@ -30,13 +35,31 @@ public class MembersRepository {
 
 		return result;
 	}
+	
+	public boolean checkUserIsMemberOfAction(Action action, User user, ActionUserStatus aut) {
+		String hql = "FROM ActionUser AU WHERE AU.action = :action AND AU.user = :user "
+				+ "AND AU.actionUserStatus = :actionUserStatus";
+		Query query = em.createQuery(hql);
+		query.setParameter("action", action)
+		.setParameter("user", user)
+		.setParameter("actionUserStatus", aut);
+		List<ActionUser> result = query.getResultList();
+		
+		if (result == null || result.size() == 0)
+			return false;
+
+		return true;
+	}
 
 	public void insertInvitedPeople(String invitedPeopleString, Action action) {
 		if (ValidationHelper.isNullOrWhitespace(invitedPeopleString))
 			return;
-
-		List<Integer> invitedPeople = ServiceHelper
-				.parseListFromJsonString(invitedPeopleString);
+		
+		Gson gson = new Gson();
+		Type listType = new TypeToken<ArrayList<Integer>>() {
+		}.getType();
+		ArrayList<Integer> t = gson.fromJson(invitedPeopleString, listType);
+		List<Integer> invitedPeople = t;
 
 		for (int i = 0; i < invitedPeople.size(); i++) {
 

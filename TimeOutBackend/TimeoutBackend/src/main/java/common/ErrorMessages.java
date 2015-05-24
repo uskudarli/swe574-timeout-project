@@ -24,4 +24,6 @@ public class ErrorMessages {
 	public static String groupNameEmpty = "Group name is empty";
 	public static String postTitleEmptyCode = "E110";
 	public static String postTitleEmpty = "Post title empty";
+	public static String dateNotParsedCode = "E111";
+	public static String dateNotParsed = "Date could not be parsed";
 }
