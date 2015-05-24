@@ -30,11 +30,12 @@ public class RecommendationRestServices {
 			HttpServletResponse resp) {
 
 		EntityManager em = ServiceHelper.initialize(resp);
+		boolean updated = false;
 
 		try {
 			User user = ServiceHelper.getSessionUser(em, sessionId);
 
-			RecommendationEngine.insertRecommendationsforUser(user);
+			updated = RecommendationEngine.insertRecommendationsforUser(user);
 		}catch (BusinessException e) {
 			DBUtility.rollbackTransaction(em);
 			return new ResponseHeader(false, e.getCode(), e.getMessage());
@@ -42,7 +43,7 @@ public class RecommendationRestServices {
 			DBUtility.rollbackTransaction(em);
 			return new ResponseHeader(false, e.getMessage());
 		}
-		return new ResponseHeader();
+		return updated;
 	}
 
 		@RequestMapping(value = "/getEventRecommendation")
