@@ -70,6 +70,8 @@ public class RecommendationRestServices {
 					.setParameter("actionType", ActionType.EVENT.toString())
 					.setParameter("user", user);
 			recommendedEvents = query.getResultList();
+
+			DBUtility.rollbackTransaction(em);
 		}catch (BusinessException e) {
 			DBUtility.rollbackTransaction(em);
 			return new ResponseHeader(false, e.getCode(), e.getMessage());
@@ -77,6 +79,7 @@ public class RecommendationRestServices {
 			DBUtility.rollbackTransaction(em);
 			return new ResponseHeader(false, e.getMessage());
 		}
+
 		return recommendedEvents;
 	}
 
@@ -96,6 +99,8 @@ public class RecommendationRestServices {
 					.setParameter("actionType", ActionType.GROUP.toString())
 					.setParameter("user", user);
 			recommendedGroups = query.getResultList();
+			DBUtility.rollbackTransaction(em);
+
 		}catch (BusinessException e) {
 			DBUtility.rollbackTransaction(em);
 			return new ResponseHeader(false, e.getCode(), e.getMessage());
@@ -121,6 +126,8 @@ public class RecommendationRestServices {
 			Query query = em.createQuery("SELECT Ur.userRecommended2 FROM UserRecommendation Ur WHERE Ur.userRecommended1 = :user))")
 					.setParameter("user", user);
 			recommendedUsers = query.getResultList();
+			DBUtility.rollbackTransaction(em);
+
 		}catch (BusinessException e) {
 			DBUtility.rollbackTransaction(em);
 			return new ResponseHeader(false, e.getCode(), e.getMessage());
