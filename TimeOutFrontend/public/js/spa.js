@@ -147,7 +147,9 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 			// Get event recommendation for current user
 			$http.get(timeOutFactory.getBackendUrl() + '/getEventRecommendation?sessionId=' + getCookie("sessionId"))
 				.success(function(data, status) {
-					$scope.recommendedEvents = data;
+					if(data.type != undefined && data.type != "Fail") {
+						$scope.recommendedEvents = data;
+					}
 			  	})
 			  	.error(function(data, status) {
 			 		console.log("Error (1037)");
@@ -156,7 +158,9 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 			// Get group recommendation for current user
 			$http.get(timeOutFactory.getBackendUrl() + '/getGroupRecommendation?sessionId=' + getCookie("sessionId"))
 				.success(function(data, status) {
-					$scope.recommendedUsers = data;
+					if(data.type != undefined && data.type != "Fail") {
+						$scope.recommendedUsers = data;
+					}
 			  	})
 			  	.error(function(data, status) {
 			 		console.log("Error (1076)");
@@ -165,7 +169,9 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 			// Get user recommendation for current user
 			$http.get(timeOutFactory.getBackendUrl() + '/getUserRecommendation?sessionId=' + getCookie("sessionId"))
 				.success(function(data, status) {
-					$scope.recommendedGroups = data;
+					if(data.type != undefined && data.type != "Fail") {
+						$scope.recommendedGroups = data;
+					}
 			  	})
 			  	.error(function(data, status) {
 			 		console.log("Error (1075)");
@@ -303,7 +309,16 @@ app.controller("homeController", function($scope, $http, $window, $location, tim
 		$location.path(url);
 	};
 
-	// News
+	// News Feed is taken from backend
+	var params = "?sessionId=" + getCookie("sessionId");
+	$http.get(timeOutFactory.getBackendUrl() + "/newsFeed" + params})
+		.success(function(data) {
+			$scope.newsFeed = data;
+			console.log("NewsFeed = " + JSON.stringify($scope.newsFeed) + " (1550)");
+		})
+		.error(function(data) {
+			console.log("No records have been found!!!" + " (1551)");
+		});
 
 	// It triggers recommendation machine on server for this user
 	$interval(function() {
@@ -316,7 +331,7 @@ app.controller("homeController", function($scope, $http, $window, $location, tim
 					}
 				});
 		}
-	}, 120000);
+	}, 1200000); // 20 minutes
 });
 
 // When a search request is done, search.html and this controller shows the dynamic content.
