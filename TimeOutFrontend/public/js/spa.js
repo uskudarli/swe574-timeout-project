@@ -171,7 +171,7 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 			 		console.log("Error (1075)");
 			  	});
 		}
-	}, 10000);
+	}, 20000);
 
 	// Get sessionId from backend by calling login rest api, then set sessionId cookie
 	$scope.doLogin = function() {
@@ -258,7 +258,6 @@ app.controller("mainController", function($scope, $http, $location, $window, tim
 			.error(function(data){
 				console.log("An error occurred " + " (1003)");
 			});
-
 		if(emailOk) {
 			// Parameters for register is adjusted and password is encrypted with MD5 hash
 			var params = "?userEmail=" + $scope.email + "&password=" + md5.createHash($scope.sigUpPassword);
@@ -294,6 +293,7 @@ app.controller("mainController", function($scope, $http, $location, $window, tim
 app.controller("homeController", function($scope, $http, $window, $location, timeOutFactory, $interval) {
 	var suggestedGroups = [{name:'' ,detail:'"Math "'}];
 	$scope.notificationList2 = [{name:'sara', detail:'"Math fans"'}];
+
 	timeOutFactory.addList("notificationList", $scope.notificationList2);
 
 	$scope.notificationList = timeOutFactory.getList("notificationList");
@@ -303,10 +303,7 @@ app.controller("homeController", function($scope, $http, $window, $location, tim
 		$location.path(url);
 	};
 
-	$scope.newsFeed = [
-	{name:'ali',detail:'math'},
-	{name:'ali', detail:'physics'}
-	];
+	// News
 
 	// It triggers recommendation machine on server for this user
 	$interval(function() {
@@ -327,8 +324,8 @@ app.controller("searchController", function($scope, $http, $location, $window, t
 	var search = timeOutFactory.getSearchText();
 	timeOutFactory.setSearchText("");
 	console.log("Search= " + JSON.stringify(search));
-	var params = "?contextId=" + search[0].originalObject.id;
 
+	var params = "?contextId=" + search[0].originalObject.id;
 	$http({method: "GET",  url: timeOutFactory.getBackendUrl() + "/find" + params})
 		.success(function(data, status) {
 			$scope.resultSet = data;
@@ -345,6 +342,7 @@ app.controller("searchController", function($scope, $http, $location, $window, t
 
 // When user wants to edit own profile, this controller works to support the html on the dynamic content.
 app.controller("profileEdit", function($scope, $http, $window, $location, timeOutFactory) {
+
 	var params = "?sessionId=" + getCookie("sessionId");
 
 	$http.get(timeOutFactory.getBackendUrl() + "/profile/get" + params)
@@ -390,14 +388,13 @@ app.controller("profileEdit", function($scope, $http, $window, $location, timeOu
 		"&gender=" + $scope.gender +
 		"&languages=" + $scope.languages;
 
-
 		$http.get(timeOutFactory.getBackendUrl() + "/profile/edit" + paramsEdit)
-		.success(function(data, status) {
-			$window.alert("Success (1009)");
-		})
-		.error(function(data, status) {
-			console.log("Error (1010)");
-		});
+			.success(function(data, status) {
+				$window.alert("Success (1009)");
+			})
+			.error(function(data, status) {
+				console.log("Error (1010)");
+			});
 	};
 
 	$scope.goToPage = function(url) {
@@ -447,7 +444,7 @@ app.controller("createEvent", function($scope, $http, $window, $location, $filte
 						"&eventDescription=" + $scope.eventDescription +
 						"&startTime=" + $scope.startTime +
 						"&endTime=" + $scope.endTime +
-						//"&invitedPeople=" + $scope.invitedPeople +
+						"&invitedPeople=" + $scope.invitedPeople +
 						"&tag=" + JSON.stringify(timeOutFactory.adjustTagsForRest($scope.selectedTags)) +
 						"&privacy=" + ($scope.privacy == true ? "P" : "C");
 
@@ -484,6 +481,7 @@ app.controller("createGroup", function($scope, $http, $window, $location, timeOu
 		params += 	"&groupName=" + $scope.groupName +
 					"&groupDescription=" + $scope.groupDescription +
 					"&tag=" + JSON.stringify(timeOutFactory.adjustTagsForRest($scope.selectedTags)) +
+					"&invitedPeople=" + $scope.invitedPeople +
 					"&privacy=" + ($scope.privacy == true ? "P" : "C");
 
 		$http.get(timeOutFactory.getBackendUrl() + "/group/create" + params)
@@ -545,7 +543,7 @@ app.controller("suggestedEvents", function($scope, $http, $window, $location) {
 app.controller("myEvents", function($scope, $http, $window, $location, timeOutFactory){
 	var params = "?sessionId=" + getCookie("sessionId");
 
-	$http.get(timeOutFactory.getBackendUrl() + "/event/created/" + params)
+	$http.get(timeOutFactory.getBackendUrl() + "/event/created" + params)
 	.success(function(data, status) {
 		$scope.myEvents = data;
 	})

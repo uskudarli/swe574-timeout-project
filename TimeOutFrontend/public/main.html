@@ -1,7 +1,7 @@
 <section style="width:1070px !important; float: left !important; margin-left: -40px;">
     <!--p>The ID is {{greeting.id}}</p>
     <p>The content is {{greeting.content}}</p-->
-
+    
     <!-- Left Column - Cmpe Logo and Login with Facebook part start-->
     <div class="intro">
         <img src="images/cmpelogo.png" />
@@ -16,29 +16,10 @@
         <fieldset>
             <legend>Sign Up</legend>
 
-            <!-- Message Box Fade in and fade out javascript code start-->
-            <script>
-                $(function(){
-                 setTimeout(function() {
-                        $(".content1").addClass("fadeOutLeft"); 
-                  },3000);
-                });
-            </script>
-            <!-- Message Box Fade in and fade out javascript code end-->
-
-            <!-- Message Box Code start-->
-            <div class="footer1">
-                <div ng-class="{content1: ok, animated3:ok, fadeInLeft:ok, animated:ok}" class="message signMessage"  ng-repeat="message in messages">
-                    {{message.note}}
-                </div>
-            </div>
-            <!-- Message Box Code end-->
-
-
             <form ng-submit="signUp()">
                 <p>
                     <label for="name">First Name:</label>
-                    <input type="text" ng-model="firstName"/>
+                    <input type="text" ng-model="name"/>
                 </p>
                 <p>
                     <label for="surname">Last Name:</label>
@@ -46,7 +27,7 @@
                 </p>
                  <p>
                     <label for="surname">Role:</label>
-                    <select name="role" ng-model="role">
+                    <select style="height:24px !important; width:210px !important;" name="role" ng-model="role">
                         <option ng-repeat="item in roleSet">{{item}}</option>
                     </select>
                 </p>
@@ -73,8 +54,29 @@
                     <button class="btn btn-primary" style="padding: 1px 12px;" type="submit">Sign Up</button>
                 </p>
             </form>
+
+
+            <!-- Message Box Fade in and fade out javascript code start-->
+            <script>
+                $(function(){
+                 setTimeout(function() {
+                        $(".content1").addClass("fadeOutLeft"); 
+                  },3000);
+                });
+            </script>
+            <!-- Message Box Fade in and fade out javascript code end-->
+
+            <!-- Message Box Code start-->
+            <div class="footer1">
+                <div ng-class="{content1: ok, animated3:ok, fadeInLeft:ok, animated:ok}" class="message signMessage"  ng-repeat="message in messages">
+                    {{message.note}}
+                </div>
+            </div>
+            <!-- Message Box Code end-->
+            
         </fieldset>
     </div>
     <!-- Signup Form end-->
+
 
 </section>

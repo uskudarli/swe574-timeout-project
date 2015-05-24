@@ -20,23 +20,6 @@
         <div class="group-creation">
             <fieldset>
                 <legend>Update Event </legend>
-                <!-- Message Box Fade in and fade out javascript code start-->
-                <script>
-                    $(function(){
-                     setTimeout(function() {
-                            $(".content1").addClass("fadeOutLeft"); 
-                      },3000);
-                    });
-                </script>
-                <!-- Message Box Fade in and fade out javascript code end-->
-
-                <!-- Message Box Code start-->
-                <div class="footer1">
-                    <div ng-class="{content1: ok, animated3:ok, fadeInLeft:ok, animated:ok}" class="message"  ng-repeat="message in messages">
-                        {{message.note}}
-                    </div>
-                </div>
-                <!-- Message Box Code end-->
 
                 <!-- Create Event Form start-->
                 <form>
@@ -51,7 +34,7 @@
 
                     <label style="width: 150px">*Start Date/Time: </label>
                     <div id="Sdatetimepicker" class="input-append date">
-                        <input type="text" ng-model="startTime"></input>
+                        <input style="width:170px !important;" type="text" ng-model="startTime"></input>
                         <span class="add-on dateBtn">
                             <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
                         </span>
@@ -66,7 +49,7 @@
 
                     <label style="width: 150px">*End Date/Time: </label>
                     <div id="Edatetimepicker" class="input-append date">
-                        <input type="text" ng-model="endTime"></input>
+                        <input style="width:170px !important;" type="text" ng-model="endTime"></input>
                         <span class="add-on dateBtn">
                             <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
                         </span>
@@ -108,6 +91,23 @@
                 </form>
                 <!-- Create Event Form end-->
 
+                <!-- Message Box Fade in and fade out javascript code start-->
+                <script>
+                    $(function(){
+                     setTimeout(function() {
+                            $(".content1").addClass("fadeOutLeft"); 
+                      },3000);
+                    });
+                </script>
+                <!-- Message Box Fade in and fade out javascript code end-->
+
+                <!-- Message Box Code start-->
+                <div class="footer1">
+                    <div ng-class="{content1: ok, animated3:ok, fadeInLeft:ok, animated:ok}" class="message"  ng-repeat="message in messages">
+                        {{message.note}}
+                    </div>
+                </div>
+                <!-- Message Box Code end-->
             </fieldset>
         </div>
     </div>
