@@ -39,11 +39,14 @@ public class RecommendationRestServices {
 			updated = RecommendationEngine.insertRecommendationsforUser(user);
 		}catch (BusinessException e) {
 //			DBUtility.rollbackTransaction(em);
+			DBUtility.closeConnections();
 			return new ResponseHeader(false, e.getCode(), e.getMessage());
 		}catch (Exception e) {
-//			DBUtility.rollbackTransaction(em);
+			DBUtility.closeConnections();
 			return new ResponseHeader(false, e.getMessage());
 		}
+		DBUtility.closeConnections();
+
 		if(updated){
 			return new ResponseHeader();
 		} else {

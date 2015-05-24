@@ -52,6 +52,8 @@ public class SearchRestServices {
         searchResults.put("events", recommendedEvents);
         searchResults.put("groups", recommendedGroups);
         searchResults.put("users", recommendedUsers);
+        DBUtility.closeConnections();
+
 //        DBUtility.rollbackTransaction(em);
 //
         return searchResults;
@@ -64,6 +66,7 @@ public class SearchRestServices {
         EntityManager em = DBUtility.createTransaction();
 //        Object tags= findSemanticTag(tag);
 //        DBUtility.commitTransactionOnly(em);
+        DBUtility.closeConnections();
         return findSemanticTag(tag);
     }
 

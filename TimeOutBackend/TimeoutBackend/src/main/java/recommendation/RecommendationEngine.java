@@ -18,8 +18,8 @@ public class RecommendationEngine {
 
 //		deleteCurrentRecommendationsOfUser(user);
 		boolean updated = false;
-//
-//
+////
+////
 		List<Long> currentActionRecommendationIds = getCurrentActionRecommendationsOfUser(user);
 		List<Long> currentUserRecommendationIds = getCurrentUserRecommendationsOfUser(user);
 

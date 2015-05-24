@@ -79,4 +79,9 @@ public class DBUtility {
 //		em.close();
 //		entityManagerFactory.close();
 	}
+
+	public static void closeConnections(){
+		em.close();
+		entityManagerFactory.close();
+	}
 }
