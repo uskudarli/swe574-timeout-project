@@ -903,7 +903,7 @@ app.factory("timeOutFactory", function($http){
 			tag.contextId = selectedTags[i].originalObject.id;
 			tag.url = selectedTags[i].originalObject.url;
 			if (selectedTags[i].originalObject.aliases != null) {
-				tag.alias = selectedTags[i].originalObject.aliases;
+				tag.alias = selectedTags[i].originalObject.aliases[0];
 			}
 			tag.description = selectedTags[i].originalObject.description;
 			tag.label = selectedTags[i].originalObject.label;
