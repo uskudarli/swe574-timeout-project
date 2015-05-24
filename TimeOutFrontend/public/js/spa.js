@@ -116,8 +116,7 @@ app.run(function($rootScope, $location) {
 // Non-dynamic content is controlled by this controller.
 app.controller("indexController", function($scope, $http, $location, $window, timeOutFactory, md5, getProfile, $interval, $route) {
 	// For logging
-	$scope.searchText = [];
-	$scope.searchContextUrl = timeOutFactory.getBackendUrl() + '/searchContext?tag=';
+	$scope.searchText = "";
 	$scope.profileInfo = null;
 	$scope.recommendedUsers = [];
 	$scope.recommendedEvents = [];
@@ -147,7 +146,7 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 			// Get event recommendation for current user
 			$http.get(timeOutFactory.getBackendUrl() + '/getEventRecommendation?sessionId=' + getCookie("sessionId"))
 				.success(function(data, status) {
-					if(data.type != undefined && data.type != "Fail") {
+					if(data.type == undefined || data.type != "Fail") {
 						$scope.recommendedEvents = data;
 					}
 			  	})
@@ -158,7 +157,7 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 			// Get group recommendation for current user
 			$http.get(timeOutFactory.getBackendUrl() + '/getGroupRecommendation?sessionId=' + getCookie("sessionId"))
 				.success(function(data, status) {
-					if(data.type != undefined && data.type != "Fail") {
+					if(data.type == undefined || data.type != "Fail") {
 						$scope.recommendedUsers = data;
 					}
 			  	})
@@ -169,7 +168,7 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 			// Get user recommendation for current user
 			$http.get(timeOutFactory.getBackendUrl() + '/getUserRecommendation?sessionId=' + getCookie("sessionId"))
 				.success(function(data, status) {
-					if(data.type != undefined && data.type != "Fail") {
+					if(data.type == undefined || data.type != "Fail") {
 						$scope.recommendedGroups = data;
 					}
 			  	})
@@ -204,7 +203,7 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 	// Set sessionId cookies to ""
 	$scope.doLogout = function() {
 		setCookie("sessionId", "", 0);
-		setCookie("userName", "", 0);
+		$scope.userEmail = "";
 		$scope.userName = "";
 		$location.path("/");
 	};
@@ -224,8 +223,8 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 	// When a search is being done, search string is saved to the factory to be reached from other controllers.
 	$scope.search = function(url){
 		timeOutFactory.setSearchText($scope.searchText);
-		console.log("SearchText= " + JSON.stringify($scope.searchText) + " (1200)");
-		$scope.searchText = [];
+		console.log("SearchText= " + $scope.searchText + " (1200)");
+		$scope.searchText = "";
 		if($route.current.templateUrl == "search.html") {
 			$route.reload();
 		} else {
@@ -336,11 +335,12 @@ app.controller("homeController", function($scope, $http, $window, $location, tim
 
 // When a search request is done, search.html and this controller shows the dynamic content.
 app.controller("searchController", function($scope, $http, $location, $window, timeOutFactory) {
+	$scope.searchContextUrl = timeOutFactory.getBackendUrl() + '/searchContext?tag=';
+	$scope.searchByTag = [];
+
 	var search = timeOutFactory.getSearchText();
 	timeOutFactory.setSearchText("");
-	console.log("Search= " + JSON.stringify(search));
-
-	var params = "?contextId=" + search[0].originalObject.id;
+	var params = "?keyword=" + search[0].originalObject.id;
 	$http({method: "GET",  url: timeOutFactory.getBackendUrl() + "/find" + params})
 		.success(function(data, status) {
 			$scope.resultSet = data;
@@ -353,6 +353,17 @@ app.controller("searchController", function($scope, $http, $location, $window, t
 		console.log("GoToPage: " + url + " (1046)");
 		$location.path(url);
 	};
+
+	$scope.searchByTag = function() {
+		var params = "?contextId=" + searchByTag[0].originalObject.id;
+		$http({method: "GET",  url: timeOutFactory.getBackendUrl() + "/find" + params})
+			.success(function(data, status) {
+				$scope.resultSet = data;
+			})
+			.error(function(data, status) {
+				$window.alert("No records have been found!!!" + " (1007)");
+			});
+	}
 });
 
 // When user wants to edit own profile, this controller works to support the html on the dynamic content.
@@ -869,7 +880,7 @@ function setCookie(cname, cvalue, exdays) {
 	var d = new Date();
 	d.setDate(d.getDate() + exdays);
 	var expires = "expires=" + d;
-	document.cookie += cname + "=" + cvalue + "; " + expires;
+	document.cookie = cname + "=" + cvalue + "; " + expires;
 };
 
 // For getting the value of cookie which was set before.
