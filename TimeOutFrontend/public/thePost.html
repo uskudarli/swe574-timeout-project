@@ -9,26 +9,6 @@
         <div class="closeLightbox">X</div>
       </a>
       <div class="addCustomType">
-
-        <!-- Message Box Fade in and fade out javascript code start-->
-        <script>
-            $(function(){
-             setTimeout(function() {
-                    $(".content1").addClass("fadeOutLeft"); 
-              },3000);
-            });
-        </script>
-        <!-- Message Box Fade in and fade out javascript code end-->
-
-        <!-- Message Box Code start-->
-        <div class="footer1">
-            <div ng-class="{content1: ok, animated3:ok, fadeInLeft:ok, animated:ok}" class="message"  ng-repeat="message in messages">
-                {{message.note}}
-            </div>
-        </div>
-        <!-- Message Box Code end-->
-
-        
           <table>
             <tr>
               <td>Attribute Type:</td>
@@ -43,6 +23,13 @@
             </tr>
           </table>
         </div>
+
+        <!-- Message Box Code start-->
+            <div ng-repeat="message in messages">
+                {{message.note}}
+            </div>
+        <!-- Message Box Code end-->
+        
     </div>
     <div id="fade" class="black_overlay"></div>
     <!-- Lightbox button code end-->

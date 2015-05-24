@@ -1198,7 +1198,7 @@ footer {
 
 .profileEditForm{
     float: left;
-    height: 875px;
+    height: 1115px;
 }
 
 .highlight {
@@ -1314,17 +1314,16 @@ footer {
     float: left;
     font-weight: bold;
     height: 100px;
-    margin: 0 0 0 10%;
+    margin: -29% 0 0 10%;
     padding: 25px;
     position: absolute;
     text-align: center;
     width: 300px;
     z-index: 11111;
-    opacity:0;
 }
 
 .signMessage{ 
-     margin: 2% 0 0 -65% !important;
+     margin: -23% 0 0 -16% !important;
 }
 
 .footer1 {  

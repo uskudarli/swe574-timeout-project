@@ -105,7 +105,7 @@
                 <div class="leftcolumn" ng-show="isCookieSet()">
                     <div class="profile">
                         <img ALT="anonymous" title="{{email}}" src="images/anonymous.jpg" />
-                        <p>{{userName}}</p>
+                        <p>{{profileInfo.userBasicInfo.firstName}} {{profileInfo.userBasicInfo.lastName}}</p>
                         <a href="" ng-click="goToPage('/profileEdit')">Edit Profile</a>
                     </div>
                     <ul>
