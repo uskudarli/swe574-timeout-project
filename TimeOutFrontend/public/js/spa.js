@@ -295,10 +295,7 @@ app.controller("homeController", function($scope, $http, $window, $location, tim
 		$location.path(url);
 	};
 
-	$scope.newsFeed = [
-	{name:'ali',detail:'math'},
-	{name:'ali', detail:'physics'}
-	];
+	// News
 
 	// It triggers recommendation machine on server for this user
 	$interval(function() {
@@ -382,14 +379,13 @@ app.controller("profileEdit", function($scope, $http, $window, $location, timeOu
 		"&gender=" + $scope.gender +
 		"&languages=" + $scope.languages;
 
-
 		$http.get(timeOutFactory.getBackendUrl() + "/profile/edit" + paramsEdit)
-		.success(function(data, status) {
-			$window.alert("Success (1009)");
-		})
-		.error(function(data, status) {
-			console.log("Error (1010)");
-		});
+			.success(function(data, status) {
+				$window.alert("Success (1009)");
+			})
+			.error(function(data, status) {
+				console.log("Error (1010)");
+			});
 	};
 
 	$scope.goToPage = function(url) {
@@ -538,7 +534,7 @@ app.controller("suggestedEvents", function($scope, $http, $window, $location) {
 app.controller("myEvents", function($scope, $http, $window, $location, timeOutFactory){
 	var params = "?sessionId=" + getCookie("sessionId");
 
-	$http.get(timeOutFactory.getBackendUrl() + "/event/created/" + params)
+	$http.get(timeOutFactory.getBackendUrl() + "/event/created" + params)
 	.success(function(data, status) {
 		$scope.myEvents = data;
 	})
