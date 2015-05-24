@@ -26,21 +26,20 @@
 	                <angucomplete id="searchField"
 	                    placeholder="Search tag"
 	                    pause="100"
-	                    selectedobject="searchText"
+	                    selectedobject="searchTag"
 	                    url="searchContextUrl"
 	                    searchfields="description"
 	                    titlefield="label,description,aliases"
 	                    inputclass="searchInput"
 	                    matchclass="highlight" />
 	            </div>
-            	<button class="btn btn-primary searchInside" ng-click="search('/search')" ng-show="isCookieSet()">Search</button>
+            	<button class="btn btn-primary searchInside" ng-click="searchByTag()">Search</button>
             </div>
 			<!-- Search Result List start-->
 
-
 			<legend>Search Results</legend>
 
-			<div class="searchTitle" ng-show="resultSet.users.length() > 0">People</div>
+			<div class="searchTitle" ng-show="resultSet.users.length > 0">People</div>
 			<ul>
 				<li ng-repeat="user in resultSet.users">
 					<a href="" ng-click="goToPage('/theUser/' + user.userId)">{{user.userBasicInfo.firstName}} {{user.userBasicInfo.lastName}} {{user.userEmail}}</a>
@@ -50,7 +49,7 @@
 		    <div class="clearBoth"></div>
 		    <div class="line"></div>
 
-			<div class="searchTitle" ng-show="resultSet.users.length() > 0">Groups</div>
+			<div class="searchTitle" ng-show="resultSet.users.length > 0">Groups</div>
 			<ul>
 				<li ng-repeat="group in resultSet.groups">
 					<a href="" ng-click="goToPage('/theGroup/' + group.actionId)">{{group.title}} {{group.description}}</a>
@@ -60,7 +59,7 @@
 		    <div class="clearBoth"></div>
 		    <div class="line" ng-show="resultSet.events"></div>
 
-			<div class="searchTitle" ng-show="resultSet.users.length() > 0">Events</div>
+			<div class="searchTitle" ng-show="resultSet.users.length > 0">Events</div>
 			<ul>
 				<li ng-repeat="event in resultSet.events">
 					<a href="" ng-click="goToPage('/theEvent/' + event.actionId)">{{event.title}} {{event.description}}</a>
