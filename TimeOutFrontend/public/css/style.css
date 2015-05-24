@@ -1585,3 +1585,7 @@ animation-delay:1s;
     float: left;
     width: 140px;
 }
+
+.toSide{
+    float: right !important;
+}
