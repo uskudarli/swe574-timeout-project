@@ -1328,7 +1328,7 @@ footer {
 
 .rightButton{
     float: left !important;
-    margin: 22px 0 10px -40px;
+    margin: 0 30px 0 -40px;
 }
 
 .searchTitle{
@@ -1562,4 +1562,8 @@ animation-delay:1s;
     -moz-animation-name: fadeOutLeft;
     -o-animation-name: fadeOutLeft;
     animation-name: fadeOutLeft;
+}
+
+.joinButton{
+    float: right;
 }
