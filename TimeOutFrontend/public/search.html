@@ -21,6 +21,23 @@
 		<div class="group-creation searchList">
 
 			<!-- Search Result List start-->
+        	<div class="angSearch">
+        		<div id="search-button1">
+	                <angucomplete id="searchField"
+	                    placeholder="Search tag"
+	                    pause="100"
+	                    selectedobject="searchText"
+	                    url="searchContextUrl"
+	                    searchfields="description"
+	                    titlefield="label,description,aliases"
+	                    inputclass="searchInput"
+	                    matchclass="highlight" />
+	            </div>
+            	<button class="btn btn-primary searchInside" ng-click="search('/search')" ng-show="isCookieSet()">Search</button>
+            </div>
+			<!-- Search Result List start-->
+
+
 			<legend>Search Results</legend>
 
 			<div class="searchTitle" ng-show="resultSet.users.length() > 0">People</div>

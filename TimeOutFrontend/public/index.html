@@ -81,18 +81,11 @@
                             <!-- Right header - Login Form end-->
 
                             <!-- Right header - Search form start-->
-                            <div id="search-button" ng-show="isCookieSet()">
-                                <angucomplete id="searchField"
-                                    placeholder="Search tag"
-                                    pause="100"
-                                    selectedobject="searchText"
-                                    url="searchContextUrl"
-                                    searchfields="description"
-                                    titlefield="label,description,aliases"
-                                    inputclass="searchInput"
-                                    matchclass="highlight" />
+                            
+                            <div class="searchSearch" ng-show="isCookieSet()">
+                                <input type="text" name="searchTextField" ng-model="searchTextField"/>
+                                <button class="btn btn-primary" ng-click="search('/search')" ng-show="isCookieSet()">Search</button>
                             </div>
-                            <button class="btn btn-primary searchBtn" ng-click="search('/search')" ng-show="isCookieSet()">Search</button>
                             <!-- Right header - Search form end-->
 
                         </div>

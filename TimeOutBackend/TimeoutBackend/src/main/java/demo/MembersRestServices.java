@@ -174,9 +174,44 @@ public class MembersRestServices {
 				mr.acceptInvitation(user, action);
 			}
 			
-//			List<Action> actions = mr.getActionListByIds(actionIdsString)
-			//Action action = ar.getActionById(actionId.longValue(), ActionType.GROUP.toString());
-//			ar.insertInvitedPeople(invitedPeople, action);
+//
+			DBUtility.commitTransaction(em);
+		}catch (BusinessException e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getCode(), e.getMessage());
+		}catch (Exception e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getMessage());
+		}
+
+		return new ResponseHeader();
+	}
+	
+	@RequestMapping(value = "/event/acceptInvitation")
+	@ResponseBody
+	public Object acceptInviteToEvent(
+			@RequestParam(value = "sessionId") String sessionId,
+			@RequestParam(value = "actionIds") String actionIdsString, //json List<Integer> olarak action idleri
+			HttpServletResponse resp) {
+
+		EntityManager em = ServiceHelper.initialize(resp);
+
+		try {
+			User user = ServiceHelper.getSessionUser(em, sessionId);
+			
+			ActionRepository ar = new ActionRepository(em);
+			MembersRepository mr = new MembersRepository(em);
+			
+			Gson gson = new Gson();
+			Type listType = new TypeToken<ArrayList<Integer>>() {
+			}.getType();
+			ArrayList<Integer> t = gson.fromJson(actionIdsString, listType);
+			ArrayList<Integer> actionIds = t;
+			
+			for (Integer item : actionIds){
+				Action action = ar.getActionById(item.longValue(), ActionType.EVENT.toString());
+				mr.acceptInvitation(user, action);
+			}
 //
 			DBUtility.commitTransaction(em);
 		}catch (BusinessException e) {
