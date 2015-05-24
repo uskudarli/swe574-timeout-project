@@ -119,6 +119,9 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 	$scope.searchText = [];
 	$scope.searchContextUrl = timeOutFactory.getBackendUrl() + '/searchContext?tag=';
 	$scope.profileInfo = null;
+	$scope.recommendedUsers = [];
+	$scope.recommendedEvents = [];
+	$scope.recommendedGroups = [];
 
 	// Gets profile and keeps it in the scope
 	$scope.getProfile = function() {
@@ -137,31 +140,28 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 			// Reset the flag
 			timeOutFactory.setRecommendationUpdated(false);
 
-			// Get event notification for user
+			// Get event recommendation for current user
 			$http.get(timeOutFactory.getBackendUrl() + '/getEventRecommendation?sessionId=' + getCookie("sessionId"))
 				.success(function(data, status) {
-					$scope.eventRecommendation = data;
-					console.log("Event recommendation " + JSON.stringify(data) + " (1038)");
+					$scope.recommendedEvents = data;
 			  	})
 			  	.error(function(data, status) {
 			 		console.log("Error (1037)");
 			  	});
 
-			// Get group notification for user
+			// Get group recommendation for current user
 			$http.get(timeOutFactory.getBackendUrl() + '/getGroupRecommendation?sessionId=' + getCookie("sessionId"))
 				.success(function(data, status) {
-					$scope.groupRecommendation = data;
-					console.log("Group recommendation " + JSON.stringify(data));
+					$scope.recommendedUsers = data;
 			  	})
 			  	.error(function(data, status) {
 			 		console.log("Error (1076)");
 			  	});
 
-			// Get event notification for user
+			// Get user recommendation for current user
 			$http.get(timeOutFactory.getBackendUrl() + '/getUserRecommendation?sessionId=' + getCookie("sessionId"))
 				.success(function(data, status) {
-					$scope.userRecommendation = data;
-					console.log("User recommendation " + JSON.stringify(data) + " (1039)");
+					$scope.recommendedGroups = data;
 			  	})
 			  	.error(function(data, status) {
 			 		console.log("Error (1075)");
