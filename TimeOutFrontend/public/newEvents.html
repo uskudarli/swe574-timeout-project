@@ -46,11 +46,11 @@
                 <div class="myEventList" ng-repeat="event in myEvents">
                     <div class="eventName">{{event.name}}</div>
                     <div class="eventNumber">{{event.count}}</div>
-                    <div align="right">
-                        <div class="iconDelUp delete" ng-click=""></div>
-                        <p class="division">|</p>
-                        <div class="iconDelUp update" ng-click="goToPage('/updateEvent')"></div>
+
+                    <div class="joinButton" align="right">
+                        <button class="btn btn-primary rightButton" type="button" ng-click="">Join to the Event</button>
                     </div>
+
                 </div>
                 <!-- Event List end-->
 
