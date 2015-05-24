@@ -594,6 +594,11 @@ label {
     text-decoration: none;
 }
 
+.searchJoin{
+    float: right;
+    margin: 0;
+}
+
 .searchSearch{
     float: left !important;
     height: 42px !important;
@@ -1269,6 +1274,10 @@ footer {
 }
 
 .angucomplete-row {
+    width:500px;
+}
+
+.angucomplete-row {
     margin-top: 10px;
 }
 
@@ -1343,11 +1352,18 @@ footer {
 }
 .searchList ul{
     float: left;
-    margin: 35px 0 0 -28px;
+    margin: 35px 0 0 10px;
 }
 .searchList ul li{
-    color:#12295d;
+    color: #12295d;
+    height: 35px;
+    list-style: outside none none;
+    width: 470px;
+}
 
+.searchList ul li a{
+    float: left;
+    width: 505px;
 }
 
 .message{
@@ -1566,5 +1582,6 @@ animation-delay:1s;
 }
 
 .joinButton{
-    float: right;
+    float: left;
+    width: 140px;
 }
