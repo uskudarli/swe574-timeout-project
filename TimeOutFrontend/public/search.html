@@ -63,9 +63,14 @@
 			<ul>
 				<li ng-repeat="event in resultSet.events">
 					<a href="" ng-click="goToPage('/theEvent/' + event.actionId)">{{event.title}} {{event.description}}</a>
+                    <div class="joinButton" align="right">
+                        <button class="btn btn-primary rightButton" type="button" ng-click="">Join to the Event</button>
+                    </div>
 				</li>
 			</ul>
 
+			
+		    <div class="clearBoth"></div>
 			<!-- Search Result List end-->
 
 			<br />
