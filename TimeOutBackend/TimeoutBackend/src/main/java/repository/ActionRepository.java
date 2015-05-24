@@ -246,4 +246,47 @@ public class ActionRepository {
 		}
 		return results;
 	}
+
+	public Action editAction(Action action, List<Tag> tags) {
+		Action result = null;
+		if (action == null)
+			return null;
+		
+		result = em.merge(action);
+		
+		deleteActionTags(result);
+		insertActionTags(result, tags);
+		
+		return result;
+	}
+
+	private void insertActionTags(Action action, List<Tag> tags) {
+		if (tags == null || tags.size() == 0)
+			return;
+		if (action == null)
+			return;
+		
+		for (Tag tag : tags){
+			Tag tag1 = em.merge(tag);
+			ActionTag actionTag = new ActionTag();
+			actionTag.setAction(action);
+			actionTag.setTag(tag1);
+			em.merge(actionTag);
+		}
+	}
+
+	private void deleteActionTags(Action action) {
+		String hql = "FROM ActionTag AT WHERE AT.action = :action";
+		Query query = em.createQuery(hql);
+		query.setParameter("action", action);
+		
+		List<ActionTag> actionTags = query.getResultList();
+		
+		if (actionTags != null && actionTags.size() > 0){
+			for (ActionTag item : actionTags){
+				em.remove(item);
+			}
+		}
+	}
+
 }

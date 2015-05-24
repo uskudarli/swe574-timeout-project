@@ -6,19 +6,28 @@ import common.ResponseHeader;
 import dto.ActionDTO;
 import dto.ActionMemberDTO;
 import entity.Action;
+import entity.Tag;
 import entity.User;
 import enums.ActionType;
 import helpers.ServiceHelper;
 import helpers.ValidationHelper;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import repository.ActionRepository;
 import repository.MembersRepository;
 
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletResponse;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -119,6 +128,110 @@ public class ActionRestServices {
 		}
 
 		return action;
+	}
+	
+	@RequestMapping(value = "/event/edit")
+	@ResponseBody
+	public Object editEvent(
+			@RequestParam(value = "sessionId") String sessionId,
+			@RequestParam(value = "event") String eventJsonString,
+			@RequestParam(value = "tagList", required = false) String tagListJsonString,
+			HttpServletResponse resp) {
+
+		EntityManager em = ServiceHelper.initialize(resp);
+
+		Action action = null;
+		Action result = null;
+		List<Tag> tags = null;
+		try {
+			User creator = ServiceHelper.getSessionUser(em, sessionId);
+			
+			Gson gson = new Gson();
+			Type type = new TypeToken<Action>() {}.getType();
+			action = gson.fromJson(eventJsonString, type);
+			
+			if (!ValidationHelper.isNullOrWhitespace(tagListJsonString)){
+				Type listType = new TypeToken<ArrayList<Tag>>() {}.getType();
+				tags = gson.fromJson(tagListJsonString, listType);
+			}
+			
+			ValidationHelper.validateEvent(action.getTitle());
+			
+			Date startTime = null ;
+			Date endTime = null;
+			if (!ValidationHelper.isNullOrWhitespace(action.getStartTime().toString())){
+				startTime = ServiceHelper.dateParser(action.getStartTime().toString());
+			}
+			if (!ValidationHelper.isNullOrWhitespace(action.getEndTime().toString())){
+				endTime = ServiceHelper.dateParser(action.getEndTime().toString());
+			}
+			action.setStartTime(startTime);
+			action.setEndTime(endTime);
+			
+			ActionRepository ar = new ActionRepository(em);
+			result = ar.editAction(action, tags);
+			DBUtility.commitTransaction(em);
+		}catch (BusinessException e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getCode(), e.getMessage());
+		}catch (Exception e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getMessage());
+		}
+
+		return result;
+	}
+	
+	@RequestMapping(value = "/group/edit")
+	@ResponseBody
+	public Object editGroup(
+			@RequestParam(value = "sessionId") String sessionId,
+			@RequestParam(value = "group") String groupJsonString,
+			@RequestParam(value = "tagList", required = false) String tagListJsonString,
+			HttpServletResponse resp) {
+
+		EntityManager em = ServiceHelper.initialize(resp);
+
+		Action action = null;
+		Action result = null;
+		List<Tag> tags = null;
+		try {
+			User creator = ServiceHelper.getSessionUser(em, sessionId);
+			
+			Gson gson = new Gson();
+			Type type = new TypeToken<Action>() {}.getType();
+			action = gson.fromJson(groupJsonString, type);
+			
+			if (!ValidationHelper.isNullOrWhitespace(tagListJsonString)){
+				Type listType = new TypeToken<ArrayList<Tag>>() {}.getType();
+				tags = gson.fromJson(tagListJsonString, listType);
+			}
+			
+			ValidationHelper.validateEvent(action.getTitle());
+			
+			Date startTime = null ;
+			Date endTime = null;
+			if (!ValidationHelper.isNullOrWhitespace(action.getStartTime().toString())){
+				startTime = ServiceHelper.dateParser(action.getStartTime().toString());
+			}
+			if (!ValidationHelper.isNullOrWhitespace(action.getEndTime().toString())){
+				endTime = ServiceHelper.dateParser(action.getEndTime().toString());
+			}
+			action.setStartTime(startTime);
+			action.setEndTime(endTime);
+			
+			ActionRepository ar = new ActionRepository(em);
+			result = ar.editAction(action, tags);
+			DBUtility.commitTransaction(em);
+		}catch (BusinessException e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getCode(), e.getMessage());
+		}catch (Exception e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getMessage());
+		}
+
+		return result;
 	}
 
 	@RequestMapping(value = "/event/created")
