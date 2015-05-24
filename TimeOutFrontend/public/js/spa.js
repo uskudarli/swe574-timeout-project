@@ -105,7 +105,7 @@ app.config(function($routeProvider) {
 });
 
 // To avoid see any pages without login.
-app.run(function($rootScope, $location, $window) {
+app.run(function($rootScope, $location) {
 	$rootScope.$on( "$routeChangeStart", function(event, next, current) {
 		if ((getCookie("sessionId") == undefined || getCookie("sessionId") == "")) {
 			$location.path("/");
@@ -114,11 +114,60 @@ app.run(function($rootScope, $location, $window) {
 });
 
 // Non-dynamic content is controlled by this controller.
-app.controller("indexController", function($scope, $http, $location, $window, timeOutFactory, md5, getProfile) {
+app.controller("indexController", function($scope, $http, $location, $window, timeOutFactory, md5, getProfile, $interval) {
 	// For logging
 	$scope.searchText = [];
 	$scope.searchContextUrl = timeOutFactory.getBackendUrl() + '/searchContext?tag=';
 	$scope.profileInfo = null;
+
+	// Gets profile and keeps it in the scope
+	$scope.getProfile = function() {
+		if($scope.profileInfo == null && getCookie("sessionId") != undefined && getCookie("sessionId") != "") {
+			var getProfilePromise = getProfile.getData();
+		    getProfilePromise.then(function(result) {  // this is only run after $http completes
+		       $scope.profileInfo = result;
+		    });
+		}
+	};
+
+	$scope.getProfile();
+
+	$interval(function() {
+		if (getCookie("sessionId") != undefined && getCookie("sessionId") != "" && timeOutFactory.getRecommendationUpdated()){
+			// Reset the flag
+			timeOutFactory.setRecommendationUpdated(false);
+
+			// Get event notification for user
+			$http.get(timeOutFactory.getBackendUrl() + '/getEventRecommendation?sessionId=' + getCookie("sessionId"))
+				.success(function(data, status) {
+					$scope.eventRecommendation = data;
+					console.log("Event recommendation " + JSON.stringify(data) + " (1038)");
+			  	})
+			  	.error(function(data, status) {
+			 		console.log("Error (1037)");
+			  	});
+
+			// Get group notification for user
+			$http.get(timeOutFactory.getBackendUrl() + '/getGroupRecommendation?sessionId=' + getCookie("sessionId"))
+				.success(function(data, status) {
+					$scope.groupRecommendation = data;
+					console.log("Group recommendation " + JSON.stringify(data));
+			  	})
+			  	.error(function(data, status) {
+			 		console.log("Error (1076)");
+			  	});
+
+			// Get event notification for user
+			$http.get(timeOutFactory.getBackendUrl() + '/getUserRecommendation?sessionId=' + getCookie("sessionId"))
+				.success(function(data, status) {
+					$scope.userRecommendation = data;
+					console.log("User recommendation " + JSON.stringify(data) + " (1039)");
+			  	})
+			  	.error(function(data, status) {
+			 		console.log("Error (1075)");
+			  	});
+		}
+	}, 20000);
 
 	// Get sessionId from backend by calling login rest api, then set sessionId cookie
 	$scope.doLogin = function() {
@@ -132,41 +181,6 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 				setCookie("sessionId", data.sessionId, 60);
 				$scope.getProfile();
 
-				// Trigger backend to run insert recommendation
-				$http.get(timeOutFactory.getBackendUrl() + "/insertRecommendation?sessionId=" + data.sessionId)
-					.success(function(data, status) {
-						console.log("Insert recommentation has been called (1036)");
-					});
-				// Get event notification for user
-				$http.get(timeOutFactory.getBackendUrl() + '/getEventRecommendation?sessionId=' + data.sessionId)
-					.success(function(data, status) {
-						$scope.eventRecommendation = data;
-						console.log("Event recommendation " + JSON.stringify(data) + " (1038)");
-				  	})
-				  	.error(function(data, status) {
-				 		console.log("Error (1037)");
-				  	});
-
-				// Get group notification for user
-				$http.get(timeOutFactory.getBackendUrl() + '/getGroupRecommendation?sessionId=' + data.sessionId)
-					.success(function(data, status) {
-						$scope.groupRecommendation = data;
-						console.log("Group recommendation " + JSON.stringify(data));
-				  	})
-				  	.error(function(data, status) {
-				 		console.log("Error (1076)");
-				  	});
-
-				// Get event notification for user
-				$http.get(timeOutFactory.getBackendUrl() + '/getUserRecommendation?sessionId=' + data.sessionId)
-					.success(function(data, status) {
-						$scope.userRecommendation = data;
-						console.log("User recommendation " + JSON.stringify(data) + " (1039)");
-				  	})
-				  	.error(function(data, status) {
-				 		console.log("Error (1075)");
-				  	});
-
 				$location.path("/home");
 			} else {
 				$window.alert(data.type + ": " + data.message + " (1001)");
@@ -177,12 +191,6 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 		});
 	};
 
-	if($scope.profileInfo == null && getCookie("sessionId")) {
-		var getProfilePromise = getProfile.getData();
-	    getProfilePromise.then(function(result) {  // this is only run after $http completes
-	    	$scope.profileInfo = result;
-	    });
-	}
 	// Set sessionId cookies to ""
 	$scope.doLogout = function() {
 		setCookie("sessionId", "", 0);
@@ -194,16 +202,6 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 	$scope.isCookieSet = function() {
 		return getCookie("sessionId") != undefined && getCookie("sessionId") != "";
 	};
-
-	// Gets profile and keeps it in the scope
-	$scope.getProfile = function() {
-		if($scope.profileInfo == null && getCookie("sessionId") != undefined && getCookie("sessionId") != "") {
-			var getProfilePromise = getProfile.getData();
-		    getProfilePromise.then(function(result) {  // this is only run after $http completes
-		       $scope.profileInfo = result;
-		    });
-		}
-	}
 
 	// To change dynamic content when a link is pressed, $location.path method is used.
 	$scope.goToPage = function(url) {
@@ -276,7 +274,7 @@ app.controller("mainController", function($scope, $http, $location, $window, tim
 	});
 
 // After user logged in, home.html will be seen which managed by this controller
-app.controller("homeController", function($scope, $http, $window, $location, timeOutFactory) {
+app.controller("homeController", function($scope, $http, $window, $location, timeOutFactory, $interval) {
 	var suggestedGroups = [{name:'' ,detail:'"Math "'}];
 	$scope.notificationList2 = [{name:'sara', detail:'"Math fans"'}];
 
@@ -293,6 +291,18 @@ app.controller("homeController", function($scope, $http, $window, $location, tim
 	{name:'ali',detail:'math'},
 	{name:'ali', detail:'physics'}
 	];
+
+	// It triggers recommendation machine on server for this user
+	$interval(function() {
+		if (getCookie("sessionId") != undefined && getCookie("sessionId") != ""){
+			// Trigger backend to run insert recommendation
+			$http.get(timeOutFactory.getBackendUrl() + "/insertRecommendation?sessionId=" + getCookie("sessionId"))
+				.success(function(data, status) {
+					timeOutFactory.setRecommendationUpdated(true);
+				});
+		}
+	}, 30000);
+
 });
 
 // When a search request is done, search.html and this controller shows the dynamic content.
@@ -732,10 +742,10 @@ app.controller("eventsInvited", function($scope, $http, $window, $location, time
 app.factory("timeOutFactory", function($http){
 	var timeOutFactory = {};
 	var lists = {};
-	var userLoggedIn = false;
 	// var backendUrl = " http://localhost:8080";
 	var backendUrl = "http://timeout5746.appspot.com";
 	var searchText = [];
+	var recommendationUpdated = false;
 
 	timeOutFactory.getLists = function(){
 		return lists;
@@ -778,10 +788,18 @@ app.factory("timeOutFactory", function($http){
 		return toBeSendTags;
 	};
 
+	timeOutFactory.getRecommendationUpdated = function() {
+		return recommendationUpdated;
+	}
+
+	timeOutFactory.setRecommendationUpdated = function(recom) {
+		recommendationUpdated = recom;
+	}
+
 	return timeOutFactory;
 });
 
-// This factory gets profile and show it in the screen
+// This factory gets profile information of logged user
 app.factory('getProfile', function($http, timeOutFactory) {
 	var getData = function() {
 		return $http.get(timeOutFactory.getBackendUrl() + "/profile/get?sessionId=" + getCookie("sessionId")).then(function(result){
