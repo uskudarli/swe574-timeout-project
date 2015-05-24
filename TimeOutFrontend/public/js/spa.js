@@ -311,7 +311,7 @@ app.controller("homeController", function($scope, $http, $window, $location, tim
 
 	// News Feed is taken from backend
 	var params = "?sessionId=" + getCookie("sessionId");
-	$http.get(timeOutFactory.getBackendUrl() + "/newsFeed" + params})
+	$http.get(timeOutFactory.getBackendUrl() + "/newsFeed" + params)
 		.success(function(data) {
 			$scope.newsFeed = data;
 			console.log("NewsFeed = " + JSON.stringify($scope.newsFeed) + " (1550)");
@@ -634,13 +634,13 @@ app.controller("newGroups", function($scope, $http, $window, $location, timeOutF
 	var params = "?sessionId=" + getCookie("sessionId");
 
 	$http.get(timeOutFactory.getBackendUrl() + "/group/new" + params)
-	.success(function(data, status) {
-		$window.alert("Success (1023)");
-		$scope.newGroups = data;
-	})
-	.error(function(data, status) {
-		$window.alert("Error (1024)");
-	});
+		.success(function(data, status) {
+			$window.alert("Success (1023)");
+			$scope.newGroups = data;
+		})
+		.error(function(data, status) {
+			$window.alert("Error (1024)");
+		});
 
 	$scope.goToPage = function(url) {
 		console.log("GoToPage: " + url + " (1055)");
@@ -649,8 +649,23 @@ app.controller("newGroups", function($scope, $http, $window, $location, timeOutF
 });
 
 // This page is used to show selected groups' detail
-app.controller("theGroup", function($scope, $http, $window, $location, timeOutFactory){
-	var params = "?sessionId=" + getCookie("sessionId");
+app.controller("theGroup", function($scope, $http, $window, $location, $routeParams, timeOutFactory){
+	$scope.groupId = $routeParams.groupId;
+
+	var params = 	"?sessionId=" + getCookie("sessionId") +
+					"&id=" + $scope.groupId;
+
+	$http.get(timeOutFactory.getBackendUrl() + "/group/getById" + params)
+		.success(function(data, status) {
+			$scope.groupData = data;
+		})
+		.error(function(data, status) {
+			$window.alert("Error (1559)");
+		});
+
+	$scope.addComment = function() {
+		$scope.comment;
+	}
 
 	$scope.goToPage = function(url) {
 		console.log("GoToPage: " + url + " (1056)");
@@ -659,8 +674,19 @@ app.controller("theGroup", function($scope, $http, $window, $location, timeOutFa
 });
 
 // This page is used to show selected post's detail
-app.controller("thePost", function($scope, $http, $window, $location, timeOutFactory){
-	var params = "?sessionId=" + getCookie("sessionId");
+app.controller("thePost", function($scope, $http, $window, $location, $routeParams, timeOutFactory){
+	$scope.postId = $routeParams.postId;
+
+	var params = 	"?sessionId=" + getCookie("sessionId") +
+					"&postId=" + $scope.postId;
+
+	$http.get(timeOutFactory.getBackendUrl() + "/post/getById" + params)
+		.success(function(data, status) {
+			$scope.postData = data;
+		})
+		.error(function(data, status) {
+			$window.alert("Error (1557)");
+		});
 
 	$scope.goToPage = function(url) {
 		console.log("GoToPage: " + url + " (1057)");
@@ -670,9 +696,19 @@ app.controller("thePost", function($scope, $http, $window, $location, timeOutFac
 
 // This page is used to show selected user's detail
 app.controller("theUser", function($scope, $http, $window, $location, $routeParams, timeOutFactory){
-	$scope.userId = $routeParams.userId;
-	console.log("User Id = " + $scope.userId + " route params " + $routeParams.userId + " (1588)");
-	var params = "?sessionId=" + getCookie("sessionId");
+	$scope.otherUserId = $routeParams.userId;
+	console.log("User Id = " + $scope.otherUserId + " route params " + $routeParams.userId + " (1588)");
+
+	var params = 	"?sessionId=" + getCookie("sessionId") +
+					"&userId=" + $scope.otherUserId;
+
+	$http.get(timeOutFactory.getBackendUrl() + "/profile/getById" + params)
+		.success(function(data, status) {
+			$scope.otherUserData = data;
+		})
+		.error(function(data, status) {
+			$window.alert("Error (1558)");
+		});
 
 	$scope.goToPage = function(url) {
 		console.log("GoToPage: " + url + " (1058)");
@@ -761,7 +797,7 @@ app.factory("timeOutFactory", function($http){
 	var timeOutFactory = {};
 	var lists = {};
 	// var backendUrl = " http://localhost:8080";
-	var backendUrl = "http://timeout5746.appspot.com";
+	var backendUrl = "http://timeout5742.appspot.com";
 	var searchText = [];
 	var recommendationUpdated = false;
 
