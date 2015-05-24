@@ -69,11 +69,11 @@ app.config(function($routeProvider) {
 		templateUrl: "theGroup.html",
 		controller: "theGroup"
 	})
-	.when("/thePost", {
+	.when("/thePost/:postId", {
 		templateUrl: "thePost.html",
 		controller: "thePost"
 	})
-	.when("/theUser", {
+	.when("/theUser/:userId", {
 		templateUrl: "theUser.html",
 		controller: "theUser"
 	})
@@ -122,6 +122,7 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 	$scope.recommendedUsers = [];
 	$scope.recommendedEvents = [];
 	$scope.recommendedGroups = [];
+	$scope.userName = getCookie("userName");
 
 	// Gets profile and keeps it in the scope
 	$scope.getProfile = function() {
@@ -129,6 +130,8 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 			var getProfilePromise = getProfile.getData();
 		    getProfilePromise.then(function(result) {  // this is only run after $http completes
 		       $scope.profileInfo = result;
+		       $scope.userName = result.userBasicInfo.firstName + " " + result.userBasicInfo.lastName;
+		       setCookie("userName", $scope.userName, 60);
 		    });
 		}
 	};
@@ -187,13 +190,14 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 			}
 		})
 		.error(function(data, status) {
-			$window.alert("Specified username or password do not match with the records!!!" + " (1002)");
+			$window.alert("Specified username and password do not match with the records!!! (1002)");
 		});
 	};
 
 	// Set sessionId cookies to ""
 	$scope.doLogout = function() {
 		setCookie("sessionId", "", 0);
+		setCookie("userName", "", 0);
 		$location.path("/");
 	};
 
@@ -219,6 +223,8 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 
 // SignUp screen or root address shows the html which is managed by this controller.
 app.controller("mainController", function($scope, $http, $location, $window, timeOutFactory, md5) {
+	$scope.messages = [];
+
 	if(getCookie("sessionId") != undefined && getCookie("sessionId") != "") {
 		console.log("GoToPage: /home" + " (1041)");
 		$location.path("/home");
@@ -232,36 +238,38 @@ app.controller("mainController", function($scope, $http, $location, $window, tim
 		// validate();
 
 		// validate if email is unique
-		var emailOk = "";
-		$http.get(timeOutFactory.getBackendUrl() + "/email/isAvailable")
+		var emailOk;
+		$http.get(timeOutFactory.getBackendUrl() + "/email/isAvailable?")
 			.success(function(data){
 				if (data.type == "Success") {
-					emailOk == "success";
+					emailOk = true;
 				} else {
 					$window.alert(data.message + " (1034)");
 					return;
 				}
 			})
 			.error(function(data){
-				$window.alert("An error occurred ()" + " (1003)");
+				console.log("An error occurred " + " (1003)");
 			});
 
 		// Parameters for register is adjusted and password is encrypted with MD5 hash
 		var params = "?userEmail=" + $scope.email + "&password=" + md5.createHash($scope.sigUpPassword);
-		params = params + "&firstName=" + $scope.name + "&lastName=" + $scope.lastName + "&role=" + $scope.role;
+		params = params + "&firstName=" + $scope.firstName + "&lastName=" + $scope.lastName + "&role=" + $scope.role;
 
 		// register api of backend is called
 		$http.get(timeOutFactory.getBackendUrl() + "/register" + params)
 			// if register api call is successful
 			.success(function(data, status) {
 				if(data.type == "Success") {
-					$window.alert("Welcome among us, you can now log in!" + " (1004)");
+					//$window.alert("Welcome among us, you can now log in!" + " (1004)");
+					$scope.messages.push("Welcome among us, you can now log in!");
 					$scope.name = "";
 					$scope.lastName = "";
 					$scope.email = "";
 					$scope.reEmail = "";
 					$scope.sigUpPassword = "";
 					$scope.rePassword = "";
+					$scope.ok = true;
 				} else {
 					$window.alert(data.message + " (1033)");
 				}
@@ -298,11 +306,12 @@ app.controller("homeController", function($scope, $http, $window, $location, tim
 			// Trigger backend to run insert recommendation
 			$http.get(timeOutFactory.getBackendUrl() + "/insertRecommendation?sessionId=" + getCookie("sessionId"))
 				.success(function(data, status) {
-					timeOutFactory.setRecommendationUpdated(true);
+					if(data.type != "Fail") {
+						timeOutFactory.setRecommendationUpdated(true);
+					}
 				});
 		}
 	}, 30000);
-
 });
 
 // When a search request is done, search.html and this controller shows the dynamic content.
@@ -318,6 +327,11 @@ app.controller("searchController", function($scope, $http, $location, $window, t
 		.error(function(data, status) {
 			$window.alert("No records have been found!!!" + " (1007)");
 		});
+
+	$scope.goToPage = function(url) {
+		console.log("GoToPage: " + url + " (1046)");
+		$location.path(url);
+	};
 });
 
 // When user wants to edit own profile, this controller works to support the html on the dynamic content.
@@ -326,14 +340,18 @@ app.controller("profileEdit", function($scope, $http, $window, $location, timeOu
 	var params = "?sessionId=" + getCookie("sessionId");
 
 	$http.get(timeOutFactory.getBackendUrl() + "/profile/get" + params)
-	.success(function(data, status) {
-		$scope.email = data.userName;
-		$scope.password = data.password;
-		console.log(JSON.stringify(data) + " (1045)");
-	})
-	.error(function(data, status) {
-		$window.alert("No records have been found!!!" + " (1008)");
-	});
+		.success(function(data, status) {
+			$scope.email = data.userEmail;
+			$scope.password = data.password;
+			$scope.firstName = data.userBasicInfo.firstName;
+			$scope.lastName = data.userBasicInfo.lastName;
+			$scope.gsm = data.userCommInfo.mobilePhone;
+			$scope.address = data.userCommInfo.address;
+			console.log(JSON.stringify(data) + " (1045)");
+		})
+		.error(function(data, status) {
+			console.log("No records have been found!!!" + " (1008)");
+		});
 
 	$("#imgInp").change(function(){
 		readURL(this);
@@ -367,10 +385,10 @@ app.controller("profileEdit", function($scope, $http, $window, $location, timeOu
 
 		$http.get(timeOutFactory.getBackendUrl() + "/profile/edit" + paramsEdit)
 		.success(function(data, status) {
-			$window.alert("Success " + data.actionId) + " (1009)";
+			$window.alert("Success (1009)");
 		})
 		.error(function(data, status) {
-			$window.alert("Error " + data + " (1010)");
+			console.log("Error (1010)");
 		});
 	};
 
@@ -380,7 +398,7 @@ app.controller("profileEdit", function($scope, $http, $window, $location, timeOu
 	};
 });
 
-// Tested by ogzcm
+// This page is used to create new event
 app.controller("createEvent", function($scope, $http, $window, $location, $filter, timeOutFactory) {
 
 	// Initialize variables and set default values
@@ -427,16 +445,16 @@ app.controller("createEvent", function($scope, $http, $window, $location, $filte
 
 			$http.get(timeOutFactory.getBackendUrl() + "/event/create" + params)
 				.success(function(data, status) {
-					$window.alert("Success " + data.actionId + " (1013)");
+					$window.alert("Success (1013)");
 				})
 				.error(function(data, status) {
-					$window.alert("Error " + data + " (1014)");
+					$window.alert("Error (1014)");
 				});
 		}
 	};
 });
 
-// Code reviewed due to backend is not available by ogzcm
+// This page is used to create new group
 app.controller("createGroup", function($scope, $http, $window, $location, timeOutFactory) {
 
 	// Initialize variables
@@ -462,14 +480,15 @@ app.controller("createGroup", function($scope, $http, $window, $location, timeOu
 
 		$http.get(timeOutFactory.getBackendUrl() + "/group/create" + params)
 		.success(function(data, status) {
-			$window.alert("Success " + " (1015)");
+			$window.alert("Success (1015)");
 		})
 		.error(function(data, status) {
-			$window.alert("Error " + data + " (1016)");
+			$window.alert("Error (1016)");
 		});
 	};
 });
 
+// This page is used to show user their own friends
 app.controller("myFriends", function($scope, $http, $window, $location) {
 
 	$scope.goToPage = function(url) {
@@ -478,6 +497,7 @@ app.controller("myFriends", function($scope, $http, $window, $location) {
 	};
 });
 
+// This page is used to show user newest events in the system
 app.controller("newEvents", function($scope, $http, $window, $location) {
 
 	$scope.goToPage = function(url) {
@@ -486,6 +506,7 @@ app.controller("newEvents", function($scope, $http, $window, $location) {
 	};
 });
 
+// This page is used to show event invitations which the user has been invited
 app.controller("eventInvitation", function($scope, $http, $window, $location) {
 
 	$scope.goToPage = function(url) {
@@ -494,6 +515,7 @@ app.controller("eventInvitation", function($scope, $http, $window, $location) {
 	};
 });
 
+// This page is used to show group invitations which the user has been invited
 app.controller("groupInvitation", function($scope, $http, $window, $location) {
 
 	$scope.goToPage = function(url) {
@@ -502,6 +524,7 @@ app.controller("groupInvitation", function($scope, $http, $window, $location) {
 	};
 });
 
+// This page is used to show recommended events to user
 app.controller("suggestedEvents", function($scope, $http, $window, $location) {
 
 	$scope.goToPage = function(url) {
@@ -510,7 +533,7 @@ app.controller("suggestedEvents", function($scope, $http, $window, $location) {
 	};
 });
 
-// Tested by ogzcm
+// This page is used to show user's own events
 app.controller("myEvents", function($scope, $http, $window, $location, timeOutFactory){
 	var params = "?sessionId=" + getCookie("sessionId");
 
@@ -519,7 +542,7 @@ app.controller("myEvents", function($scope, $http, $window, $location, timeOutFa
 		$scope.myEvents = data;
 	})
 	.error(function(data, status) {
-		$window.alert("Error " + data + " (1017)");
+		$window.alert("Error (1017)");
 	});
 
 	$scope.goToPage = function(url) {
@@ -528,6 +551,7 @@ app.controller("myEvents", function($scope, $http, $window, $location, timeOutFa
 	};
 });
 
+// This page is used to show user's events which user created
 app.controller("eventsCreated", function($scope, $http, $location, timeOutFactory){
 	var params = "?sessionId=" + getCookie("sessionId");
 
@@ -536,7 +560,7 @@ app.controller("eventsCreated", function($scope, $http, $location, timeOutFactor
 		$scope.eventsCreated = data;
 	})
 	.error(function(data, status) {
-		$window.alert("Error " + data + " (1018)");
+		$window.alert("Error (1018)");
 	});
 
 	$scope.goToPage = function(url) {
@@ -545,17 +569,18 @@ app.controller("eventsCreated", function($scope, $http, $location, timeOutFactor
 	};
 });
 
+// This page is used to show events which the user is invited
 app.controller("eventsInvited", function($scope, $http, $window, $location, timeOutFactory){
 	var params = "?sessionId=" + getCookie("sessionId");
 
 	$http.get(timeOutFactory.getBackendUrl() + "/event/invited" + params)
 	.success(function(data, status) {
-		$window.alert("Success " + data.actionId + " (1019)");
+		$window.alert("Success (1019)");
 		$scope.eventsInvited = data;
 		console.log(data + " (1052)");
 	})
 	.error(function(data, status) {
-		$window.alert("Error " + data + " (1020)");
+		$window.alert("Error (1020)");
 	});
 
 	$scope.goToPage = function(url) {
@@ -564,6 +589,7 @@ app.controller("eventsInvited", function($scope, $http, $window, $location, time
 	};
 });
 
+// This page is used to show groups the user joined
 app.controller("myGroups", function($scope, $http, $window, $location, timeOutFactory){
 	var params = "?sessionId=" + getCookie("sessionId");
 
@@ -573,7 +599,7 @@ app.controller("myGroups", function($scope, $http, $window, $location, timeOutFa
 		$scope.myGroups = data;
 	})
 	.error(function(data, status) {
-		$window.alert("Error " + data + " (1022)");
+		$window.alert("Error (1022)");
 	});
 
 	$scope.goToPage = function(url) {
@@ -582,6 +608,7 @@ app.controller("myGroups", function($scope, $http, $window, $location, timeOutFa
 	};
 });
 
+// This page is used to show newest groups in the system
 app.controller("newGroups", function($scope, $http, $window, $location, timeOutFactory){
 	var params = "?sessionId=" + getCookie("sessionId");
 
@@ -600,6 +627,7 @@ app.controller("newGroups", function($scope, $http, $window, $location, timeOutF
 	};
 });
 
+// This page is used to show selected groups' detail
 app.controller("theGroup", function($scope, $http, $window, $location, timeOutFactory){
 	var params = "?sessionId=" + getCookie("sessionId");
 
@@ -609,6 +637,7 @@ app.controller("theGroup", function($scope, $http, $window, $location, timeOutFa
 	};
 });
 
+// This page is used to show selected post's detail
 app.controller("thePost", function($scope, $http, $window, $location, timeOutFactory){
 	var params = "?sessionId=" + getCookie("sessionId");
 
@@ -618,7 +647,10 @@ app.controller("thePost", function($scope, $http, $window, $location, timeOutFac
 	};
 });
 
-app.controller("theUser", function($scope, $http, $window, $location, timeOutFactory){
+// This page is used to show selected user's detail
+app.controller("theUser", function($scope, $http, $window, $location, $routeParams, timeOutFactory){
+	$scope.userId = $routeParams.userId;
+	console.log("User Id = " + $scope.userId + " route params " + $routeParams.userId + " (1588)");
 	var params = "?sessionId=" + getCookie("sessionId");
 
 	$scope.goToPage = function(url) {
@@ -627,6 +659,7 @@ app.controller("theUser", function($scope, $http, $window, $location, timeOutFac
 	};
 });
 
+// This page is used to update group information
 app.controller("updateGroup", function($scope, $http, $window, $location, timeOutFactory){
 	$scope.goToPage = function(url) {
 		console.log("GoToPage: " + url + " (1059)");
@@ -645,11 +678,12 @@ app.controller("updateGroup", function($scope, $http, $window, $location, timeOu
 			  	$location.path("/myGroups");
 			  })
 			  .error(function(data, status) {
-			  	$window.alert("Error " + data + " (1036)");
+			  	$window.alert("Error (1036)");
 			  });
 		}
 });
 
+// This page is used to update event information
 app.controller("updateEvent", function($scope, $http, $window, $location, timeOutFactory){
 	//var params = "?sessionId=" + getCookie("sessionId");
 
@@ -677,63 +711,26 @@ app.controller("updateEvent", function($scope, $http, $window, $location, timeOu
 			  	$location.path("/myEvents");
 			  })
 			  .error(function(data, status) {
-			  	$window.alert("Error " + data + " (1036)");
+			  	$window.alert("Error (1036)");
 			  });
 		}
 });
 
-app.controller("friendsGroups", function($scope, $http, $window, $location, timeOutFactory){
-	var params = "?sessionId=" + getCookie("sessionId");
-
-	$http.get(timeOutFactory.getBackendUrl() + "/group/degisecekkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk/" + params)
-	.success(function(data, status) {
-		$window.alert("Success " + data.actionId + " (1025)");
-		$scope.friendsGroups = data;
-	})
-	.error(function(data, status) {
-		$window.alert("Error " + data + " (1026)");
-	});
-
-
-	$scope.goToPage = function(url) {
-		console.log("GoToPage: " + url + " (1061)");
-		$location.path(url);
-	};
-});
-
+// This page is used to show recommended groups by the system
 app.controller("suggestedGroups", function($scope, $http, $window, $location, timeOutFactory){
 	var params = "?sessionId=" + getCookie("sessionId");
 
 	$http.get(timeOutFactory.getBackendUrl() + "/group/degisecekkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk/" + params)
 	.success(function(data, status) {
-		$window.alert("Success " + data.actionId + " (1027)");
+		$window.alert("Success (1027)");
 		$scope.suggestedGroups = data;
 	})
 	.error(function(data, status) {
-		$window.alert("Error " + data + " (1028)");
+		$window.alert("Error (1028)");
 	});
 
 	$scope.goToPage = function(url) {
 		console.log("GoToPage: " + url + " (1062)");
-		$location.path(url);
-	};
-});
-
-app.controller("eventsInvited", function($scope, $http, $window, $location, timeOutFactory){
-	var params = "?sessionId=" + getCookie("sessionId");
-
-	$http.get(timeOutFactory.getBackendUrl() + "/event/invited" + params)
-	.success(function(data, status) {
-		$window.alert("Success " + data.actionId + " (1029)");
-		$scope.eventsInvited = data;
-	})
-	.error(function(data, status) {
-		$window.alert("Error " + data + " (1030)");
-	});
-
-
-	$scope.goToPage = function(url) {
-		console.log("GoToPage: " + url + " (1063)");
 		$location.path(url);
 	};
 });
@@ -815,7 +812,7 @@ function setCookie(cname, cvalue, exdays) {
 	var d = new Date();
 	d.setDate(d.getDate() + exdays);
 	var expires = "expires=" + d;
-	document.cookie = cname + "=" + cvalue + "; " + expires;
+	document.cookie = cname + "=" + cvalue + "; " + expires + ";";
 };
 
 // For getting the value of cookie which was set before.
