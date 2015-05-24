@@ -34,16 +34,16 @@ public class RecommendationRestServices {
 
 		try {
 			User user = ServiceHelper.getSessionUser(em, sessionId);
+			DBUtility.commitTransactionOnly(em);
 
 			updated = RecommendationEngine.insertRecommendationsforUser(user);
 		}catch (BusinessException e) {
-			DBUtility.rollbackTransaction(em);
+//			DBUtility.rollbackTransaction(em);
 			return new ResponseHeader(false, e.getCode(), e.getMessage());
 		}catch (Exception e) {
-			DBUtility.rollbackTransaction(em);
+//			DBUtility.rollbackTransaction(em);
 			return new ResponseHeader(false, e.getMessage());
 		}
-		DBUtility.commitTransaction(em);
 		if(updated){
 			return new ResponseHeader();
 		} else {
