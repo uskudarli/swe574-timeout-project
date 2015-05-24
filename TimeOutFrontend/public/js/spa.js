@@ -126,7 +126,7 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 
 	// Gets profile and keeps it in the scope
 	$scope.getProfile = function() {
-		if($scope.profileInfo == null && getCookie("sessionId") != undefined && getCookie("sessionId") != "") {
+		if(getCookie("userName") == "" && getCookie("sessionId") != undefined && getCookie("sessionId") != "") {
 			var getProfilePromise = getProfile.getData();
 		    getProfilePromise.then(function(result) {  // this is only run after $http completes
 		       $scope.profileInfo = result;
@@ -336,7 +336,6 @@ app.controller("searchController", function($scope, $http, $location, $window, t
 
 // When user wants to edit own profile, this controller works to support the html on the dynamic content.
 app.controller("profileEdit", function($scope, $http, $window, $location, timeOutFactory) {
-
 	var params = "?sessionId=" + getCookie("sessionId");
 
 	$http.get(timeOutFactory.getBackendUrl() + "/profile/get" + params)
@@ -812,7 +811,7 @@ function setCookie(cname, cvalue, exdays) {
 	var d = new Date();
 	d.setDate(d.getDate() + exdays);
 	var expires = "expires=" + d;
-	document.cookie = cname + "=" + cvalue + "; " + expires + ";";
+	document.cookie += cname + "=" + cvalue + "; " + expires;
 };
 
 // For getting the value of cookie which was set before.
