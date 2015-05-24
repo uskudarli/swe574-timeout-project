@@ -1365,6 +1365,7 @@ footer {
     text-align: center;
     width: 300px;
     z-index: 11111;
+    opacity: 0;
 }
 
 .signMessage{ 
