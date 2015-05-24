@@ -95,9 +95,7 @@
                         matchclass="highlight"
                         setemptyaftersearch="true" />
                     <div class="" ng-repeat="selectedTag in selectedTags">
-                        <span class="bold-span">{{selectedTag.searchString}} - </span>
-                        <span class="bold-span">{{selectedTag.originalObject.label}} - </span>
-                        <span class="bold-span">{{selectedTag.originalObject.description}} </span>
+                        <span class="bold-span">{{selectedTag.title}} </span>
                         <button type="button" ng-click="deleteTag($index)">X</button><br>
                     </div><br>
 

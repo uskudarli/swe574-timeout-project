@@ -114,7 +114,7 @@ app.run(function($rootScope, $location) {
 });
 
 // Non-dynamic content is controlled by this controller.
-app.controller("indexController", function($scope, $http, $location, $window, timeOutFactory, md5, getProfile, $interval) {
+app.controller("indexController", function($scope, $http, $location, $window, timeOutFactory, md5, getProfile, $interval, $route) {
 	// For logging
 	$scope.searchText = [];
 	$scope.searchContextUrl = timeOutFactory.getBackendUrl() + '/searchContext?tag=';
@@ -123,6 +123,7 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 	$scope.recommendedEvents = [];
 	$scope.recommendedGroups = [];
 	$scope.userName = getCookie("userName");
+	timeOutFactory.setRecommendationUpdated(true);
 
 	// Gets profile and keeps it in the scope
 	$scope.getProfile = function() {
@@ -170,7 +171,7 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 			 		console.log("Error (1075)");
 			  	});
 		}
-	}, 20000);
+	}, 10000);
 
 	// Get sessionId from backend by calling login rest api, then set sessionId cookie
 	$scope.doLogin = function() {
@@ -198,6 +199,7 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 	$scope.doLogout = function() {
 		setCookie("sessionId", "", 0);
 		setCookie("userName", "", 0);
+		$scope.userName = "";
 		$location.path("/");
 	};
 
@@ -217,7 +219,12 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 	$scope.search = function(url){
 		timeOutFactory.setSearchText($scope.searchText);
 		console.log("SearchText= " + JSON.stringify($scope.searchText) + " (1200)");
-		$scope.goToPage(url);
+		$scope.searchText = [];
+		if($route.current.templateUrl == "search.html") {
+			$route.reload();
+		} else {
+			$scope.goToPage(url);
+		}
 	};
 });
 
@@ -230,7 +237,7 @@ app.controller("mainController", function($scope, $http, $location, $window, tim
 		$location.path("/home");
 	}
 
-	$scope.roleSet = ["student", "prep. student", "alumni", "erasmus & exchange","professor", "staff", ];
+	$scope.roleSet = ["student", "prep. student", "alumni", "erasmus & exchange","professor", "staff"];
 
 	// This method will be used when a user tries to be a member of the system.
 	$scope.signUp = function() {
@@ -239,7 +246,7 @@ app.controller("mainController", function($scope, $http, $location, $window, tim
 
 		// validate if email is unique
 		var emailOk;
-		$http.get(timeOutFactory.getBackendUrl() + "/email/isAvailable?")
+		$http.get(timeOutFactory.getBackendUrl() + "/email/isAvailable?userEmail=" + $scope.email)
 			.success(function(data){
 				if (data.type == "Success") {
 					emailOk = true;
@@ -252,40 +259,41 @@ app.controller("mainController", function($scope, $http, $location, $window, tim
 				console.log("An error occurred " + " (1003)");
 			});
 
-		// Parameters for register is adjusted and password is encrypted with MD5 hash
-		var params = "?userEmail=" + $scope.email + "&password=" + md5.createHash($scope.sigUpPassword);
-		params = params + "&firstName=" + $scope.firstName + "&lastName=" + $scope.lastName + "&role=" + $scope.role;
+		if(emailOk) {
+			// Parameters for register is adjusted and password is encrypted with MD5 hash
+			var params = "?userEmail=" + $scope.email + "&password=" + md5.createHash($scope.sigUpPassword);
+			params = params + "&firstName=" + $scope.firstName + "&lastName=" + $scope.lastName + "&role=" + $scope.role;
 
-		// register api of backend is called
-		$http.get(timeOutFactory.getBackendUrl() + "/register" + params)
-			// if register api call is successful
-			.success(function(data, status) {
-				if(data.type == "Success") {
-					//$window.alert("Welcome among us, you can now log in!" + " (1004)");
-					$scope.messages.push("Welcome among us, you can now log in!");
-					$scope.name = "";
-					$scope.lastName = "";
-					$scope.email = "";
-					$scope.reEmail = "";
-					$scope.sigUpPassword = "";
-					$scope.rePassword = "";
-					$scope.ok = true;
-				} else {
-					$window.alert(data.message + " (1033)");
-				}
-			})
-			// if register api call is unsuccessful
-			.error(function(data, status) {
-				$window.alert(JSON.stringify(data) + " (1005)");
-			});
-		};
-	});
+			// register api of backend is called
+			$http.get(timeOutFactory.getBackendUrl() + "/register" + params)
+				// if register api call is successful
+				.success(function(data, status) {
+					if(data.type == "Success") {
+						//$window.alert("Welcome among us, you can now log in!" + " (1004)");
+						$scope.messages.push("Welcome among us, you can now log in!");
+						$scope.name = "";
+						$scope.lastName = "";
+						$scope.email = "";
+						$scope.reEmail = "";
+						$scope.sigUpPassword = "";
+						$scope.rePassword = "";
+						$scope.ok = true;
+					} else {
+						$window.alert(data.message + " (1033)");
+					}
+				})
+				// if register api call is unsuccessful
+				.error(function(data, status) {
+					$window.alert(JSON.stringify(data) + " (1005)");
+				});
+		}
+	};
+});
 
 // After user logged in, home.html will be seen which managed by this controller
 app.controller("homeController", function($scope, $http, $window, $location, timeOutFactory, $interval) {
 	var suggestedGroups = [{name:'' ,detail:'"Math "'}];
 	$scope.notificationList2 = [{name:'sara', detail:'"Math fans"'}];
-
 	timeOutFactory.addList("notificationList", $scope.notificationList2);
 
 	$scope.notificationList = timeOutFactory.getList("notificationList");
@@ -311,12 +319,13 @@ app.controller("homeController", function($scope, $http, $window, $location, tim
 					}
 				});
 		}
-	}, 30000);
+	}, 120000);
 });
 
 // When a search request is done, search.html and this controller shows the dynamic content.
 app.controller("searchController", function($scope, $http, $location, $window, timeOutFactory) {
 	var search = timeOutFactory.getSearchText();
+	timeOutFactory.setSearchText("");
 	console.log("Search= " + JSON.stringify(search));
 	var params = "?contextId=" + search[0].originalObject.id;
 
