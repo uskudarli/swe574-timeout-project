@@ -253,11 +253,35 @@ app.controller("mainController", function($scope, $http, $location, $window, tim
 		// validate();
 
 		// validate if email is unique
-		var emailOk;
 		$http.get(timeOutFactory.getBackendUrl() + "/email/isAvailable?userEmail=" + $scope.email)
 			.success(function(data){
 				if (data.type == "Success") {
-					emailOk = true;
+					// Parameters for register is adjusted and password is encrypted with MD5 hash
+					var params = "?userEmail=" + $scope.email + "&password=" + md5.createHash($scope.sigUpPassword);
+					params = params + "&firstName=" + $scope.firstName + "&lastName=" + $scope.lastName + "&role=" + $scope.role;
+
+					// register api of backend is called
+					$http.get(timeOutFactory.getBackendUrl() + "/register" + params)
+						// if register api call is successful
+						.success(function(data, status) {
+							if(data.type == "Success") {
+								//$window.alert("Welcome among us, you can now log in!" + " (1004)");
+								$scope.messages.push("Welcome among us, you can now log in!");
+								$scope.name = "";
+								$scope.lastName = "";
+								$scope.email = "";
+								$scope.reEmail = "";
+								$scope.sigUpPassword = "";
+								$scope.rePassword = "";
+								$scope.ok = true;
+							} else {
+								$window.alert(data.message + " (1033)");
+							}
+						})
+						// if register api call is unsuccessful
+						.error(function(data, status) {
+							$window.alert(JSON.stringify(data) + " (1005)");
+						});
 				} else {
 					$window.alert(data.message + " (1034)");
 					return;
@@ -266,34 +290,6 @@ app.controller("mainController", function($scope, $http, $location, $window, tim
 			.error(function(data){
 				console.log("An error occurred " + " (1003)");
 			});
-		if(emailOk) {
-			// Parameters for register is adjusted and password is encrypted with MD5 hash
-			var params = "?userEmail=" + $scope.email + "&password=" + md5.createHash($scope.sigUpPassword);
-			params = params + "&firstName=" + $scope.firstName + "&lastName=" + $scope.lastName + "&role=" + $scope.role;
-
-			// register api of backend is called
-			$http.get(timeOutFactory.getBackendUrl() + "/register" + params)
-				// if register api call is successful
-				.success(function(data, status) {
-					if(data.type == "Success") {
-						//$window.alert("Welcome among us, you can now log in!" + " (1004)");
-						$scope.messages.push("Welcome among us, you can now log in!");
-						$scope.name = "";
-						$scope.lastName = "";
-						$scope.email = "";
-						$scope.reEmail = "";
-						$scope.sigUpPassword = "";
-						$scope.rePassword = "";
-						$scope.ok = true;
-					} else {
-						$window.alert(data.message + " (1033)");
-					}
-				})
-				// if register api call is unsuccessful
-				.error(function(data, status) {
-					$window.alert(JSON.stringify(data) + " (1005)");
-				});
-		}
 	};
 });
 
@@ -384,7 +380,6 @@ app.controller("profileEdit", function($scope, $http, $window, $location, timeOu
 			$scope.lastName = data.userBasicInfo.lastName;
 			$scope.gsm = data.userCommInfo.mobilePhone;
 			$scope.address = data.userCommInfo.address;
-			console.log(JSON.stringify(data) + " (1045)");
 		})
 		.error(function(data, status) {
 			console.log("No records have been found!!!" + " (1008)");
