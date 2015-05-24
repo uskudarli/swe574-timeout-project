@@ -20,18 +20,24 @@
 	<div class="midcolumn">
 		<div class="group-creation">
 			<legend>Your Friends</legend>
+            <!-- Friend List start-->
+            <div class="myEventList" ng-repeat="friend in myFriends">
+                <div class="friendName">{{friend.friend.userBasicInfo.firstName + " " + friend.friend.userBasicInfo.lastName + " " + friend.friend.userEmail}}</div>
+            </div>
+            <!-- Friend List end-->
 
-        <!-- Friend List start-->
-        <div class="myEventList" ng-repeat="friend in myFriends">
-            <div class="friendName">{{friend.name}}</div>
-        </div>
-        <!-- Friend List end-->
+            <legend>Pending Requests</legend>
+            <!-- Pending requests start-->
+            <div class="myEventList" ng-repeat="requests in pendingRequests">
+                <div class="friendName">{{requests.friend.userBasicInfo.firstName + " " + requests.friend.userBasicInfo.lastName + " " + requests.friend.userEmail}}</div>
+            </div>
+            <!-- Pending requests end-->
 
-        <!-- No Friend Alert start-->
-        <div class="noEvent" ng-show="eventsInvited == 'empty'">
-            Sorry, no related friends have been found.
-        </div>
-        <!-- No Friend Alert start-->
+            <!-- No Friend Alert start-->
+            <div class="noEvent" ng-show="eventsInvited == 'empty'">
+                Sorry, no related friends have been found.
+            </div>
+            <!-- No Friend Alert start-->
 
 		</div>
 	</div>

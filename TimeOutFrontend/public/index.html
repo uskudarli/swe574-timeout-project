@@ -145,10 +145,11 @@
                 <div class="rightcolumn" ng-show="isCookieSet()">
                     <div class="notification">
                         <p class="title">NOTIFICATIONS</p>
-                        <div class="notice" ng-repeat="notification in notificationList ">
-                            <img src="images/2.jpg" />
-                            <p class="not-title">{{notification.name}}</p>
-                            <p class="not-detail"> joined the group {{notification.detail}}</p>
+                        <div class="notice" ng-repeat="notification in friendRequests">
+                            <div class="notice">
+                                <img src="images/anonymous.jpg" />
+                                <p class="not-title">{{notification.friend.userBasicInfo.firstName + " " + notification.friend.userBasicInfo.lastName + " " + notification.friend.userEmail}}</p>
+                            </div>
                         </div>
                     </div>
                     <!-- Right Column -Notification list- End-->

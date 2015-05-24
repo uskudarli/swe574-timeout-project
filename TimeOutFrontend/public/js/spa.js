@@ -115,7 +115,7 @@ app.run(function($rootScope, $location) {
 
 // Non-dynamic content is controlled by this controller.
 app.controller("indexController", function($scope, $http, $location, $window, timeOutFactory, md5, getProfile, $interval, $route) {
-	// For logging
+	$scope.friendRequests = [];
 	$scope.searchTextField = "";
 	$scope.profileInfo = null;
 	$scope.recommendedUsers = null;
@@ -131,6 +131,20 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 		    getProfilePromise.then(function(result) {  // this is only run after $http completes
 		       $scope.profileInfo = result;
 		       $scope.userName = result.userBasicInfo.firstName + " " + result.userBasicInfo.lastName;
+
+		       // Friend notification
+				var paramsNotification = "?sessionId=" + getCookie("sessionId");
+				$http.get(timeOutFactory.getBackendUrl() + "/friends/my" + paramsNotification)
+					.success(function(data, status) {
+						for (var i = 0; i < data.length; i++) {
+							if(data[i].status == "IO"){
+								$scope.friendRequests.push(data[i]);
+							}
+						};
+					})
+					.error(function(data, status) {
+						console.log("Error (1611)");
+					});
 		    });
 		}
 	};
@@ -312,7 +326,6 @@ app.controller("homeController", function($scope, $http, $window, $location, tim
 	$http.get(timeOutFactory.getBackendUrl() + "/newsFeed" + params)
 		.success(function(data) {
 			$scope.newsFeed = data;
-			console.log("NewsFeed = " + JSON.stringify($scope.newsFeed) + " (1550)");
 		})
 		.error(function(data) {
 			console.log("No records have been found!!!" + " (1551)");
@@ -521,7 +534,23 @@ app.controller("createGroup", function($scope, $http, $window, $location, timeOu
 });
 
 // This page is used to show user their own friends
-app.controller("myFriends", function($scope, $http, $window, $location) {
+app.controller("myFriends", function($scope, $http, $window, $location, timeOutFactory) {
+	$scope.pendingRequests = [];
+	$scope.myFriends = [];
+	var params = "?sessionId=" + getCookie("sessionId");
+		$http.get(timeOutFactory.getBackendUrl() + "/friends/my" + params)
+			.success(function(data, status) {
+				for (var i = 0; i < data.length; i++) {
+					if(data[i].status == "IS"){
+						$scope.pendingRequests.push(data[i]);
+					} else if(data[i].status == "AS" || data[i].status == "AO"){
+						$scope.myFriends.push(data[i]);
+					}
+				};
+			})
+			.error(function(data, status) {
+				$window.alert("Error (1611)");
+			});
 
 	$scope.goToPage = function(url) {
 		console.log("GoToPage: " + url + " (1049)");
@@ -707,7 +736,8 @@ app.controller("thePost", function($scope, $http, $window, $location, $routePara
 
 // This page is used to show selected user's detail
 app.controller("theUser", function($scope, $http, $window, $location, $routeParams, timeOutFactory){
-	$scope.otherUserId = $routeParams.userId;
+	$scope.otherUserId = [];
+	$scope.otherUserId.push($routeParams.userId);
 	console.log("User Id = " + $scope.otherUserId + " route params " + $routeParams.userId + " (1588)");
 
 	var params = 	"?sessionId=" + getCookie("sessionId") +
@@ -720,6 +750,18 @@ app.controller("theUser", function($scope, $http, $window, $location, $routePara
 		.error(function(data, status) {
 			$window.alert("Error (1558)");
 		});
+
+	$scope.invite = function(){
+		var inviteParams = 	"?sessionId=" + getCookie("sessionId") +
+							"&userIds=" + JSON.stringify($scope.otherUserId);
+		$http.get(timeOutFactory.getBackendUrl() + "/friends/invite" + inviteParams)
+			.success(function(data, status) {
+				console.log("Success (1610)");
+			})
+			.error(function(data, status) {
+				$window.alert("Error (1611)");
+			});
+	}
 
 	$scope.goToPage = function(url) {
 		console.log("GoToPage: " + url + " (1058)");
