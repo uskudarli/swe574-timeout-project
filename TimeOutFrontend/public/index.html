@@ -179,7 +179,8 @@
                         <div ng-repeat="user in recommendedUsers">
                             <div class="notice">
                                 <img src="images/anonymous.jpg" />
-                                <p class="not-title">{{user.userBasicInfo.firstName + " " + user.userBasicInfo.lastName + " " + user.userEmail}}</p>
+                                <p class="not-title">
+                                    {{user.userBasicInfo.firstName}} {{user.userBasicInfo.lastName}} {{user.userEmail}}</p>
                             </div>
                         </div>
                     </div>
