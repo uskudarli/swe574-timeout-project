@@ -137,7 +137,6 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 					.success(function(data, status) {
 						console.log("Insert recommentation has been called (1036)");
 					});
-
 				// Get event notification for user
 				$http.get(timeOutFactory.getBackendUrl() + '/getEventRecommendation?sessionId=' + data.sessionId)
 					.success(function(data, status) {
@@ -302,15 +301,13 @@ app.controller("searchController", function($scope, $http, $location, $window, t
 	console.log("Search= " + JSON.stringify(search));
 	var params = "?contextId=" + search[0].originalObject.id;
 
-	//$scope.resultSet = [{"title": "title", "desc": "desc"}];
-
 	$http({method: "GET",  url: timeOutFactory.getBackendUrl() + "/find" + params})
-	.success(function(data, status) {
-		$scope.resultSet = data;
-	})
-	.error(function(data, status) {
-		$window.alert("No records have been found!!!" + " (1007)");
-	});
+		.success(function(data, status) {
+			$scope.resultSet = data;
+		})
+		.error(function(data, status) {
+			$window.alert("No records have been found!!!" + " (1007)");
+		});
 });
 
 // When user wants to edit own profile, this controller works to support the html on the dynamic content.
