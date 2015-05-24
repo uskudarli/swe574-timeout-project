@@ -3,6 +3,26 @@
     <div class="userAvatar">
       <img src="images/profile.jpg" />
       <span>Münevver Calayır</span>
+
+
+        <!-- Message Box Fade in and fade out javascript code start-->
+        <script>
+            $(function(){
+             setTimeout(function() {
+                    $(".content1").addClass("fadeOutLeft"); 
+              },3000);
+            });
+        </script>
+        <!-- Message Box Fade in and fade out javascript code end-->
+
+        <!-- Message Box Code start-->
+        <div class="footer1">
+            <div ng-class="{content1: ok, animated3:ok, fadeInLeft:ok, animated:ok}" class="message"  ng-repeat="message in messages">
+                {{message.note}}
+            </div>
+        </div>
+        <!-- Message Box Code end-->
+        
       <button class="btn btn-primary addFriend" style="width: 150px; float: right; margin: 110px 0px 0px;" type="button" ng-click="search('/search')">
         <img src="images/addFriend.png" />
         <p>Add Friend</p>

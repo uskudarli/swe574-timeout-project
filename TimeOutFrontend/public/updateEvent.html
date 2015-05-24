@@ -20,6 +20,23 @@
         <div class="group-creation">
             <fieldset>
                 <legend>Update Event </legend>
+                <!-- Message Box Fade in and fade out javascript code start-->
+                <script>
+                    $(function(){
+                     setTimeout(function() {
+                            $(".content1").addClass("fadeOutLeft"); 
+                      },3000);
+                    });
+                </script>
+                <!-- Message Box Fade in and fade out javascript code end-->
+
+                <!-- Message Box Code start-->
+                <div class="footer1">
+                    <div ng-class="{content1: ok, animated3:ok, fadeInLeft:ok, animated:ok}" class="message"  ng-repeat="message in messages">
+                        {{message.note}}
+                    </div>
+                </div>
+                <!-- Message Box Code end-->
 
                 <!-- Create Event Form start-->
                 <form>

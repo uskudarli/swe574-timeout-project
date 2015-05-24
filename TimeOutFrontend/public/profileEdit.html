@@ -22,6 +22,24 @@
       <!-- Edit Profile Form Start-->
       <fieldset>
         <legend>Edit profile</legend>
+        
+        <!-- Message Box Fade in and fade out javascript code start-->
+        <script>
+            $(function(){
+             setTimeout(function() {
+                    $(".content1").addClass("fadeOutLeft"); 
+              },3000);
+            });
+        </script>
+        <!-- Message Box Fade in and fade out javascript code end-->
+
+        <!-- Message Box Code start-->
+        <div class="footer1">
+            <div ng-class="{content1: ok, animated3:ok, fadeInLeft:ok, animated:ok}" class="message"  ng-repeat="message in messages">
+                {{message.note}}
+            </div>
+        </div>
+            <!-- Message Box Code end-->
 
         <form ng-submit="profileEdit()">
 
@@ -54,6 +72,7 @@
               <input type="file" id="photo" name="photo" accept="image/*"> <br>
               <input type="button" ng-click="add()" name="add" value="add">
               <p>{{data}}</p>
+              <!-- <a href="" ng-click="goToPage('/profileEdit')"><--Back</a> -->
             </fieldset>
           </div>
           <!--Inside lightbox end-->
