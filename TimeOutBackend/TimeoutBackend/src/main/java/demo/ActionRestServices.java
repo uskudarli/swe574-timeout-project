@@ -70,9 +70,10 @@ public class ActionRestServices {
 
 			ar.insertCreator(creator, action);
 
-			mr.insertInvitedPeople(invitedPeople, action);
-			
-			ar.insertTags(tagString, creator, action);
+			if (!ValidationHelper.isNullOrWhitespace(invitedPeople))
+				mr.insertInvitedPeople(invitedPeople, action);
+			if (!ValidationHelper.isNullOrWhitespace(tagString))
+				ar.insertTags(tagString, creator, action);
 
 			DBUtility.commitTransaction(em);
 		}catch (BusinessException e) {
@@ -114,9 +115,10 @@ public class ActionRestServices {
 
 			ar.insertCreator(creator, action);
 			
-			mr.insertInvitedPeople(invitedPeople, action);
-
-			ar.insertTags(tagString, creator, action);
+			if (!ValidationHelper.isNullOrWhitespace(invitedPeople))
+				mr.insertInvitedPeople(invitedPeople, action);
+			if (!ValidationHelper.isNullOrWhitespace(tagString))
+				ar.insertTags(tagString, creator, action);
 
 			DBUtility.commitTransaction(em);
 		}catch (BusinessException e) {
