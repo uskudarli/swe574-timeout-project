@@ -81,7 +81,6 @@
                             <!-- Right header - Login Form end-->
 
                             <!-- Right header - Search form start-->
-                            
                             <div class="searchSearch" ng-show="isCookieSet()">
                                 <input type="text" name="searchTextField" ng-model="searchTextField"/>
                                 <button class="btn btn-primary" ng-click="search('/search')" ng-show="isCookieSet()">Search</button>
@@ -157,7 +156,7 @@
                     <!-- Right Column -Suggested event list- Start-->
                     <div class="suggested-groups">
                         <p class="title">SUGGESTED EVENTS</p>
-                        <div ng-repeat="event in recommendedEvents">
+                        <div ng-repeat="event in recommendedEvents | limitTo:4">
                             <div class="notice">
                                 <p class="not-title">{{event.title}}</p>
                                 <p class="not-detail">{{event.description}}</p>
@@ -169,11 +168,10 @@
                     <!-- Right Column -Suggested friend list- Start-->
                     <div class="suggested-groups">
                         <p class="title">PEOPLE YOU MAY KNOW</p>
-                        <div ng-repeat="user in recommendedUsers">
+                        <div ng-repeat="user in recommendedUsers | limitTo:4">
                             <div class="notice">
                                 <img src="images/anonymous.jpg" />
-                                <p class="not-title">
-                                    {{user.userBasicInfo.firstName}} {{user.userBasicInfo.lastName}} {{user.userEmail}}</p>
+                                <p class="not-title">{{user.userBasicInfo.firstName + " " + user.userBasicInfo.lastName + " " + user.userEmail}}</p>
                             </div>
                         </div>
                     </div>
@@ -182,7 +180,7 @@
                     <!-- Right Column -Suggested group list- Start-->
                     <div class="suggested-groups">
                         <p class="title">SUGGESTED GROUPS</p>
-                        <div ng-repeat="group in recommendedGroups">
+                        <div ng-repeat="group in recommendedGroups | limitTo:4">
                             <div class="notice">
                                 <p class="not-title">{{group.title}}</p>
                                 <p class="not-detail">{{group.description}}</p>
