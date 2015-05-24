@@ -1304,3 +1304,34 @@ footer {
     color:#12295d;
 
 }
+
+.message{
+    background-color: #ecffff;
+    border: 4px solid rgba(81, 203, 238, 1);
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+    color: #12295d;
+    float: left;
+    font-weight: bold;
+    height: 100px;
+    margin: 0 0 0 10%;
+    padding: 25px;
+    position: absolute;
+    text-align: center;
+    width: 300px;
+    z-index: 11111;
+
+    -webkit-transition: all 1s ease-in-out;
+    -moz-transition: all 1s ease-in-out;
+    -o-transition: all 1s ease-in-out;
+    -ms-transition: all 1s ease-in-out;
+    transition: all 1s ease-in-out;
+}
+
+.message:hover{
+    opacity:0
+}
+
+.signMessage{ 
+     margin: 2% 0 0 -15% !important;
+}

@@ -23,7 +23,7 @@
 			<!-- Search Result List start-->
 			<legend>Search Results</legend>
 
-			<div class="searchTitle">People</div>
+			<div class="searchTitle" ng-show="resultSet.users.length() > 0">People</div>
 			<ul>
 				<li ng-repeat="user in resultSet.users">
 					<a href="" ng-click="goToPage('/theUser')">{{user.userBasicInfo.firstName}} {{user.userBasicInfo.lastName}} {{user.userEmail}}</a>
@@ -33,7 +33,7 @@
 		    <div class="clearBoth"></div>
 		    <div class="line"></div>
 
-			<div class="searchTitle">Groups</div>
+			<div class="searchTitle" ng-show="resultSet.groups">Groups</div>
 			<ul>
 				<li ng-repeat="group in resultSet.groups">
 					<a href="" ng-click="goToPage('/theGroup')">{{group.title}} {{group.description}}</a>
@@ -41,9 +41,9 @@
 			</ul>
 
 		    <div class="clearBoth"></div>
-		    <div class="line"></div>
+		    <div class="line" ng-show="resultSet.events"></div>
 
-			<div class="searchTitle">Events</div>
+			<div class="searchTitle" ng-show="resultSet.events">Events</div>
 			<ul>
 				<li ng-repeat="event in resultSet.events">
 					<a href="" ng-click="goToPage('/theEvent')">{{result.title}} {{result.desc}}</a>
