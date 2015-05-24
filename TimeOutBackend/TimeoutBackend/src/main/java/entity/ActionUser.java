@@ -9,18 +9,18 @@ import enums.ActionUserStatus;
 @Entity
 @Table(name = "ActionUser")
 public class ActionUser {
-	
+
 	@Id
-	@GeneratedValue(generator="incrementActionUser")
-	@GenericGenerator(name="incrementActionUser", strategy = "increment")
+	@GeneratedValue(generator = "incrementActionUser")
+	@GenericGenerator(name = "incrementActionUser", strategy = "increment")
 	private Long actionUserId;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "userId")
+	@JoinColumn(name = "userId")
 	private User user;
-	
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "actionId")
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "actionId")
 	private Action action;
 
 	@Enumerated
@@ -33,6 +33,7 @@ public class ActionUser {
 	public void setActionUserId(Long actionUserId) {
 		this.actionUserId = actionUserId;
 	}
+
 	public ActionUserStatus getActionUserStatus() {
 		return actionUserStatus;
 	}

@@ -8,9 +8,8 @@ import javax.persistence.EntityManager;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import common.BusinessException;
 import common.DBUtility;
-import common.ResponseHeader;
+
 import entity.Greeting;
 
 @RestController

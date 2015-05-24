@@ -21,28 +21,28 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class CustomType {
 
 	@Id
-	@GeneratedValue(generator="incrementCustomType")
-	@GenericGenerator(name="incrementCustomType", strategy = "increment")
+	@GeneratedValue(generator = "incrementCustomType")
+	@GenericGenerator(name = "incrementCustomType", strategy = "increment")
 	private Long customTypeId;
-	
+
 	private String name;
-	
+
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customType")
 	private Set<Attribute> attributes = new HashSet<Attribute>(0);
-	
+
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customType")
 	private Set<Post> posts = new HashSet<Post>(0);
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "actionId")
+	@JoinColumn(name = "actionId")
 	private Action action;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId")
+	@JoinColumn(name = "userId")
 	private User user;
-	
+
 	public Long getCustomTypeId() {
 		return customTypeId;
 	}
@@ -90,6 +90,5 @@ public class CustomType {
 	public void setAction(Action action) {
 		this.action = action;
 	}
-
 
 }

@@ -27,16 +27,16 @@ public class Role {
 	@GeneratedValue(generator = "incrementRole")
 	@GenericGenerator(name = "incrementRole", strategy = "increment")
 	private int roleId;
-	
+
 	private String name;
 
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "role")
 	private Set<User> users = new HashSet<User>(0);
-	
+
 	public Role() {
 	}
-	
+
 	public int getRoleId() {
 		return roleId;
 	}

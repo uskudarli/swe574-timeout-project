@@ -14,20 +14,18 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "ActionTag")
 public class ActionTag {
 	@Id
-	@GeneratedValue(generator="incrementActionTag")
-	@GenericGenerator(name="incrementActionTag", strategy = "increment")
+	@GeneratedValue(generator = "incrementActionTag")
+	@GenericGenerator(name = "incrementActionTag", strategy = "increment")
 	private Long actionTagId;
 
-  
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "actionId")
+	private Action action;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "actionId")
-	private Action action;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tagId")
+	@JoinColumn(name = "tagId")
 	private Tag tag;
-	
+
 	public Long getActionTagId() {
 		return actionTagId;
 	}
@@ -36,7 +34,7 @@ public class ActionTag {
 		this.actionTagId = actionTagId;
 	}
 
-    public Action getAction() {
+	public Action getAction() {
 		return action;
 	}
 

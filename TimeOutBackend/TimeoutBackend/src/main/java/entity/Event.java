@@ -2,7 +2,7 @@ package entity;
 
 import java.util.Date;
 
-public class Event extends Action{
+public class Event extends Action {
 
 	private Date startTime;
 	private Date endTime;

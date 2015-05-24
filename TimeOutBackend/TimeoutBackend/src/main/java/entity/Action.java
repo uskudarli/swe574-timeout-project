@@ -22,7 +22,6 @@ import enums.PrivacyType;
 
 import org.hibernate.annotations.GenericGenerator;
 
-
 /**
  * @author mac
  *
@@ -32,21 +31,20 @@ import org.hibernate.annotations.GenericGenerator;
 public class Action {
 
 	@Id
-	@GeneratedValue(generator="incrementAction")
-	@GenericGenerator(name="incrementAction", strategy = "increment")
+	@GeneratedValue(generator = "incrementAction")
+	@GenericGenerator(name = "incrementAction", strategy = "increment")
 	private Long actionId;
-
 
 	private String title;
 	private String description;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "createTime")
 	private Date createTime;
-	
+
 	private String privacy;
 	private String actionType;
-	//private Location location;
+	// private Location location;
 	private Date startTime;
 	private Date endTime;
 
@@ -57,61 +55,62 @@ public class Action {
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "action")
 	private Set<ActionTag> actionTags = new HashSet<ActionTag>(0);
-	
+
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "action")
-	private Set<ActionRecommendation> actionRecommendations = new HashSet<ActionRecommendation>(0);
-	
+	private Set<ActionRecommendation> actionRecommendations = new HashSet<ActionRecommendation>(
+			0);
+
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private Set<CustomType> customTypes = new HashSet<CustomType>(0);
-	
-	public Action(){
+
+	public Action() {
 	}
-	
-	public Action(String title, String description, String actionType){
+
+	public Action(String title, String description, String actionType) {
 		this.title = title;
 		this.description = description;
 		this.createTime = new Date();
 		this.privacy = PrivacyType.PUBLIC.toString();
 		this.actionType = actionType;
-		//this.location = null;
+		// this.location = null;
 		this.startTime = new Date();
-		if (actionType == "E"){
+		if (actionType == "E") {
 			Calendar cal = Calendar.getInstance();
 			cal.add(Calendar.YEAR, 1);
 			this.endTime = cal.getTime();
 		}
 	}
-	public Action(String title, String description, String actionType, 
-				  Date startTime, Date endTime){
+
+	public Action(String title, String description, String actionType,
+			Date startTime, Date endTime) {
 		this.title = title;
 		this.description = description;
 		this.createTime = new Date();
 		this.privacy = PrivacyType.PUBLIC.toString();
 		this.actionType = actionType;
-		//this.location = null;
-		if (actionType == "E"){
+		// this.location = null;
+		if (actionType == "E") {
 			this.startTime = startTime;
 			this.endTime = endTime;
 		}
 	}
 
-	public Action(User user, String title, String description, String actionType,
-				  Date startTime, Date endTime){
+	public Action(User user, String title, String description,
+			String actionType, Date startTime, Date endTime) {
 		this.actionUsers = new HashSet<>();
 		this.title = title;
 		this.description = description;
 		this.createTime = new Date();
 		this.privacy = PrivacyType.PUBLIC.toString();
 		this.actionType = actionType;
-		//this.location = null;
-		if (actionType == "E"){
+		// this.location = null;
+		if (actionType == "E") {
 			this.startTime = startTime;
 			this.endTime = endTime;
 		}
 	}
-	
 
 	public Long getActionId() {
 		return actionId;
@@ -120,60 +119,68 @@ public class Action {
 	public void setActionId(Long actionId) {
 		this.actionId = actionId;
 	}
+
 	public String getTitle() {
 		return title;
 	}
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	
+
 	public String getDescription() {
 		return description;
 	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	public Date getCreateTime() {
 		return createTime;
 	}
+
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-	
+
 	public String getPrivacy() {
 		return privacy;
 	}
+
 	public void setPrivacy(String privacy) {
 		this.privacy = privacy;
 	}
-	
+
 	public String getActionType() {
 		return actionType;
 	}
+
 	public void setActionType(String actionType) {
 		this.actionType = actionType;
 	}
-	
-//	public Location getLocation() {
-//		return location;
-//	}
-//	public void setLocation(Location location) {
-//		this.location = location;
-//	}
+
+	// public Location getLocation() {
+	// return location;
+	// }
+	// public void setLocation(Location location) {
+	// this.location = location;
+	// }
 	public Date getStartTime() {
 		return startTime;
 	}
+
 	public void setStartTime(Date startTime) {
 		this.startTime = startTime;
 	}
+
 	public Date getEndTime() {
 		return endTime;
 	}
+
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
 	}
-
 
 	public Set<ActionUser> getActionUsers() {
 		return actionUsers;
@@ -183,7 +190,6 @@ public class Action {
 		this.actionUsers = actionUsers;
 	}
 
-
 	public Set<ActionTag> getActionTags() {
 		return actionTags;
 	}
@@ -191,7 +197,7 @@ public class Action {
 	public void setActionTags(Set<ActionTag> actionTags) {
 		this.actionTags = actionTags;
 	}
-	
+
 	public ActionDTO createActionDTO() {
 		ActionDTO actionDTO = new ActionDTO();
 		actionDTO.setActionId(actionId);

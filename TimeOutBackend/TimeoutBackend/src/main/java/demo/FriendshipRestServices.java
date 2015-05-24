@@ -2,11 +2,9 @@ package demo;
 
 import helpers.ServiceHelper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -13,20 +13,20 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name = "AttributeValue")
 public class AttributeValue {
-	
+
 	@Id
-	@GeneratedValue(generator="incrementAttributeValue")
-	@GenericGenerator(name="incrementAttributeValue", strategy = "increment")
+	@GeneratedValue(generator = "incrementAttributeValue")
+	@GenericGenerator(name = "incrementAttributeValue", strategy = "increment")
 	private Long attributeValueId;
-	
+
 	private String attributeValue;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "attributeId")
+	@JoinColumn(name = "attributeId")
 	private Attribute attribute;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "postId")
+	@JoinColumn(name = "postId")
 	private Post post;
 
 	public Long getAttributeValueId() {
@@ -60,6 +60,5 @@ public class AttributeValue {
 	public void setPost(Post post) {
 		this.post = post;
 	}
-	
-	
+
 }

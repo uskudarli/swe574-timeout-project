@@ -40,35 +40,40 @@ public class User {
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
 	private Set<ActionUser> actionUsers = new HashSet<ActionUser>(0);
-	
+
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private Set<UserTag> userTags = new HashSet<UserTag>(0);
 
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userRecommended1")
-	private Set<UserRecommendation> userRecommendations1 = new HashSet<UserRecommendation>(0);
-	
+	private Set<UserRecommendation> userRecommendations1 = new HashSet<UserRecommendation>(
+			0);
+
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userRecommended2")
-	private Set<UserRecommendation> userRecommendations2 = new HashSet<UserRecommendation>(0);
-	
+	private Set<UserRecommendation> userRecommendations2 = new HashSet<UserRecommendation>(
+			0);
+
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "action")
-	private Set<ActionRecommendation> actionRecommendations = new HashSet<ActionRecommendation>(0);
+	private Set<ActionRecommendation> actionRecommendations = new HashSet<ActionRecommendation>(
+			0);
 
-//	@ManyToMany
-//	@JoinTable(name = "FriendShip", joinColumns = @JoinColumn(name = "personId"), inverseJoinColumns = @JoinColumn(name = "friendId"))
-//	private Set<User> friendShip1 = new HashSet<User>(0);
-//
-//	@ManyToMany
-//	@JoinTable(name = "FriendShip", joinColumns = @JoinColumn(name = "friendId"), inverseJoinColumns = @JoinColumn(name = "personId"))
-//	private Set<User> friendShip2 = new HashSet<User>(0);
-	
+	// @ManyToMany
+	// @JoinTable(name = "FriendShip", joinColumns = @JoinColumn(name =
+	// "personId"), inverseJoinColumns = @JoinColumn(name = "friendId"))
+	// private Set<User> friendShip1 = new HashSet<User>(0);
+	//
+	// @ManyToMany
+	// @JoinTable(name = "FriendShip", joinColumns = @JoinColumn(name =
+	// "friendId"), inverseJoinColumns = @JoinColumn(name = "personId"))
+	// private Set<User> friendShip2 = new HashSet<User>(0);
+
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "person")
 	private Set<Friendship> friendShip1 = new HashSet<Friendship>(0);
-	
+
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "friend")
 	private Set<Friendship> friendShip2 = new HashSet<Friendship>(0);
@@ -214,7 +219,8 @@ public class User {
 		return userRecommendations1;
 	}
 
-	public void setUserRecommendations1(Set<UserRecommendation> userRecommendations1) {
+	public void setUserRecommendations1(
+			Set<UserRecommendation> userRecommendations1) {
 		this.userRecommendations1 = userRecommendations1;
 	}
 
@@ -222,7 +228,8 @@ public class User {
 		return userRecommendations2;
 	}
 
-	public void setUserRecommendations2(Set<UserRecommendation> userRecommendations2) {
+	public void setUserRecommendations2(
+			Set<UserRecommendation> userRecommendations2) {
 		this.userRecommendations2 = userRecommendations2;
 	}
 

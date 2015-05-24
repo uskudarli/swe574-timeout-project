@@ -3,7 +3,7 @@ package common;
 public class ErrorMessages {
 	public static String emailValidateCode = "E101";
 	public static String emailValidate = "The email address is not valid.";
-	
+
 	public static String notAuthorizedCode = "E102";
 	public static String notAuthorized = "The user is not authorized.";
 	public static String userAlreadyExistCode = "E103";

@@ -18,21 +18,21 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "Tag")
 public class Tag {
 	@Id
-	@GeneratedValue(generator="incrementTag")
-	@GenericGenerator(name="incrementTag", strategy = "increment")
+	@GeneratedValue(generator = "incrementTag")
+	@GenericGenerator(name = "incrementTag", strategy = "increment")
 	private Long tagId;
-	
+
 	private String tagName;
 	private String contextId;
 	private String url;
 	private String alias;
 	private String description;
 	private String label;
-	
+
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tag")
 	private Set<UserTag> userTags = new HashSet<UserTag>(0);
-	
+
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tag")
 	private Set<ActionTag> actionTags = new HashSet<ActionTag>(0);
@@ -44,8 +44,7 @@ public class Tag {
 	public void setTagId(Long tagId) {
 		this.tagId = tagId;
 	}
-	
-	
+
 	public String getTagName() {
 		return tagName;
 	}

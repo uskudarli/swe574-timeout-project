@@ -5,7 +5,7 @@ public class ResponseHeader {
 	private String code;
 	private String message;
 	private String sessionId;
-	
+
 	public ResponseHeader(String sessionId) {
 		type = "Success";
 		code = "S100";
@@ -18,19 +18,19 @@ public class ResponseHeader {
 		code = "S100";
 		message = "It is successfully done.";
 	}
-	
+
 	public ResponseHeader(boolean howToReturn) {
-		if (!howToReturn){
+		if (!howToReturn) {
 			type = "Fail";
 			code = "E100";
 			message = "Specified information is wrong!";
-		}else{
+		} else {
 			type = "Success";
 			code = "S100";
 			message = "It is successfully done.";
 		}
 	}
-	
+
 	public ResponseHeader(boolean howToReturn, String message) {
 		if (howToReturn)
 			type = "Success";
@@ -39,7 +39,7 @@ public class ResponseHeader {
 		this.code = "E100";
 		this.message = message;
 	}
-	
+
 	public ResponseHeader(boolean howToReturn, String code, String message) {
 		if (howToReturn)
 			type = "Success";
@@ -48,16 +48,19 @@ public class ResponseHeader {
 		this.code = code;
 		this.message = message;
 	}
-	
+
 	public String getType() {
 		return type;
 	}
+
 	public void setType(String type) {
 		this.type = type;
 	}
+
 	public String getMessage() {
 		return message;
 	}
+
 	public void setMessage(String message) {
 		this.message = message;
 	}

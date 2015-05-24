@@ -9,12 +9,12 @@ import javax.persistence.*;
 public class Session {
 
 	@Id
-	@GeneratedValue(generator="incrementSession")
-	@GenericGenerator(name="incrementSession", strategy = "increment")
+	@GeneratedValue(generator = "incrementSession")
+	@GenericGenerator(name = "incrementSession", strategy = "increment")
 	private Long sesssionId;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "userId")
+	@JoinColumn(name = "userId")
 	private User user;
 
 	private String cookie;

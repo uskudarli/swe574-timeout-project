@@ -7,25 +7,21 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "UserBasicInfo")
-@org.hibernate.annotations.GenericGenerator(name="incrementUser", strategy="foreign",
-parameters={@org.hibernate.annotations.Parameter(name="property", value="user")
-})
+@org.hibernate.annotations.GenericGenerator(name = "incrementUser", strategy = "foreign", parameters = { @org.hibernate.annotations.Parameter(name = "property", value = "user") })
 public class UserBasicInfo {
 
 	@Id
 	@GeneratedValue(generator = "incrementUser")
 	private Long userId;
-	
+
 	private String firstName;
 	private String lastName;
 	private String gender;
-	
+
 	@JsonIgnore
 	@OneToOne()
 	@PrimaryKeyJoinColumn

@@ -3,15 +3,10 @@ package repository;
 import helpers.ServiceHelper;
 import helpers.ValidationHelper;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import entity.Friendship;
 import entity.User;
@@ -20,18 +15,16 @@ import enums.FriendshipStatus;
 public class FriendshipRepository {
 
 	EntityManager em;
-	
-	public FriendshipRepository(EntityManager em){
+
+	public FriendshipRepository(EntityManager em) {
 		this.em = em;
 	}
 
 	public List<Friendship> prepareFriendsForUser(User user) {
-		Query query = em
-				.createQuery(
-						"FROM Friendship F WHERE "
-						+ "F.person = :person")
+		Query query = em.createQuery(
+				"FROM Friendship F WHERE " + "F.person = :person")
 				.setParameter("person", user);
-		
+
 		List<Friendship> returnList = query.getResultList();
 
 		return returnList;
@@ -42,16 +35,17 @@ public class FriendshipRepository {
 			return false;
 		if (ValidationHelper.isNullOrWhitespace(friendsString))
 			return false;
-		
-		//parse json to List<Integer>
-		List<Integer> friendIds = ServiceHelper.parseListFromJsonString(friendsString);
-		
-		//find users from user id's and add friendship invite records.
-		for (Integer item : friendIds){
+
+		// parse json to List<Integer>
+		List<Integer> friendIds = ServiceHelper
+				.parseListFromJsonString(friendsString);
+
+		// find users from user id's and add friendship invite records.
+		for (Integer item : friendIds) {
 			Query query = em
 					.createQuery("FROM User U WHERE U.userId = :userId")
 					.setParameter("userId", item.longValue());
-			
+
 			User friend = (User) query.getSingleResult();
 
 			Friendship friendship1 = new Friendship();
@@ -75,31 +69,34 @@ public class FriendshipRepository {
 			return false;
 		if (ValidationHelper.isNullOrWhitespace(friendshipsString))
 			return false;
-		
-		//parse json to List<Integer>
-		List<Integer> friendshipIds = ServiceHelper.parseListFromJsonString(friendshipsString);
-		
+
+		// parse json to List<Integer>
+		List<Integer> friendshipIds = ServiceHelper
+				.parseListFromJsonString(friendshipsString);
+
 		// find users from user id's and add friendship invite records.
 		for (int item : friendshipIds) {
 			Query query = em.createQuery(
 					"FROM Friendship F WHERE "
-					+ "F.friendshipId = :friendshipId")
-					.setParameter("friendshipId", item);
-			
+							+ "F.friendshipId = :friendshipId").setParameter(
+					"friendshipId", item);
+
 			Friendship friendship1 = (Friendship) query.getSingleResult();
-			
+
 			friendship1.setStatus(FriendshipStatus.ACCEPTED_BY_SELF.toString());
 			em.persist(friendship1);
-			
-			query = em.createQuery(
-					"FROM Friendship F WHERE "
-					+ "F.person = :person AND "
-					+ "F.friend = :friend")
+
+			query = em
+					.createQuery(
+							"FROM Friendship F WHERE "
+									+ "F.person = :person AND "
+									+ "F.friend = :friend")
 					.setParameter("person", friendship1.getFriend())
 					.setParameter("friend", friendship1.getPerson());
 
 			Friendship friendship2 = (Friendship) query.getSingleResult();
-			friendship2.setStatus(FriendshipStatus.ACCEPTED_BY_OTHER.toString());
+			friendship2
+					.setStatus(FriendshipStatus.ACCEPTED_BY_OTHER.toString());
 			em.persist(friendship2);
 		}
 		return true;
@@ -110,31 +107,34 @@ public class FriendshipRepository {
 			return false;
 		if (ValidationHelper.isNullOrWhitespace(friendshipsString))
 			return false;
-		
-		//parse json to List<Integer>
-		List<Integer> friendshipIds = ServiceHelper.parseListFromJsonString(friendshipsString);
-		
+
+		// parse json to List<Integer>
+		List<Integer> friendshipIds = ServiceHelper
+				.parseListFromJsonString(friendshipsString);
+
 		// find users from user id's and add friendship invite records.
 		for (int item : friendshipIds) {
 			Query query = em.createQuery(
 					"FROM Friendship F WHERE "
-					+ "F.friendshipId = :friendshipId")
-					.setParameter("friendshipId", item);
-			
+							+ "F.friendshipId = :friendshipId").setParameter(
+					"friendshipId", item);
+
 			Friendship friendship1 = (Friendship) query.getSingleResult();
-			
+
 			friendship1.setStatus(FriendshipStatus.REJECTED_BY_SELF.toString());
 			em.persist(friendship1);
-			
-			query = em.createQuery(
-					"FROM Friendship F WHERE "
-					+ "F.person = :person AND "
-					+ "F.friend = :friend")
+
+			query = em
+					.createQuery(
+							"FROM Friendship F WHERE "
+									+ "F.person = :person AND "
+									+ "F.friend = :friend")
 					.setParameter("person", friendship1.getFriend())
 					.setParameter("friend", friendship1.getPerson());
 
 			Friendship friendship2 = (Friendship) query.getSingleResult();
-			friendship2.setStatus(FriendshipStatus.REJECTED_BY_OTHER.toString());
+			friendship2
+					.setStatus(FriendshipStatus.REJECTED_BY_OTHER.toString());
 			em.persist(friendship2);
 		}
 		return true;

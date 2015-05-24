@@ -15,18 +15,16 @@ import org.hibernate.annotations.GenericGenerator;
 public class UserTag {
 
 	@Id
-	@GeneratedValue(generator="incrementUserTag")
-	@GenericGenerator(name="incrementUserTag", strategy = "increment")
+	@GeneratedValue(generator = "incrementUserTag")
+	@GenericGenerator(name = "incrementUserTag", strategy = "increment")
 	private Long userTagId;
 
-  
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "userId")
+	private User user;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId")
-	private User user;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tagId")
+	@JoinColumn(name = "tagId")
 	private Tag tag;
 
 	public Long getUserTagId() {

@@ -17,22 +17,22 @@ import org.hibernate.annotations.GenericGenerator;
 public class Comment {
 
 	@Id
-	@GeneratedValue(generator="incrementComment")
-	@GenericGenerator(name="incrementComment", strategy = "increment")
+	@GeneratedValue(generator = "incrementComment")
+	@GenericGenerator(name = "incrementComment", strategy = "increment")
 	private Long commentId;
-	
+
 	private String title;
 	private String text;
 	private Date time;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "postId")
+	@JoinColumn(name = "postId")
 	private Post post;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId")
+	@JoinColumn(name = "userId")
 	private User user;
-	
+
 	public Long getCommentId() {
 		return commentId;
 	}
@@ -80,6 +80,5 @@ public class Comment {
 	public void setUser(User user) {
 		this.user = user;
 	}
-
 
 }

@@ -21,23 +21,20 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Attribute {
 
 	@Id
-	@GeneratedValue(generator="incrementAttribute")
-	@GenericGenerator(name="incrementAttribute", strategy = "increment")
+	@GeneratedValue(generator = "incrementAttribute")
+	@GenericGenerator(name = "incrementAttribute", strategy = "increment")
 	private Long attributeId;
-	
+
 	private String attributeKey;
-	
-	//kullanilmiyor
-	//private String attributeValue;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customTypeId")
+	@JoinColumn(name = "customTypeId")
 	private CustomType customType;
-	
+
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "attribute")
 	private Set<AttributeValue> attributeValues = new HashSet<AttributeValue>(0);
-	
+
 	public Long getAttributeId() {
 		return attributeId;
 	}

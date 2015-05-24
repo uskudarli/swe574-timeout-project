@@ -10,8 +10,6 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 @Table(name = "Friendship")
 public class Friendship {
@@ -21,14 +19,14 @@ public class Friendship {
 	@GenericGenerator(name = "incrementFriendship", strategy = "increment")
 	private int friendshipId;
 
-	@ManyToOne(fetch = FetchType.EAGER )
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "personId")
 	private User person;
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "friendId")
 	private User friend;
-	
+
 	private String status;
 
 	public int getFriendshipId() {

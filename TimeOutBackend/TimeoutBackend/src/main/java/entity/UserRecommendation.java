@@ -1,6 +1,3 @@
-/**
- * 
- */
 package entity;
 
 import javax.persistence.Entity;
