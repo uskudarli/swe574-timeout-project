@@ -162,7 +162,7 @@ public class UserRepository {
 			for (CustomType customType : customTypes){
 				List<Post> posts =  new ArrayList<Post>();
 				posts.addAll(customType.getPosts());
-				List newPosts = ctr.getNewPostsByCustomTypeId(customType.getCustomTypeId());;
+				List<Post> newPosts = ctr.getNewPostsByCustomTypeId(customType.getCustomTypeId());;
 				for (Post post : posts){
 					if (newPosts.contains(post)){
 						NewsFeedDTO newsFeedDTO = new NewsFeedDTO();

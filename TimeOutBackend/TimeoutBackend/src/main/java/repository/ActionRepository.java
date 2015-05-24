@@ -186,10 +186,10 @@ public class ActionRepository {
 
 	private void insertUserTags(Tag tag, User creator) {
 		String hql = "FROM UserTag UT WHERE UT.tag = :tag AND "
-				+ "UT.userId = :userId";
+				+ "UT.user = :user";
 		Query query = em.createQuery(hql);
-		query.setParameter("tag", tag).setParameter("userId",
-				creator.getUserId());
+		query.setParameter("tag", tag)
+		.setParameter("user", creator);
 		List<Tag> results = query.getResultList();
 
 		if (results == null || results.size() == 0) {

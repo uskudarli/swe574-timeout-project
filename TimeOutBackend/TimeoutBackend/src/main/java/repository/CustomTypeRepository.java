@@ -1,6 +1,5 @@
 package repository;
 
-import helpers.ServiceHelper;
 import helpers.ValidationHelper;
 
 import java.lang.reflect.Type;
@@ -75,9 +74,13 @@ public class CustomTypeRepository {
 	public List<CustomType> getCustomTypeListByActionId(Long actionId) {
 		List<CustomType> returnVal = null;
 		if (actionId > 0) {
+			
+			ActionRepository ar = new ActionRepository(em);
+			Action action = ar.getActionById(actionId, "");
+			
 			Query query = em.createQuery(
-					"FROM CustomType C WHERE C.actionId = :actionId")
-					.setParameter("actionId", actionId);
+					"FROM CustomType C WHERE C.action = :action")
+					.setParameter("action", action);
 			returnVal = query.getResultList();
 		}
 		return returnVal;
@@ -142,9 +145,11 @@ public class CustomTypeRepository {
 	public List<Attribute> getAttributeListByCustomTypeId(Long customTypeId) {
 		List<Attribute> returnVal = null;
 		if (customTypeId > 0) {
+			CustomType customType = getCustomTypeById(customTypeId);
+			
 			Query query = em.createQuery(
-					"FROM Attribute A WHERE A.customTypeId = :customTypeId")
-					.setParameter("customTypeId", customTypeId);
+					"FROM Attribute A WHERE A.customType = :customType")
+					.setParameter("customType", customType);
 			returnVal = query.getResultList();
 		}
 		return returnVal;
@@ -243,6 +248,47 @@ public class CustomTypeRepository {
 					"FROM Attribute A WHERE A.attributeId = :attributeId")
 					.setParameter("attributeId", attributeId);
 			returnVal = (Attribute) query.getSingleResult();
+		}
+		return returnVal;
+	}
+
+	public Comment createComment(User user, Long postId, String title,
+			String text) {
+		Comment comment = null;
+		if (user == null || postId == 0 || ValidationHelper.isNullOrWhitespace(title))
+			return null;
+
+		comment = new Comment();
+		comment.setPost(getPostById(postId));
+		comment.setText(text);
+		comment.setTitle(title);
+		comment.setTime(new Date());
+		comment.setUser(user);
+		em.persist(comment);
+
+		return comment;
+	}
+
+	public List<Comment> getCommentListByPostId(Long postId) {
+		List<Comment> returnVal = null;
+		if (postId > 0) {
+			Post post = getPostById(postId);
+			
+			Query query = em.createQuery(
+					"FROM Comment C WHERE C.post = :post")
+					.setParameter("post", post);
+			returnVal = query.getResultList();
+		}
+		return returnVal;
+	}
+	
+	public Comment getCommentById(Long commentId) {
+		Comment returnVal = null;
+		if (commentId > 0) {
+			Query query = em
+					.createQuery("FROM Comment C WHERE C.commentId = :commentId")
+					.setParameter("commentId", commentId);
+			returnVal = (Comment) query.getSingleResult();
 		}
 		return returnVal;
 	}

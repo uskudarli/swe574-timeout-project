@@ -13,12 +13,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import repository.CustomTypeRepository;
-
 import common.BusinessException;
 import common.DBUtility;
 import common.ResponseHeader;
-
 import entity.Attribute;
+import entity.Comment;
 import entity.CustomType;
 import entity.Post;
 import entity.User;
@@ -285,5 +284,83 @@ public class CustomTypeRestServices {
 			return new ResponseHeader(false, e.getMessage());
 		}
 		return attribute;
+	}
+	
+	@RequestMapping(value = "/comment/create")
+	@ResponseBody
+	public Object createComment(
+            @RequestParam(value = "sessionId") String sessionId, 
+            @RequestParam(value = "postId") Long postId,
+            @RequestParam(value = "title") String title,
+            @RequestParam(value = "text", required = false) String text,
+            HttpServletResponse resp) {
+		EntityManager em = ServiceHelper.initialize(resp);
+		
+		Comment comment;
+		try {
+			User user = ServiceHelper.getSessionUser(em, sessionId);
+			
+			CustomTypeRepository cr = new CustomTypeRepository(em);
+			
+			comment = cr.createComment(user, postId, title, text);
+			DBUtility.commitTransaction(em);
+		} catch (BusinessException e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getCode(), e.getMessage());
+		} catch (Exception e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getMessage());
+		}
+		return comment;
+	}
+	
+	@RequestMapping(value = "/comment/getListByPostId")
+	@ResponseBody
+	public Object getCommentListByPostId(
+            @RequestParam(value = "sessionId") String sessionId, 
+            @RequestParam(value = "postId") Long postId,
+            HttpServletResponse resp) {
+		EntityManager em = ServiceHelper.initialize(resp);
+		
+		List<Comment> comments;
+		try {
+			User user = ServiceHelper.getSessionUser(em, sessionId);
+			
+			CustomTypeRepository cr = new CustomTypeRepository(em);
+			comments = cr.getCommentListByPostId(postId);
+			DBUtility.commitTransaction(em);
+		} catch (BusinessException e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getCode(), e.getMessage());
+		} catch (Exception e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getMessage());
+		}
+		return comments;
+	}
+	
+	@RequestMapping(value = "/comment/getById")
+	@ResponseBody
+	public Object getCommentById(
+            @RequestParam(value = "sessionId") String sessionId, 
+            @RequestParam(value = "commentId") Long commentId,
+            HttpServletResponse resp) {
+		EntityManager em = ServiceHelper.initialize(resp);
+		
+		Comment comment;
+		try {
+			User user = ServiceHelper.getSessionUser(em, sessionId);
+			
+			CustomTypeRepository cr = new CustomTypeRepository(em);
+			comment = cr.getCommentById(commentId);
+			DBUtility.commitTransaction(em);
+		} catch (BusinessException e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getCode(), e.getMessage());
+		} catch (Exception e) {
+			DBUtility.rollbackTransaction(em);
+			return new ResponseHeader(false, e.getMessage());
+		}
+		return comment;
 	}
 }
