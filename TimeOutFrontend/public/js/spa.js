@@ -131,7 +131,7 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 		    getProfilePromise.then(function(result) {  // this is only run after $http completes
 		       $scope.profileInfo = result;
 		       $scope.userName = result.userBasicInfo.firstName + " " + result.userBasicInfo.lastName;
-
+		       $scope.friendRequests = [];
 		       // Friend notification
 				var paramsNotification = "?sessionId=" + getCookie("sessionId");
 				$http.get(timeOutFactory.getBackendUrl() + "/friends/my" + paramsNotification)
@@ -482,10 +482,16 @@ app.controller("createEvent", function($scope, $http, $window, $location, $filte
 			params += 	"&eventName=" + $scope.eventName +
 						"&eventDescription=" + $scope.eventDescription +
 						"&startTime=" + $scope.startTime +
-						"&endTime=" + $scope.endTime +
-						"&invitedPeople=" + $scope.invitedPeople +
-						"&tag=" + JSON.stringify(timeOutFactory.adjustTagsForRest($scope.selectedTags)) +
-						"&privacy=" + ($scope.privacy == true ? "P" : "C");
+						"&endTime=" + $scope.endTime;
+			if($scope.invitedPeople != undefined && $scope.invitedPeople != ""){
+				params +=	"&invitedPeople=" + $scope.invitedPeople;
+			}
+			if($scope.selectedTags != undefined && $scope.selectedTags.length > 0){
+				params +=	"&tag=" + JSON.stringify(timeOutFactory.adjustTagsForRest($scope.selectedTags));
+			}
+			if($scope.selectedTags != undefined && $scope.selectedTags.length > 0){
+				params +=	"&privacy=" + ($scope.privacy == true ? "P" : "C");
+			}
 
 			$http.get(timeOutFactory.getBackendUrl() + "/event/create" + params)
 				.success(function(data, status) {
@@ -516,20 +522,31 @@ app.controller("createGroup", function($scope, $http, $window, $location, timeOu
 	};
 
 	$scope.createGroup = function() {
-		var params = "?sessionId=" + getCookie("sessionId");
-		params += 	"&groupName=" + $scope.groupName +
-					"&groupDescription=" + $scope.groupDescription +
-					"&tag=" + JSON.stringify(timeOutFactory.adjustTagsForRest($scope.selectedTags)) +
-					"&invitedPeople=" + $scope.invitedPeople +
-					"&privacy=" + ($scope.privacy == true ? "P" : "C");
+		if ($scope.groupName == undefined || $scope.groupName == "" ||
+			$scope.groupDescription == undefined || $scope.groupDescription == "") {
+			$window.alert("Please fill required fields which have *!!!" + " (1012)");
+		} else {
+			var params = "?sessionId=" + getCookie("sessionId");
+			params += 	"&groupName=" + $scope.groupName +
+						"&groupDescription=" + $scope.groupDescription;
+			if($scope.selectedTags != undefined && $scope.selectedTags.length > 0){
+				params +=	"&tag=" + JSON.stringify(timeOutFactory.adjustTagsForRest($scope.selectedTags));
+			}
+			if($scope.invitedPeople != undefined && $scope.invitedPeople != ""){
+				params +=	"&invitedPeople=" + $scope.invitedPeople;
+			}
+			if($scope.privacy != undefined && $scope.privacy != ""){
+				params +=	"&privacy=" + ($scope.privacy == true ? "P" : "C");
+			}
 
-		$http.get(timeOutFactory.getBackendUrl() + "/group/create" + params)
-		.success(function(data, status) {
-			$window.alert("Success (1015)");
-		})
-		.error(function(data, status) {
-			$window.alert("Error (1016)");
-		});
+			$http.get(timeOutFactory.getBackendUrl() + "/group/create" + params)
+				.success(function(data, status) {
+					$window.alert("Success (1015)");
+				})
+				.error(function(data, status) {
+					$window.alert("Error (1016)");
+				});
+		}
 	};
 });
 

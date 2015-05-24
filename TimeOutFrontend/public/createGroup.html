@@ -44,8 +44,8 @@
                         matchclass="highlight"
                         setemptyaftersearch="true" />
                     <div class="" ng-repeat="selectedTag in selectedTags">
-                        <span class="bold-span">{{selectedTag.title}} </span>
-                        <button class="btn btn-primary tagDel" type="button" ng-click="deleteTag($index)">X</button><br>
+                        <button class="btn btn-primary tagDel" type="button" ng-click="deleteTag($index)">X</button>
+                        <span class="bold-span">{{selectedTag.title}} </span><br>
                     </div><br>
 
                       <input type="checkbox" name="isPublic" ng-model="privacy"
