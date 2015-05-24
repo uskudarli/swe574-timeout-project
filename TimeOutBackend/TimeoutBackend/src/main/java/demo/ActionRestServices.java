@@ -53,7 +53,7 @@ public class ActionRestServices {
 		try {
 			User creator = ServiceHelper.getSessionUser(em, sessionId);
 			ValidationHelper.validateEvent(eventName);
-			Date startTime = null ;
+			Date startTime = null;
 			Date endTime = null;
 			if (!ValidationHelper.isNullOrWhitespace(startTimeString))
 				startTime = ServiceHelper.dateParser(startTimeString);

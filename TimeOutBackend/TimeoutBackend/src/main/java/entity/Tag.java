@@ -69,14 +69,6 @@ public class Tag {
 		this.url = url;
 	}
 
-	public String getAlias() {
-		return alias;
-	}
-
-	public void setAlias(String alias) {
-		this.alias = alias;
-	}
-
 	public String getDescription() {
 		return description;
 	}
@@ -107,5 +99,13 @@ public class Tag {
 
 	public void setActionTags(Set<ActionTag> actionTags) {
 		this.actionTags = actionTags;
+	}
+
+	public String getAlias() {
+		return alias;
+	}
+
+	public void setAlias(String alias) {
+		this.alias = alias;
 	}
 }

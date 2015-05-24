@@ -152,15 +152,15 @@ public class UserRestServices {
 			// user.setRole(new Role());
 			// user.getRole().getUsers().add(user);
 			// }
-			if (firstName != "" && firstName != null)
+			if (!ValidationHelper.isNullOrWhitespace(firstName))
 				user.getUserBasicInfo().setFirstName(firstName);
-			if (lastName != "" && lastName != null)
+			if (!ValidationHelper.isNullOrWhitespace(lastName))
 				user.getUserBasicInfo().setLastName(lastName);
 			if (Gsm != null && Gsm > 0)
 				user.getUserCommInfo().setMobilePhone(Gsm);
-			if (address != "" && address != null)
+			if (!ValidationHelper.isNullOrWhitespace(address))
 				user.getUserCommInfo().setAddress(address);
-			if (birthdateString != null){
+			if (!ValidationHelper.isNullOrWhitespace(birthdateString)){
 				try {
 			        Date birthdate = ServiceHelper.dateParser(birthdateString);
 			        user.getUserExtraInfo().setBirthDate(birthdate);
@@ -168,13 +168,13 @@ public class UserRestServices {
 			        //do nothing
 			    }
 			}
-			if (about != "" && about != null)
+			if (!ValidationHelper.isNullOrWhitespace(about))
 				user.getUserExtraInfo().setAbout(about);
-			if (interests != "" && interests != null)
+			if (!ValidationHelper.isNullOrWhitespace(interests))
 				user.getUserExtraInfo().setInterests(interests);
-			if (gender != "" && gender != null)
+			if (!ValidationHelper.isNullOrWhitespace(gender))
 				user.getUserBasicInfo().setGender(gender);
-			if (languages != "" && languages != null)
+			if (!ValidationHelper.isNullOrWhitespace(languages))
 				user.getUserExtraInfo().setLanguages(languages);
 			
 			UserRepository ur = new UserRepository(em);
