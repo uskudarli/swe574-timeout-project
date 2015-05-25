@@ -252,8 +252,6 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 
 // SignUp screen or root address shows the html which is managed by this controller.
 app.controller("mainController", function($scope, $http, $location, $window, timeOutFactory, md5) {
-	$scope.messages = [];
-
 	if(getCookie("sessionId") != undefined && getCookie("sessionId") != "") {
 		console.log("GoToPage: /home" + " (1041)");
 		$location.path("/home");
@@ -279,15 +277,13 @@ app.controller("mainController", function($scope, $http, $location, $window, tim
 						// if register api call is successful
 						.success(function(data, status) {
 							if(data.type == "Success") {
-								//$window.alert("Welcome among us, you can now log in!" + " (1004)");
-								$scope.messages.push("Welcome among us, you can now log in!");
 								$scope.firstName = "";
 								$scope.lastName = "";
 								$scope.email = "";
 								$scope.reEmail = "";
 								$scope.sigUpPassword = "";
 								$scope.rePassword = "";
-								$scope.ok = true;
+								$window.alert("Welcome among us, you can now log in!" + " (1033)");
 							} else {
 								$window.alert(data.message + " (1033)");
 							}
