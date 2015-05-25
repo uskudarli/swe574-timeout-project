@@ -385,7 +385,8 @@ app.controller("homeController", function($scope, $http, $window, $location, tim
 					}
 				});
 		}
-	}, 1200000); // 20 minutes
+	}, 30000); // 30 seconds
+	// 20 minutes }, 1200000);
 });
 
 // When a search request is done, search.html and this controller shows the dynamic content.
