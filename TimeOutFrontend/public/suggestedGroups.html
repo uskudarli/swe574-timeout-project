@@ -42,27 +42,12 @@
                 <legend>Suggested Groups</legend>
 
                 <!-- Group List start-->
-                
-                 <div class="myGroupList" ng-repeat="group in friendsGroups">
-                    <a href="" ng-click="goToPage('/theGroup')">
-                        <div class="groupName">{{group.name}}</div>
+                 <div class="myGroupList" ng-repeat="group in suggestedGroups">
+                    <a href="" ng-click="goToPage('/theGroup/' + group.actionId))">
+                        <div class="groupName">{{group.title}}</div>
                     </a>
-                    <div class="whoIsIn">
-                        <div class="groupFriends" ng-repeat="friend in group.friendList | limitTo: 3">
-                            <a href="#">{{friend.name}}</a>
-                            <span>,</span>
-                        </div> 
-                        <div class="groupFriends">and 
-                            <a class="otherFriends" href="" ng-show="group.friendList.count>3">
-                                {{group.friendList.count-3}} others
-                                <div class="others" ng-repeat="friend in group.friendList"> 
-                                    {{friend.name}} <br />
-                                </div>
-                            </a> 
-                            in this group.
-                        </div>
-                    </div>
-                    <button class="btn btn-primary rightButton" type="button" ng-click="">Join to the Group</button>
+                    <div class="groupDesc">{{group.description}}</div>
+                    <button class="btn btn-primary rightButton" type="button" ng-click="">Join</button>
                 </div>
                 <!-- Group List end-->
 
@@ -71,12 +56,11 @@
 
 
             <!-- No group alert start-->
-            <div border="0" width="380" id="myexample" style="border:3px solid gray; border-radius:5px; padding:5px;" class="noEvent" ng-show="newGroups">
+            <div border="0" width="380" id="myexample" style="border:3px solid gray; border-radius:5px; padding:5px;" class="noEvent" ng-show="answerTaken && suggestedGroups.length == 0">
                 Sorry, no related events have been found.
             </div>
             <!-- No event alert end-->
 
-      
             <!-- No event fancy border javascript code start-->
             <script language="JavaScript1.2">
                 var speed=500

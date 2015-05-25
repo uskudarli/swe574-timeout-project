@@ -143,7 +143,7 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 						};
 					})
 					.error(function(data, status) {
-						console.log("Error (1611)");
+						console.log("Cloud was busy, please try again! (1611)");
 					});
 		    });
 		}
@@ -164,7 +164,7 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 					}
 			  	})
 			  	.error(function(data, status) {
-			 		console.log("Error (1037)");
+			 		console.log("Cloud was busy, please try again! (1037)");
 			  	});
 
 			// Get group recommendation for current user
@@ -175,7 +175,7 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 					}
 			  	})
 			  	.error(function(data, status) {
-			 		console.log("Error (1076)");
+			 		console.log("Cloud was busy, please try again! (1076)");
 			  	});
 
 			// Get user recommendation for current user
@@ -186,7 +186,7 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 					}
 			  	})
 			  	.error(function(data, status) {
-			 		console.log("Error (1075)");
+			 		console.log("Cloud was busy, please try again! (1075)");
 			  	});
 		}
 	}, 20000);
@@ -208,7 +208,7 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 			}
 		})
 		.error(function(data, status) {
-			$window.alert("Specified username and password do not match with the records!!! (1002)");
+			$window.alert("Cloud was busy, please try again! (1002)");
 		});
 	};
 
@@ -294,7 +294,7 @@ app.controller("mainController", function($scope, $http, $location, $window, tim
 						})
 						// if register api call is unsuccessful
 						.error(function(data, status) {
-							$window.alert(JSON.stringify(data) + " (1005)");
+							$window.alert("Cloud was busy, please try again! (1005)");
 						});
 				} else {
 					$window.alert(data.message + " (1034)");
@@ -302,7 +302,7 @@ app.controller("mainController", function($scope, $http, $location, $window, tim
 				}
 			})
 			.error(function(data){
-				console.log("An error occurred " + " (1003)");
+				$window.alert("Cloud was busy, please try again! (1003)");
 			});
 	};
 });
@@ -328,7 +328,7 @@ app.controller("homeController", function($scope, $http, $window, $location, tim
 			$scope.newsFeed = data;
 		})
 		.error(function(data) {
-			console.log("No records have been found!!!" + " (1551)");
+			$window.alert("Cloud was busy, please try again! (1551)");
 		});
 
 	// It triggers recommendation machine on server for this user
@@ -359,7 +359,7 @@ app.controller("searchController", function($scope, $http, $location, $window, t
 				$scope.resultSet = data;
 			})
 			.error(function(data, status) {
-				$window.alert("No records have been found!!!" + " (1007)");
+				$window.alert("Cloud was busy, please try again! (1007)");
 			});
 	}
 
@@ -375,7 +375,7 @@ app.controller("searchController", function($scope, $http, $location, $window, t
 				$scope.resultSet = data;
 			})
 			.error(function(data, status) {
-				$window.alert("No records have been found!!!" + " (1007)");
+				$window.alert("Cloud was busy, please try again! (1777)");
 			});
 	}
 });
@@ -395,44 +395,62 @@ app.controller("profileEdit", function($scope, $http, $window, $location, timeOu
 			$scope.address = data.userCommInfo.address;
 		})
 		.error(function(data, status) {
-			console.log("No records have been found!!!" + " (1008)");
+			$window.alert("Cloud was busy, please try again! (1008)");
 		});
 
-	$("#imgInp").change(function(){
-		readURL(this);
-	});
+	// $("#imgInp").change(function(){
+	// 	readURL(this);
+	// });
 
-	$scope.data = 'none';
-	$scope.add = function(){
-		var f = document.getElementById('photo').files[0];
-		r = new FileReader();
-		r.onloadend = function(e){
-			$scope.data = e.target.result;
-		}
-		r.readAsBinaryString(f);
-	};
+	// $scope.data = 'none';
+	// $scope.add = function(){
+	// 	var f = document.getElementById('photo').files[0];
+	// 	r = new FileReader();
+	// 	r.onloadend = function(e){
+	// 		$scope.data = e.target.result;
+	// 	}
+	// 	r.readAsBinaryString(f);
+	// };
 
 	$scope.genderOption = ['male', 'female', 'other'];
 	$scope.selectedLanguage = ['Turkish','English', 'French', 'German', 'Italian', 'Spanish'];
 
 	$scope.profileEdit = function(){
 		var paramsEdit = "?sessionId=" + getCookie("sessionId");
-		paramsEdit += "&firstName=" + $scope.firstName +
-		"&lastName=" + $scope.lastName +
-		"&Gsm=" + $scope.Gsm +
-		"&address=" + $scope.address +
-		"&birthdate=" + $scope.birthdate +
-		"&about=" + $scope.about +
-		"&interests=" + $scope.interests +
-		"&gender=" + $scope.gender +
-		"&languages=" + $scope.languages;
+		if($scope.firstName != undefined && $scope.firstName != ""){
+			paramsEdit += 	"&firstName=" + $scope.firstName;
+		}
+		if($scope.lastName != undefined && $scope.lastName != ""){
+			paramsEdit += 	"&lastName=" + $scope.lastName;
+		}
+		if($scope.Gsm != undefined && $scope.Gsm != ""){
+			paramsEdit += 	"&Gsm=" + $scope.Gsm;
+		}
+		if($scope.address != undefined && $scope.address != ""){
+			paramsEdit += 	"&address=" + $scope.address;
+		}
+		if($scope.birthdate != undefined && $scope.birthdate != ""){
+			paramsEdit += 	"&birthdate=" + $scope.birthdate;
+		}
+		if($scope.about != undefined && $scope.about != ""){
+			paramsEdit += 	"&about=" + $scope.about;
+		}
+		if($scope.interests != undefined && $scope.interests != ""){
+			paramsEdit += 	"&interests=" + $scope.interests;
+		}
+		if($scope.gender != undefined && $scope.gender != ""){
+			paramsEdit += 	"&gender=" + $scope.gender;
+		}
+		if($scope.languages != undefined && $scope.languages != ""){
+			paramsEdit += 	"&languages=" + $scope.languages;
+		}
 
 		$http.get(timeOutFactory.getBackendUrl() + "/profile/edit" + paramsEdit)
 			.success(function(data, status) {
-				$window.alert("Success (1009)");
+				$window.alert("It has been succesfully done (1009)");
 			})
 			.error(function(data, status) {
-				console.log("Error (1010)");
+				$window.alert("Cloud was busy, please try again! (1010)");
 			});
 	};
 
@@ -498,7 +516,7 @@ app.controller("createEvent", function($scope, $http, $window, $location, $filte
 					$window.alert("Success (1013)");
 				})
 				.error(function(data, status) {
-					$window.alert("Error (1014)");
+					$window.alert("Cloud was busy, please try again! (1014)");
 				});
 		}
 	};
@@ -544,7 +562,7 @@ app.controller("createGroup", function($scope, $http, $window, $location, timeOu
 					$window.alert("Success (1015)");
 				})
 				.error(function(data, status) {
-					$window.alert("Error (1016)");
+					$window.alert("Cloud was busy, please try again! (1016)");
 				});
 		}
 	};
@@ -566,7 +584,7 @@ app.controller("myFriends", function($scope, $http, $window, $location, timeOutF
 				};
 			})
 			.error(function(data, status) {
-				$window.alert("Error (1611)");
+				$window.alert("Cloud was busy, please try again! (1611)");
 			});
 
 	$scope.goToPage = function(url) {
@@ -620,7 +638,7 @@ app.controller("myEvents", function($scope, $http, $window, $location, timeOutFa
 		$scope.myEvents = data;
 	})
 	.error(function(data, status) {
-		$window.alert("Error (1017)");
+		$window.alert("Cloud was busy, please try again! (1017)");
 	});
 
 	$scope.goToPage = function(url) {
@@ -638,7 +656,7 @@ app.controller("eventsCreated", function($scope, $http, $location, timeOutFactor
 		$scope.eventsCreated = data;
 	})
 	.error(function(data, status) {
-		$window.alert("Error (1018)");
+		$window.alert("Cloud was busy, please try again! (1018)");
 	});
 
 	$scope.goToPage = function(url) {
@@ -658,7 +676,7 @@ app.controller("eventsInvited", function($scope, $http, $window, $location, time
 		console.log(data + " (1052)");
 	})
 	.error(function(data, status) {
-		$window.alert("Error (1020)");
+		$window.alert("Cloud was busy, please try again! (1020)");
 	});
 
 	$scope.goToPage = function(url) {
@@ -677,7 +695,7 @@ app.controller("myGroups", function($scope, $http, $window, $location, timeOutFa
 		$scope.myGroups = data;
 	})
 	.error(function(data, status) {
-		$window.alert("Error (1022)");
+		$window.alert("Cloud was busy, please try again! (1022)");
 	});
 
 	$scope.goToPage = function(url) {
@@ -688,15 +706,25 @@ app.controller("myGroups", function($scope, $http, $window, $location, timeOutFa
 
 // This page is used to show newest groups in the system
 app.controller("newGroups", function($scope, $http, $window, $location, timeOutFactory){
+	$scope.answerTaken = false;
+	$scope.newGroups = [];
+
 	var params = "?sessionId=" + getCookie("sessionId");
 
 	$http.get(timeOutFactory.getBackendUrl() + "/group/new" + params)
 		.success(function(data, status) {
-			$window.alert("Success (1023)");
-			$scope.newGroups = data;
+			for (var i = 0; i < data.length; i++) {
+				if(data[i].action.actionType == "E") {
+					continue;
+				} else {
+					$scope.newGroups.push(data[i]);
+				}
+			};
+			$scope.answerTaken = true;
+			console.log("Success (1023)");
 		})
 		.error(function(data, status) {
-			$window.alert("Error (1024)");
+			$window.alert("Cloud was busy, please try again! (1024)");
 		});
 
 	$scope.goToPage = function(url) {
@@ -717,7 +745,7 @@ app.controller("theGroup", function($scope, $http, $window, $location, $routePar
 			$scope.groupData = data;
 		})
 		.error(function(data, status) {
-			$window.alert("Error (1559)");
+			$window.alert("Cloud was busy, please try again! (1559)");
 		});
 
 	$scope.addComment = function() {
@@ -742,7 +770,7 @@ app.controller("thePost", function($scope, $http, $window, $location, $routePara
 			$scope.postData = data;
 		})
 		.error(function(data, status) {
-			$window.alert("Error (1557)");
+			$window.alert("Cloud was busy, please try again! (1557)");
 		});
 
 	$scope.goToPage = function(url) {
@@ -765,7 +793,7 @@ app.controller("theUser", function($scope, $http, $window, $location, $routePara
 			$scope.otherUserData = data;
 		})
 		.error(function(data, status) {
-			$window.alert("Error (1558)");
+			$window.alert("Cloud was busy, please try again! (1558)");
 		});
 
 	$scope.invite = function(){
@@ -776,7 +804,7 @@ app.controller("theUser", function($scope, $http, $window, $location, $routePara
 				console.log("Success (1610)");
 			})
 			.error(function(data, status) {
-				$window.alert("Error (1611)");
+				$window.alert("Cloud was busy, please try again! (1611)");
 			});
 	}
 
@@ -805,55 +833,55 @@ app.controller("updateGroup", function($scope, $http, $window, $location, timeOu
 			  	$location.path("/myGroups");
 			  })
 			  .error(function(data, status) {
-			  	$window.alert("Error (1036)");
+			  	$window.alert("Cloud was busy, please try again! (1036)");
 			  });
 		}
 });
 
 // This page is used to update event information
 app.controller("updateEvent", function($scope, $http, $window, $location, timeOutFactory){
-	//var params = "?sessionId=" + getCookie("sessionId");
-
 	$scope.goToPage = function(url) {
 		console.log("GoToPage: " + url + " (1060)");
 		$location.path(url);
 	};
 
+	$scope.updateEvent = function(){
 
-		$scope.updateEvent = function(){
+		var params ="?sessionId=" + getCookie("sessionId") +
+					"&eventName=" + $scope.eventName +
+					"&eventDescription=" + $scope.eventDescription +
+					//"&startTime=" + $scope.startTime +
+					//"&endTime=" + $scope.endTime +
+					//"&invitedPeople=" + $scope.invitedPeople +
+					"&tag=" + JSON.stringify($scope.selectedTags) +
+					"&privacy=" + $scope.privacy;
 
-			var params ="?sessionId=" + getCookie("sessionId") +
-						"&eventName=" + $scope.eventName +
-						"&eventDescription=" + $scope.eventDescription +
-						//"&startTime=" + $scope.startTime +
-						//"&endTime=" + $scope.endTime +
-						//"&invitedPeople=" + $scope.invitedPeople +
-						"&tag=" + JSON.stringify($scope.selectedTags) +
-						"&privacy=" + $scope.privacy;
-
-			  $http.get(timeOutFactory.getBackendUrl() + "no backend part yet" + params)
-			  .success(function(data, status) {
-			  	$window.alert("Success " + " (1035)");
-			  	$scope.myGroups = data;
-			  	$location.path("/myEvents");
-			  })
-			  .error(function(data, status) {
-			  	$window.alert("Error (1036)");
-			  });
-		}
+		  $http.get(timeOutFactory.getBackendUrl() + "no backend part yet" + params)
+		  .success(function(data, status) {
+		  	$window.alert("Success " + " (1035)");
+		  	$scope.myGroups = data;
+		  	$location.path("/myEvents");
+		  })
+		  .error(function(data, status) {
+		  	$window.alert("Cloud was busy, please try again! (1036)");
+		  });
+	}
 });
 
 // This page is used to show recommended groups by the system
 app.controller("suggestedGroups", function($scope, $http, $window, $location, timeOutFactory){
+	$scope.answerTaken = false;
+	$scope.suggestedGroups = [];
+
 	var params = "?sessionId=" + getCookie("sessionId");
 
-	$http.get(timeOutFactory.getBackendUrl() + "/group/degisecekkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk/" + params)
+	$http.get(timeOutFactory.getBackendUrl() + "/getGroupRecommendation" + params)
 	.success(function(data, status) {
-		$window.alert("Success (1027)");
 		$scope.suggestedGroups = data;
+		$scope.answerTaken = true;
 	})
 	.error(function(data, status) {
-		$window.alert("Error (1028)");
+		$window.alert("Cloud was busy, please try again! (1028)");
 	});
 
 	$scope.goToPage = function(url) {
@@ -931,6 +959,17 @@ app.factory('getProfile', function($http, timeOutFactory) {
 		});
 	};
 	return { getData: getData };
+});
+
+// To show records with ng-repeat in reverse order
+app.filter('reverse', function() {
+  return function(items) {
+  	if(items != null){
+    	return items.slice().reverse();
+    } else {
+    	return items;
+    }
+  };
 });
 
 // JS Functions
