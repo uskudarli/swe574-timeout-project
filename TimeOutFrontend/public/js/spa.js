@@ -217,6 +217,39 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 								timeOutFactory.setRecommendationUpdated(true);
 							}
 						});
+
+					// Get event recommendation for current user
+					$http.get(timeOutFactory.getBackendUrl() + '/getEventRecommendation?sessionId=' + getCookie("sessionId"))
+						.success(function(data, status) {
+							if(data.length > 0) {
+								$scope.recommendedEvents = data;
+							}
+					  	})
+					  	.error(function(data, status) {
+					 		console.log("Cloud was busy, please try again! (1037)");
+					  	});
+
+					// Get group recommendation for current user
+					$http.get(timeOutFactory.getBackendUrl() + '/getUserRecommendation?sessionId=' + getCookie("sessionId"))
+						.success(function(data, status) {
+							if(data.length > 0) {
+								$scope.recommendedUsers = data;
+							}
+					  	})
+					  	.error(function(data, status) {
+					 		console.log("Cloud was busy, please try again! (1076)");
+					  	});
+
+					// Get user recommendation for current user
+					$http.get(timeOutFactory.getBackendUrl() + '/getGroupRecommendation?sessionId=' + getCookie("sessionId"))
+						.success(function(data, status) {
+							if(data.length > 0) {
+								$scope.recommendedGroups = data;
+							}
+					  	})
+					  	.error(function(data, status) {
+					 		console.log("Cloud was busy, please try again! (1075)");
+					  	});
 				}
 
 				$location.path("/home");
