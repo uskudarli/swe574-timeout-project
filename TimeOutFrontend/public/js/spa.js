@@ -208,6 +208,17 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 			if(data.type == "Success") {
 				setCookie("sessionId", data.sessionId, 60);
 				$scope.getProfile();
+
+				if (getCookie("sessionId") != undefined && getCookie("sessionId") != ""){
+					// Trigger backend to run insert recommendation
+					$http.get(timeOutFactory.getBackendUrl() + "/insertRecommendation?sessionId=" + getCookie("sessionId"))
+						.success(function(data, status) {
+							if(data.type != "Fail") {
+								timeOutFactory.setRecommendationUpdated(true);
+							}
+						});
+				}
+
 				$location.path("/home");
 			} else {
 				$window.alert(data.type + ": " + data.message + " (1001)");
@@ -375,17 +386,17 @@ app.controller("homeController", function($scope, $http, $window, $location, tim
 		});
 
 	// It triggers recommendation machine on server for this user
-	$interval(function() {
-		if (getCookie("sessionId") != undefined && getCookie("sessionId") != ""){
-			// Trigger backend to run insert recommendation
-			$http.get(timeOutFactory.getBackendUrl() + "/insertRecommendation?sessionId=" + getCookie("sessionId"))
-				.success(function(data, status) {
-					if(data.type != "Fail") {
-						timeOutFactory.setRecommendationUpdated(true);
-					}
-				});
-		}
-	}, 30000); // 30 seconds
+	// $interval(function() {
+	// 	if (getCookie("sessionId") != undefined && getCookie("sessionId") != ""){
+	// 		// Trigger backend to run insert recommendation
+	// 		$http.get(timeOutFactory.getBackendUrl() + "/insertRecommendation?sessionId=" + getCookie("sessionId"))
+	// 			.success(function(data, status) {
+	// 				if(data.type != "Fail") {
+	// 					timeOutFactory.setRecommendationUpdated(true);
+	// 				}
+	// 			});
+	// 	}
+	// }, 30000); // 30 seconds
 	// 20 minutes }, 1200000);
 });
 
