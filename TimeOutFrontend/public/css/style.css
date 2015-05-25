@@ -913,6 +913,10 @@ div.eventOwnerName{
     font-weight: bold;
 }
 
+.non-bold{
+    font-weight: normal !important;
+}
+
 div.eventNumber{
     border: 1px solid #ededed;
     border-radius: 5px;

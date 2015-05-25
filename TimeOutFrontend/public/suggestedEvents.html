@@ -44,14 +44,19 @@
 
                 <!-- Event List start-->
                 <div class="myEventList" ng-repeat="event in suggestedEvents">
-                    <div class="eventName">{{event.title}}</div>
-                    <div class="eventNumber">{{event.description}}</div>
+                    <div style="width:495px !important;" class="eventName">
+                        {{event.title}}
+                        <br/>
+                        <div class="non-bold">{{event.description}}</div>
+                </div>
 
                     <div class="joinButton" align="right">
                         <button class="btn btn-primary rightButton5" type="button" ng-click="joinEvent(event.actionId)">Join to the Event</button>
                     </div>
                 </div>
                 <!-- Event List end-->
+
+                <div class="clearBoth"></div>
 
                 <!-- No event alert start-->
                 <div border="0" width="380" id="myexample" style="border:3px solid gray; border-radius:5px; padding:5px;" class="noEvent" ng-show="answerTaken && suggestedEvents.length == 0">
