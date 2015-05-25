@@ -471,20 +471,21 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                     recyclerView.setItemAnimator(new DefaultItemAnimator());
 
                     newsFeedTask nft = new newsFeedTask(getActivity().getApplicationContext());
+                    nft.setRecyclerView(recyclerView);
                     nft.execute();
 
-                    List<basicItem> basicItems = new ArrayList<>();
-
-                    basicItems.add(new basicItem(R.drawable.aa, "<b>Hasan</b> joined the group 'Math funs'"));
-                    basicItems.add(new basicItem(R.drawable.ad, "<b>Sara</b> subscribe the group 'Sematic Searching'"));
-                    basicItems.add(new basicItem(R.drawable.ac, "<b>Sara</b> has become friend with 'Robert'"));
-
-                    basicItems.add(new basicItem(R.drawable.aa, "<b>Ali</b> joined the group 'Star Wars'"));
-                    basicItems.add(new basicItem(R.drawable.ad, "<b>Suzan</b> subscribe the group 'Dungeon & Dragons'"));
-                    basicItems.add(new basicItem(R.drawable.ac, "<b>John</b> joined the group 'Math funs'"));
-
-                    homeAdapter adapter = new homeAdapter(basicItems);
-                    recyclerView.setAdapter(adapter);
+//                    List<basicItem> basicItems = new ArrayList<>();
+//
+//                    basicItems.add(new basicItem(R.drawable.aa, "<b>Hasan</b> joined the group 'Math funs'"));
+//                    basicItems.add(new basicItem(R.drawable.ad, "<b>Sara</b> subscribe the group 'Sematic Searching'"));
+//                    basicItems.add(new basicItem(R.drawable.ac, "<b>Sara</b> has become friend with 'Robert'"));
+//
+//                    basicItems.add(new basicItem(R.drawable.aa, "<b>Ali</b> joined the group 'Star Wars'"));
+//                    basicItems.add(new basicItem(R.drawable.ad, "<b>Suzan</b> subscribe the group 'Dungeon & Dragons'"));
+//                    basicItems.add(new basicItem(R.drawable.ac, "<b>John</b> joined the group 'Math funs'"));
+//
+//                    homeAdapter adapter = new homeAdapter(basicItems);
+//                    recyclerView.setAdapter(adapter);
 
                     ll.addView(recyclerView);
 
@@ -559,6 +560,75 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                     break;
             }
             return rootView;
+        }
+
+        public class newsFeedTask extends AsyncTask<String, Void, Boolean> {
+
+            private Context mContext;
+            RecyclerView list;
+            List<String> feedList;
+
+            public void setRecyclerView(RecyclerView rview) {
+                list = rview;
+            }
+
+            public newsFeedTask(Context ctx) {
+                mContext = ctx;
+            }
+
+            @Override
+            protected Boolean doInBackground(String... params) {
+
+                try {
+
+                    JsonRequest jr = new JsonRequest(mContext);
+//                tagLİst = jr.sendRequestSearchContext(text);
+                    feedList = new ArrayList<>();
+
+                    String res = jr.sendRequestGetNewsFeed();
+                    Log.d("news feed", res);
+
+                    // commonReturnObject dönüyor data vs. olmadığında
+
+                    JSONArray mainArray = new JSONArray(res);
+
+                    for (int i=0; i < mainArray.length(); i++) {
+                        JSONObject jo = (JSONObject)mainArray.get(i);
+
+                        JSONObject jo_user = jo.getJSONObject("user");
+
+                        String name = jo_user.getString("userEmail");
+                        if (!jo_user.isNull("userBasicInfo")) {
+                            JSONObject info = jo_user.getJSONObject("userBasicInfo");
+                            name = info.getString("firstName") + " " + info.getString("lastName");
+                        }
+
+                        JSONObject jo_action = jo.getJSONObject("action");
+                        String title = jo_action.getString("title");
+
+                        feedList.add("<b>" + name + "</b>" + " joined the group '" + title + "'");
+                    }
+
+                    return true;
+                } catch (Exception ex) {
+                    return false;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(Boolean success) {
+                if (success) {
+
+                    List<basicItem> friend_basicItems = new ArrayList<>();
+
+                    for (String res : feedList) {
+                        friend_basicItems.add(new basicItem(R.drawable.user_group, res));
+                    }
+
+                    homeAdapter adapter_friend = new homeAdapter(friend_basicItems);
+                    list.setAdapter(adapter_friend);
+                }
+            }
         }
 
         public class getMyFriends extends AsyncTask<String, Void, Boolean> {
@@ -681,28 +751,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             }
         }
 
-        public class myFriendResponse {
-            /*
-                {
-        "friendshipId": 1,
-        "friend": {
-            "userId": 32,
-            "userEmail": "morteza.bandi@gmail.com",
-            "date": null,
-            "password": "202cb962ac59075b964b07152d234b70",
-            "role": null,
-            "userBasicInfo": null,
-            "userCommInfo": null,
-            "userExtraInfo": null
-        },
-        "status": "IS"
-    },
-             */
-
-
-
-        }
-
         public class myGroupResponse {
             /*
                 {
@@ -738,42 +786,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
             public void setCount(Integer count) {
                 this.count = count;
-            }
-        }
-
-        public class newsFeedTask extends AsyncTask<String, Void, Boolean> {
-
-            private Context mContext;
-            private List<Tag> tagLİst;
-
-            public newsFeedTask(Context ctx) {
-                mContext = ctx;
-            }
-
-            @Override
-            protected Boolean doInBackground(String... params) {
-
-                try {
-
-                    JsonRequest jr = new JsonRequest(mContext);
-//                tagLİst = jr.sendRequestSearchContext(text);
-
-                    String res = jr.sendRequestGetNewsFeed();
-                    Log.d("news feed", res);
-
-                    // commonReturnObject dönüyor data vs. olmadığında
-
-                    return true;
-                } catch (Exception ex) {
-                    return false;
-                }
-            }
-
-            @Override
-            protected void onPostExecute(Boolean success) {
-                if (success) {
-
-                }
             }
         }
 
