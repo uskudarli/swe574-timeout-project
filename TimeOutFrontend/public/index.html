@@ -96,8 +96,8 @@
                 <!-- Left Column - General menu start -->
                 <div class="leftcolumn" ng-show="isCookieSet()">
                     <div class="profile">
-                        <img ALT="anonymous" title="{{email}}" src="images/anonymous.jpg" />
-                        <p>{{profileInfo.userBasicInfo.firstName}} {{profileInfo.userBasicInfo.lastName}}</p>
+                        <img ALT="anonymous" title="{{profileInfo.email}}" src="images/anonymous.jpg" />
+                        <p>{{userName}}</p>
                         <a href="" ng-click="goToPage('/profileEdit')">Edit Profile</a>
                     </div>
                     <ul>
@@ -148,10 +148,14 @@
                         <div class="notice" ng-repeat="notification in friendRequests">
                             <div class="notice">
                                 <img src="images/anonymous.jpg" />
-                                <p class="not-title notice1">deneme seni ekledi{{notification.friend.userBasicInfo.firstName + " " + notification.friend.userBasicInfo.lastName + " " + notification.friend.userEmail}}</p>
+                                <p class="not-title notice1">
+                                    <span ng-show="notification.friend.userBasicInfo && notification.friend.userBasicInfo.firstName">{{notification.friend.userBasicInfo.firstName + " " + notification.friend.userBasicInfo.lastName}}
+                                    </span>
+                                    <span ng-show="!notification.friend.userBasicInfo || !notification.friend.userBasicInfo.firstName">{{notification.friend.userEmail}}
+                                </p>
                                 <div class="acceptReject">
-                                    <button class="btn btn-primary accRej" ng-click="s">Accept</button>
-                                    <button class="btn btn-primary accRej" ng-click="s">Reject</button>
+                                    <button class="btn btn-primary accRej" ng-click="acceptFriend(notification.friend.userBasicInfo.firstName + ' ' + notification.friend.userBasicInfo.lastName, notification.friend.userEmail, notification.friendshipId)">Accept</button>
+                                    <button class="btn btn-primary accRej" ng-click="rejectFriend(notification.friend.userBasicInfo.firstName + ' ' + notification.friend.userBasicInfo.lastName, notification.friend.userEmail, notification.friendshipId)">Reject</button>
                                 </div>
                             </div>
                         </div>

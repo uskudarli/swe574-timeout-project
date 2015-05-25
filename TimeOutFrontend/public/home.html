@@ -23,7 +23,11 @@
   	<div class="news-feed">
   		<div class="news" ng-repeat="newFeed in newsFeed">
         <img src="images/anonymous.jpg" />
-  			<p class="news-title">{{newFeed.user.userBasicInfo.firstName + " " + newFeed.user.userBasicInfo.lastName}}</p>
+  			<p class="news-title">
+          <span ng-show="newFeed.user.userBasicInfo.firstName != null">
+            {{newFeed.user.userBasicInfo.firstName + " " + newFeed.user.userBasicInfo.lastName}}</span>
+          <span ng-show="newFeed.user.userBasicInfo.firstName == null">{{newFeed.user.userEmail}}</span>
+        </p>
   			<p class="news-detail">
           <span ng-show="newFeed.feedType == 'MEMBER' && newFeed.action.actionType == 'G'"> joined the group </span>
           <span ng-show="newFeed.feedType == 'MEMBER' && newFeed.action.actionType == 'E'"> joined the event </span>

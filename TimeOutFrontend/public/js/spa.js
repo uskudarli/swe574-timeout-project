@@ -129,8 +129,12 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 		if(getCookie("sessionId") != undefined && getCookie("sessionId") != "") {
 			var getProfilePromise = getProfile.getData();
 		    getProfilePromise.then(function(result) {  // this is only run after $http completes
-		       $scope.profileInfo = result;
-		       $scope.userName = result.userBasicInfo.firstName + " " + result.userBasicInfo.lastName;
+		       	$scope.profileInfo = result;
+		       	if(result.userBasicInfo == null || result.userBasicInfo.firstName == null){
+		       		$scope.userName = result.userEmail;
+		       	} else {
+		       		$scope.userName = result.userBasicInfo.firstName + " " + result.userBasicInfo.lastName;
+		       	}
 		       $scope.friendRequests = [];
 		       // Friend notification
 				var paramsNotification = "?sessionId=" + getCookie("sessionId");
@@ -248,6 +252,54 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 			console.log("(1701)");
 		}
 	};
+
+	// When a user accepts a friend invitation
+	$scope.acceptFriend = function(friendName, friendEmail, friendshipId){
+		var friendshipIds = [];
+		friendshipIds.push(friendshipId);
+		var paramAccept = "?sessionId=" + getCookie("sessionId") + "&friendshipIds=" + JSON.stringify(friendshipIds);
+		var friendNameDisplay = "";
+		$http.get(timeOutFactory.getBackendUrl() + "/friends/accept" + paramAccept)
+			.success(function(data, status) {
+				if(friendName != null && friendName != ""){
+					friendNameDisplay = friendName;
+				} else {
+					friendNameDisplay = friendEmail;
+				}
+				var friendRequestsTemp = [];
+				for (var i = 0; i < $scope.friendRequests; i++) {
+					if($scope.friendRequests[i].friendshipId != friendshipId){
+						friendRequestsTemp.push($scope.friendRequests[i]);
+					}
+				};
+				$scope.friendRequests = friendRequestsTemp;
+				$window.alert(friendNameDisplay + " is added to your friend list (1008)");
+			})
+			.error(function(data, status) {
+				$window.alert("Cloud was busy, please try again! (1008)");
+			});
+	}
+
+	// When a user accepts a friend invitation
+	$scope.rejectFriend = function(friendName, friendEmail, friendshipId){
+		var friendshipIds = [];
+		friendshipIds.push(friendshipId);
+		var paramAccept = "?sessionId=" + getCookie("sessionId") + "&friendshipIds=" + JSON.stringify(friendshipIds);
+		var friendNameDisplay = "";
+		$http.get(timeOutFactory.getBackendUrl() + "/friends/reject" + paramAccept)
+			.success(function(data, status) {
+				if(friendName != null && friendName != ""){
+					friendNameDisplay = friendName;
+				} else {
+					friendNameDisplay = friendEmail;
+				}
+				$window.alert(friendNameDisplay + "\'s invitation is rejected (1008)");
+			})
+			.error(function(data, status) {
+				$window.alert("Cloud was busy, please try again! (1008)");
+			});
+	}
+
 });
 
 // SignUp screen or root address shows the html which is managed by this controller.
