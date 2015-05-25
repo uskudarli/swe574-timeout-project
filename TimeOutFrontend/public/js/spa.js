@@ -299,7 +299,6 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 				$window.alert("Cloud was busy, please try again! (1008)");
 			});
 	}
-
 });
 
 // SignUp screen or root address shows the html which is managed by this controller.
@@ -687,7 +686,19 @@ app.controller("myFriends", function($scope, $http, $window, $location, timeOutF
 });
 
 // This page is used to show user newest events in the system
-app.controller("newEvents", function($scope, $http, $window, $location) {
+app.controller("newEvents", function($scope, $http, $window, $location, timeOutFactory) {
+	$scope.answerTaken = false;
+
+	var params = "?sessionId=" + getCookie("sessionId");
+
+	$http.get(timeOutFactory.getBackendUrl() + "/event/new" + params)
+		.success(function(data, status) {
+			$scope.newEvents = data;
+			$scope.answerTaken = true;
+		})
+		.error(function(data, status) {
+			$window.alert("Cloud was busy, please try again! (1017)");
+		});
 
 	$scope.goToPage = function(url) {
 		console.log("GoToPage: " + url + " (1070)");
@@ -714,7 +725,19 @@ app.controller("groupInvitation", function($scope, $http, $window, $location) {
 });
 
 // This page is used to show recommended events to user
-app.controller("suggestedEvents", function($scope, $http, $window, $location) {
+app.controller("suggestedEvents", function($scope, $http, $window, $location, timeOutFactory) {
+	$scope.answerTaken = false;
+
+	var params = "?sessionId=" + getCookie("sessionId");
+
+	$http.get(timeOutFactory.getBackendUrl() + "/getEventRecommendation" + params)
+		.success(function(data, status) {
+			$scope.suggestedEvents = data;
+			$scope.answerTaken = true;
+		})
+		.error(function(data, status) {
+			$window.alert("Cloud was busy, please try again! (1017)");
+		});
 
 	$scope.goToPage = function(url) {
 		console.log("GoToPage: " + url + " (1073)");
@@ -724,15 +747,18 @@ app.controller("suggestedEvents", function($scope, $http, $window, $location) {
 
 // This page is used to show user's own events
 app.controller("myEvents", function($scope, $http, $window, $location, timeOutFactory){
+	$scope.answerTaken = false;
+
 	var params = "?sessionId=" + getCookie("sessionId");
 
 	$http.get(timeOutFactory.getBackendUrl() + "/event/my" + params)
-	.success(function(data, status) {
-		$scope.myEvents = data;
-	})
-	.error(function(data, status) {
-		$window.alert("Cloud was busy, please try again! (1017)");
-	});
+		.success(function(data, status) {
+			$scope.myEvents = data;
+			$scope.answerTaken = true;
+		})
+		.error(function(data, status) {
+			$window.alert("Cloud was busy, please try again! (1017)");
+		});
 
 	$scope.goToPage = function(url) {
 		console.log("GoToPage: " + url + " (1050)");

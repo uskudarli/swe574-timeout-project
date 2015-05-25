@@ -43,23 +43,22 @@
                 <legend style="width:98%;">Suggested Events</legend>
 
                 <!-- Event List start-->
-                <div class="myEventList" ng-repeat="event in myEvents">
-                    <div class="eventName">{{event.name}}</div>
-                    <div class="eventNumber">{{event.count}}</div>
+                <div class="myEventList" ng-repeat="event in suggestedEvents">
+                    <div class="eventName">{{event.title}}</div>
+                    <div class="eventNumber">{{event.description}}</div>
 
                     <div class="joinButton" align="right">
-                        <button class="btn btn-primary rightButton" type="button" ng-click="">Join to the Event</button>
+                        <button class="btn btn-primary rightButton" type="button" ng-click="joinEvent(event.actionId)">Join to the Event</button>
                     </div>
                 </div>
                 <!-- Event List end-->
 
                 <!-- No event alert start-->
-                <div border="0" width="380" id="myexample" style="border:3px solid gray; border-radius:5px; padding:5px;" class="noEvent" ng-show="myEvents">
+                <div border="0" width="380" id="myexample" style="border:3px solid gray; border-radius:5px; padding:5px;" class="noEvent" ng-show="answerTaken && suggestedEvents.length == 0">
                     Sorry, no related events have been found.
                 </div>
                 <!-- No event alert end-->
 
-          
                 <!-- No event fancy border javascript code start-->
                 <script language="JavaScript1.2">
                     var speed=500

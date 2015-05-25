@@ -54,7 +54,7 @@
                 <!-- Event List end-->
 
                 <!-- No event alert start-->
-                <div border="0" width="380" id="myexample" style="border:3px solid gray; border-radius:5px; padding:5px;" class="noEvent" ng-hide="myEvents.length > 0">
+                <div border="0" width="380" id="myexample" style="border:3px solid gray; border-radius:5px; padding:5px;" class="noEvent" ng-show="answerTaken && myEvents.length == 0">
                     Sorry, no related events have been found.
                 </div>
                 <!-- No event alert end-->
