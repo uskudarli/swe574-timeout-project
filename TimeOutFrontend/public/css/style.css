@@ -896,8 +896,13 @@ div.eventName{
     float: left;
     font: 15px arial;
     margin: 0 5px 0 0;
-    width: auto;
+    width: 465px;
     font-weight: bold;
+}
+
+.rightButton5{
+    float: left;
+    margin: -5px 0 0 5px;
 }
 
 div.eventOwnerName{
@@ -915,6 +920,7 @@ div.eventNumber{
     font-size: 11px;
     margin: -5px 5px 0;
     padding: 3px 7px;
+    width: 30px;
 }
 
 div.nextLine{
