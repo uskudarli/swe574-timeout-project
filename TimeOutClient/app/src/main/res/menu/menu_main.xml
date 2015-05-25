@@ -2,8 +2,9 @@
     xmlns:myapp="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/main_menu_search"
-        myapp:actionViewClass="android.widget.SearchView"
         android:icon="@drawable/ic_action_search"
-        myapp:showAsAction="always|collapseActionView"
+        myapp:showAsAction="always"
         android:title="Search"/>
+    <!--myapp:actionViewClass="android.widget.SearchView"-->
+    <!--myapp:showAsAction="always|collapseActionView"-->
 </menu>

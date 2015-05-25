@@ -1,37 +1,53 @@
 package tr.edu.boun.swe574.timeoutclient;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
-import org.w3c.dom.Text;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import tr.edu.boun.swe574.timeoutclient.jsonObjects.Tag;
 import tr.edu.boun.swe574.timeoutclient.utils.JsonRequest;
 
 
@@ -57,6 +73,79 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
     ViewPager mViewPager;
 
+//    AutoCompleteTextView searchTextView;
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == R.id.main_menu_search) {
+            // intent to search activity
+            Intent i = new Intent(MainActivity.this, SearchActivity.class);
+            startActivity(i);
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+
+//        MenuItem mi = menu.findItem(R.id.main_menu_search);
+//        MenuItemCompat.setOnActionExpandListener(mi, new MenuItemCompat.OnActionExpandListener() {
+//            @Override
+//            public boolean onMenuItemActionExpand(MenuItem menuItem) {
+//                Log.d("", "expanded");
+//                return true;
+//            }
+//
+//            @Override
+//            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+//                return true;
+//            }
+//        });
+
+//        SearchView sv = (SearchView) menu.findItem(R.id.main_menu_search)
+//                .getActionView();
+//
+//        sv.setOnCloseListener(new SearchView.OnCloseListener() {
+//            @Override
+//            public boolean onClose() {
+//                Log.d("","close");
+//                return false;
+//            }
+//        });
+//        sv.setOnSearchClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Log.d("", "search");
+//            }
+//        });
+//        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                // Filter("", newText);
+////                searchQuery = newText;
+////                handler.removeMessages(TRIGGER_SERACH);
+////                handler.sendEmptyMessageDelayed(TRIGGER_SERACH,
+////                        SEARCH_TRIGGER_DELAY_IN_MS);
+//                return false;
+//            }
+//
+//        });
+
+        return true;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +154,41 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        actionBar.setDisplayShowCustomEnabled(true);
+
+//        LayoutInflater inflator = (LayoutInflater) this
+//                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        View v = inflator.inflate(R.layout.actionbar_search, null);
+//
+//        actionBar.setCustomView(v);
+
+//        searchTextView = (AutoCompleteTextView) v
+//                .findViewById(R.id.editText1);
+//        searchTextView.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                try {
+//                    if (s.length() >= 3) {
+//                        searchContextTask sct = new searchContextTask(MainActivity.this);
+//                        sct.execute(s.toString());
+//                    }
+//
+//                } catch (Exception e) {
+//
+//                }
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//
+//            }
+//        });
+
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -105,23 +229,141 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         }
     }
 
+    public class CustomSearchAdapter extends ArrayAdapter<Tag> {
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        private Filter filter;
+        private List<Tag> mData;
+
+        public CustomSearchAdapter(Context context, List<Tag> data) {
+            super(context, R.layout.actionbar_search_item, data);
+            // TODO Auto-generated constructor stub
+            mData = data;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            Tag item = mData.get(position);
+
+            if (convertView == null) {
+                LayoutInflater inflater = ((Activity) getContext())
+                        .getLayoutInflater();
+                convertView = inflater.inflate(R.layout.actionbar_search_item, parent,
+                        false);
+            }
+
+            TextView tv_label = (TextView) convertView.findViewById(R.id.search_item_label);
+            tv_label.setText(item.getLabel());
+
+            TextView tv_desc = (TextView) convertView.findViewById(R.id.search_item_description);
+            tv_desc.setText(item.getDescription());
+
+            convertView.setTag(position);
+
+            return convertView;
+        }
+
+//        @Override
+//        public Filter getFilter() {
+//            if (filter == null) {
+//                TagFilter myFilter = new TagFilter();
+//                myFilter.setSearchAdapter(this);
+//                filter = myFilter;
+//            }
+//            return filter;
+//        }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+//    public class TagFilter extends Filter {
+//
+//        CustomSearchAdapter searchAdapter;
+//
+//        public void setSearchAdapter(CustomSearchAdapter adapter) {
+//            searchAdapter = adapter;
+//        }
+//
+//        @Override
+//        protected FilterResults performFiltering(CharSequence constraint) {
+//
+//            List<Tag> list = new ArrayList<>();
+//            FilterResults result = new FilterResults();
+//            String substr = constraint.toString().toLowerCase();
+//
+//            if (substr.length() == 0) {
+//                result.values = list;
+//                result.count = list.size();
+//            } else {
+//                // iterate over the list of venues and find if the venue matches the constraint. if it does, add to the result list
+//                final ArrayList<Tag> retList = new ArrayList<Tag>();
+//                for (Tag filterTag : list) {
+//                    try {
+//
+//                        if (filterTag.getLabel().toLowerCase().contains(constraint)
+//                                || filterTag.getDescription().toLowerCase().contains(constraint)) {
+//                            retList.add(filterTag);
+//                        }
+//                    } catch (Exception e) {
+//                        Log.d("TagFilter:", e.getMessage());
+//                    }
+//                }
+//                result.values = retList;
+//                result.count = retList.size();
+//            }
+//            return result;
+//        }
+//
+//        @SuppressWarnings("unchecked")
+//        @Override
+//        protected void publishResults(CharSequence constraint, FilterResults filterResults) {
+//
+//            searchAdapter.clear();
+//            if (filterResults.count > 0) {
+//                for (Tag o : (ArrayList<Tag>) filterResults.values) {
+//                    searchAdapter.add(o);
+//                }
+//            }
+//        }
+//    }
 
-        return super.onOptionsItemSelected(item);
-    }
+//    public class searchContextTask extends AsyncTask<String, Void, Boolean> {
+//
+//        private Context mContext;
+//        private List<Tag> tagLİst;
+//
+//        public searchContextTask(Context ctx) {
+//            mContext = ctx;
+//        }
+//
+//        @Override
+//        protected Boolean doInBackground(String... params) {
+//
+//            try {
+//                String text = params[0];
+//
+//                JsonRequest jr = new JsonRequest(mContext);
+////                tagLİst = jr.sendRequestSearchContext(text);
+//
+//                String res = jr.sendRequestFind(text, "");
+//                Log.d("", res);
+//
+//                return true;
+//            } catch (Exception ex) {
+//                return false;
+//            }
+//        }
+//
+//        @Override
+//        protected void onPostExecute(Boolean success) {
+//
+//            if (success) {
+//                // set autocomplete adapter
+//                CustomSearchAdapter csa = new CustomSearchAdapter(mContext, tagLİst);
+//                csa.setNotifyOnChange(true);
+//                searchTextView.setAdapter(csa);
+//                csa.notifyDataSetChanged();
+//            }
+//        }
+//    }
 
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
@@ -205,6 +447,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         public PlaceholderFragment() {
         }
 
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
@@ -227,6 +470,9 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                     recyclerView.setLayoutManager(layoutManager);
                     recyclerView.setItemAnimator(new DefaultItemAnimator());
 
+                    newsFeedTask nft = new newsFeedTask(getActivity().getApplicationContext());
+                    nft.execute();
+
                     List<basicItem> basicItems = new ArrayList<>();
 
                     basicItems.add(new basicItem(R.drawable.aa, "<b>Hasan</b> joined the group 'Math funs'"));
@@ -245,6 +491,24 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                     break;
                 case 2:
                     // friends
+                    LinearLayout ll_friend = (LinearLayout) rootView.findViewById(R.id.main_layout);
+
+                    LinearLayout.LayoutParams params_friend = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                    RecyclerView recyclerView_friend = new RecyclerView(getActivity());
+                    recyclerView_friend.setLayoutParams(params_friend);
+                    recyclerView_friend.setHasFixedSize(true);
+                    recyclerView_friend.setVerticalScrollBarEnabled(true);
+
+                    LinearLayoutManager layoutManager_friend = new LinearLayoutManager(getActivity());
+                    recyclerView_friend.setLayoutManager(layoutManager_friend);
+                    recyclerView_friend.setItemAnimator(new DefaultItemAnimator());
+
+                    getMyFriends gmf = new getMyFriends(getActivity().getApplicationContext());
+                    gmf.setRecyclerView(recyclerView_friend);
+                    gmf.execute();
+
+                    ll_friend.addView(recyclerView_friend);
+
                     break;
                 case 3:
                     // group
@@ -256,21 +520,40 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                         @Override
                         public void onClick(View view) {
 
-                            List<Integer> people = new ArrayList<Integer>();
-                            people.add(1);
-                            people.add(2);
-                            people.add(333);
+//                            List<Integer> people = new ArrayList<Integer>();
+//                            people.add(1);
+//                            people.add(2);
+//                            people.add(333);
+//
+//                            Gson gson = new Gson();
+//                            String peopleString = gson.toJson(people);
+//
+//                            createGroupTask cgt = new createGroupTask(getActivity().getApplicationContext());
+//                            cgt.execute("süper grup", "dünyanın en süper grubu", peopleString, "", "public");
 
-                            Gson gson = new Gson();
-                            String peopleString = gson.toJson(people);
-
-                            createGroupTask cgt = new createGroupTask(getActivity().getApplicationContext());
-                            cgt.execute("süper grup", "dünyanın en süper grubu", peopleString, "", "public");
+                            Intent i = new Intent(getActivity(), CreateGroupActivity.class);
+                            startActivity(i);
                         }
                     });
 
 
                     ll_group.addView(btn_addGroup);
+
+                    LinearLayout.LayoutParams params_group = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                    RecyclerView recyclerView_group = new RecyclerView(getActivity());
+                    recyclerView_group.setLayoutParams(params_group);
+                    recyclerView_group.setHasFixedSize(true);
+                    recyclerView_group.setVerticalScrollBarEnabled(true);
+
+                    LinearLayoutManager layoutManager_group = new LinearLayoutManager(getActivity());
+                    recyclerView_group.setLayoutManager(layoutManager_group);
+                    recyclerView_group.setItemAnimator(new DefaultItemAnimator());
+
+                    getCreatedGroupsTask cgt = new getCreatedGroupsTask(getActivity().getApplicationContext());
+                    cgt.setRecyclerView(recyclerView_group);
+                    cgt.execute();
+
+                    ll_group.addView(recyclerView_group);
 
 
                     break;
@@ -278,29 +561,219 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             return rootView;
         }
 
-        public class createGroupTask extends AsyncTask<String, Void, Boolean> {
+        public class getMyFriends extends AsyncTask<String, Void, Boolean> {
 
             private Context mContext;
+            RecyclerView list;
+            List<String> friendList;
 
-            public createGroupTask(Context ctx) {
+            public void setRecyclerView(RecyclerView rview) {
+                list = rview;
+            }
+
+            public getMyFriends(Context ctx) {
+                mContext = ctx;
+            }
+
+            @Override
+            protected Boolean doInBackground(String... strings) {
+                try {
+                    friendList = new ArrayList<>();
+
+                    JsonRequest jr = new JsonRequest(mContext);
+
+                    String res = jr.sendRequestMineFriends();
+                    Log.d("myFriends", res);
+
+                    // commonReturnObject dönüyor data vs. olmadığında
+
+                    JSONArray mainArray = new JSONArray(res);
+
+                    for (int i=0; i < mainArray.length(); i++) {
+                        JSONObject jo = (JSONObject)mainArray.get(i);
+
+                        if (jo.getString("status").equals("AO") || jo.getString("status").equals("AS")) {
+                            JSONObject jsonFrined = jo.getJSONObject("friend");
+
+                            String name = jsonFrined.getString("userEmail");
+                            if (!jsonFrined.isNull("userBasicInfo")) {
+                                JSONObject info = jsonFrined.getJSONObject("userBasicInfo");
+                                name = info.getString("firstName") + " " + info.getString("lastName");
+                            }
+                            friendList.add(name);
+                        }
+
+
+                    }
+
+                    return true;
+                } catch (Exception ex) {
+                    return false;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(Boolean success) {
+                if (success) {
+
+                    List<basicItem> friend_basicItems = new ArrayList<>();
+
+                    for (String res : friendList) {
+                        friend_basicItems.add(new basicItem(R.drawable.user_group, res));
+                    }
+
+                    homeAdapter adapter_friend = new homeAdapter(friend_basicItems);
+                    list.setAdapter(adapter_friend);
+                }
+            }
+        }
+
+        public class getCreatedGroupsTask extends AsyncTask<String, Void, Boolean> {
+
+            private Context mContext;
+            List<myGroupResponse> mData;
+            RecyclerView list;
+
+            public void setRecyclerView(RecyclerView rview) {
+                list = rview;
+            }
+
+            public getCreatedGroupsTask(Context ctx) {
+                mContext = ctx;
+            }
+
+            @Override
+            protected Boolean doInBackground(String... strings) {
+                try {
+                    mData = new ArrayList<>();
+
+                    JsonRequest jr = new JsonRequest(mContext);
+
+                    String res = jr.sendRequestGetCreatedGroups();
+                    Log.d("myGroups", res);
+
+                    // commonReturnObject dönüyor data vs. olmadığında
+
+                    Gson gson = new Gson();
+                    Type listType = new TypeToken<ArrayList<myGroupResponse>>() {}.getType();
+                    mData = gson.fromJson(res, listType);
+
+                    return true;
+                } catch (Exception ex) {
+                    return false;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(Boolean success) {
+                if (success) {
+
+                    List<basicItem> group_basicItems = new ArrayList<>();
+
+                    for (myGroupResponse res : mData) {
+                        group_basicItems.add(new basicItem(R.drawable.user_group, res.getName() + " - " + res.getCount().toString() + " member(s)"));
+                    }
+
+                    homeAdapter adapter_group = new homeAdapter(group_basicItems);
+                    list.setAdapter(adapter_group);
+
+                }
+            }
+        }
+
+        public class myFriendResponse {
+            /*
+                {
+        "friendshipId": 1,
+        "friend": {
+            "userId": 32,
+            "userEmail": "morteza.bandi@gmail.com",
+            "date": null,
+            "password": "202cb962ac59075b964b07152d234b70",
+            "role": null,
+            "userBasicInfo": null,
+            "userCommInfo": null,
+            "userExtraInfo": null
+        },
+        "status": "IS"
+    },
+             */
+
+
+
+        }
+
+        public class myGroupResponse {
+            /*
+                {
+        "actionId": 10,
+        "name": "süper grup",
+        "count": 1
+    },
+             */
+
+            Integer actionId;
+            String name;
+            Integer count;
+
+            public Integer getActionId() {
+                return actionId;
+            }
+
+            public void setActionId(Integer actionId) {
+                this.actionId = actionId;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public Integer getCount() {
+                return count;
+            }
+
+            public void setCount(Integer count) {
+                this.count = count;
+            }
+        }
+
+        public class newsFeedTask extends AsyncTask<String, Void, Boolean> {
+
+            private Context mContext;
+            private List<Tag> tagLİst;
+
+            public newsFeedTask(Context ctx) {
                 mContext = ctx;
             }
 
             @Override
             protected Boolean doInBackground(String... params) {
 
-                String groupName = params[0];
-                String groupDesc = params[1];
-                String people = params[2];
-                String tags = params[3];
-                String privacy = params[4];
+                try {
 
+                    JsonRequest jr = new JsonRequest(mContext);
+//                tagLİst = jr.sendRequestSearchContext(text);
 
-                JsonRequest jr = new JsonRequest(mContext);
-                jr.sendRequestCreateGroup(groupName, groupDesc, people, tags, privacy);
+                    String res = jr.sendRequestGetNewsFeed();
+                    Log.d("news feed", res);
 
+                    // commonReturnObject dönüyor data vs. olmadığında
 
-                return true;
+                    return true;
+                } catch (Exception ex) {
+                    return false;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(Boolean success) {
+                if (success) {
+
+                }
             }
         }
 
