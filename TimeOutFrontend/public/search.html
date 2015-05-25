@@ -50,9 +50,9 @@
 			</ul>
 
 		    <div class="clearBoth"></div>
-		    <div class="line"></div>
+		    <div class="line" ng-show="resultSet.groups">></div>
 
-			<div class="searchTitle" ng-show="resultSet.users.length > 0">Groups</div>
+			<div class="searchTitle" ng-show="resultSet.groups.length > 0">Groups</div>
 			<ul>
 				<li ng-repeat="group in resultSet.groups">
 					<a href="" ng-click="goToPage('/theGroup/' + group.actionId)">{{group.title}} {{group.description}}</a>

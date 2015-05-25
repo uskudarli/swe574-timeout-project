@@ -797,6 +797,19 @@ app.controller("theGroup", function($scope, $http, $window, $location, $routePar
 		console.log("GoToPage: " + url + " (1056)");
 		$location.path(url);
 	};
+
+	$scope.joinGroup = function() {
+		var paramsJoin = 	"?sessionId=" + getCookie("sessionId") +
+							"&actionIds=" + $scope.groupId;
+
+		$http.get(timeOutFactory.getBackendUrl() + "/group/acceptInvitation" + paramsJoin)
+			.success(function(data, status) {
+				$window.alert("You have joined to the group! (1800)");
+			})
+			.error(function(data, status) {
+				$window.alert("Cloud was busy, please try again! (1559)");
+			});
+	}
 });
 
 // This page is used to show selected post's detail

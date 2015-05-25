@@ -1,8 +1,7 @@
 <section>
   <!-- Midcolumn title part start-->
   <div class="groupTitle">
-    <span>GROUP GOURMET</span>
-      
+    <span>{{groupData.title}}</span>
     <!-- Lightbox button code start-->
     <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='block';document.getElementById('fade').style.display='block'"><div class="customType">Add Post</div></a>
     <div id="light" class="white_content">
@@ -25,8 +24,6 @@
             </tr>
           </table>
         </div>
-
-        
         <!-- Message Box Code start-->
             <div ng-repeat="message in messages">
                 {{message.note}}
@@ -36,13 +33,13 @@
     <div id="fade" class="black_overlay"></div>
     <!-- Lightbox button code end-->
 
-  </div>  
-  <!-- Midcolumn title part end-->   
+  </div>
+  <!-- Midcolumn title part end-->
 
-  <!-- Midcolumn part start-->	
+  <!-- Midcolumn part start-->
   <div class="midcolumn">
 
-    <!-- Group Custom Type Tab start-->  
+    <!-- Group Custom Type Tab start-->
   	<div class="groupTab">
       <ul>
         <li class="customActive"><a href="">Default</a></li>
@@ -51,20 +48,18 @@
       </ul>
 
       <div style="margin: 3px -29px 0 0 !important;" class="joinButton toSide" align="right">
-          <button class="btn btn-primary rightButton" type="button" ng-click="">Join to the Group</button>
+          <button class="btn btn-primary rightButton" type="button" ng-click="joinGroup()">Join to the Group</button>
       </div>
     </div>
-    <!-- Group Custom Type Tab end-->  
+    <!-- Group Custom Type Tab end-->
 
-    <!-- Custom Type Adding Lightbox start--> 
+    <!-- Custom Type Adding Lightbox start-->
     <div id="lightCustomType" class="white_content">
       <a href = "javascript:void(0)" onclick = "document.getElementById('lightCustomType').style.display='none';document.getElementById('fade').style.display='none'">
         <div class="closeLightbox">X</div>
       </a>
       <div class="addCustomType">
 
-
-        
         <!-- Message Box Code start-->
             <div ng-repeat="message in messages">
                 {{message.note}}
@@ -93,18 +88,18 @@
       </div>
     </div>
     <div id="fade" class="black_overlay"></div>
-    <!-- Custom Type Adding Lightbox end--> 
+    <!-- Custom Type Adding Lightbox end-->
 
     <div class="clearBoth"></div>
 
-    <!-- Group Detail part start--> 
+    <!-- Group Detail part start-->
     <div class="groupDetay">
       <img src="images/groupGourmet.jpg" />
-      <span>This group is created for sharing info, experiences, receipt, advices, etc. for Gourmets.This group is created for sharing info, experiences, receipt, advices, etc. for Gourmets.This group is created for sharing info, experiences, receipt, advices, etc. for Gourmets.This group is created for sharing info, experiences, receipt, advices, etc. for Gourmets.This group is created for sharing info, experiences, receipt, advices, etc. for Gourmets.This group is created for sharing info, experiences, receipt, advices, etc. for Gourmets. </span>
+      <span>{{groupData.description}}</span>
     </div>
     <!-- Group Detail part end-->
 
-    <!-- Group Member List part start--> 
+    <!-- Group Member List part start-->
     <div class="groupMember">
       <span>Group Members</span>
       <table>
@@ -128,12 +123,12 @@
         </tr>
       </table>
     </div>
-    <!-- Group Member List part end--> 
+    <!-- Group Member List part end-->
 
     <div class="clearBoth"></div>
     <div class="line"></div>
 
-    <!-- Posts part start--> 
+    <!-- Posts part start-->
     <div class="posts">
       <span>Posts</span>
       <table>
