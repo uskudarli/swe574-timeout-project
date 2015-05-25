@@ -44,33 +44,33 @@
 				<li ng-repeat="user in resultSet.users">
 					<a href="" ng-click="goToPage('/theUser/' + user.userId)">{{user.userBasicInfo.firstName}} {{user.userBasicInfo.lastName}} {{user.userEmail}}</a>
                     <div class="joinButton" align="right">
-                        <button class="btn btn-primary searchJoin" type="button" ng-click="">Add Friend</button>
+                        <button class="btn btn-primary searchJoin" type="button" ng-click="addFriend(user.userId)">Add Friend</button>
                     </div>
 				</li>
 			</ul>
 
 		    <div class="clearBoth"></div>
-		    <div class="line" ng-show="resultSet.groups">></div>
+		    <div class="line" ng-show="resultSet.users"></div>
 
 			<div class="searchTitle" ng-show="resultSet.groups.length > 0">Groups</div>
 			<ul>
 				<li ng-repeat="group in resultSet.groups">
 					<a href="" ng-click="goToPage('/theGroup/' + group.actionId)">{{group.title}} {{group.description}}</a>
                     <div class="joinButton" align="right">
-                        <button class="btn btn-primary searchJoin" type="button" ng-click="">Join to the Group</button>
+                        <button class="btn btn-primary searchJoin" type="button" ng-click="joinGroup(group.actionId)">Join to the Group</button>
                     </div>
 				</li>
 			</ul>
 
 		    <div class="clearBoth"></div>
-		    <div class="line" ng-show="resultSet.events"></div>
+		    <div class="line" ng-show="resultSet.groups"></div>
 
 			<div class="searchTitle" ng-show="resultSet.users.length > 0">Events</div>
 			<ul>
 				<li ng-repeat="event in resultSet.events">
 					<a href="" ng-click="goToPage('/theEvent/' + event.actionId)">{{event.title}} {{event.description}}</a>
                     <div class="joinButton" align="right">
-                        <button class="btn btn-primary searchJoin" type="button" ng-click="">Join to the Event</button>
+                        <button class="btn btn-primary searchJoin" type="button" ng-click="joinEvent(event.actionId)">Join to the Event</button>
                     </div>
 				</li>
 			</ul>

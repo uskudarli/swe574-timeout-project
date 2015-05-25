@@ -419,6 +419,53 @@ app.controller("searchController", function($scope, $http, $location, $window, t
 				$window.alert("Cloud was busy, please try again! (1777)");
 			});
 	}
+
+	$scope.addFriend = function(friendId){
+		var otherUserId = [];
+		otherUserId.push(friendId);
+
+		var inviteParams = 	"?sessionId=" + getCookie("sessionId") +
+							"&userIds=" + JSON.stringify(otherUserId);
+		$http.get(timeOutFactory.getBackendUrl() + "/friends/invite" + inviteParams)
+			.success(function(data, status) {
+				$window.alert("Your friend request has been sent (1888)");
+			})
+			.error(function(data, status) {
+				$window.alert("Cloud was busy, please try again! (1611)");
+			});
+	}
+
+	$scope.joinGroup = function(actionId){
+		var groupIds = [];
+		groupIds.push(actionId);
+
+		var paramsJoin = 	"?sessionId=" + getCookie("sessionId") +
+							"&actionIds=" + JSON.stringify($scope.groupIds);
+
+		$http.get(timeOutFactory.getBackendUrl() + "/group/acceptInvitation" + paramsJoin)
+			.success(function(data, status) {
+				$window.alert("You have joined to the group! (1889)");
+			})
+			.error(function(data, status) {
+				$window.alert("Cloud was busy, please try again! (1559)");
+			});
+	}
+
+	$scope.joinEvent = function(actionId){
+		var eventIds = [];
+		eventIds.push(actionId);
+
+		var paramsJoin = 	"?sessionId=" + getCookie("sessionId") +
+							"&actionIds=" + JSON.stringify($scope.eventIds);
+
+		$http.get(timeOutFactory.getBackendUrl() + "/event/acceptInvitation" + paramsJoin)
+			.success(function(data, status) {
+				$window.alert("You have joined to the event! (1900)");
+			})
+			.error(function(data, status) {
+				$window.alert("Cloud was busy, please try again! (1559)");
+			});
+	}
 });
 
 // When user wants to edit own profile, this controller works to support the html on the dynamic content.
@@ -554,7 +601,12 @@ app.controller("createEvent", function($scope, $http, $window, $location, $filte
 
 			$http.get(timeOutFactory.getBackendUrl() + "/event/create" + params)
 				.success(function(data, status) {
-					$window.alert("Success (1013)");
+					$window.alert("Your event created succesfully (1013)");
+					$scope.eventName = "";
+					$scope.eventDescription = "";
+					$scope.invitedPeople = "";
+					$scope.selectedTags = [];
+					$scope.location = "";
 				})
 				.error(function(data, status) {
 					$window.alert("Cloud was busy, please try again! (1014)");
@@ -674,7 +726,7 @@ app.controller("suggestedEvents", function($scope, $http, $window, $location) {
 app.controller("myEvents", function($scope, $http, $window, $location, timeOutFactory){
 	var params = "?sessionId=" + getCookie("sessionId");
 
-	$http.get(timeOutFactory.getBackendUrl() + "/event/created" + params)
+	$http.get(timeOutFactory.getBackendUrl() + "/event/my" + params)
 	.success(function(data, status) {
 		$scope.myEvents = data;
 	})
@@ -684,24 +736,6 @@ app.controller("myEvents", function($scope, $http, $window, $location, timeOutFa
 
 	$scope.goToPage = function(url) {
 		console.log("GoToPage: " + url + " (1050)");
-		$location.path(url);
-	};
-});
-
-// This page is used to show user's events which user created
-app.controller("eventsCreated", function($scope, $http, $location, timeOutFactory){
-	var params = "?sessionId=" + getCookie("sessionId");
-
-	$http.get(timeOutFactory.getBackendUrl() + "/event/created" + params)
-	.success(function(data, status) {
-		$scope.eventsCreated = data;
-	})
-	.error(function(data, status) {
-		$window.alert("Cloud was busy, please try again! (1018)");
-	});
-
-	$scope.goToPage = function(url) {
-		console.log("GoToPage: " + url + " (1051)");
 		$location.path(url);
 	};
 });
@@ -799,8 +833,11 @@ app.controller("theGroup", function($scope, $http, $window, $location, $routePar
 	};
 
 	$scope.joinGroup = function() {
+		var groupIds = [];
+		groupIds.push($scope.groupId);
+
 		var paramsJoin = 	"?sessionId=" + getCookie("sessionId") +
-							"&actionIds=" + $scope.groupId;
+							"&actionIds=" + JSON.stringify($scope.groupIds);
 
 		$http.get(timeOutFactory.getBackendUrl() + "/group/acceptInvitation" + paramsJoin)
 			.success(function(data, status) {
