@@ -44,6 +44,7 @@
 
                 <!-- Group List start-->
                  <div class="myGroupList" ng-repeat="group in newGroups">
+                    <button class="btn btn-primary newGroupBtn" type="button" ng-click="">Join</button>
                     <a href="" ng-click="goToPage('/theGroup/' + group.action.actionId)">
                         <div class="groupName">{{group.action.title}}</div>
                     </a>
@@ -62,8 +63,9 @@
                             in this group.
                         </div>
                     </div>
-                    <button class="btn btn-primary rightButton" type="button" ng-click="">Join</button>
                 </div>
+
+                <div class="clearBoth"></div>
                 <!-- Group List end-->
 
             </div>

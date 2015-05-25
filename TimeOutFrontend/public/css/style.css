@@ -1608,3 +1608,8 @@ animation-delay:1s;
     float: left;
     margin: 0 10px;
 }
+
+.newGroupBtn{
+    float: left;
+    margin: 0 10px 10px 0 !important;
+}
