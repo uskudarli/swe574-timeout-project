@@ -167,7 +167,7 @@
                         <p class="title">SUGGESTED EVENTS</p>
                         <div ng-repeat="event in recommendedEvents | reverse | limitTo:4">
                             <div class="notice">
-                                <p class="not-title" ng-click="goToPage('/suggestedEvents')">{{event.title}}</p>
+                                <p class="not-title" style="cursor: pointer;" ng-click="goToPage('/suggestedEvents')">{{event.title}}</p>
                                 <p class="not-detail">{{event.description}}</p>
                             </div>
                         </div>
@@ -180,7 +180,7 @@
                         <div ng-repeat="user in recommendedUsers | reverse | limitTo:4">
                             <div class="notice">
                                 <img src="images/anonymous.jpg" />
-                                <p class="not-title" ng-click="goToPage('/theUser/' + user.userId)">
+                                <p class="not-title" style="cursor: pointer;" ng-click="goToPage('/theUser/' + user.userId)">
                                     {{user.userBasicInfo.firstName + " " + user.userBasicInfo.lastName + " " + user.userEmail}}
                                 </p>
                             </div>
@@ -193,7 +193,7 @@
                         <p class="title">SUGGESTED GROUPS</p>
                         <div ng-repeat="group in recommendedGroups | reverse | limitTo:4">
                             <div class="notice">
-                                <p class="not-title" ng-click="goToPage('/theGroup/' + group.actionId)">{{group.title}}</p>
+                                <p class="not-title" style="cursor: pointer;" ng-click="goToPage('/theGroup/' + group.actionId)">{{group.title}}</p>
                                 <p class="not-detail">{{group.description}}</p>
                             </div>
                         </div>

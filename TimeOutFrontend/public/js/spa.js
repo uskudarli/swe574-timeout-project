@@ -122,6 +122,7 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 	$scope.recommendedEvents = null;
 	$scope.recommendedGroups = null;
 	$scope.userName = "";
+	$scope.userId = "";
 	timeOutFactory.setRecommendationUpdated(true);
 
 	// Gets profile and keeps it in the scope
@@ -135,8 +136,9 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 		       	} else {
 		       		$scope.userName = result.userBasicInfo.firstName + " " + result.userBasicInfo.lastName;
 		       	}
-		       $scope.friendRequests = [];
-		       // Friend notification
+		       	$scope.userId = result.userId;
+		        $scope.friendRequests = [];
+		        // Friend notification
 				var paramsNotification = "?sessionId=" + getCookie("sessionId");
 				$http.get(timeOutFactory.getBackendUrl() + "/friends/my" + paramsNotification)
 					.success(function(data, status) {
@@ -221,6 +223,7 @@ app.controller("indexController", function($scope, $http, $location, $window, ti
 		setCookie("sessionId", "", -1);
 		$scope.userEmail = "";
 		$scope.userName = "";
+		$scope.userId = "";
 		$scope.recommendedUsers = [];
 		$scope.recommendedEvents = [];
 		$scope.recommendedGroups = [];
