@@ -1,17 +1,17 @@
 <section>
   <div class="groupTitle">
     <div class="userAvatar">
-      <img src="images/profile.jpg" />
-      <span>Münevver Calayır</span>
+      <img src="images/anonymous.jpg" />
+      <span>{{otherUserData.userBasicInfo.firstName + " " + otherUserData.userBasicInfo.lastName}}</span>
 
       <button class="btn btn-primary addFriend" style="width: 150px; float: right; margin: 110px 0px 0px;" type="button" ng-click="invite()">
         <img src="images/addFriend.png" />
         <p>Add Friend</p>
       </button>
     </div>
-  </div> 
+  </div>
 
-  <!-- MidColumn Start--> 	
+  <!-- MidColumn Start-->
   <div class="midcolumn">
 
     <!-- User Detail part starts -->
@@ -19,43 +19,43 @@
       <table>
         <tr>
           <td>First name:</td>
-          <td>Münevver</td>
+          <td>{{otherUserData.userBasicInfo.firstName}}</td>
         </tr>
         <tr>
           <td>Last name:</td>
-          <td>Calayır</td>
+          <td>{{otherUserData.userBasicInfo.lastName}}</td>
         </tr>
         <tr>
           <td>Email:</td>
-          <td>munevvercalayir@gmail.com</td>
+          <td>{{otherUserData.userEmail}}</td>
         </tr>
         <tr>
           <td>GSM:</td>
-          <td>0533 463 08 02</td>
+          <td>{{otherUserData.userCommInfo.mobilePhone}}</td>
         </tr>
         <tr>
           <td>Address:</td>
-          <td>Atakent Mah. 3. Etap 1. Cadde 506. Ada B-41 D: 30 Halkalı Küçükçekmece İstanbul</td>
+          <td>{{otherUserData.userCommInfo.address}}</td>
         </tr>
         <tr>
           <td>Birthdate:</td>
-          <td>30.09.1986</td>
+          <td>{{otherUserData.userExtraInfo.birthDate}}{{otherUserData.userExtraInfo.birthDate}}</td>
         </tr>
         <tr>
           <td>About:</td>
-          <td></td>
+          <td>{{otherUserData.userExtraInfo.about}}</td>
         </tr>
         <tr>
           <td>Interests:</td>
-          <td>Painting, Riding, Botanic</td>
+          <td>{{otherUserData.userExtraInfo.interests}}</td>
         </tr>
         <tr>
           <td>Gender:</td>
-          <td>Female</td>
+          <td>{{otherUserData.userBasicInfo.gender}}</td>
         </tr>
         <tr>
           <td>Languages:</td>
-          <td>Php, javascript, html, java, C</td>
+          <td>{{otherUserData.userExtraInfo.languages}}</td>
         </tr>
       </table>
     </div>
@@ -65,7 +65,7 @@
         <script>
             $(function(){
              setTimeout(function() {
-                    $(".content1").addClass("fadeOutLeft"); 
+                    $(".content1").addClass("fadeOutLeft");
               },3000);
             });
         </script>
@@ -78,6 +78,5 @@
             </div>
         </div>
         <!-- Message Box Code end-->
-    
   </div>
 </section>

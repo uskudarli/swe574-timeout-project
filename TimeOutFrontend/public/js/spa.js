@@ -281,7 +281,7 @@ app.controller("mainController", function($scope, $http, $location, $window, tim
 							if(data.type == "Success") {
 								//$window.alert("Welcome among us, you can now log in!" + " (1004)");
 								$scope.messages.push("Welcome among us, you can now log in!");
-								$scope.name = "";
+								$scope.firstName = "";
 								$scope.lastName = "";
 								$scope.email = "";
 								$scope.reEmail = "";
