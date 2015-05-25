@@ -309,13 +309,6 @@ app.controller("mainController", function($scope, $http, $location, $window, tim
 
 // After user logged in, home.html will be seen which managed by this controller
 app.controller("homeController", function($scope, $http, $window, $location, timeOutFactory, $interval) {
-	var suggestedGroups = [{name:'' ,detail:'"Math "'}];
-	$scope.notificationList2 = [{name:'sara', detail:'"Math fans"'}];
-
-	timeOutFactory.addList("notificationList", $scope.notificationList2);
-
-	$scope.notificationList = timeOutFactory.getList("notificationList");
-
 	$scope.goToPage = function(url) {
 		console.log("GoToPage: " + url + " (1042)");
 		$location.path(url);
