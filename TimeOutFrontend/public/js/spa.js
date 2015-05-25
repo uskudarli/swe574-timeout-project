@@ -549,6 +549,7 @@ app.controller("profileEdit", function($scope, $http, $window, $location, timeOu
 
 // This page is used to create new event
 app.controller("createEvent", function($scope, $http, $window, $location, $filter, timeOutFactory) {
+	$scope.friendsToInvite = [];
 
 	// Initialize variables and set default values
 	$scope.selectedTags = [];
@@ -665,19 +666,19 @@ app.controller("myFriends", function($scope, $http, $window, $location, timeOutF
 	$scope.pendingRequests = [];
 	$scope.myFriends = [];
 	var params = "?sessionId=" + getCookie("sessionId");
-		$http.get(timeOutFactory.getBackendUrl() + "/friends/my" + params)
-			.success(function(data, status) {
-				for (var i = 0; i < data.length; i++) {
-					if(data[i].status == "IS"){
-						$scope.pendingRequests.push(data[i]);
-					} else if(data[i].status == "AS" || data[i].status == "AO"){
-						$scope.myFriends.push(data[i]);
-					}
-				};
-			})
-			.error(function(data, status) {
-				$window.alert("Cloud was busy, please try again! (1611)");
-			});
+	$http.get(timeOutFactory.getBackendUrl() + "/friends/my" + params)
+		.success(function(data, status) {
+			for (var i = 0; i < data.length; i++) {
+				if(data[i].status == "IS"){
+					$scope.pendingRequests.push(data[i]);
+				} else if(data[i].status == "AS" || data[i].status == "AO"){
+					$scope.myFriends.push(data[i]);
+				}
+			};
+		})
+		.error(function(data, status) {
+			$window.alert("Cloud was busy, please try again! (1611)");
+		});
 
 	$scope.goToPage = function(url) {
 		console.log("GoToPage: " + url + " (1049)");
@@ -699,6 +700,22 @@ app.controller("newEvents", function($scope, $http, $window, $location, timeOutF
 		.error(function(data, status) {
 			$window.alert("Cloud was busy, please try again! (1017)");
 		});
+
+	$scope.joinEvent = function(actionId){
+		var eventIds = [];
+		eventIds.push(actionId);
+
+		var paramsJoin = 	"?sessionId=" + getCookie("sessionId") +
+							"&actionIds=" + JSON.stringify($scope.eventIds);
+
+		$http.get(timeOutFactory.getBackendUrl() + "/event/acceptInvitation" + paramsJoin)
+			.success(function(data, status) {
+				$window.alert("You have joined to the event! (1990)");
+			})
+			.error(function(data, status) {
+				$window.alert("Cloud was busy, please try again! (1559)");
+			});
+	}
 
 	$scope.goToPage = function(url) {
 		console.log("GoToPage: " + url + " (1070)");
@@ -738,6 +755,22 @@ app.controller("suggestedEvents", function($scope, $http, $window, $location, ti
 		.error(function(data, status) {
 			$window.alert("Cloud was busy, please try again! (1017)");
 		});
+
+	$scope.joinEvent = function(actionId){
+		var eventIds = [];
+		eventIds.push(actionId);
+
+		var paramsJoin = 	"?sessionId=" + getCookie("sessionId") +
+							"&actionIds=" + JSON.stringify($scope.eventIds);
+
+		$http.get(timeOutFactory.getBackendUrl() + "/event/acceptInvitation" + paramsJoin)
+			.success(function(data, status) {
+				$window.alert("You have joined to the event! (1991)");
+			})
+			.error(function(data, status) {
+				$window.alert("Cloud was busy, please try again! (1559)");
+			});
+	}
 
 	$scope.goToPage = function(url) {
 		console.log("GoToPage: " + url + " (1073)");
