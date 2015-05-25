@@ -1613,3 +1613,20 @@ animation-delay:1s;
     float: left;
     margin: 0 10px 10px 0 !important;
 }
+
+.accRej{
+    float: left;
+    height: 20px !important;
+    margin:2px;
+    padding: 0 10px 5px;
+    font-size: 11px;
+}
+
+.acceptReject{
+    float: left;
+    margin: 5px 22px;
+}
+
+.notice1{
+    width: 115px !important;
+}

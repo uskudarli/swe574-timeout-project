@@ -148,7 +148,11 @@
                         <div class="notice" ng-repeat="notification in friendRequests">
                             <div class="notice">
                                 <img src="images/anonymous.jpg" />
-                                <p class="not-title">{{notification.friend.userBasicInfo.firstName + " " + notification.friend.userBasicInfo.lastName + " " + notification.friend.userEmail}}</p>
+                                <p class="not-title notice1">deneme seni ekledi{{notification.friend.userBasicInfo.firstName + " " + notification.friend.userBasicInfo.lastName + " " + notification.friend.userEmail}}</p>
+                                <div class="acceptReject">
+                                    <button class="btn btn-primary accRej" ng-click="s">Accept</button>
+                                    <button class="btn btn-primary accRej" ng-click="s">Reject</button>
+                                </div>
                             </div>
                         </div>
                     </div>
