@@ -218,7 +218,7 @@ public class UserRestServices {
 	@RequestMapping(value = "/profile/getById")
 	public @ResponseBody Object getProfileByUserId(
 			@RequestParam(value = "sessionId") String sessionId,
-			@RequestParam(value = "userId") Integer userId,
+			@RequestParam(value = "userId") Long userId,
 			HttpServletResponse resp) {
 
 		EntityManager em = ServiceHelper.initialize(resp);

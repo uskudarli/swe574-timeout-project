@@ -93,7 +93,7 @@ public class UserRepository {
 		em.persist(role);
 	}
 
-	public User getUserById(Integer userId) {
+	public User getUserById(Long userId) {
 		User user = (User) em
 				.createQuery("FROM User U WHERE U.userId = :userId")
 				.setParameter("userId", userId).getSingleResult();

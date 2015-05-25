@@ -400,6 +400,7 @@ public class ActionRestServices {
 			User user = ServiceHelper.getSessionUser(em, sessionId);
 			ActionRepository ar = new ActionRepository(em);
 			action = ar.getActionById(actionId, ActionType.EVENT.toString());
+			DBUtility.commitTransaction(em);
 		}catch (BusinessException e) {
 			DBUtility.rollbackTransaction(em);
 			return new ResponseHeader(false, e.getCode(), e.getMessage());
@@ -423,6 +424,7 @@ public class ActionRestServices {
 			User user = ServiceHelper.getSessionUser(em, sessionId);
 			ActionRepository ar = new ActionRepository(em);
 			action = ar.getActionById(actionId, ActionType.GROUP.toString());
+			DBUtility.commitTransaction(em);
 		}catch (BusinessException e) {
 			DBUtility.rollbackTransaction(em);
 			return new ResponseHeader(false, e.getCode(), e.getMessage());
@@ -445,6 +447,7 @@ public class ActionRestServices {
 			User user = ServiceHelper.getSessionUser(em, sessionId);
 			ActionRepository ar = new ActionRepository(em);
 			newActions = ar.getNewActions(ActionType.GROUP.toString());
+			DBUtility.commitTransaction(em);
 		}catch (BusinessException e) {
 			DBUtility.rollbackTransaction(em);
 			return new ResponseHeader(false, e.getCode(), e.getMessage());
@@ -467,6 +470,7 @@ public class ActionRestServices {
 			User user = ServiceHelper.getSessionUser(em, sessionId);
 			ActionRepository ar = new ActionRepository(em);
 			newActions = ar.getNewActions(ActionType.EVENT.toString());
+			DBUtility.commitTransaction(em);
 		}catch (BusinessException e) {
 			DBUtility.rollbackTransaction(em);
 			return new ResponseHeader(false, e.getCode(), e.getMessage());
